@@ -4,10 +4,9 @@
  * Purpose: Defines the Class User
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
-public class User {
-   protected Long userId;
+public abstract class User {
+   protected Long id;
    protected String firstName;
    protected String lastName;
    protected String telephone;
@@ -16,6 +15,6 @@ public class User {
    
    protected Address address;
    
-   public Role role;
+   protected Role role;
 
 }

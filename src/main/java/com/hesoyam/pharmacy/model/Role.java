@@ -4,7 +4,6 @@
  * Purpose: Defines the Class Role
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public enum Role {
    NONE,

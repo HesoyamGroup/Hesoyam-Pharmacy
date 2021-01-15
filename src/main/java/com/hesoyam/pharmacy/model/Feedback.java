@@ -4,13 +4,11 @@
  * Purpose: Defines the Class Feedback
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public abstract class Feedback {
-   private Long id;
-   private String comment;
-   private int rating;
-   
-   public Patient patient;
+   protected Long id;
+   protected String comment;
+   protected int rating;
+   protected Patient patient;
 
 }

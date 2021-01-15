@@ -4,36 +4,29 @@
  * Purpose: Defines the Class Dermatologist
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public class Dermatologist extends Employee {
    private java.util.List<Pharmacy> pharmacy;
-   
-   
-   /** @pdGenerated default getter */
+   private CheckUp[] checkUp;
+
    public java.util.List<Pharmacy> getPharmacy() {
       if (pharmacy == null)
          pharmacy = new java.util.ArrayList<Pharmacy>();
       return pharmacy;
    }
-   
-   /** @pdGenerated default iterator getter */
+
    public java.util.Iterator getIteratorPharmacy() {
       if (pharmacy == null)
          pharmacy = new java.util.ArrayList<Pharmacy>();
       return pharmacy.iterator();
    }
-   
-   /** @pdGenerated default setter
-     * @param newPharmacy */
+
    public void setPharmacy(java.util.List<Pharmacy> newPharmacy) {
       removeAllPharmacy();
       for (java.util.Iterator iter = newPharmacy.iterator(); iter.hasNext();)
          addPharmacy((Pharmacy)iter.next());
    }
-   
-   /** @pdGenerated default add
-     * @param newPharmacy */
+
    public void addPharmacy(Pharmacy newPharmacy) {
       if (newPharmacy == null)
          return;
@@ -45,9 +38,7 @@ public class Dermatologist extends Employee {
          newPharmacy.addDermatologist(this);      
       }
    }
-   
-   /** @pdGenerated default remove
-     * @param oldPharmacy */
+
    public void removePharmacy(Pharmacy oldPharmacy) {
       if (oldPharmacy == null)
          return;
@@ -58,8 +49,7 @@ public class Dermatologist extends Employee {
             oldPharmacy.removeDermatologist(this);
          }
    }
-   
-   /** @pdGenerated default removeAll */
+
    public void removeAllPharmacy() {
       if (pharmacy != null)
       {
@@ -72,7 +62,4 @@ public class Dermatologist extends Employee {
          }
       }
    }
-   
-   public CheckUp[] checkUp;
-
 }

@@ -4,7 +4,6 @@
  * Purpose: Defines the Class Medicine
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public class Medicine {
    private Long medicineId;
@@ -15,7 +14,6 @@ public class Medicine {
    private MedicineType medicineType;
    private MedicineSpecification medicineSpecification;
    
-   public Manufacturer manufacturer;
-   public PrescriptionMode prescriptionMode;
-
+   private Manufacturer manufacturer;
+   private PrescriptionMode prescriptionMode;
 }

@@ -5,7 +5,6 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
 import java.time.LocalDateTime;
-import java.util.*;
 
 public class Order {
    private Long id;

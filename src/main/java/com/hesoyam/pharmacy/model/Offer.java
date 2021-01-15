@@ -4,23 +4,20 @@
  * Purpose: Defines the Class Offer
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
+
+import java.time.LocalDateTime;
 
 public class Offer {
    private double price;
-   private Date deliveryDate;
+   private LocalDateTime deliveryDate;
    
    private OfferStatus offerStatus;
    private Supplier supplier;
-   
-   
-   /** @pdGenerated default parent getter */
+
    public Supplier getSupplier() {
       return supplier;
    }
-   
-   /** @pdGenerated default parent setter
-     * @param newSupplier */
+
    public void setSupplier(Supplier newSupplier) {
       if (this.supplier == null || !this.supplier.equals(newSupplier))
       {

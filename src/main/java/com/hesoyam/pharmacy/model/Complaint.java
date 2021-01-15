@@ -4,14 +4,11 @@
  * Purpose: Defines the Class Complaint
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public abstract class Complaint {
-   private String text;
-   private Long id;
-   
-   public User user;
-   public ComplaintStatus complaintStatus;
-   public Reply reply;
-
+   protected String text;
+   protected Long id;
+   protected User user;
+   protected ComplaintStatus complaintStatus;
+   protected Reply reply;
 }

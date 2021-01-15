@@ -4,9 +4,8 @@
  * Purpose: Defines the Class DermatologistFeedback
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public class DermatologistFeedback extends Feedback {
-   public Dermatologist dermatologist;
+   private Dermatologist dermatologist;
 
 }

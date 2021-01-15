@@ -4,19 +4,14 @@
  * Purpose: Defines the Class Administrator
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public class Administrator extends User {
    private Pharmacy pharmacy;
-   
-   
-   /** @pdGenerated default parent getter */
+
    public Pharmacy getPharmacy() {
       return pharmacy;
    }
-   
-   /** @pdGenerated default parent setter
-     * @param newPharmacy */
+
    public void setPharmacy(Pharmacy newPharmacy) {
       if (this.pharmacy == null || !this.pharmacy.equals(newPharmacy))
       {

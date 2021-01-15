@@ -4,40 +4,31 @@
  * Purpose: Defines the Class Country
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public class Country {
    private Long countryId;
    private String countryCode;
    private String countryName;
-   
    private java.util.List<City> city;
-   
-   
-   /** @pdGenerated default getter */
+
    public java.util.List<City> getCity() {
       if (city == null)
          city = new java.util.ArrayList<City>();
       return city;
    }
-   
-   /** @pdGenerated default iterator getter */
+
    public java.util.Iterator getIteratorCity() {
       if (city == null)
          city = new java.util.ArrayList<City>();
       return city.iterator();
    }
-   
-   /** @pdGenerated default setter
-     * @param newCity */
+
    public void setCity(java.util.List<City> newCity) {
       removeAllCity();
       for (java.util.Iterator iter = newCity.iterator(); iter.hasNext();)
          addCity((City)iter.next());
    }
-   
-   /** @pdGenerated default add
-     * @param newCity */
+
    public void addCity(City newCity) {
       if (newCity == null)
          return;
@@ -49,9 +40,7 @@ public class Country {
          newCity.setCountry(this);      
       }
    }
-   
-   /** @pdGenerated default remove
-     * @param oldCity */
+
    public void removeCity(City oldCity) {
       if (oldCity == null)
          return;
@@ -62,8 +51,7 @@ public class Country {
             oldCity.setCountry((Country)null);
          }
    }
-   
-   /** @pdGenerated default removeAll */
+
    public void removeAllCity() {
       if (city != null)
       {
