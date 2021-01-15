@@ -4,11 +4,9 @@
  * Purpose: Defines the Class OfferStatus
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public enum OfferStatus {
    CREATED,
    ACCEPTED,
    REJECTED;
-
 }

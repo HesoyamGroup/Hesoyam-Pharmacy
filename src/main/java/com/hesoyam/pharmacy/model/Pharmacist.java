@@ -4,19 +4,15 @@
  * Purpose: Defines the Class Pharmacist
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public class Pharmacist extends Employee {
    private Pharmacy pharmacy;
-   
-   
-   /** @pdGenerated default parent getter */
+   private Counseling[] counseling;
+
    public Pharmacy getPharmacy() {
       return pharmacy;
    }
-   
-   /** @pdGenerated default parent setter
-     * @param newPharmacy */
+
    public void setPharmacy(Pharmacy newPharmacy) {
       if (this.pharmacy == null || !this.pharmacy.equals(newPharmacy))
       {
@@ -34,6 +30,6 @@ public class Pharmacist extends Employee {
       }
    }
    
-   public Counseling[] counseling;
+
 
 }

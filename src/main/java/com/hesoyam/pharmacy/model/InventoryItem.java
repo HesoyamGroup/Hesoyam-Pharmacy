@@ -4,12 +4,10 @@
  * Purpose: Defines the Class InvetoryItem
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
-public class InvetoryItem {
+public class InventoryItem {
    private int available;
    private int reserved;
    
    private Medicine medicine;
-
 }

@@ -4,60 +4,49 @@
  * Purpose: Defines the Class Inventory
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public class Inventory {
-   private java.util.Collection<InvetoryItem> invetoryItem;
+   private java.util.Collection<InventoryItem> inventoryItem;
    private Pharmacy pharmacy;
-   
-   
-   /** @pdGenerated default getter */
-   public java.util.Collection<InvetoryItem> getInvetoryItem() {
-      if (invetoryItem == null)
-         invetoryItem = new java.util.HashSet<InvetoryItem>();
-      return invetoryItem;
+
+   public java.util.Collection<InventoryItem> getInvetoryItem() {
+      if (inventoryItem == null)
+         inventoryItem = new java.util.HashSet<InventoryItem>();
+      return inventoryItem;
    }
-   
-   /** @pdGenerated default iterator getter */
+
    public java.util.Iterator getIteratorInvetoryItem() {
-      if (invetoryItem == null)
-         invetoryItem = new java.util.HashSet<InvetoryItem>();
-      return invetoryItem.iterator();
+      if (inventoryItem == null)
+         inventoryItem = new java.util.HashSet<InventoryItem>();
+      return inventoryItem.iterator();
    }
-   
-   /** @pdGenerated default setter
-     * @param newInvetoryItem */
-   public void setInvetoryItem(java.util.Collection<InvetoryItem> newInvetoryItem) {
+
+   public void setInvetoryItem(java.util.Collection<InventoryItem> newInventoryItem) {
       removeAllInvetoryItem();
-      for (java.util.Iterator iter = newInvetoryItem.iterator(); iter.hasNext();)
-         addInvetoryItem((InvetoryItem)iter.next());
+      for (java.util.Iterator iter = newInventoryItem.iterator(); iter.hasNext();)
+         addInvetoryItem((InventoryItem)iter.next());
    }
-   
-   /** @pdGenerated default add
-     * @param newInvetoryItem */
-   public void addInvetoryItem(InvetoryItem newInvetoryItem) {
-      if (newInvetoryItem == null)
+
+   public void addInvetoryItem(InventoryItem newInventoryItem) {
+      if (newInventoryItem == null)
          return;
-      if (this.invetoryItem == null)
-         this.invetoryItem = new java.util.HashSet<InvetoryItem>();
-      if (!this.invetoryItem.contains(newInvetoryItem))
-         this.invetoryItem.add(newInvetoryItem);
+      if (this.inventoryItem == null)
+         this.inventoryItem = new java.util.HashSet<InventoryItem>();
+      if (!this.inventoryItem.contains(newInventoryItem))
+         this.inventoryItem.add(newInventoryItem);
    }
-   
-   /** @pdGenerated default remove
-     * @param oldInvetoryItem */
-   public void removeInvetoryItem(InvetoryItem oldInvetoryItem) {
-      if (oldInvetoryItem == null)
+
+   public void removeInvetoryItem(InventoryItem oldInventoryItem) {
+      if (oldInventoryItem == null)
          return;
-      if (this.invetoryItem != null)
-         if (this.invetoryItem.contains(oldInvetoryItem))
-            this.invetoryItem.remove(oldInvetoryItem);
+      if (this.inventoryItem != null)
+         if (this.inventoryItem.contains(oldInventoryItem))
+            this.inventoryItem.remove(oldInventoryItem);
    }
-   
-   /** @pdGenerated default removeAll */
+
    public void removeAllInvetoryItem() {
-      if (invetoryItem != null)
-         invetoryItem.clear();
+      if (inventoryItem != null)
+         inventoryItem.clear();
    }
 
 }

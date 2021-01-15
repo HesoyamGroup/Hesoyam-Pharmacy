@@ -4,24 +4,20 @@
  * Purpose: Defines the Class Appointment
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public abstract class Appointment {
-   private Long id;
-   private String report;
-   
-   private AppointmentStatus appointmentStatus;
-   private DateTimeRange dateTimeRange;
-   private Pharmacy pharmacy;
-   
-   
-   /** @pdGenerated default parent getter */
+   protected Long id;
+   protected String report;
+   protected AppointmentStatus appointmentStatus;
+   protected DateTimeRange dateTimeRange;
+   protected Pharmacy pharmacy;
+   protected Therapy therapy;
+   protected Patient patient;
+
    public Pharmacy getPharmacy() {
       return pharmacy;
    }
-   
-   /** @pdGenerated default parent setter
-     * @param newPharmacy */
+
    public void setPharmacy(Pharmacy newPharmacy) {
       if (this.pharmacy == null || !this.pharmacy.equals(newPharmacy))
       {
@@ -38,8 +34,6 @@ public abstract class Appointment {
          }
       }
    }
-   
-   public Therapy therapy;
-   public Patient patient;
+
 
 }

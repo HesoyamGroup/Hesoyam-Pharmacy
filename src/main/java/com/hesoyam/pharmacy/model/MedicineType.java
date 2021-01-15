@@ -4,13 +4,12 @@
  * Purpose: Defines the Class MedicineType
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public enum MedicineType {
    UNDEFINED,
    POWDER,
    PILL,
-   capsule,
+   CAPSULE,
    OINTMENT,
    GEL,
    SYRUP,

@@ -4,7 +4,6 @@
  * Purpose: Defines the Class LoyaltyAccountMembership
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
 public class LoyaltyAccountMembership {
    private String name;

@@ -4,13 +4,14 @@
  * Purpose: Defines the Class Sale
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
-import java.util.*;
 
-public class Sale {
-   private Long id;
-   private Date date;
-   private double price;
+import java.time.LocalDateTime;
+
+public abstract class Sale {
+   protected Long id;
+   protected LocalDateTime date;
+   protected double price;
    
-   public Pharmacy pharmacy;
+   protected Pharmacy pharmacy;
 
 }
