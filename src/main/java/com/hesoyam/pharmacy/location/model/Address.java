@@ -5,10 +5,21 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.location.model;
 
-public class Address {
-   private String address;
-   private Double latitude;
-   private Double longitude;
-   private City city;
+import javax.persistence.*;
 
+@Embeddable
+public class Address {
+
+   @Column(length = 150)
+   private String address;
+
+   @Column
+   private Double latitude;
+
+   @Column
+   private Double longitude;
+
+   @ManyToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name="city_id")
+   private City city;
 }

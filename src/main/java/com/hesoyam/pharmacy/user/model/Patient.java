@@ -7,14 +7,25 @@ package com.hesoyam.pharmacy.user.model;
 
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Entity
 public class Patient extends User {
+
+   @Column
    private int penaltyPoints;
+
+   @ManyToMany(fetch = FetchType.LAZY)
+   @JoinTable(name="patient_allergies", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName="id"), inverseJoinColumns = @JoinColumn(name="medicine_id", referencedColumnName="id"))
    private List<Medicine> allergies;
+
+   @OneToOne(optional = true, fetch = FetchType.LAZY)
+   @JoinColumn(name="patient_id", referencedColumnName = "id")
    private LoyaltyAccount loyaltyAccount;
+
 
    public List<Medicine> getAllergies() {
       if (allergies == null)

@@ -8,12 +8,18 @@ package com.hesoyam.pharmacy.user.model;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Entity
 public class Dermatologist extends Employee {
+
+   @ManyToMany(mappedBy = "dermatologists")
    private List<Pharmacy> pharmacies;
+
+   @OneToMany(fetch = FetchType.LAZY, mappedBy = "dermatologist")
    private List<CheckUp> checkUps;
 
    public List<Pharmacy> getPharmacies() {

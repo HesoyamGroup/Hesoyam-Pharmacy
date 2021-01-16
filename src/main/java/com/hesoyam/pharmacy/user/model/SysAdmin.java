@@ -5,5 +5,9 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.user.model;
 
+import javax.persistence.Entity;
+
+@Entity
 public class SysAdmin extends User {
+
 }

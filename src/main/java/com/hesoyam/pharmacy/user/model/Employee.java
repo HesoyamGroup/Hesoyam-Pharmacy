@@ -6,13 +6,19 @@
 package com.hesoyam.pharmacy.user.model;
 import com.hesoyam.pharmacy.employee_management.model.Shift;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+@Entity
+@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
 public abstract class Employee extends User {
+   @Column
    protected float rating;
-   
+
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @JoinColumn(name="employee_id", referencedColumnName="id")
    protected List<Shift> shifts;
 
    public List<Shift> getShifts() {

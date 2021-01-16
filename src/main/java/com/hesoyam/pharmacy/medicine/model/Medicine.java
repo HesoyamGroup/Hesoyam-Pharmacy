@@ -5,13 +5,25 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.medicine.model;
 
+import javax.persistence.*;
+
+@Entity
 public class Medicine {
-   private Long medicineId;
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;
+
+   @Column(length = 75)
    private String name;
+   @Column(length=200)
    private String notes;
+   @Column
    private int loyaltyPoints;
-   
+
+   @Column
    private MedicineType medicineType;
+
    private MedicineSpecification medicineSpecification;
    
    private Manufacturer manufacturer;

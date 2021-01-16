@@ -7,13 +7,27 @@ package com.hesoyam.pharmacy.finance.model;
 
 import com.hesoyam.pharmacy.user.model.Supplier;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+
+@Entity
 public class Offer {
+   @Id
+   @GeneratedValue(strategy=GenerationType.IDENTITY)
+   private Long id;
+
+   @Column
    private double price;
+   @Column(nullable = false)
    private LocalDateTime deliveryDate;
-   
+
+   @Enumerated(EnumType.STRING)
+   @Column
    private OfferStatus offerStatus;
+
+   @ManyToOne(fetch= FetchType.LAZY, optional=false)
+   @JoinColumn(name="supplier_id")
    private Supplier supplier;
 
    public Supplier getSupplier() {
