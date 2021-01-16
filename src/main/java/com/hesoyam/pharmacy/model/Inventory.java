@@ -4,49 +4,52 @@
  * Purpose: Defines the Class Inventory
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Inventory {
-   private java.util.Collection<InventoryItem> inventoryItem;
+   private List<InventoryItem> inventoryItems;
    private Pharmacy pharmacy;
 
-   public java.util.Collection<InventoryItem> getInvetoryItem() {
-      if (inventoryItem == null)
-         inventoryItem = new java.util.HashSet<InventoryItem>();
-      return inventoryItem;
+   public List<InventoryItem> getInventoryItems() {
+      if (inventoryItems == null)
+         inventoryItems = new ArrayList<InventoryItem>();
+      return inventoryItems;
    }
 
-   public java.util.Iterator getIteratorInvetoryItem() {
-      if (inventoryItem == null)
-         inventoryItem = new java.util.HashSet<InventoryItem>();
-      return inventoryItem.iterator();
+   public Iterator getIteratorInventoryItem() {
+      if (inventoryItems == null)
+         inventoryItems = new ArrayList<InventoryItem>();
+      return inventoryItems.iterator();
    }
 
-   public void setInvetoryItem(java.util.Collection<InventoryItem> newInventoryItem) {
-      removeAllInvetoryItem();
-      for (java.util.Iterator iter = newInventoryItem.iterator(); iter.hasNext();)
-         addInvetoryItem((InventoryItem)iter.next());
+   public void setInventoryItems(List<InventoryItem> newInventoryItem) {
+      removeAllInventoryItem();
+      for (Iterator iter = newInventoryItem.iterator(); iter.hasNext();)
+         addInventoryItem((InventoryItem)iter.next());
    }
 
-   public void addInvetoryItem(InventoryItem newInventoryItem) {
+   public void addInventoryItem(InventoryItem newInventoryItem) {
       if (newInventoryItem == null)
          return;
-      if (this.inventoryItem == null)
-         this.inventoryItem = new java.util.HashSet<InventoryItem>();
-      if (!this.inventoryItem.contains(newInventoryItem))
-         this.inventoryItem.add(newInventoryItem);
+      if (this.inventoryItems == null)
+         this.inventoryItems = new ArrayList<InventoryItem>();
+      if (!this.inventoryItems.contains(newInventoryItem))
+         this.inventoryItems.add(newInventoryItem);
    }
 
-   public void removeInvetoryItem(InventoryItem oldInventoryItem) {
+   public void removeInventoryItem(InventoryItem oldInventoryItem) {
       if (oldInventoryItem == null)
          return;
-      if (this.inventoryItem != null)
-         if (this.inventoryItem.contains(oldInventoryItem))
-            this.inventoryItem.remove(oldInventoryItem);
+      if (this.inventoryItems != null)
+         if (this.inventoryItems.contains(oldInventoryItem))
+            this.inventoryItems.remove(oldInventoryItem);
    }
 
-   public void removeAllInvetoryItem() {
-      if (inventoryItem != null)
-         inventoryItem.clear();
+   public void removeAllInventoryItem() {
+      if (inventoryItems != null)
+         inventoryItems.clear();
    }
 
 }

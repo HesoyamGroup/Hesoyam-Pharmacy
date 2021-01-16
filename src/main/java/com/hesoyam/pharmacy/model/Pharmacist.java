@@ -5,9 +5,11 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
 
+import java.util.List;
+
 public class Pharmacist extends Employee {
    private Pharmacy pharmacy;
-   private Counseling[] counseling;
+   private List<Counseling> counselings;
 
    public Pharmacy getPharmacy() {
       return pharmacy;

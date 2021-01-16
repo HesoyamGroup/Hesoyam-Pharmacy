@@ -4,49 +4,52 @@
  * Purpose: Defines the Class Employee
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public abstract class Employee extends User {
    protected float rating;
    
-   protected java.util.List<Shift> shift;
+   protected List<Shift> shifts;
 
-   public java.util.List<Shift> getShift() {
-      if (shift == null)
-         shift = new java.util.ArrayList<Shift>();
-      return shift;
+   public List<Shift> getShifts() {
+      if (shifts == null)
+         shifts = new ArrayList<Shift>();
+      return shifts;
    }
 
-   public java.util.Iterator getIteratorShift() {
-      if (shift == null)
-         shift = new java.util.ArrayList<Shift>();
-      return shift.iterator();
+   public Iterator getIteratorShift() {
+      if (shifts == null)
+         shifts = new ArrayList<Shift>();
+      return shifts.iterator();
    }
 
-   public void setShift(java.util.List<Shift> newShift) {
+   public void setShifts(List<Shift> newShift) {
       removeAllShift();
-      for (java.util.Iterator iter = newShift.iterator(); iter.hasNext();)
+      for (Iterator iter = newShift.iterator(); iter.hasNext();)
          addShift((Shift)iter.next());
    }
 
    public void addShift(Shift newShift) {
       if (newShift == null)
          return;
-      if (this.shift == null)
-         this.shift = new java.util.ArrayList<Shift>();
-      if (!this.shift.contains(newShift))
-         this.shift.add(newShift);
+      if (this.shifts == null)
+         this.shifts = new ArrayList<Shift>();
+      if (!this.shifts.contains(newShift))
+         this.shifts.add(newShift);
    }
 
    public void removeShift(Shift oldShift) {
       if (oldShift == null)
          return;
-      if (this.shift != null)
-         if (this.shift.contains(oldShift))
-            this.shift.remove(oldShift);
+      if (this.shifts != null)
+         if (this.shifts.contains(oldShift))
+            this.shifts.remove(oldShift);
    }
 
    public void removeAllShift() {
-      if (shift != null)
-         shift.clear();
+      if (shifts != null)
+         shifts.clear();
    }
 }

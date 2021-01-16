@@ -6,52 +6,55 @@
 package com.hesoyam.pharmacy.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class EPrescription {
    private Long prescriptionId;
    private LocalDateTime issuingDate;
    
    private Patient patient;
-   private java.util.List<PrescriptionItem> prescriptionItem;
+   private List<PrescriptionItem> prescriptionItems;
 
-   public java.util.List<PrescriptionItem> getPrescriptionItem() {
-      if (prescriptionItem == null)
-         prescriptionItem = new java.util.ArrayList<PrescriptionItem>();
-      return prescriptionItem;
+   public List<PrescriptionItem> getPrescriptionItems() {
+      if (prescriptionItems == null)
+         prescriptionItems = new ArrayList<PrescriptionItem>();
+      return prescriptionItems;
    }
 
-   public java.util.Iterator getIteratorPrescriptionItem() {
-      if (prescriptionItem == null)
-         prescriptionItem = new java.util.ArrayList<PrescriptionItem>();
-      return prescriptionItem.iterator();
+   public Iterator getIteratorPrescriptionItem() {
+      if (prescriptionItems == null)
+         prescriptionItems = new ArrayList<PrescriptionItem>();
+      return prescriptionItems.iterator();
    }
 
-   public void setPrescriptionItem(java.util.List<PrescriptionItem> newPrescriptionItem) {
+   public void setPrescriptionItems(List<PrescriptionItem> newPrescriptionItem) {
       removeAllPrescriptionItem();
-      for (java.util.Iterator iter = newPrescriptionItem.iterator(); iter.hasNext();)
+      for (Iterator iter = newPrescriptionItem.iterator(); iter.hasNext();)
          addPrescriptionItem((PrescriptionItem)iter.next());
    }
 
    public void addPrescriptionItem(PrescriptionItem newPrescriptionItem) {
       if (newPrescriptionItem == null)
          return;
-      if (this.prescriptionItem == null)
-         this.prescriptionItem = new java.util.ArrayList<PrescriptionItem>();
-      if (!this.prescriptionItem.contains(newPrescriptionItem))
-         this.prescriptionItem.add(newPrescriptionItem);
+      if (this.prescriptionItems == null)
+         this.prescriptionItems = new ArrayList<PrescriptionItem>();
+      if (!this.prescriptionItems.contains(newPrescriptionItem))
+         this.prescriptionItems.add(newPrescriptionItem);
    }
 
    public void removePrescriptionItem(PrescriptionItem oldPrescriptionItem) {
       if (oldPrescriptionItem == null)
          return;
-      if (this.prescriptionItem != null)
-         if (this.prescriptionItem.contains(oldPrescriptionItem))
-            this.prescriptionItem.remove(oldPrescriptionItem);
+      if (this.prescriptionItems != null)
+         if (this.prescriptionItems.contains(oldPrescriptionItem))
+            this.prescriptionItems.remove(oldPrescriptionItem);
    }
 
    public void removeAllPrescriptionItem() {
-      if (prescriptionItem != null)
-         prescriptionItem.clear();
+      if (prescriptionItems != null)
+         prescriptionItems.clear();
    }
 
 }

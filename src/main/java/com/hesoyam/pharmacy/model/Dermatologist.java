@@ -5,36 +5,40 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class Dermatologist extends Employee {
-   private java.util.List<Pharmacy> pharmacy;
-   private CheckUp[] checkUp;
+   private List<Pharmacy> pharmacies;
+   private List<CheckUp> checkUps;
 
-   public java.util.List<Pharmacy> getPharmacy() {
-      if (pharmacy == null)
-         pharmacy = new java.util.ArrayList<Pharmacy>();
-      return pharmacy;
+   public List<Pharmacy> getPharmacies() {
+      if (pharmacies == null)
+         pharmacies = new ArrayList<Pharmacy>();
+      return pharmacies;
    }
 
-   public java.util.Iterator getIteratorPharmacy() {
-      if (pharmacy == null)
-         pharmacy = new java.util.ArrayList<Pharmacy>();
-      return pharmacy.iterator();
+   public Iterator getIteratorPharmacy() {
+      if (pharmacies == null)
+         pharmacies = new ArrayList<Pharmacy>();
+      return pharmacies.iterator();
    }
 
-   public void setPharmacy(java.util.List<Pharmacy> newPharmacy) {
+   public void setPharmacies(List<Pharmacy> newPharmacy) {
       removeAllPharmacy();
-      for (java.util.Iterator iter = newPharmacy.iterator(); iter.hasNext();)
+      for (Iterator iter = newPharmacy.iterator(); iter.hasNext();)
          addPharmacy((Pharmacy)iter.next());
    }
 
    public void addPharmacy(Pharmacy newPharmacy) {
       if (newPharmacy == null)
          return;
-      if (this.pharmacy == null)
-         this.pharmacy = new java.util.ArrayList<Pharmacy>();
-      if (!this.pharmacy.contains(newPharmacy))
+      if (this.pharmacies == null)
+         this.pharmacies = new ArrayList<Pharmacy>();
+      if (!this.pharmacies.contains(newPharmacy))
       {
-         this.pharmacy.add(newPharmacy);
+         this.pharmacies.add(newPharmacy);
          newPharmacy.addDermatologist(this);      
       }
    }
@@ -42,19 +46,19 @@ public class Dermatologist extends Employee {
    public void removePharmacy(Pharmacy oldPharmacy) {
       if (oldPharmacy == null)
          return;
-      if (this.pharmacy != null)
-         if (this.pharmacy.contains(oldPharmacy))
+      if (this.pharmacies != null)
+         if (this.pharmacies.contains(oldPharmacy))
          {
-            this.pharmacy.remove(oldPharmacy);
+            this.pharmacies.remove(oldPharmacy);
             oldPharmacy.removeDermatologist(this);
          }
    }
 
    public void removeAllPharmacy() {
-      if (pharmacy != null)
+      if (pharmacies != null)
       {
          Pharmacy oldPharmacy;
-         for (java.util.Iterator iter = getIteratorPharmacy(); iter.hasNext();)
+         for (Iterator iter = getIteratorPharmacy(); iter.hasNext();)
          {
             oldPharmacy = (Pharmacy)iter.next();
             iter.remove();

@@ -9,5 +9,4 @@ public enum VacationRequestStatus {
    ACCEPTED,
    REJECTED,
    CREATED;
-
 }

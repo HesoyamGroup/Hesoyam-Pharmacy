@@ -5,47 +5,51 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class PriceListItem {
-   protected java.util.Collection<ItemPrice> itemPrice;
+   protected List<ItemPrice> itemPrices;
 
-   public java.util.Collection<ItemPrice> getItemPrice() {
-      if (itemPrice == null)
-         itemPrice = new java.util.HashSet<ItemPrice>();
-      return itemPrice;
+   public List<ItemPrice> getItemPrices() {
+      if (itemPrices == null)
+         itemPrices = new ArrayList<ItemPrice>();
+      return itemPrices;
    }
 
-   public java.util.Iterator getIteratorItemPrice() {
-      if (itemPrice == null)
-         itemPrice = new java.util.HashSet<ItemPrice>();
-      return itemPrice.iterator();
+   public Iterator getIteratorItemPrice() {
+      if (itemPrices == null)
+         itemPrices = new ArrayList<ItemPrice>();
+      return itemPrices.iterator();
    }
 
-   public void setItemPrice(java.util.Collection<ItemPrice> newItemPrice) {
+   public void setItemPrices(List<ItemPrice> newItemPrice) {
       removeAllItemPrice();
-      for (java.util.Iterator iter = newItemPrice.iterator(); iter.hasNext();)
+      for (Iterator iter = newItemPrice.iterator(); iter.hasNext();)
          addItemPrice((ItemPrice)iter.next());
    }
 
    public void addItemPrice(ItemPrice newItemPrice) {
       if (newItemPrice == null)
          return;
-      if (this.itemPrice == null)
-         this.itemPrice = new java.util.HashSet<ItemPrice>();
-      if (!this.itemPrice.contains(newItemPrice))
-         this.itemPrice.add(newItemPrice);
+      if (this.itemPrices == null)
+         this.itemPrices = new ArrayList<ItemPrice>();
+      if (!this.itemPrices.contains(newItemPrice))
+         this.itemPrices.add(newItemPrice);
    }
 
    public void removeItemPrice(ItemPrice oldItemPrice) {
       if (oldItemPrice == null)
          return;
-      if (this.itemPrice != null)
-         if (this.itemPrice.contains(oldItemPrice))
-            this.itemPrice.remove(oldItemPrice);
+      if (this.itemPrices != null)
+         if (this.itemPrices.contains(oldItemPrice))
+            this.itemPrices.remove(oldItemPrice);
    }
 
    public void removeAllItemPrice() {
-      if (itemPrice != null)
-         itemPrice.clear();
+      if (itemPrices != null)
+         itemPrices.clear();
    }
 
 }

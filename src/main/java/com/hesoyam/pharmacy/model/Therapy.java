@@ -5,47 +5,51 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class Therapy {
-   private java.util.Collection<TherapyItem> therapyItem;
+   private List<TherapyItem> therapyItems;
 
-   public java.util.Collection<TherapyItem> getTherapyItem() {
-      if (therapyItem == null)
-         therapyItem = new java.util.HashSet<TherapyItem>();
-      return therapyItem;
+   public List<TherapyItem> getTherapyItems() {
+      if (therapyItems == null)
+         therapyItems = new ArrayList<TherapyItem>();
+      return therapyItems;
    }
 
-   public java.util.Iterator getIteratorTherapyItem() {
-      if (therapyItem == null)
-         therapyItem = new java.util.HashSet<TherapyItem>();
-      return therapyItem.iterator();
+   public Iterator getIteratorTherapyItem() {
+      if (therapyItems == null)
+         therapyItems = new ArrayList<TherapyItem>();
+      return therapyItems.iterator();
    }
 
-   public void setTherapyItem(java.util.Collection<TherapyItem> newTherapyItem) {
+   public void setTherapyItems(List<TherapyItem> newTherapyItem) {
       removeAllTherapyItem();
-      for (java.util.Iterator iter = newTherapyItem.iterator(); iter.hasNext();)
+      for (Iterator iter = newTherapyItem.iterator(); iter.hasNext();)
          addTherapyItem((TherapyItem)iter.next());
    }
 
    public void addTherapyItem(TherapyItem newTherapyItem) {
       if (newTherapyItem == null)
          return;
-      if (this.therapyItem == null)
-         this.therapyItem = new java.util.HashSet<TherapyItem>();
-      if (!this.therapyItem.contains(newTherapyItem))
-         this.therapyItem.add(newTherapyItem);
+      if (this.therapyItems == null)
+         this.therapyItems = new ArrayList<TherapyItem>();
+      if (!this.therapyItems.contains(newTherapyItem))
+         this.therapyItems.add(newTherapyItem);
    }
 
    public void removeTherapyItem(TherapyItem oldTherapyItem) {
       if (oldTherapyItem == null)
          return;
-      if (this.therapyItem != null)
-         if (this.therapyItem.contains(oldTherapyItem))
-            this.therapyItem.remove(oldTherapyItem);
+      if (this.therapyItems != null)
+         if (this.therapyItems.contains(oldTherapyItem))
+            this.therapyItems.remove(oldTherapyItem);
    }
 
    public void removeAllTherapyItem() {
-      if (therapyItem != null)
-         therapyItem.clear();
+      if (therapyItems != null)
+         therapyItems.clear();
    }
 
 }

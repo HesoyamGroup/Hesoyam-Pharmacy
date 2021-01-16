@@ -5,47 +5,51 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class PriceList {
-   private java.util.Collection<PriceListItem> priceListItem;
+   private List<PriceListItem> priceListItems;
 
-   public java.util.Collection<PriceListItem> getPriceListItem() {
-      if (priceListItem == null)
-         priceListItem = new java.util.HashSet<PriceListItem>();
-      return priceListItem;
+   public List<PriceListItem> getPriceListItems() {
+      if (priceListItems == null)
+         priceListItems = new ArrayList<PriceListItem>();
+      return priceListItems;
    }
 
-   public java.util.Iterator getIteratorPriceListItem() {
-      if (priceListItem == null)
-         priceListItem = new java.util.HashSet<PriceListItem>();
-      return priceListItem.iterator();
+   public Iterator getIteratorPriceListItem() {
+      if (priceListItems == null)
+         priceListItems = new ArrayList<PriceListItem>();
+      return priceListItems.iterator();
    }
 
-   public void setPriceListItem(java.util.Collection<PriceListItem> newPriceListItem) {
+   public void setPriceListItems(List<PriceListItem> newPriceListItem) {
       removeAllPriceListItem();
-      for (java.util.Iterator iter = newPriceListItem.iterator(); iter.hasNext();)
+      for (Iterator iter = newPriceListItem.iterator(); iter.hasNext();)
          addPriceListItem((PriceListItem)iter.next());
    }
 
    public void addPriceListItem(PriceListItem newPriceListItem) {
       if (newPriceListItem == null)
          return;
-      if (this.priceListItem == null)
-         this.priceListItem = new java.util.HashSet<PriceListItem>();
-      if (!this.priceListItem.contains(newPriceListItem))
-         this.priceListItem.add(newPriceListItem);
+      if (this.priceListItems == null)
+         this.priceListItems = new ArrayList<PriceListItem>();
+      if (!this.priceListItems.contains(newPriceListItem))
+         this.priceListItems.add(newPriceListItem);
    }
 
    public void removePriceListItem(PriceListItem oldPriceListItem) {
       if (oldPriceListItem == null)
          return;
-      if (this.priceListItem != null)
-         if (this.priceListItem.contains(oldPriceListItem))
-            this.priceListItem.remove(oldPriceListItem);
+      if (this.priceListItems != null)
+         if (this.priceListItems.contains(oldPriceListItem))
+            this.priceListItems.remove(oldPriceListItem);
    }
 
    public void removeAllPriceListItem() {
-      if (priceListItem != null)
-         priceListItem.clear();
+      if (priceListItems != null)
+         priceListItems.clear();
    }
 
 }

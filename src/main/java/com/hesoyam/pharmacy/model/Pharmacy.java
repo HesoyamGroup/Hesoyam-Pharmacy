@@ -5,37 +5,41 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class Pharmacy {
    private Long pharmacyId;
    private String name;
    private String description;
    private float rating;
    
-   private java.util.List<Pharmacist> pharmacist;
-   private java.util.List<Dermatologist> dermatologist;
+   private List<Pharmacist> pharmacist;
+   private List<Dermatologist> dermatologist;
    private Address address;
-   private java.util.List<Administrator> administrator;
+   private List<Administrator> administrator;
    private Inventory inventory;
-   private java.util.List<Appointment> appointment;
+   private List<Appointment> appointment;
 
    private PriceList priceList;
-   private Sale[] sale;
+   private List<Sale> sales;
 
-   public java.util.List<Pharmacist> getPharmacist() {
+   public List<Pharmacist> getPharmacist() {
       if (pharmacist == null)
-         pharmacist = new java.util.ArrayList<Pharmacist>();
+         pharmacist = new ArrayList<Pharmacist>();
       return pharmacist;
    }
 
-   public java.util.Iterator getIteratorPharmacist() {
+   public Iterator getIteratorPharmacist() {
       if (pharmacist == null)
-         pharmacist = new java.util.ArrayList<Pharmacist>();
+         pharmacist = new ArrayList<Pharmacist>();
       return pharmacist.iterator();
    }
 
-   public void setPharmacist(java.util.List<Pharmacist> newPharmacist) {
+   public void setPharmacist(List<Pharmacist> newPharmacist) {
       removeAllPharmacist();
-      for (java.util.Iterator iter = newPharmacist.iterator(); iter.hasNext();)
+      for (Iterator iter = newPharmacist.iterator(); iter.hasNext();)
          addPharmacist((Pharmacist)iter.next());
    }
 
@@ -43,7 +47,7 @@ public class Pharmacy {
       if (newPharmacist == null)
          return;
       if (this.pharmacist == null)
-         this.pharmacist = new java.util.ArrayList<Pharmacist>();
+         this.pharmacist = new ArrayList<Pharmacist>();
       if (!this.pharmacist.contains(newPharmacist))
       {
          this.pharmacist.add(newPharmacist);
@@ -74,21 +78,21 @@ public class Pharmacy {
          }
       }
    }
-   public java.util.List<Dermatologist> getDermatologist() {
+   public List<Dermatologist> getDermatologist() {
       if (dermatologist == null)
-         dermatologist = new java.util.ArrayList<Dermatologist>();
+         dermatologist = new ArrayList<Dermatologist>();
       return dermatologist;
    }
 
-   public java.util.Iterator getIteratorDermatologist() {
+   public Iterator getIteratorDermatologist() {
       if (dermatologist == null)
-         dermatologist = new java.util.ArrayList<Dermatologist>();
+         dermatologist = new ArrayList<Dermatologist>();
       return dermatologist.iterator();
    }
 
-   public void setDermatologist(java.util.List<Dermatologist> newDermatologist) {
+   public void setDermatologist(List<Dermatologist> newDermatologist) {
       removeAllDermatologist();
-      for (java.util.Iterator iter = newDermatologist.iterator(); iter.hasNext();)
+      for (Iterator iter = newDermatologist.iterator(); iter.hasNext();)
          addDermatologist((Dermatologist)iter.next());
    }
 
@@ -96,7 +100,7 @@ public class Pharmacy {
       if (newDermatologist == null)
          return;
       if (this.dermatologist == null)
-         this.dermatologist = new java.util.ArrayList<Dermatologist>();
+         this.dermatologist = new ArrayList<Dermatologist>();
       if (!this.dermatologist.contains(newDermatologist))
       {
          this.dermatologist.add(newDermatologist);
@@ -118,7 +122,7 @@ public class Pharmacy {
       if (dermatologist != null)
       {
          Dermatologist oldDermatologist;
-         for (java.util.Iterator iter = getIteratorDermatologist(); iter.hasNext();)
+         for (Iterator iter = getIteratorDermatologist(); iter.hasNext();)
          {
             oldDermatologist = (Dermatologist)iter.next();
             iter.remove();
@@ -126,21 +130,21 @@ public class Pharmacy {
          }
       }
    }
-   public java.util.List<Administrator> getAdministrator() {
+   public List<Administrator> getAdministrator() {
       if (administrator == null)
-         administrator = new java.util.ArrayList<Administrator>();
+         administrator = new ArrayList<Administrator>();
       return administrator;
    }
 
-   public java.util.Iterator getIteratorAdministrator() {
+   public Iterator getIteratorAdministrator() {
       if (administrator == null)
-         administrator = new java.util.ArrayList<Administrator>();
+         administrator = new ArrayList<Administrator>();
       return administrator.iterator();
    }
 
-   public void setAdministrator(java.util.List<Administrator> newAdministrator) {
+   public void setAdministrator(List<Administrator> newAdministrator) {
       removeAllAdministrator();
-      for (java.util.Iterator iter = newAdministrator.iterator(); iter.hasNext();)
+      for (Iterator iter = newAdministrator.iterator(); iter.hasNext();)
          addAdministrator((Administrator)iter.next());
    }
 
@@ -148,7 +152,7 @@ public class Pharmacy {
       if (newAdministrator == null)
          return;
       if (this.administrator == null)
-         this.administrator = new java.util.ArrayList<Administrator>();
+         this.administrator = new ArrayList<Administrator>();
       if (!this.administrator.contains(newAdministrator))
       {
          this.administrator.add(newAdministrator);
@@ -170,7 +174,7 @@ public class Pharmacy {
       if (administrator != null)
       {
          Administrator oldAdministrator;
-         for (java.util.Iterator iter = getIteratorAdministrator(); iter.hasNext();)
+         for (Iterator iter = getIteratorAdministrator(); iter.hasNext();)
          {
             oldAdministrator = (Administrator)iter.next();
             iter.remove();
@@ -178,19 +182,19 @@ public class Pharmacy {
          }
       }
    }
-   public java.util.List<Appointment> getAppointment() {
+   public List<Appointment> getAppointment() {
       if (appointment == null)
-         appointment = new java.util.ArrayList<Appointment>();
+         appointment = new ArrayList<Appointment>();
       return appointment;
    }
-   public java.util.Iterator getIteratorAppointment() {
+   public Iterator getIteratorAppointment() {
       if (appointment == null)
-         appointment = new java.util.ArrayList<Appointment>();
+         appointment = new ArrayList<Appointment>();
       return appointment.iterator();
    }
-   public void setAppointment(java.util.List<Appointment> newAppointment) {
+   public void setAppointment(List<Appointment> newAppointment) {
       removeAllAppointment();
-      for (java.util.Iterator iter = newAppointment.iterator(); iter.hasNext();)
+      for (Iterator iter = newAppointment.iterator(); iter.hasNext();)
          addAppointment((Appointment)iter.next());
    }
 
@@ -198,7 +202,7 @@ public class Pharmacy {
       if (newAppointment == null)
          return;
       if (this.appointment == null)
-         this.appointment = new java.util.ArrayList<Appointment>();
+         this.appointment = new ArrayList<Appointment>();
       if (!this.appointment.contains(newAppointment))
       {
          this.appointment.add(newAppointment);

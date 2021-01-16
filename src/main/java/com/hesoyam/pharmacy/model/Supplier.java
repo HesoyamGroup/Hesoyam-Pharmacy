@@ -5,35 +5,39 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class Supplier extends User {
-   private java.util.List<Offer> offer;
+   private List<Offer> offers;
 
-   public java.util.List<Offer> getOffer() {
-      if (offer == null)
-         offer = new java.util.ArrayList<Offer>();
-      return offer;
+   public List<Offer> getOffers() {
+      if (offers == null)
+         offers = new ArrayList<Offer>();
+      return offers;
    }
 
-   public java.util.Iterator getIteratorOffer() {
-      if (offer == null)
-         offer = new java.util.ArrayList<Offer>();
-      return offer.iterator();
+   public Iterator getIteratorOffer() {
+      if (offers == null)
+         offers = new ArrayList<Offer>();
+      return offers.iterator();
    }
 
-   public void setOffer(java.util.List<Offer> newOffer) {
+   public void setOffers(List<Offer> newOffer) {
       removeAllOffer();
-      for (java.util.Iterator iter = newOffer.iterator(); iter.hasNext();)
+      for (Iterator iter = newOffer.iterator(); iter.hasNext();)
          addOffer((Offer)iter.next());
    }
 
    public void addOffer(Offer newOffer) {
       if (newOffer == null)
          return;
-      if (this.offer == null)
-         this.offer = new java.util.ArrayList<Offer>();
-      if (!this.offer.contains(newOffer))
+      if (this.offers == null)
+         this.offers = new ArrayList<Offer>();
+      if (!this.offers.contains(newOffer))
       {
-         this.offer.add(newOffer);
+         this.offers.add(newOffer);
          newOffer.setSupplier(this);      
       }
    }
@@ -41,19 +45,19 @@ public class Supplier extends User {
    public void removeOffer(Offer oldOffer) {
       if (oldOffer == null)
          return;
-      if (this.offer != null)
-         if (this.offer.contains(oldOffer))
+      if (this.offers != null)
+         if (this.offers.contains(oldOffer))
          {
-            this.offer.remove(oldOffer);
+            this.offers.remove(oldOffer);
             oldOffer.setSupplier((Supplier)null);
          }
    }
 
    public void removeAllOffer() {
-      if (offer != null)
+      if (offers != null)
       {
          Offer oldOffer;
-         for (java.util.Iterator iter = getIteratorOffer(); iter.hasNext();)
+         for (Iterator iter = getIteratorOffer(); iter.hasNext();)
          {
             oldOffer = (Offer)iter.next();
             iter.remove();

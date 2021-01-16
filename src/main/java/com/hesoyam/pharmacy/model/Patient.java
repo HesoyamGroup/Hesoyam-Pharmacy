@@ -5,26 +5,30 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class Patient extends User {
    private int penaltyPoints;
-   private java.util.List<Medicine> allergies;
+   private List<Medicine> allergies;
    private LoyaltyAccount loyaltyAccount;
 
-   public java.util.List<Medicine> getAllergies() {
+   public List<Medicine> getAllergies() {
       if (allergies == null)
-         allergies = new java.util.ArrayList<Medicine>();
+         allergies = new ArrayList<Medicine>();
       return allergies;
    }
 
-   public java.util.Iterator getIteratorAllergies() {
+   public Iterator getIteratorAllergies() {
       if (allergies == null)
-         allergies = new java.util.ArrayList<Medicine>();
+         allergies = new ArrayList<Medicine>();
       return allergies.iterator();
    }
 
-   public void setAllergies(java.util.List<Medicine> newAllergies) {
+   public void setAllergies(List<Medicine> newAllergies) {
       removeAllAllergies();
-      for (java.util.Iterator iter = newAllergies.iterator(); iter.hasNext();)
+      for (Iterator iter = newAllergies.iterator(); iter.hasNext();)
          addAllergies((Medicine)iter.next());
    }
 
@@ -32,7 +36,7 @@ public class Patient extends User {
       if (newMedicine == null)
          return;
       if (this.allergies == null)
-         this.allergies = new java.util.ArrayList<Medicine>();
+         this.allergies = new ArrayList<Medicine>();
       if (!this.allergies.contains(newMedicine))
          this.allergies.add(newMedicine);
    }

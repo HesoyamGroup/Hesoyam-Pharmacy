@@ -5,38 +5,42 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.model;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
+
 public class Country {
    private Long countryId;
    private String countryCode;
    private String countryName;
-   private java.util.List<City> city;
+   private List<City> cities;
 
-   public java.util.List<City> getCity() {
-      if (city == null)
-         city = new java.util.ArrayList<City>();
-      return city;
+   public List<City> getCities() {
+      if (cities == null)
+         cities = new ArrayList<City>();
+      return cities;
    }
 
-   public java.util.Iterator getIteratorCity() {
-      if (city == null)
-         city = new java.util.ArrayList<City>();
-      return city.iterator();
+   public Iterator getIteratorCity() {
+      if (cities == null)
+         cities = new ArrayList<City>();
+      return cities.iterator();
    }
 
-   public void setCity(java.util.List<City> newCity) {
+   public void setCities(List<City> newCity) {
       removeAllCity();
-      for (java.util.Iterator iter = newCity.iterator(); iter.hasNext();)
+      for (Iterator iter = newCity.iterator(); iter.hasNext();)
          addCity((City)iter.next());
    }
 
    public void addCity(City newCity) {
       if (newCity == null)
          return;
-      if (this.city == null)
-         this.city = new java.util.ArrayList<City>();
-      if (!this.city.contains(newCity))
+      if (this.cities == null)
+         this.cities = new ArrayList<City>();
+      if (!this.cities.contains(newCity))
       {
-         this.city.add(newCity);
+         this.cities.add(newCity);
          newCity.setCountry(this);      
       }
    }
@@ -44,19 +48,19 @@ public class Country {
    public void removeCity(City oldCity) {
       if (oldCity == null)
          return;
-      if (this.city != null)
-         if (this.city.contains(oldCity))
+      if (this.cities != null)
+         if (this.cities.contains(oldCity))
          {
-            this.city.remove(oldCity);
+            this.cities.remove(oldCity);
             oldCity.setCountry((Country)null);
          }
    }
 
    public void removeAllCity() {
-      if (city != null)
+      if (cities != null)
       {
          City oldCity;
-         for (java.util.Iterator iter = getIteratorCity(); iter.hasNext();)
+         for (Iterator iter = getIteratorCity(); iter.hasNext();)
          {
             oldCity = (City)iter.next();
             iter.remove();
