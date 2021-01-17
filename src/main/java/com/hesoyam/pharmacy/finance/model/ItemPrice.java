@@ -7,10 +7,21 @@ package com.hesoyam.pharmacy.finance.model;
 
 import com.hesoyam.pharmacy.util.DateTimeRange;
 
+import javax.persistence.*;
+
+
+@Entity
 public class ItemPrice {
+   @Id
+   @GeneratedValue(strategy=GenerationType.IDENTITY)
+   private Long id;
+
+   @Column
    private double price;
-   private Boolean isActive;
-   
+   @Column
+   private boolean isActive;
+
+   @Embedded
    private DateTimeRange dateTimeRange;
 
 }

@@ -5,7 +5,14 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.finance.model;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+@Entity
 public class ServicePriceListItem extends PriceListItem {
+
+   @Enumerated(EnumType.STRING)
    private ServiceType serviceType;
 
 }

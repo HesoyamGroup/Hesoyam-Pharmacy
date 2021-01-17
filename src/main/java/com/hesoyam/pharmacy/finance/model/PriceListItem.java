@@ -5,11 +5,20 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.finance.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class PriceListItem {
+@Entity
+@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+public abstract class PriceListItem {
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   protected Long id;
+
+   @OneToMany(fetch = FetchType.LAZY)
+   @JoinColumn(name="price_list_item_id", referencedColumnName="id")
    protected List<ItemPrice> itemPrices;
 
    public List<ItemPrice> getItemPrices() {

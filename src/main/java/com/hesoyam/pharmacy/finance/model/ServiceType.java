@@ -8,5 +8,4 @@ package com.hesoyam.pharmacy.finance.model;
 public enum ServiceType {
    CHECK_UP,
    COUNSELING;
-
 }

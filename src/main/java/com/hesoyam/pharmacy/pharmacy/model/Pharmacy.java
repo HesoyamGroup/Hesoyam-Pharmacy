@@ -51,7 +51,10 @@ public class Pharmacy {
    @JoinColumn(name="inventory_id", referencedColumnName = "id")
    private Inventory inventory;
 
+   @OneToOne(fetch=FetchType.LAZY, optional = true)
+   @JoinColumn(name="pharmacy_id", referencedColumnName = "id", nullable = false)
    private PriceList priceList;
+
    private List<Sale> sales;
 
    public List<Pharmacist> getPharmacists() {
