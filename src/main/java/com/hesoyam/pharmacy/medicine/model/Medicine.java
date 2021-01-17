@@ -21,8 +21,9 @@ public class Medicine {
    @Column
    private int loyaltyPoints;
 
-   @Column
+   @Enumerated(EnumType.STRING)
    private MedicineType medicineType;
+
 
    private MedicineSpecification medicineSpecification;
    

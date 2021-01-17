@@ -20,7 +20,7 @@ public class Shift {
    private DateTimeRange dateTimeRange;
 
    @ManyToOne(optional=false)
-   @JoinColumn(name="pharmacy_id", referencedColumnName = "id")
+   @JoinColumn(name="pharmacy_id", referencedColumnName = "id", nullable = false)
    private Pharmacy pharmacy;
 
 }

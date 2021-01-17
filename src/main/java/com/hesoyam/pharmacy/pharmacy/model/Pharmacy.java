@@ -55,6 +55,7 @@ public class Pharmacy {
    @JoinColumn(name="pharmacy_id", referencedColumnName = "id", nullable = false)
    private PriceList priceList;
 
+   @OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
    private List<Sale> sales;
 
    public List<Pharmacist> getPharmacists() {

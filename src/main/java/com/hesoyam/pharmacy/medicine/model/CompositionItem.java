@@ -6,6 +6,7 @@
 package com.hesoyam.pharmacy.medicine.model;
 
 public class CompositionItem {
+
    private String name;
    private Dosage quantity;
 }
