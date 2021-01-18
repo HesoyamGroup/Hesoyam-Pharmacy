@@ -30,6 +30,9 @@ public abstract class User {
    @Column(length=50)
    protected String email;
 
+   @Enumerated(EnumType.STRING)
+   protected Gender gender;
+
    //TODO: Password encrypt (Spring Security)
    @Column(length=75)
    protected String password;
