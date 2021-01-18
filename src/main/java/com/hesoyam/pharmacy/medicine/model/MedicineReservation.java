@@ -7,18 +7,34 @@ package com.hesoyam.pharmacy.medicine.model;
 
 import com.hesoyam.pharmacy.user.model.Patient;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+@Entity
 public class MedicineReservation {
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
+   @Column(name = "pick_up_date")
    private LocalDateTime pickUpDate;
+
+   @Column(length =  50)
    private String key;
-   
+
+   @OneToMany(fetch = FetchType.LAZY)
+   @JoinColumn(name = "medicine_reservation_id", referencedColumnName = "id")
    private List<MedicineReservationItem> medicineReservationItems;
+
+   @ManyToOne(fetch = FetchType.EAGER, optional = false)
+   @JoinColumn(name = "patient_id", nullable = false)
    private Patient patient;
+
+   @Enumerated(EnumType.STRING)
    private MedicineReservationStatus medicineReservationStatus;
 
    public List<MedicineReservationItem> getMedicineReservationItems() {

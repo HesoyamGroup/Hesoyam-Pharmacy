@@ -16,7 +16,8 @@ public class Inventory {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @OneToMany(fetch = FetchType.LAZY, mappedBy = "medicine")
+   @OneToMany(fetch = FetchType.LAZY)
+   @JoinColumn(name = "inventory_id", referencedColumnName = "id")
    private List<InventoryItem> inventoryItems;
 
    @OneToOne(mappedBy = "inventory", optional = false)

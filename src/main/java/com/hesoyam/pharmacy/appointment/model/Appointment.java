@@ -35,6 +35,8 @@ public abstract class Appointment {
    @JoinColumn(name="therapy_id", referencedColumnName = "id")
    protected Therapy therapy;
 
+   @ManyToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "patient_id")
    protected Patient patient;
 
    public Pharmacy getPharmacy() {

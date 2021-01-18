@@ -24,9 +24,14 @@ public class Medicine {
    @Enumerated(EnumType.STRING)
    private MedicineType medicineType;
 
-
+   @OneToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "medicine_specification_id")
    private MedicineSpecification medicineSpecification;
-   
+
+   @ManyToOne(fetch = FetchType.EAGER, optional = false)
+   @JoinColumn(name = "manufacturer_id", nullable = false)
    private Manufacturer manufacturer;
+
+   @Enumerated(EnumType.STRING)
    private PrescriptionMode prescriptionMode;
 }

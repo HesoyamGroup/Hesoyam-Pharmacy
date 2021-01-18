@@ -10,6 +10,7 @@ import com.hesoyam.pharmacy.location.model.Address;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
 

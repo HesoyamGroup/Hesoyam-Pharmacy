@@ -21,8 +21,6 @@ public class City {
    @JoinColumn(name="country_id", referencedColumnName = "id")
    private Country country;
 
-   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "city")
-   private List<Address> addresses;
 
    public Country getCountry() {
       return country;

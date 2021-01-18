@@ -14,7 +14,10 @@ public class Manufacturer {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
    @Column(length=50)
    private String name;
+
+   @Embedded
    private Address address;
 }
