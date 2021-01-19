@@ -18,7 +18,7 @@ public abstract class Complaint {
    protected Long id;
 
    @Column(length = 400, nullable = false)
-   protected String text;
+   protected String body;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name="user_id", nullable = false)
@@ -28,6 +28,5 @@ public abstract class Complaint {
    protected ComplaintStatus complaintStatus;
 
    @OneToOne(fetch = FetchType.LAZY, optional = true)
-   @JoinColumn(name="reply_id", nullable = true)
    protected Reply reply;
 }

@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.finance.model;
+package com.hesoyam.pharmacy.pharmacy.model;
 
 public enum OrderStatus {
     CREATED,

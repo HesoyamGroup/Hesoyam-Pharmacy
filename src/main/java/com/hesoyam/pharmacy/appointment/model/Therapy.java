@@ -17,7 +17,7 @@ public class Therapy {
    private Long id;
 
    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   @JoinColumn(name="therapy_id", referencedColumnName="id")
+   @JoinColumn(name="therapy_id", referencedColumnName="id", nullable = false)
    private List<TherapyItem> therapyItems;
 
    public List<TherapyItem> getTherapyItems() {

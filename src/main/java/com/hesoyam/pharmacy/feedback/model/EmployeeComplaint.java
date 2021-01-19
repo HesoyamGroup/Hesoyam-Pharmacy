@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class EmployeeComplaint extends Complaint {
 
-   @ManyToOne(fetch = FetchType.EAGER, optional = false)
-   @JoinColumn(name = "employee_id", nullable = false)
+   @ManyToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "employee_id")
    private Employee employee;
 }

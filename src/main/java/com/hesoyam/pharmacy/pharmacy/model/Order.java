@@ -3,8 +3,7 @@
  * Author:  WIN 10
  * Purpose: Defines the Class Order
  ***********************************************************************/
-package com.hesoyam.pharmacy.finance.model;
-import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+package com.hesoyam.pharmacy.pharmacy.model;
 import com.hesoyam.pharmacy.user.model.Administrator;
 
 import javax.persistence.*;

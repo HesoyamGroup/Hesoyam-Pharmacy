@@ -3,7 +3,7 @@
  * Author:  WIN 10
  * Purpose: Defines the Class Offer
  ***********************************************************************/
-package com.hesoyam.pharmacy.finance.model;
+package com.hesoyam.pharmacy.pharmacy.model;
 
 import com.hesoyam.pharmacy.user.model.Supplier;
 

@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class PharmacyFeedback extends Feedback {
 
-   @ManyToOne(fetch = FetchType.EAGER, optional = false)
-   @JoinColumn(name = "pharmacy_id", nullable = false)
+   @ManyToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "pharmacy_id")
    private Pharmacy pharmacy;
 }

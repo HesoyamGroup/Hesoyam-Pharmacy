@@ -5,7 +5,7 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.user.model;
 
-import com.hesoyam.pharmacy.finance.model.Offer;
+import com.hesoyam.pharmacy.pharmacy.model.Offer;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

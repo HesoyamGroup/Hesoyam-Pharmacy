@@ -15,7 +15,7 @@ import java.util.Iterator;
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
 public abstract class Employee extends User {
    @Column
-   protected float rating;
+   protected double rating;
 
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinColumn(name="employee_id", referencedColumnName="id")

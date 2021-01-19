@@ -23,9 +23,8 @@ public class EPrescription {
    private LocalDateTime issuingDate;
 
    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-   @JoinColumn(name = "patient_id")
+   @JoinColumn(name = "patient_id", nullable = false)
    private Patient patient;
-
 
    @OneToMany(fetch = FetchType.LAZY)
    @JoinColumn(name="eprescription_id", referencedColumnName="id", nullable = false)

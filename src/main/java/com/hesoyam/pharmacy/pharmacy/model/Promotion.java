@@ -3,7 +3,7 @@
  * Author:  WIN 10
  * Purpose: Defines the Class Promotion
  ***********************************************************************/
-package com.hesoyam.pharmacy.finance.model;
+package com.hesoyam.pharmacy.pharmacy.model;
 
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.user.model.Administrator;
@@ -17,11 +17,16 @@ public class Promotion {
    private Long id;
 
    @Column(length=350)
-   private String text;
+   private String description;
 
    @Embedded
    private DateTimeRange dateTimeRange;
-   @OneToOne(fetch = FetchType.LAZY, optional = true)
-   @JoinColumn(name="administrator_id")
+
+   @OneToOne(fetch = FetchType.LAZY, optional = false)
+   @JoinColumn(name="administrator_id", nullable = false)
    private Administrator administrator;
+
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "pharmacy_id", nullable = false)
+   private Pharmacy pharmacy;
 }

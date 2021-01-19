@@ -28,11 +28,11 @@ public abstract class Appointment {
    protected DateTimeRange dateTimeRange;
 
    @ManyToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name="pharmacy_id", referencedColumnName="id")
+   @JoinColumn(name="pharmacy_id", nullable = false)
    protected Pharmacy pharmacy;
 
    @OneToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name="therapy_id", referencedColumnName = "id")
+   @JoinColumn(name="therapy_id")
    protected Therapy therapy;
 
    @ManyToOne(fetch = FetchType.EAGER)

@@ -5,12 +5,10 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.pharmacy.model;
 
-import com.hesoyam.pharmacy.appointment.model.Appointment;
-import com.hesoyam.pharmacy.finance.model.PriceList;
-import com.hesoyam.pharmacy.finance.model.Sale;
 import com.hesoyam.pharmacy.location.model.Address;
 import com.hesoyam.pharmacy.user.model.Administrator;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
+import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 
 import javax.persistence.*;
@@ -34,6 +32,9 @@ public class Pharmacy {
    @Column
    private double rating;
 
+   @Embedded
+   private ServicePrice servicePrice;
+
    @OneToMany(mappedBy="pharmacy", fetch = FetchType.LAZY)
    private List<Pharmacist> pharmacists;
 
@@ -47,12 +48,12 @@ public class Pharmacy {
    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY)
    private List<Administrator> administrator;
 
+   @ManyToMany
+   @JoinTable(name = "subscription", joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
+   private List<Patient> subscribedPatients;
+
    @OneToOne(optional = true, mappedBy = "pharmacy")
    private Inventory inventory;
-
-   @OneToOne(fetch=FetchType.LAZY, optional = true)
-   @JoinColumn(name="pharmacy_id", referencedColumnName = "id", nullable = false)
-   private PriceList priceList;
 
    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
    private List<Sale> sales;

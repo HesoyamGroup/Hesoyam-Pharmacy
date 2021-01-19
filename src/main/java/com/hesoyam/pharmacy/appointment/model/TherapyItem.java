@@ -21,7 +21,7 @@ public class TherapyItem {
    private int numberOfDays;
 
    @ManyToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name="medicine_id", referencedColumnName="id")
+   @JoinColumn(name="medicine_id", nullable = false)
    private Medicine medicine;
 
 }

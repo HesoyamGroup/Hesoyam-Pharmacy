@@ -3,7 +3,7 @@
  * Author:  vule
  * Purpose: Defines the Class OrderItem
  ***********************************************************************/
-package com.hesoyam.pharmacy.finance.model;
+package com.hesoyam.pharmacy.pharmacy.model;
 
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 
