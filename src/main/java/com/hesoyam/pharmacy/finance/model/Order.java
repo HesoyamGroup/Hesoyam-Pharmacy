@@ -5,6 +5,7 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.finance.model;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.user.model.Administrator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,16 +21,23 @@ public class Order {
    @Column(nullable = false)
    private LocalDateTime deadLine;
 
+   @Enumerated(EnumType.STRING)
+   private OrderStatus orderStatus;
+
+   @ManyToOne(fetch = FetchType.LAZY, optional = false)
+   @JoinColumn(name = "administrator_id", nullable = false)
+   private Administrator administrator;
+
    @ManyToOne(fetch=FetchType.EAGER, optional = false)
    @JoinColumn(name="pharmacy_id", nullable = false)
    private Pharmacy pharmacy;
 
    @OneToMany(fetch=FetchType.LAZY)
-   @JoinColumn(name="order_id", referencedColumnName = "id")
+   @JoinColumn(name="order_id", referencedColumnName = "id", nullable = false)
    private List<Offer> offers;
 
    @OneToMany(fetch=FetchType.LAZY)
-   @JoinColumn(name="order_id", referencedColumnName = "id")
+   @JoinColumn(name="order_id", referencedColumnName = "id", nullable = false)
    private List<OrderItem> orderItems;
 
 }
