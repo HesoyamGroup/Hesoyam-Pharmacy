@@ -22,8 +22,7 @@ public class Patient extends User {
    @JoinTable(name="patient_allergies", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName="id"), inverseJoinColumns = @JoinColumn(name="medicine_id", referencedColumnName="id"))
    private List<Medicine> allergies;
 
-   @OneToOne(optional = true, fetch = FetchType.LAZY)
-   @JoinColumn(name="patient_id", referencedColumnName = "id")
+   @OneToOne(optional = true, fetch = FetchType.LAZY, mappedBy = "patient")
    private LoyaltyAccount loyaltyAccount;
 
 

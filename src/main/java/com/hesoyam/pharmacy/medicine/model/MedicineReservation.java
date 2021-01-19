@@ -24,7 +24,7 @@ public class MedicineReservation {
    private LocalDateTime pickUpDate;
 
    @Column(length =  50)
-   private String key;
+   private String code;
 
    @OneToMany(fetch = FetchType.LAZY)
    @JoinColumn(name = "medicine_reservation_id", referencedColumnName = "id")

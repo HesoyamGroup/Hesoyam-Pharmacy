@@ -17,7 +17,7 @@ public abstract class Sale {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    protected Long id;
    @Column(nullable = false)
-   protected LocalDateTime date;
+   protected LocalDateTime dateOfSale;
    @Column
    protected double price;
 

@@ -7,14 +7,15 @@ package com.hesoyam.pharmacy.finance.model;
 
 import com.hesoyam.pharmacy.appointment.model.Appointment;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class ServiceSale extends Sale {
-   @OneToOne(fetch= FetchType.EAGER, optional = false)
-   @JoinColumn(name="appointment_id", nullable = false)
+
+   @Enumerated(EnumType.STRING)
+   private ServiceType serviceType;
+
+   @OneToOne(fetch= FetchType.EAGER)
+   @JoinColumn(name="appointment_id")
    private Appointment appointment;
 }

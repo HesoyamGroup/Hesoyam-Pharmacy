@@ -17,6 +17,7 @@ public class LoyaltyAccount {
    private int points;
 
    @OneToOne(optional=false, fetch = FetchType.EAGER)
+   @JoinColumn(name="patient_id", nullable = false)
    private Patient patient;
 
    @ManyToOne(optional = false, fetch = FetchType.EAGER)

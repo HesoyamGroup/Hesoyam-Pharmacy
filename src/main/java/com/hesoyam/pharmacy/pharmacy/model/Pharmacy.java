@@ -32,7 +32,7 @@ public class Pharmacy {
    private String description;
 
    @Column
-   private float rating;
+   private double rating;
 
    @OneToMany(mappedBy="pharmacy", fetch = FetchType.LAZY)
    private List<Pharmacist> pharmacists;
@@ -47,8 +47,7 @@ public class Pharmacy {
    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY)
    private List<Administrator> administrator;
 
-   @OneToOne(optional = true)
-   @JoinColumn(name="inventory_id", referencedColumnName = "id")
+   @OneToOne(optional = true, mappedBy = "pharmacy")
    private Inventory inventory;
 
    @OneToOne(fetch=FetchType.LAZY, optional = true)

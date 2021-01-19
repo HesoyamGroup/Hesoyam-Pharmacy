@@ -28,7 +28,7 @@ public class EPrescription {
 
 
    @OneToMany(fetch = FetchType.LAZY)
-   @JoinColumn(name="eprescription_id", referencedColumnName="id")
+   @JoinColumn(name="eprescription_id", referencedColumnName="id", nullable = false)
    private List<PrescriptionItem> prescriptionItems;
 
    public List<PrescriptionItem> getPrescriptionItems() {

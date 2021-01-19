@@ -20,6 +20,9 @@ public class InventoryItem {
    @Column
    private int reserved;
 
+   @Column(name = "current_price")
+   private double currentPrice;
+
    @ManyToOne(fetch=FetchType.EAGER, optional=false)
    @JoinColumn(name="medicine_id")
    private Medicine medicine;

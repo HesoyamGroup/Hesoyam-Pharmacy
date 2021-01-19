@@ -17,8 +17,9 @@ public class Offer {
    @GeneratedValue(strategy=GenerationType.IDENTITY)
    private Long id;
 
-   @Column
-   private double price;
+   @Column(name = "total_price")
+   private double totalPrice;
+
    @Column(nullable = false)
    private LocalDateTime deliveryDate;
 
@@ -27,7 +28,7 @@ public class Offer {
    private OfferStatus offerStatus;
 
    @ManyToOne(fetch= FetchType.LAZY, optional=false)
-   @JoinColumn(name="supplier_id")
+   @JoinColumn(name="supplier_id", nullable = false)
    private Supplier supplier;
 
    public Supplier getSupplier() {

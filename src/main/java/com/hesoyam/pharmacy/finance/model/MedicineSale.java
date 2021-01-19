@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class MedicineSale extends Sale {
-   @ManyToOne(fetch = FetchType.EAGER, optional=false)
-   @JoinColumn(name="medicine_id", nullable = false)
+   @ManyToOne(fetch = FetchType.EAGER) // Note [Gergo]: optional=false will not let ServiceSale records to be inserted in super table Sales
+   @JoinColumn(name="medicine_id")
    private Medicine medicine;
 }

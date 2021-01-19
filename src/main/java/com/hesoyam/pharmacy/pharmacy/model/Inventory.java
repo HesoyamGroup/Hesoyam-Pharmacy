@@ -17,10 +17,11 @@ public class Inventory {
    private Long id;
 
    @OneToMany(fetch = FetchType.LAZY)
-   @JoinColumn(name = "inventory_id", referencedColumnName = "id")
+   @JoinColumn(name = "inventory_id", referencedColumnName = "id", nullable = false)
    private List<InventoryItem> inventoryItems;
 
-   @OneToOne(mappedBy = "inventory", optional = false)
+   @OneToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name="pharmacy_id", nullable = false)
    private Pharmacy pharmacy;
 
    public List<InventoryItem> getInventoryItems() {
