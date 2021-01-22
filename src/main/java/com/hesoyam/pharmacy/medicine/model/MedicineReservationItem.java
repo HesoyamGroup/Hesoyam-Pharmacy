@@ -5,8 +5,6 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.medicine.model;
 
-import com.hesoyam.pharmacy.medicine.model.Medicine;
-
 import javax.persistence.*;
 
 @Entity

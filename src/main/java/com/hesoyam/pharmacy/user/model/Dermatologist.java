@@ -24,27 +24,27 @@ public class Dermatologist extends Employee {
 
    public List<Pharmacy> getPharmacies() {
       if (pharmacies == null)
-         pharmacies = new ArrayList<Pharmacy>();
+         pharmacies = new ArrayList<>();
       return pharmacies;
    }
 
-   public Iterator getIteratorPharmacy() {
+   public Iterator<Pharmacy> getIteratorPharmacy() {
       if (pharmacies == null)
-         pharmacies = new ArrayList<Pharmacy>();
+         pharmacies = new ArrayList<>();
       return pharmacies.iterator();
    }
 
    public void setPharmacies(List<Pharmacy> newPharmacy) {
       removeAllPharmacy();
-      for (Iterator iter = newPharmacy.iterator(); iter.hasNext();)
-         addPharmacy((Pharmacy)iter.next());
+      for (Iterator<Pharmacy> iter = newPharmacy.iterator(); iter.hasNext();)
+         addPharmacy(iter.next());
    }
 
    public void addPharmacy(Pharmacy newPharmacy) {
       if (newPharmacy == null)
          return;
       if (this.pharmacies == null)
-         this.pharmacies = new ArrayList<Pharmacy>();
+         this.pharmacies = new ArrayList<>();
       if (!this.pharmacies.contains(newPharmacy))
       {
          this.pharmacies.add(newPharmacy);
@@ -55,21 +55,19 @@ public class Dermatologist extends Employee {
    public void removePharmacy(Pharmacy oldPharmacy) {
       if (oldPharmacy == null)
          return;
-      if (this.pharmacies != null)
-         if (this.pharmacies.contains(oldPharmacy))
-         {
-            this.pharmacies.remove(oldPharmacy);
-            oldPharmacy.removeDermatologist(this);
-         }
+      if (this.pharmacies != null && this.pharmacies.contains(oldPharmacy)) {
+         this.pharmacies.remove(oldPharmacy);
+         oldPharmacy.removeDermatologist(this);
+      }
    }
 
    public void removeAllPharmacy() {
       if (pharmacies != null)
       {
          Pharmacy oldPharmacy;
-         for (Iterator iter = getIteratorPharmacy(); iter.hasNext();)
+         for (Iterator<Pharmacy> iter = getIteratorPharmacy(); iter.hasNext();)
          {
-            oldPharmacy = (Pharmacy)iter.next();
+            oldPharmacy = iter.next();
             iter.remove();
             oldPharmacy.removeDermatologist(this);
          }

@@ -5,8 +5,6 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.pharmacy.model;
 
-import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 

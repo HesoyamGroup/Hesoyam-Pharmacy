@@ -6,7 +6,6 @@
 package com.hesoyam.pharmacy.feedback.model;
 
 import com.hesoyam.pharmacy.user.model.User;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 

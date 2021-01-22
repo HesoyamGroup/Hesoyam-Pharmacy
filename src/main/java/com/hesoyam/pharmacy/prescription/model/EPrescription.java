@@ -32,27 +32,27 @@ public class EPrescription {
 
    public List<PrescriptionItem> getPrescriptionItems() {
       if (prescriptionItems == null)
-         prescriptionItems = new ArrayList<PrescriptionItem>();
+         prescriptionItems = new ArrayList<>();
       return prescriptionItems;
    }
 
-   public Iterator getIteratorPrescriptionItem() {
+   public Iterator<PrescriptionItem> getIteratorPrescriptionItem() {
       if (prescriptionItems == null)
-         prescriptionItems = new ArrayList<PrescriptionItem>();
+         prescriptionItems = new ArrayList<>();
       return prescriptionItems.iterator();
    }
 
    public void setPrescriptionItems(List<PrescriptionItem> newPrescriptionItem) {
       removeAllPrescriptionItem();
-      for (Iterator iter = newPrescriptionItem.iterator(); iter.hasNext();)
-         addPrescriptionItem((PrescriptionItem)iter.next());
+      for (Iterator<PrescriptionItem> iter = newPrescriptionItem.iterator(); iter.hasNext();)
+         addPrescriptionItem(iter.next());
    }
 
    public void addPrescriptionItem(PrescriptionItem newPrescriptionItem) {
       if (newPrescriptionItem == null)
          return;
       if (this.prescriptionItems == null)
-         this.prescriptionItems = new ArrayList<PrescriptionItem>();
+         this.prescriptionItems = new ArrayList<>();
       if (!this.prescriptionItems.contains(newPrescriptionItem))
          this.prescriptionItems.add(newPrescriptionItem);
    }
@@ -60,9 +60,8 @@ public class EPrescription {
    public void removePrescriptionItem(PrescriptionItem oldPrescriptionItem) {
       if (oldPrescriptionItem == null)
          return;
-      if (this.prescriptionItems != null)
-         if (this.prescriptionItems.contains(oldPrescriptionItem))
-            this.prescriptionItems.remove(oldPrescriptionItem);
+      if (this.prescriptionItems != null && this.prescriptionItems.contains(oldPrescriptionItem))
+         this.prescriptionItems.remove(oldPrescriptionItem);
    }
 
    public void removeAllPrescriptionItem() {

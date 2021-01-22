@@ -15,8 +15,6 @@ public class DateTimeRange {
    @Column(name= "to_date")
    private LocalDateTime to;
 
-   public DateTimeRange(){}
-
    public LocalDateTime getFrom() {
       return from;
    }
