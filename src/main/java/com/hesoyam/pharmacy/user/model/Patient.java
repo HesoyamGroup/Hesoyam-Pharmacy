@@ -28,27 +28,27 @@ public class Patient extends User {
 
    public List<Medicine> getAllergies() {
       if (allergies == null)
-         allergies = new ArrayList<Medicine>();
+         allergies = new ArrayList<>();
       return allergies;
    }
 
-   public Iterator getIteratorAllergies() {
+   public Iterator<Medicine> getIteratorAllergies() {
       if (allergies == null)
-         allergies = new ArrayList<Medicine>();
+         allergies = new ArrayList<>();
       return allergies.iterator();
    }
 
    public void setAllergies(List<Medicine> newAllergies) {
       removeAllAllergies();
-      for (Iterator iter = newAllergies.iterator(); iter.hasNext();)
-         addAllergies((Medicine)iter.next());
+      for (Iterator<Medicine> iter = newAllergies.iterator(); iter.hasNext();)
+         addAllergies(iter.next());
    }
 
    public void addAllergies(Medicine newMedicine) {
       if (newMedicine == null)
          return;
       if (this.allergies == null)
-         this.allergies = new ArrayList<Medicine>();
+         this.allergies = new ArrayList<>();
       if (!this.allergies.contains(newMedicine))
          this.allergies.add(newMedicine);
    }
@@ -56,8 +56,7 @@ public class Patient extends User {
    public void removeAllergies(Medicine oldMedicine) {
       if (oldMedicine == null)
          return;
-      if (this.allergies != null)
-         if (this.allergies.contains(oldMedicine))
+      if (this.allergies != null && this.allergies.contains(oldMedicine))
             this.allergies.remove(oldMedicine);
    }
 

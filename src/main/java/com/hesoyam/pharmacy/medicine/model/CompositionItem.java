@@ -12,7 +12,7 @@ public class CompositionItem {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long Id;
+   private Long id;
 
    @Column(length = 40)
    private String name;

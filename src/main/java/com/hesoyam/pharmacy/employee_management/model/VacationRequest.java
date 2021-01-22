@@ -9,7 +9,6 @@ import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.user.model.Employee;
 
 import javax.persistence.*;
-import java.awt.geom.GeneralPath;
 
 @Entity
 public class VacationRequest {

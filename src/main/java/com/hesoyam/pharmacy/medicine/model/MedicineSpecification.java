@@ -43,27 +43,27 @@ public class MedicineSpecification {
 
    public List<Contraindication> getContraindications() {
       if (contraindications == null)
-         contraindications = new ArrayList<Contraindication>();
+         contraindications = new ArrayList<>();
       return contraindications;
    }
 
-   public Iterator getIteratorContraindication() {
+   public Iterator<Contraindication> getIteratorContraindication() {
       if (contraindications == null)
-         contraindications = new ArrayList<Contraindication>();
+         contraindications = new ArrayList<>();
       return contraindications.iterator();
    }
 
    public void setContraindications(List<Contraindication> newContraindication) {
       removeAllContraindication();
-      for (Iterator iter = newContraindication.iterator(); iter.hasNext();)
-         addContraindication((Contraindication)iter.next());
+      for (Iterator<Contraindication> iter = newContraindication.iterator(); iter.hasNext();)
+         addContraindication(iter.next());
    }
 
    public void addContraindication(Contraindication newContraindication) {
       if (newContraindication == null)
          return;
       if (this.contraindications == null)
-         this.contraindications = new ArrayList<Contraindication>();
+         this.contraindications = new ArrayList<>();
       if (!this.contraindications.contains(newContraindication))
          this.contraindications.add(newContraindication);
    }
@@ -71,8 +71,7 @@ public class MedicineSpecification {
    public void removeContraindication(Contraindication oldContraindication) {
       if (oldContraindication == null)
          return;
-      if (this.contraindications != null)
-         if (this.contraindications.contains(oldContraindication))
+      if (this.contraindications != null && this.contraindications.contains(oldContraindication))
             this.contraindications.remove(oldContraindication);
    }
 
@@ -83,27 +82,27 @@ public class MedicineSpecification {
 
    public List<CompositionItem> getCompositionItems() {
       if (compositionItems == null)
-         compositionItems = new ArrayList<CompositionItem>();
+         compositionItems = new ArrayList<>();
       return compositionItems;
    }
 
-   public Iterator getIteratorCompositionItem() {
+   public Iterator<CompositionItem> getIteratorCompositionItem() {
       if (compositionItems == null)
-         compositionItems = new ArrayList<CompositionItem>();
+         compositionItems = new ArrayList<>();
       return compositionItems.iterator();
    }
 
    public void setCompositionItems(List<CompositionItem> newCompositionItem) {
       removeAllCompositionItem();
-      for (Iterator iter = newCompositionItem.iterator(); iter.hasNext();)
-         addCompositionItem((CompositionItem)iter.next());
+      for (Iterator<CompositionItem> iter = newCompositionItem.iterator(); iter.hasNext();)
+         addCompositionItem(iter.next());
    }
 
    public void addCompositionItem(CompositionItem newCompositionItem) {
       if (newCompositionItem == null)
          return;
       if (this.compositionItems == null)
-         this.compositionItems = new ArrayList<CompositionItem>();
+         this.compositionItems = new ArrayList<>();
       if (!this.compositionItems.contains(newCompositionItem))
          this.compositionItems.add(newCompositionItem);
    }
@@ -111,8 +110,7 @@ public class MedicineSpecification {
    public void removeCompositionItem(CompositionItem oldCompositionItem) {
       if (oldCompositionItem == null)
          return;
-      if (this.compositionItems != null)
-         if (this.compositionItems.contains(oldCompositionItem))
+      if (this.compositionItems != null && this.compositionItems.contains(oldCompositionItem))
             this.compositionItems.remove(oldCompositionItem);
    }
 
@@ -123,27 +121,27 @@ public class MedicineSpecification {
 
    public List<Medicine> getReplacementMedicines() {
       if (replacementMedicines == null)
-         replacementMedicines = new ArrayList<Medicine>();
+         replacementMedicines = new ArrayList<>();
       return replacementMedicines;
    }
 
-   public Iterator getIteratorReplacementMedicines() {
+   public Iterator<Medicine> getIteratorReplacementMedicines() {
       if (replacementMedicines == null)
-         replacementMedicines = new ArrayList<Medicine>();
+         replacementMedicines = new ArrayList<>();
       return replacementMedicines.iterator();
    }
 
    public void setReplacementMedicines(List<Medicine> newReplacementMedicines) {
       removeAllReplacementMedicines();
-      for (Iterator iter = newReplacementMedicines.iterator(); iter.hasNext();)
-         addReplacementMedicines((Medicine)iter.next());
+      for (Iterator<Medicine> iter = newReplacementMedicines.iterator(); iter.hasNext();)
+         addReplacementMedicines(iter.next());
    }
 
    public void addReplacementMedicines(Medicine newMedicine) {
       if (newMedicine == null)
          return;
       if (this.replacementMedicines == null)
-         this.replacementMedicines = new ArrayList<Medicine>();
+         this.replacementMedicines = new ArrayList<>();
       if (!this.replacementMedicines.contains(newMedicine))
          this.replacementMedicines.add(newMedicine);
    }
@@ -151,8 +149,7 @@ public class MedicineSpecification {
    public void removeReplacementMedicines(Medicine oldMedicine) {
       if (oldMedicine == null)
          return;
-      if (this.replacementMedicines != null)
-         if (this.replacementMedicines.contains(oldMedicine))
+      if (this.replacementMedicines != null && this.replacementMedicines.contains(oldMedicine))
             this.replacementMedicines.remove(oldMedicine);
    }
 

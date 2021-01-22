@@ -22,27 +22,27 @@ public class Therapy {
 
    public List<TherapyItem> getTherapyItems() {
       if (therapyItems == null)
-         therapyItems = new ArrayList<TherapyItem>();
+         therapyItems = new ArrayList<>();
       return therapyItems;
    }
 
-   public Iterator getIteratorTherapyItem() {
+   public Iterator<TherapyItem> getIteratorTherapyItem() {
       if (therapyItems == null)
-         therapyItems = new ArrayList<TherapyItem>();
+         therapyItems = new ArrayList<>();
       return therapyItems.iterator();
    }
 
    public void setTherapyItems(List<TherapyItem> newTherapyItem) {
       removeAllTherapyItem();
-      for (Iterator iter = newTherapyItem.iterator(); iter.hasNext();)
-         addTherapyItem((TherapyItem)iter.next());
+      for (Iterator<TherapyItem> iter = newTherapyItem.iterator(); iter.hasNext();)
+         addTherapyItem(iter.next());
    }
 
    public void addTherapyItem(TherapyItem newTherapyItem) {
       if (newTherapyItem == null)
          return;
       if (this.therapyItems == null)
-         this.therapyItems = new ArrayList<TherapyItem>();
+         this.therapyItems = new ArrayList<>();
       if (!this.therapyItems.contains(newTherapyItem))
          this.therapyItems.add(newTherapyItem);
    }
@@ -50,9 +50,9 @@ public class Therapy {
    public void removeTherapyItem(TherapyItem oldTherapyItem) {
       if (oldTherapyItem == null)
          return;
-      if (this.therapyItems != null)
-         if (this.therapyItems.contains(oldTherapyItem))
+      if (this.therapyItems != null && this.therapyItems.contains(oldTherapyItem)){
             this.therapyItems.remove(oldTherapyItem);
+      }
    }
 
    public void removeAllTherapyItem() {

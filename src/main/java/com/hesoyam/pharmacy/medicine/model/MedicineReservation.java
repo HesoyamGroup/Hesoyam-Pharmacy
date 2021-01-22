@@ -39,27 +39,27 @@ public class MedicineReservation {
 
    public List<MedicineReservationItem> getMedicineReservationItems() {
       if (medicineReservationItems == null)
-         medicineReservationItems = new ArrayList<MedicineReservationItem>();
+         medicineReservationItems = new ArrayList<>();
       return medicineReservationItems;
    }
 
-   public Iterator getIteratorMedicineReservationItem() {
+   public Iterator<MedicineReservationItem> getIteratorMedicineReservationItem() {
       if (medicineReservationItems == null)
-         medicineReservationItems = new ArrayList<MedicineReservationItem>();
+         medicineReservationItems = new ArrayList<>();
       return medicineReservationItems.iterator();
    }
 
    public void setMedicineReservationItems(List<MedicineReservationItem> newMedicineReservationItem) {
       removeAllMedicineReservationItem();
-      for (Iterator iter = newMedicineReservationItem.iterator(); iter.hasNext();)
-         addMedicineReservationItem((MedicineReservationItem)iter.next());
+      for (Iterator<MedicineReservationItem> iter = newMedicineReservationItem.iterator(); iter.hasNext();)
+         addMedicineReservationItem(iter.next());
    }
 
    public void addMedicineReservationItem(MedicineReservationItem newMedicineReservationItem) {
       if (newMedicineReservationItem == null)
          return;
       if (this.medicineReservationItems == null)
-         this.medicineReservationItems = new ArrayList<MedicineReservationItem>();
+         this.medicineReservationItems = new ArrayList<>();
       if (!this.medicineReservationItems.contains(newMedicineReservationItem))
          this.medicineReservationItems.add(newMedicineReservationItem);
    }
@@ -67,8 +67,7 @@ public class MedicineReservation {
    public void removeMedicineReservationItem(MedicineReservationItem oldMedicineReservationItem) {
       if (oldMedicineReservationItem == null)
          return;
-      if (this.medicineReservationItems != null)
-         if (this.medicineReservationItems.contains(oldMedicineReservationItem))
+      if (this.medicineReservationItems != null && this.medicineReservationItems.contains(oldMedicineReservationItem))
             this.medicineReservationItems.remove(oldMedicineReservationItem);
    }
 

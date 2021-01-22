@@ -23,27 +23,27 @@ public abstract class Employee extends User {
 
    public List<Shift> getShifts() {
       if (shifts == null)
-         shifts = new ArrayList<Shift>();
+         shifts = new ArrayList<>();
       return shifts;
    }
 
-   public Iterator getIteratorShift() {
+   public Iterator<Shift> getIteratorShift() {
       if (shifts == null)
-         shifts = new ArrayList<Shift>();
+         shifts = new ArrayList<>();
       return shifts.iterator();
    }
 
    public void setShifts(List<Shift> newShift) {
       removeAllShift();
-      for (Iterator iter = newShift.iterator(); iter.hasNext();)
-         addShift((Shift)iter.next());
+      for (Iterator<Shift> iter = newShift.iterator(); iter.hasNext();)
+         addShift(iter.next());
    }
 
    public void addShift(Shift newShift) {
       if (newShift == null)
          return;
       if (this.shifts == null)
-         this.shifts = new ArrayList<Shift>();
+         this.shifts = new ArrayList<>();
       if (!this.shifts.contains(newShift))
          this.shifts.add(newShift);
    }
@@ -51,9 +51,8 @@ public abstract class Employee extends User {
    public void removeShift(Shift oldShift) {
       if (oldShift == null)
          return;
-      if (this.shifts != null)
-         if (this.shifts.contains(oldShift))
-            this.shifts.remove(oldShift);
+      if (this.shifts != null && this.shifts.contains(oldShift))
+         this.shifts.remove(oldShift);
    }
 
    public void removeAllShift() {

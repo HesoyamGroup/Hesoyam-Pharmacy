@@ -1,8 +1,8 @@
-/***********************************************************************
- * Module:  Supplier.java
- * Author:  Geri
- * Purpose: Defines the Class Supplier
- ***********************************************************************/
+/*
+ Module:  Supplier.java
+ Author:  Geri
+ Purpose: Defines the Class Supplier
+ */
 package com.hesoyam.pharmacy.user.model;
 
 import com.hesoyam.pharmacy.pharmacy.model.Offer;
@@ -22,27 +22,27 @@ public class Supplier extends User {
 
    public List<Offer> getOffers() {
       if (offers == null)
-         offers = new ArrayList<Offer>();
+         offers = new ArrayList<>();
       return offers;
    }
 
-   public Iterator getIteratorOffer() {
+   public Iterator<Offer> getIteratorOffer() {
       if (offers == null)
-         offers = new ArrayList<Offer>();
+         offers = new ArrayList<>();
       return offers.iterator();
    }
 
    public void setOffers(List<Offer> newOffer) {
       removeAllOffer();
-      for (Iterator iter = newOffer.iterator(); iter.hasNext();)
-         addOffer((Offer)iter.next());
+      for (Iterator<Offer> iter = newOffer.iterator(); iter.hasNext();)
+         addOffer(iter.next());
    }
 
    public void addOffer(Offer newOffer) {
       if (newOffer == null)
          return;
       if (this.offers == null)
-         this.offers = new ArrayList<Offer>();
+         this.offers = new ArrayList<>();
       if (!this.offers.contains(newOffer))
       {
          this.offers.add(newOffer);
@@ -53,21 +53,19 @@ public class Supplier extends User {
    public void removeOffer(Offer oldOffer) {
       if (oldOffer == null)
          return;
-      if (this.offers != null)
-         if (this.offers.contains(oldOffer))
-         {
-            this.offers.remove(oldOffer);
-            oldOffer.setSupplier((Supplier)null);
-         }
+      if (this.offers != null && this.offers.contains(oldOffer)) {
+         this.offers.remove(oldOffer);
+         oldOffer.setSupplier((Supplier)null);
+      }
    }
 
    public void removeAllOffer() {
       if (offers != null)
       {
          Offer oldOffer;
-         for (Iterator iter = getIteratorOffer(); iter.hasNext();)
+         for (Iterator<Offer> iter = getIteratorOffer(); iter.hasNext();)
          {
-            oldOffer = (Offer)iter.next();
+            oldOffer = iter.next();
             iter.remove();
             oldOffer.setSupplier((Supplier)null);
          }

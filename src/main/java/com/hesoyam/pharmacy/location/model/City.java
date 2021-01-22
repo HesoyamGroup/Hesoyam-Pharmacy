@@ -6,7 +6,6 @@
 package com.hesoyam.pharmacy.location.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class City {

@@ -48,7 +48,6 @@ public abstract class Appointment {
       {
          if (this.pharmacy != null)
          {
-            Pharmacy oldPharmacy = this.pharmacy;
             this.pharmacy = null;
          }
          if (newPharmacy != null)

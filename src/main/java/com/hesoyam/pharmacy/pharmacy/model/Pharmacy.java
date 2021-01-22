@@ -12,6 +12,7 @@ import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 
 import javax.persistence.*;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -60,27 +61,27 @@ public class Pharmacy {
 
    public List<Pharmacist> getPharmacists() {
       if (pharmacists == null)
-         pharmacists = new ArrayList<Pharmacist>();
+         pharmacists = new ArrayList<>();
       return pharmacists;
    }
 
-   public Iterator getIteratorPharmacist() {
+   public Iterator<Pharmacist> getIteratorPharmacist() {
       if (pharmacists == null)
-         pharmacists = new ArrayList<Pharmacist>();
+         pharmacists = new ArrayList<>();
       return pharmacists.iterator();
    }
 
    public void setPharmacists(List<Pharmacist> newPharmacist) {
       removeAllPharmacist();
-      for (Iterator iter = newPharmacist.iterator(); iter.hasNext();)
-         addPharmacist((Pharmacist)iter.next());
+      for (Iterator<Pharmacist> iter = newPharmacist.iterator(); iter.hasNext();)
+         addPharmacist(iter.next());
    }
 
    public void addPharmacist(Pharmacist newPharmacist) {
       if (newPharmacist == null)
          return;
       if (this.pharmacists == null)
-         this.pharmacists = new ArrayList<Pharmacist>();
+         this.pharmacists = new ArrayList<>();
       if (!this.pharmacists.contains(newPharmacist))
       {
          this.pharmacists.add(newPharmacist);
@@ -91,8 +92,7 @@ public class Pharmacy {
    public void removePharmacist(Pharmacist oldPharmacist) {
       if (oldPharmacist == null)
          return;
-      if (this.pharmacists != null)
-         if (this.pharmacists.contains(oldPharmacist))
+      if (this.pharmacists != null && this.pharmacists.contains(oldPharmacist))
          {
             this.pharmacists.remove(oldPharmacist);
             oldPharmacist.setPharmacy((Pharmacy)null);
@@ -103,9 +103,9 @@ public class Pharmacy {
       if (pharmacists != null)
       {
          Pharmacist oldPharmacist;
-         for (Iterator iter = getIteratorPharmacist(); iter.hasNext();)
+         for (Iterator<Pharmacist> iter = getIteratorPharmacist(); iter.hasNext();)
          {
-            oldPharmacist = (Pharmacist)iter.next();
+            oldPharmacist = iter.next();
             iter.remove();
             oldPharmacist.setPharmacy((Pharmacy)null);
          }
@@ -113,27 +113,27 @@ public class Pharmacy {
    }
    public List<Dermatologist> getDermatologists() {
       if (dermatologists == null)
-         dermatologists = new ArrayList<Dermatologist>();
+         dermatologists = new ArrayList<>();
       return dermatologists;
    }
 
-   public Iterator getIteratorDermatologist() {
+   public Iterator<Dermatologist> getIteratorDermatologist() {
       if (dermatologists == null)
-         dermatologists = new ArrayList<Dermatologist>();
+         dermatologists = new ArrayList<>();
       return dermatologists.iterator();
    }
 
    public void setDermatologists(List<Dermatologist> newDermatologist) {
       removeAllDermatologist();
-      for (Iterator iter = newDermatologist.iterator(); iter.hasNext();)
-         addDermatologist((Dermatologist)iter.next());
+      for (Iterator<Dermatologist> iter = newDermatologist.iterator(); iter.hasNext();)
+         addDermatologist(iter.next());
    }
 
    public void addDermatologist(Dermatologist newDermatologist) {
       if (newDermatologist == null)
          return;
       if (this.dermatologists == null)
-         this.dermatologists = new ArrayList<Dermatologist>();
+         this.dermatologists = new ArrayList<>();
       if (!this.dermatologists.contains(newDermatologist))
       {
          this.dermatologists.add(newDermatologist);
@@ -144,20 +144,18 @@ public class Pharmacy {
    public void removeDermatologist(Dermatologist oldDermatologist) {
       if (oldDermatologist == null)
          return;
-      if (this.dermatologists != null)
-         if (this.dermatologists.contains(oldDermatologist))
-         {
-            this.dermatologists.remove(oldDermatologist);
-            oldDermatologist.removePharmacy(this);
-         }
+      if (this.dermatologists != null && this.dermatologists.contains(oldDermatologist)) {
+         this.dermatologists.remove(oldDermatologist);
+         oldDermatologist.removePharmacy(this);
+      }
    }
    public void removeAllDermatologist() {
       if (dermatologists != null)
       {
          Dermatologist oldDermatologist;
-         for (Iterator iter = getIteratorDermatologist(); iter.hasNext();)
+         for (Iterator<Dermatologist> iter = getIteratorDermatologist(); iter.hasNext();)
          {
-            oldDermatologist = (Dermatologist)iter.next();
+            oldDermatologist = iter.next();
             iter.remove();
             oldDermatologist.removePharmacy(this);
          }
@@ -165,27 +163,27 @@ public class Pharmacy {
    }
    public List<Administrator> getAdministrator() {
       if (administrator == null)
-         administrator = new ArrayList<Administrator>();
+         administrator = new ArrayList<>();
       return administrator;
    }
 
-   public Iterator getIteratorAdministrator() {
+   public Iterator<Administrator> getIteratorAdministrator() {
       if (administrator == null)
-         administrator = new ArrayList<Administrator>();
+         administrator = new ArrayList<>();
       return administrator.iterator();
    }
 
    public void setAdministrator(List<Administrator> newAdministrator) {
       removeAllAdministrator();
-      for (Iterator iter = newAdministrator.iterator(); iter.hasNext();)
-         addAdministrator((Administrator)iter.next());
+      for (Iterator<Administrator> iter = newAdministrator.iterator(); iter.hasNext();)
+         addAdministrator(iter.next());
    }
 
    public void addAdministrator(Administrator newAdministrator) {
       if (newAdministrator == null)
          return;
       if (this.administrator == null)
-         this.administrator = new ArrayList<Administrator>();
+         this.administrator = new ArrayList<>();
       if (!this.administrator.contains(newAdministrator))
       {
          this.administrator.add(newAdministrator);
@@ -196,20 +194,18 @@ public class Pharmacy {
    public void removeAdministrator(Administrator oldAdministrator) {
       if (oldAdministrator == null)
          return;
-      if (this.administrator != null)
-         if (this.administrator.contains(oldAdministrator))
-         {
-            this.administrator.remove(oldAdministrator);
-            oldAdministrator.setPharmacy((Pharmacy)null);
-         }
+      if (this.administrator != null && this.administrator.contains(oldAdministrator)) {
+         this.administrator.remove(oldAdministrator);
+         oldAdministrator.setPharmacy((Pharmacy)null);
+      }
    }
    public void removeAllAdministrator() {
       if (administrator != null)
       {
          Administrator oldAdministrator;
-         for (Iterator iter = getIteratorAdministrator(); iter.hasNext();)
+         for (Iterator<Administrator> iter = getIteratorAdministrator(); iter.hasNext();)
          {
-            oldAdministrator = (Administrator)iter.next();
+            oldAdministrator = iter.next();
             iter.remove();
             oldAdministrator.setPharmacy((Pharmacy)null);
          }

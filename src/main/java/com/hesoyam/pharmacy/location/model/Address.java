@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Address {
 
    @Column(length = 150)
-   private String address;
+   private String addressLine;
 
    @Column
    private Double latitude;
