@@ -1,0 +1,25 @@
+sudo: required
+language: java
+jdk: oraclejdk11
+
+services:
+  - postgresql
+
+before_install:
+  - chmod +x mvnw
+
+addons:
+  sonarcloud:
+  organization: hesoyam-group
+  token: $SONAR_TOKEN
+
+script:
+  - ./mvnw clean install -DskipTests=false -B
+  - ./mvnw sonar:sonar -Dsonar.projectKey=$PROJECT_KEY -Dsonar.organization=hesoyam-group -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+
+dist: trusty
+
+deploy:
+  provider: heroku
+  api_key: $HEROKU_API_KEY
+  app: hesoyam-pharmacy
