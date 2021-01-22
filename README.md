@@ -1,5 +1,10 @@
 # Hesoyam Pharmacy
 
+**Travis CI**  
+[![Build Status](https://travis-ci.com/HesoyamGroup/Hesoyam-Pharmacy.svg?token=Aj8KAzqp4JDUk3DxK4c1&branch=develop)](https://travis-ci.com/HesoyamGroup/Hesoyam-Pharmacy)
+
+
+
 > Environment variables
 
 `POSTGRES_HOST` - In local development `localhost`  
