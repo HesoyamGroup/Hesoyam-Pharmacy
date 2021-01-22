@@ -8,8 +8,14 @@ services:
 before_install:
   - chmod +x mvnw
 
+addons:
+  sonarcloud:
+  organization: hesoyam-group
+  token: $SONAR_TOKEN
+
 script:
   - ./mvnw clean install -DskipTests=false -B
+  - ./mvnw sonar:sonar -Dsonar.projectKey=$PROJECT_KEY -Dsonar.organization=hesoyam-group -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
 
 dist: trusty
 
