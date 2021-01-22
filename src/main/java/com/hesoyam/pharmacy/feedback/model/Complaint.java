@@ -6,11 +6,27 @@
 package com.hesoyam.pharmacy.feedback.model;
 
 import com.hesoyam.pharmacy.user.model.User;
+import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Complaint {
-   protected String text;
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    protected Long id;
+
+   @Column(length = 400, nullable = false)
+   protected String body;
+
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name="user_id", nullable = false)
    protected User user;
+
+   @Enumerated(EnumType.STRING)
    protected ComplaintStatus complaintStatus;
+
+   @OneToOne(fetch = FetchType.LAZY, optional = true)
    protected Reply reply;
 }

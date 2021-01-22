@@ -1,9 +1,9 @@
 /***********************************************************************
- * Module:  MedicineFeedback.java
+ * Module:  MedicineSale.java
  * Author:  WIN 10
- * Purpose: Defines the Class MedicineFeedback
+ * Purpose: Defines the Class MedicineSale
  ***********************************************************************/
-package com.hesoyam.pharmacy.feedback.model;
+package com.hesoyam.pharmacy.pharmacy.model;
 
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 
@@ -13,9 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class MedicineFeedback extends Feedback {
-
-   @ManyToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "medicine_id")
+public class MedicineSale extends Sale {
+   @ManyToOne(fetch = FetchType.EAGER) // Note [Gergo]: optional=false will not let ServiceSale records to be inserted in super table Sales
+   @JoinColumn(name="medicine_id")
    private Medicine medicine;
 }

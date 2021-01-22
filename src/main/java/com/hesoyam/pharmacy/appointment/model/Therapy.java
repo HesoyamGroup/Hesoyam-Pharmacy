@@ -5,11 +5,19 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.appointment.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Entity
 public class Therapy {
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;
+
+   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   @JoinColumn(name="therapy_id", referencedColumnName="id", nullable = false)
    private List<TherapyItem> therapyItems;
 
    public List<TherapyItem> getTherapyItems() {

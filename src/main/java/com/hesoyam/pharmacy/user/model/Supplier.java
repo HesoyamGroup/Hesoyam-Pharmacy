@@ -5,13 +5,19 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.user.model;
 
-import com.hesoyam.pharmacy.finance.model.Offer;
+import com.hesoyam.pharmacy.pharmacy.model.Offer;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Entity
 public class Supplier extends User {
+
+   @OneToMany(fetch = FetchType.LAZY, mappedBy="supplier")
    private List<Offer> offers;
 
    public List<Offer> getOffers() {

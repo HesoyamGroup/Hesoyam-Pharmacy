@@ -5,15 +5,40 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.medicine.model;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+@Entity
 public class MedicineSpecification {
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;
+
+   @ManyToMany(fetch = FetchType.LAZY)
+   @JoinTable(name = "medicine_contraindication",
+           joinColumns = @JoinColumn(name="medicine_specification_id", referencedColumnName = "id"),
+           inverseJoinColumns = @JoinColumn(name = "contraindication_id", referencedColumnName = "id"))
    private List<Contraindication> contraindications;
+
+   @ManyToMany(fetch = FetchType.LAZY)
+   @JoinTable(name = "medicine_composition",
+           joinColumns = @JoinColumn(name = "medicine_specification_id", referencedColumnName = "id"),
+           inverseJoinColumns = @JoinColumn(name = "composition_id", referencedColumnName = "id"))
    private List<CompositionItem> compositionItems;
+
+   @Embedded
    private Dosage dosage;
+
+   @ManyToMany(fetch = FetchType.LAZY)
+   @JoinTable(name = "replacement_medicine",
+           joinColumns = @JoinColumn(name = "medicine_specification_id", referencedColumnName = "id"),
+           inverseJoinColumns = @JoinColumn(name = "replacement_medicine_id", referencedColumnName = "id"))
    private List<Medicine> replacementMedicines;
+
+   @OneToOne(fetch = FetchType.EAGER, mappedBy = "medicineSpecification")
    private Medicine medicine;
 
    public List<Contraindication> getContraindications() {

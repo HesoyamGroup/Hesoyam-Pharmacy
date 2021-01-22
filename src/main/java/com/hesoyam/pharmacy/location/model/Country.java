@@ -5,14 +5,22 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.location.model;
 
+import javax.persistence.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
+@Entity
 public class Country {
-   private Long countryId;
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;
+   @Column(unique = true, length = 3)
    private String countryCode;
+   @Column(length = 100)
    private String countryName;
+
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "country")
    private List<City> cities;
 
    public List<City> getCities() {

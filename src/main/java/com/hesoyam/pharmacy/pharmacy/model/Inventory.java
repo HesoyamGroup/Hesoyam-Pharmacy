@@ -5,12 +5,23 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.pharmacy.model;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+@Entity
 public class Inventory {
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;
+
+   @OneToMany(fetch = FetchType.LAZY)
+   @JoinColumn(name = "inventory_id", referencedColumnName = "id", nullable = false)
    private List<InventoryItem> inventoryItems;
+
+   @OneToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name="pharmacy_id", nullable = false)
    private Pharmacy pharmacy;
 
    public List<InventoryItem> getInventoryItems() {

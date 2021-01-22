@@ -1,11 +1,11 @@
 /***********************************************************************
- * Module:  PharmacyFeedback.java
+ * Module:  DermatologistFeedback.java
  * Author:  WIN 10
- * Purpose: Defines the Class PharmacyFeedback
+ * Purpose: Defines the Class DermatologistFeedback
  ***********************************************************************/
 package com.hesoyam.pharmacy.feedback.model;
 
-import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.user.model.Employee;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,9 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class PharmacyFeedback extends Feedback {
+public class EmployeeFeedback extends Feedback {
 
    @ManyToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "pharmacy_id")
-   private Pharmacy pharmacy;
+   @JoinColumn(name = "employee_id")
+   private Employee employee;
+
 }

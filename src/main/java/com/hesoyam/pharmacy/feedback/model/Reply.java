@@ -6,11 +6,22 @@
 package com.hesoyam.pharmacy.feedback.model;
 
 import com.hesoyam.pharmacy.user.model.SysAdmin;
+import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.*;
+
+@Entity
 public class Reply {
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
+   @Column(length = 400, nullable = false)
    private String text;
-   
+
+   @ManyToOne(fetch = FetchType.LAZY, optional = true)
+   @JoinColumn(name="sys_admin_id", nullable = false)
    private SysAdmin sysAdmin;
 
 }

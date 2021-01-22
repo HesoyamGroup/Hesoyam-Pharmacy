@@ -3,11 +3,19 @@
  * Author:  WIN 10
  * Purpose: Defines the Class ServiceSale
  ***********************************************************************/
-package com.hesoyam.pharmacy.finance.model;
+package com.hesoyam.pharmacy.pharmacy.model;
 
 import com.hesoyam.pharmacy.appointment.model.Appointment;
 
-public class ServiceSale extends Sale {
-   private Appointment appointment;
+import javax.persistence.*;
 
+@Entity
+public class ServiceSale extends Sale {
+
+   @Enumerated(EnumType.STRING)
+   private ServiceType serviceType;
+
+   @OneToOne(fetch= FetchType.EAGER)
+   @JoinColumn(name="appointment_id")
+   private Appointment appointment;
 }
