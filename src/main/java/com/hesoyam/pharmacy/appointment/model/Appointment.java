@@ -31,7 +31,7 @@ public abstract class Appointment {
    @JoinColumn(name="pharmacy_id", nullable = false)
    protected Pharmacy pharmacy;
 
-   @OneToOne(fetch = FetchType.EAGER)
+   @OneToOne(fetch = FetchType.LAZY)
    @JoinColumn(name="therapy_id")
    protected Therapy therapy;
 

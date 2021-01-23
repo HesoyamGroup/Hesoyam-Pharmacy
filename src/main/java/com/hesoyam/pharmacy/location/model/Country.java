@@ -5,6 +5,8 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.location.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +22,34 @@ public class Country {
    @Column(length = 100)
    private String countryName;
 
+   public Country(){}
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public String getCountryCode() {
+      return countryCode;
+   }
+
+   public void setCountryCode(String countryCode) {
+      this.countryCode = countryCode;
+   }
+
+   public String getCountryName() {
+      return countryName;
+   }
+
+   public void setCountryName(String countryName) {
+      this.countryName = countryName;
+   }
+
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "country")
+   @JsonManagedReference
    private List<City> cities;
 
    public List<City> getCities() {

@@ -5,6 +5,8 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.location.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -18,8 +20,18 @@ public class City {
 
    @ManyToOne(fetch = FetchType.EAGER, optional = false)
    @JoinColumn(name="country_id", referencedColumnName = "id")
+   @JsonBackReference
    private Country country;
 
+   public City(){}
+
+   public Long getId() {
+      return id;
+   }
+
+   public String getCityName() {
+      return cityName;
+   }
 
    public Country getCountry() {
       return country;
