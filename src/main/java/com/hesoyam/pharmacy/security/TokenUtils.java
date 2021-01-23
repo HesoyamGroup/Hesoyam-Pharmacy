@@ -25,7 +25,7 @@ public class TokenUtils {
     private String SECRET;
 
     //Token expiry date (3 days)
-    @Value("259200")
+    @Value("259200000")
     private int EXPIRES_IN;
 
     //Name of header where JWT token will be located
