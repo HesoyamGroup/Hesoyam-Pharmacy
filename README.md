@@ -56,12 +56,45 @@ Other following information could be put in Commit Description
 | 3.3 User Profile| 3.8 Pharmacy Profile | 3.10 Dermatologist Home-Page | 3.6 Sys-Admin Profile |
 | 3.9 User Home-Page| 3.12 Admin - Free Appointments Modifying| 3.11 Pharmacist Home-Page| 3.7 Supplier Profile |
 | 3.13 Patient - Dermatologist Appointment Reservation | 3.22 Promotions/Sales Defining | 3.14 Dermatologist - Appointment Reservation| 3.23 Promotions/Sales Subscription and Unsubscription |
-| 3.15 Patient - Dermatologist Appointment Cancellation| 3.24 Admin - Purchase Order Defining| 3.17 Pharmacist - Counseling Reservation | 3.25 |
-| 3.16 Patient - Pharmacist Counseling Reservation | 3.26 Admin - Selection of Purchase Order| 3.27 Dermatologist - Appointment Report| 3.34 Supplier - Making an Offer |
+| 3.15 Patient - Dermatologist Appointment Cancellation| 3.24 Admin - Purchase Order Defining| 3.17 Pharmacist - Counseling Reservation | 3.25 Supplier - Making an Offer|
+| 3.16 Patient - Pharmacist Counseling Reservation | 3.26 Admin - Selection of Purchase Order| 3.27 Dermatologist - Appointment Report| 3.34  Medicine Search and Filters|
 | 3.18 Patient - Pharmacist Counseling Cancellation | 3.29 Pricelsit Modification | 3.28 Pharmacist - Counseling Report| 3.39 Writing Complaints and Replying to Complaints|
 | 3.19 Medicine Reservation | 3.32 Dermatologist Search and Filters| 3.30 User Search| 3.42 Medicine and eRecipe Specification |
 | 3.20 Reserved Medicine Cancellation | 3.33 Pharmacist Search and Filters | | |
 | 3.31 Pharmacy Search and Filters| 3.38 Cancellation/Acceptance of Vaccation Requests | | |
 | 3.41 Feedback| | | |
 
-* for more details about specification ask above mentioned students.
+*for more details about specification ask above mentioned students.
+
+## Grading Criteria
+
+#### Grade: 7
+| Criteria |
+|--------------|
+| Maps |
+| Fines |
+| Feedback Mechanism |
+| Graphical Presentation of the Report |
+| 3.21 Handing Out of Reserved Medicine |
+| 3.36 Pharmacist - Work Calendar Display |
+| 3.37 Dermatologist - Work Calendar Display |
+| 3.35 Handing out and Seach of eRecipe by QR Code |
+| 3.40 Loyalty Program|
+
+#### Grade: 8
+|Criteria|
+|-------------|
+| 5.4 Concurrent Access to Database |
+
+#### Grade: 9
+|Criteria|
+|-------------|
+| DevOps Microflow |
+| 5 Unit and 5 Integration Tests per Student |
+
+#### Grade: 10
+|Criteria|
+|-------------|
+| Scalability |
+
+*the lowest passing grade is 6 and the highest is 10
