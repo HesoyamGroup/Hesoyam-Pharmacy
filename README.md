@@ -48,18 +48,20 @@ Example:
 
 Other following information could be put in Commit Description
 
-## Task Distribution:
+## Task Distribution*:
 
 | Student 1 | Student 2 | Student 3 | Student 4 | 
 |--------------|-------------|-------------|-------------|
-| 3.1 View for Unauthenticated User| 3.4 | 3.5 | 3.2 |
-| 3.3 User Profile| 3.8 | 3.10 | 3.6 |
-| 3.9 Use Home-Page| 3.12 | 3.11 | 3.7 |
-| 3.13 | 3.22 | 3.14 | 3.23 |
-| 3.15 | 3.24 | 3.17 | 3.25 |
-| 3.16 | 3.26 | 3.27 | 3.34 |
-| 3.18 | 3.29 | 3.28 | 3.39 |
-| 3.19 | 3.32 | 3.30 | 3.42 |
-| 3.20 | 3.33 | | |
-| 3.31 | 3.38 | | |
-| 3.41 | | | |
+| 3.1 View for Unauthenticated User| 3.4 Admin Profile | 3.5 Dermatologist/Pharmacist Profile| 3.2 User Registration and Login |
+| 3.3 User Profile| 3.8 Pharmacy Profile | 3.10 Dermatologist Home-Page | 3.6 Sys-Admin Profile |
+| 3.9 User Home-Page| 3.12 Admin - Free Appointments Modifying| 3.11 Pharmacist Home-Page| 3.7 Supplier Profile |
+| 3.13 Patient - Dermatologist Appointment Reservation | 3.22 Promotions/Sales Defining | 3.14 Dermatologist - Appointment Reservation| 3.23 Promotions/Sales Subscription and Unsubscription |
+| 3.15 Patient - Dermatologist Appointment Cancellation| 3.24 Admin - Purchase Order Defining| 3.17 Pharmacist - Counseling Reservation | 3.25 |
+| 3.16 Patient - Pharmacist Counseling Reservation | 3.26 Admin - Selection of Purchase Order| 3.27 Dermatologist - Appointment Report| 3.34 Supplier - Making an Offer |
+| 3.18 Patient - Pharmacist Counseling Cancellation | 3.29 Pricelsit Modification | 3.28 Pharmacist - Counseling Report| 3.39 Writing Complaints and Replying to Complaints|
+| 3.19 Medicine Reservation | 3.32 Dermatologist Search and Filters| 3.30 User Search| 3.42 Medicine and eRecipe Specification |
+| 3.20 Reserved Medicine Cancellation | 3.33 Pharmacist Search and Filters | | |
+| 3.31 Pharmacy Search and Filters| 3.38 Cancellation/Acceptance of Vaccation Requests | | |
+| 3.41 Feedback| | | |
+
+* for more details about specification ask above mentioned students.
