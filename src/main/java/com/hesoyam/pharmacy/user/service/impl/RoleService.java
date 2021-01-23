@@ -25,7 +25,7 @@ public class RoleService implements IRoleService {
 
     @Override
     public Collection<Role> findByName(String name) {
-        Role role = roleRepository.findByName(name);
+        Role role = roleRepository.findByRoleName(name);
         Collection<Role> roles = new ArrayList<>();
         if(role!=null) roles.add(role);
 

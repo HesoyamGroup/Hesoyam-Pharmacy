@@ -65,7 +65,7 @@ public class UserService implements UserDetailsService, IUserService {
 
         //TODO: Find by name parameter should be saved somewhere globally.
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_PATIENT");
-        patient.setRoles(roles);
+        patient.setAuthorities(roles);
 
         patient = userRepository.save(patient);
 

@@ -20,21 +20,20 @@ public class Role implements GrantedAuthority {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    Long id;
 
-   @Column(name="name")
-   String name;
+   @Column(name="role_name")
+   String roleName;
 
    @Override
    public String getAuthority() {
-      return null;
+      return roleName;
    }
 
-   public void setName(String name){
-      this.name = name;
+   public String getRoleName() {
+      return roleName;
    }
 
-   @JsonIgnore
-   public String getName(){
-      return name;
+   public void setRoleName(String roleName) {
+      this.roleName = roleName;
    }
 
    @JsonIgnore

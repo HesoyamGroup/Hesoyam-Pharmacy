@@ -10,12 +10,15 @@ import com.hesoyam.pharmacy.location.model.Address;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -55,16 +58,14 @@ public abstract class User implements UserDetails {
    @JoinTable(name = "user_roles",
            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-   private List<Role> roles;
+   private List<Role> authorities;
 
-
-   public void setRoles(List<Role> roles) {
-      this.roles = roles;
+   public void setAuthorities(List<Role> authorities) {
+      this.authorities = authorities;
    }
-
    @Override
    public Collection<? extends GrantedAuthority> getAuthorities() {
-      return this.roles;
+      return this.authorities;
    }
 
    public Long getId() {
