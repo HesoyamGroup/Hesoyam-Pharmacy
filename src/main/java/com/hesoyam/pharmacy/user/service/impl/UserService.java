@@ -1,12 +1,15 @@
 package com.hesoyam.pharmacy.user.service.impl;
 
 import com.hesoyam.pharmacy.user.DTO.RegistrationDTO;
+import com.hesoyam.pharmacy.user.exceptions.EntityNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationUserNotUniqueException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationValidationException;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Role;
 import com.hesoyam.pharmacy.user.model.User;
+import com.hesoyam.pharmacy.user.model.VerificationToken;
 import com.hesoyam.pharmacy.user.repository.UserRepository;
+import com.hesoyam.pharmacy.user.repository.VerificationTokensRepository;
 import com.hesoyam.pharmacy.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -29,6 +32,9 @@ public class UserService implements UserDetailsService, IUserService {
     private RoleService roleService;
 
     @Autowired
+    private VerificationTokensRepository verificationTokensRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -43,6 +49,19 @@ public class UserService implements UserDetailsService, IUserService {
     public User findByEmail(String email){
         return userRepository.findByEmail(email);
     }
+
+    @Override
+    public User update(User userData) throws EntityNotFoundException {
+        //TODO: Authorization needs to be done here. Do NOT forget.
+        //TODO: Test the method furthermore.
+        User user = userRepository.getOne(userData.getId());
+        if(user == null) throw new EntityNotFoundException(String.format("An user with ID '%s' could not be found.", userData.getId()));
+        user.update(userData);
+        user = userRepository.save(user);
+
+        return user;
+    }
+
 
     @Override
     public Collection<User> findAll() {
@@ -74,6 +93,18 @@ public class UserService implements UserDetailsService, IUserService {
         }
 
         return patient;
+    }
+
+
+    @Override
+    public void createVerificationToken(User user, String token) {
+        VerificationToken userToken = new VerificationToken(user, token);
+        verificationTokensRepository.save(userToken);
+    }
+
+    @Override
+    public VerificationToken getVerificationToken(String token) {
+        return verificationTokensRepository.getByToken(token);
     }
 
     @Override

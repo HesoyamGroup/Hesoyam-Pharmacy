@@ -62,4 +62,9 @@ public abstract class Employee extends User {
       if (shifts != null)
          shifts.clear();
    }
+
+   @Override
+   public boolean isEnabled() {
+      return true;
+   }
 }

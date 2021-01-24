@@ -3,15 +3,21 @@ package com.hesoyam.pharmacy.user.controller;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.DTO.LoginDTO;
 import com.hesoyam.pharmacy.user.DTO.UserTokenState;
+import com.hesoyam.pharmacy.user.events.OnRegistrationCompletedEvent;
+import com.hesoyam.pharmacy.user.exceptions.EntityNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationUserNotUniqueException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationValidationException;
+import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
+import com.hesoyam.pharmacy.user.model.VerificationToken;
 import com.hesoyam.pharmacy.user.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,8 +26,11 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import com.hesoyam.pharmacy.user.DTO.RegistrationDTO;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +51,9 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    ApplicationEventPublisher applicationEventPublisher;
+
     @PostMapping("/register")
     public ResponseEntity<Map<String, Map<String, String>>> register(@RequestBody @Valid RegistrationDTO registrationDTO, BindingResult errors){
         Map<String, String> errorsMap = new HashMap<>();
@@ -50,16 +62,17 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
         }
 
-        User user;
+        Patient patient;
         try {
-            user = userService.save(registrationDTO);
+            patient = userService.save(registrationDTO);
+            applicationEventPublisher.publishEvent(new OnRegistrationCompletedEvent(patient, ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString()));
         } catch (RegistrationValidationException e) {
             return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, e.getErrorMessagesMap()));
         }catch (RegistrationUserNotUniqueException notUniqueException){
             errorsMap.put("emailNotUnique", notUniqueException.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
         }
-        return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserDataToMap(user)));
+        return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserDataToMap(patient)));
     }
 
     @PostMapping("/login")
@@ -78,6 +91,43 @@ public class AuthenticationController {
         String jwt = tokenUtils.generateToken(user.getEmail());
         long expiresIn = tokenUtils.getExpiredIn();
         return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserTokenStateToMap(new UserTokenState(jwt, expiresIn))));
+    }
+
+    @GetMapping("/confirm-registration")
+    public ResponseEntity<Map<String, Map<String, String>>> confirmRegistration(@RequestParam("token") String token){
+        VerificationToken verificationToken = userService.getVerificationToken(token);
+        Map<String, String> error_map = new HashMap<>();
+
+
+        if(verificationToken == null){
+            error_map.put("tokenNotFound", "Activation token could not be found.");
+            return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, error_map));
+        }
+
+        if(isVerificationTokenExpired(verificationToken)){
+            error_map.put("expiredToken", "Activation token has expired.");
+            return  ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, error_map));
+        }
+
+        User user = verificationToken.getUser();
+
+        user.setEnabled(true);
+
+        try {
+            userService.update(user);
+        } catch (EntityNotFoundException e) {
+            error_map.put("internalServerError", "A user account connected with passed token could not be found. Try again later.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(generateUniformResponse(ERRORS_FIELD_NAME, error_map));
+        }
+
+        Map<String, String> data = new HashMap<>();
+        data.put("activationSuccessful", "Activation successful. You can now log in.");
+        return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, data));
+    }
+
+    private boolean isVerificationTokenExpired(VerificationToken verificationToken){
+        Calendar calendar = Calendar.getInstance();
+        return ( (verificationToken.getExpiryDate().getTime() - calendar.getTime().getTime()) <= 0);
     }
 
     private Map<String, Map<String, String>> generateUniformResponse(String responseType ,Map<String, String> messagesMap){
@@ -120,4 +170,11 @@ public class AuthenticationController {
         return errors;
     }
 
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<Map<String, Map<String,String>>> handleException() {
+        Map<String, String> error_map = new HashMap<>();
+        error_map.put("notActivated", "Your account has not been activated yet.");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(generateUniformResponse(ERRORS_FIELD_NAME, error_map));
+    }
 }

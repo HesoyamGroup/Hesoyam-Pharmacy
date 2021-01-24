@@ -18,10 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -31,6 +28,10 @@ public abstract class User implements UserDetails {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    protected Long id;
+
+   @Column(name="enabled")
+   private boolean enabled;
+
 
    @Column(length=75, name = "first_name")
    @NotNull(message = "First name must be provided.")
@@ -72,6 +73,27 @@ public abstract class User implements UserDetails {
            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
    private List<Role> authorities;
+
+   public User(){}
+
+   public void update(User user){
+      //Everything copied except user ID
+      this.enabled = user.isEnabled();
+      this.firstName = user.getFirstName();
+      this.lastName = user.getLastName();
+      this.telephone = user.getTelephone();
+      this.email = user.getEmail();
+      this.gender = user.getGender();
+      if(!this.password.equals(user.getPassword())){
+         //If a password has been changed, update timestamp
+         lastPasswordResetDate = new Timestamp((new Date()).getTime());
+      }else{
+         lastPasswordResetDate = user.getLastPasswordResetDate();
+      }
+      this.password = user.getPassword();
+      this.address = user.getAddress();
+      this.authorities = user.authorities;
+   }
 
    public void setAuthorities(List<Role> authorities) {
       this.authorities = authorities;
@@ -186,6 +208,10 @@ public abstract class User implements UserDetails {
 
    @Override
    public boolean isEnabled() {
-      return true;
+      return this.enabled;
+   }
+
+   public void setEnabled(boolean enabled) {
+      this.enabled = enabled;
    }
 }

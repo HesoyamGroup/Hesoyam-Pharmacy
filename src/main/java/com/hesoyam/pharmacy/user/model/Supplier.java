@@ -72,4 +72,9 @@ public class Supplier extends User {
       }
    }
 
+   @Override
+   public boolean isEnabled() {
+      return true;
+   }
+
 }
