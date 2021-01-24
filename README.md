@@ -18,7 +18,11 @@
 `POSTGRES_PORT` - Port Number (default is `5432`)  
 `POSTGRES_DB` - Name of the Database Schema  
 `POSTGRES_USERNAME` - Name of the Database User  
-`POSTGRES_PASSWORD` - Password of the Database User
+`POSTGRES_PASSWORD` - Password of the Database User  
+`EMAIL_HOST` - Email SMTP server  
+`EMAIL_PORT` - Email SMTP server port  
+`EMAIL_USERNAME` - Email username (most often full email address)  
+`EMAIL_PASSWORD` - Email password  
 
 ## Files
 
