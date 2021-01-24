@@ -7,13 +7,16 @@ package com.hesoyam.pharmacy.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hesoyam.pharmacy.location.model.Address;
+import com.hesoyam.pharmacy.user.validators.PhoneNumberConstraint;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,26 +32,36 @@ public abstract class User implements UserDetails {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    protected Long id;
 
-   @Column(length=100, name = "first_name")
+   @Column(length=75, name = "first_name")
+   @NotNull(message = "First name must be provided.")
+   @Length(min=2, max=75, message= "First name length should be between 2 and 75 characters.")
    protected String firstName;
 
    @Column(length=100, name="last_name")
+   @NotNull(message = "Last name must be provided.")
+   @Length(min=3, max = 100, message = "Last name length should be between 3 and 100 characters.")
    protected String lastName;
 
    @Column(length=20)
+   @PhoneNumberConstraint
    protected String telephone;
 
-   @Column(length=50, unique = true)
+   @Column(length=75, unique = true)
+   @NotBlank
+   @Email(message = "A valid email address must be provided.")
    protected String email;
 
    @Enumerated(EnumType.STRING)
+   @NotNull
    protected Gender gender;
 
-   //TODO: Password encrypt (Spring Security)
-   @Column(length=75)
+   @Column(length=200)
+   @NotNull
+   @Length(min=8, max=200) //NOTE: Max Length due to JWT length
    protected String password;
 
    @Column(name = "last_password_reset_date")
+   @NotNull
    private Timestamp lastPasswordResetDate;
 
    @Embedded

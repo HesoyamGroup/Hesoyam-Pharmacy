@@ -2,15 +2,41 @@ package com.hesoyam.pharmacy.user.DTO;
 
 import com.hesoyam.pharmacy.location.model.Address;
 import com.hesoyam.pharmacy.user.model.Gender;
+import com.hesoyam.pharmacy.user.validators.PhoneNumberConstraint;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class RegistrationDTO {
+    @NotNull(message="First name must be provided")
+    @Length(min=2, max=75, message = "First name length should be between 2 and 75 characters.")
     private String firstName;
+
+    @NotNull(message = "Last name must be provided.")
+    @Length(min=3, max = 100, message = "Last name length should be between 3 and 100 characters.")
     private String lastName;
-    private String telephone;
+
+    @PhoneNumberConstraint
+    protected String telephone;
+
+    @NotBlank
+    @Email(message = "A valid email address must be provided.")
     private String email;
+
+    @NotNull
     private Gender gender;
+
+    @NotNull
+    @Length(min=8, max=64, message = "Password length should be between 8 and 64 characters.")
     private String password;
+
+    @NotNull
     private String confirmPassword;
+
+    @NotNull
     private Address address;
 
     public RegistrationDTO() {

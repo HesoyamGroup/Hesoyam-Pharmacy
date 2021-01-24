@@ -1,12 +1,15 @@
 package com.hesoyam.pharmacy.user.service.impl;
 
 import com.hesoyam.pharmacy.user.DTO.RegistrationDTO;
+import com.hesoyam.pharmacy.user.exceptions.RegistrationUserNotUniqueException;
+import com.hesoyam.pharmacy.user.exceptions.RegistrationValidationException;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Role;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.repository.UserRepository;
 import com.hesoyam.pharmacy.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,9 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService, IUserService {
@@ -35,24 +36,23 @@ public class UserService implements UserDetailsService, IUserService {
 
     @Override
     public User findById(Long id) {
-        User user = userRepository.findById(id).orElseGet(null);
-        return user;
+        return userRepository.findById(id).orElseGet(null);
     }
 
     @Override
     public User findByEmail(String email){
-        User user = userRepository.findByEmail(email);
-        return user;
+        return userRepository.findByEmail(email);
     }
 
     @Override
     public Collection<User> findAll() {
-        Collection<User> users = userRepository.findAll();
-        return users;
+        return userRepository.findAll();
     }
 
     @Override
-    public Patient save(RegistrationDTO registrationDTO) {
+    public Patient save(RegistrationDTO registrationDTO) throws RegistrationValidationException, RegistrationUserNotUniqueException {
+        validateRegistrationRequest(registrationDTO);
+
         Patient patient = new Patient();
         patient.setEmail(registrationDTO.getEmail());
         patient.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
@@ -67,13 +67,17 @@ public class UserService implements UserDetailsService, IUserService {
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_PATIENT");
         patient.setAuthorities(roles);
 
-        patient = userRepository.save(patient);
+        try {
+            patient = userRepository.save(patient);
+        }catch (DataIntegrityViolationException ex){
+            throw new RegistrationUserNotUniqueException("A user with specified email already exists.");
+        }
 
         return patient;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         User user = this.findByEmail(username);
         if(user == null){
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
@@ -81,5 +85,19 @@ public class UserService implements UserDetailsService, IUserService {
             return user;
         }
     }
+
+    private void validateRegistrationRequest(RegistrationDTO registrationDTO) throws RegistrationValidationException{
+        HashMap<String, String> errorMap = new HashMap<>();
+        if(!checkPasswordMatch(registrationDTO)) errorMap.put("passwordsNotMatch", "Passwords must match.");
+
+        if(errorMap.size() != 0) throw new RegistrationValidationException(errorMap);
+    }
+
+
+    private boolean checkPasswordMatch(RegistrationDTO registrationDTO){
+        return registrationDTO.getPassword().equals(registrationDTO.getConfirmPassword());
+    }
+
+
 
 }

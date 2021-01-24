@@ -8,6 +8,7 @@ package com.hesoyam.pharmacy.user.model;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public class Patient extends User {
 
    @Column
+   @Min(0)
    private int penaltyPoints;
 
    @ManyToMany(fetch = FetchType.LAZY)

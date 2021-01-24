@@ -7,6 +7,7 @@ package com.hesoyam.pharmacy.user.model;
 import com.hesoyam.pharmacy.employee_management.model.Shift;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,6 +16,8 @@ import java.util.Iterator;
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
 public abstract class Employee extends User {
    @Column
+   @Min(0)
+   //TODO: Add max rating(5 vs 10 scale)
    protected double rating;
 
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

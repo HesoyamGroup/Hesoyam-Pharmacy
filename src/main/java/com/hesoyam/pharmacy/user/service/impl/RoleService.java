@@ -18,7 +18,7 @@ public class RoleService implements IRoleService {
     public Collection<Role> findById(Long id) {
         Role role = roleRepository.getOne(id);
         Collection<Role> roles = new ArrayList<>();
-        if(role != null) roles.add(role);
+        roles.add(role);
 
         return roles;
     }
