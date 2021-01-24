@@ -41,7 +41,5 @@ public class Pharmacist extends Employee {
          }
       }
    }
-   
-
 
 }

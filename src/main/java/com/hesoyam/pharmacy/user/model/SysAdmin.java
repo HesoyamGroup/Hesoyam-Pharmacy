@@ -10,4 +10,8 @@ import javax.persistence.Entity;
 @Entity
 public class SysAdmin extends User {
 
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
