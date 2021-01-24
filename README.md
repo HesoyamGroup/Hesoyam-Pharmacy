@@ -14,33 +14,33 @@
 
 ## Environment variables
 
-`POSTGRES_HOST` - In local development `localhost`  
-`POSTGRES_PORT` - Port number (default is `5432`)  
-`POSTGRES_DB` - Name of the database schema  
-`POSTGRES_USERNAME` - Name of the database user  
-`POSTGRES_PASSWORD` - Password of the database user
+`POSTGRES_HOST` - In Local Development `localhost`  
+`POSTGRES_PORT` - Port Number (default is `5432`)  
+`POSTGRES_DB` - Name of the Database Schema  
+`POSTGRES_USERNAME` - Name of the Database User  
+`POSTGRES_PASSWORD` - Password of the Database User
 
 ## Files
 
-Object-Oriented model made with PowerDesigner - [PDF](assets/model.pdf)
+Object-Oriented Model Made With PowerDesigner - [PDF](assets/model.pdf)
 
 ## Commit Conventions
 `Format: <type>: <commit subject>`
 
 `<type>` - type of commit
-`<commit subject>` - short description of commit (less than 50 characters)
+`<commit subject>` - Short Description of Commit (less than 50 characters)
 
 #### Types of commit: 
-    fix - bux fix
-    feat - commit adds new feature(s)
-    refactor - code refactoring
-    style - correction of coding style
-    chore - job that has nothing to do with production code (i.e. editing yml file)
+    fix - Bux Fix
+    feat - Commit adds new Feature(s)
+    refactor - Code refactoring
+    style - Correction of Coding Style
+    chore - Job that has nothing to do with Production Code (i.e. editing yml file)
     ci
     test
     docs
 
-Put !: If commit adds some groundbreaking changes
+Put !: If Commit adds some Groundbreaking Changes
 
 Example:
 
@@ -64,7 +64,7 @@ Other following information could be put in Commit Description
 | 3.31 Pharmacy Search and Filters| 3.38 Cancellation/Acceptance of Vaccation Requests | | |
 | 3.41 Feedback| | | |
 
-*for more details about specification ask above mentioned students.
+*for more details see - [PDF](assets/ISA-Specification.pdf)
 
 ## Grading Criteria
 
