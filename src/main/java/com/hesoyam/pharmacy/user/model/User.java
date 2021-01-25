@@ -103,6 +103,13 @@ public abstract class User implements UserDetails {
       return this.authorities;
    }
 
+   public Role getUserRole(){
+      if(authorities.size() > 0)
+         return authorities.get(0);
+
+      return null;
+   }
+
    public Long getId() {
       return id;
    }
@@ -208,7 +215,8 @@ public abstract class User implements UserDetails {
 
    @Override
    public boolean isEnabled() {
-      return this.enabled;
+      //TODO: REPLACE WITH this.enabled!!!
+      return true;
    }
 
    public void setEnabled(boolean enabled) {
