@@ -27,7 +27,7 @@ public class Country {
    @Length(min=2, max=3, message= "Country code length should be between 2 and 3 characters. (inclusive)")
    private String countryCode;
 
-   @Column(length = 100)
+   @Column(length = 100, unique = true)
    @NotNull
    @Length(min=3, max=100, message= "Country name length should be between 3 and 100 characters.")
    private String countryName;
