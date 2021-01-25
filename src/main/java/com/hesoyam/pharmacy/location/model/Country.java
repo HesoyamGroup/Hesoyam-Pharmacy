@@ -6,8 +6,12 @@
 package com.hesoyam.pharmacy.location.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
@@ -17,10 +21,21 @@ public class Country {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
-   @Column(unique = true, length = 3)
+
+   @Column(unique = true, length = 3, nullable = false)
+   @NotNull
+   @Length(min=2, max=3, message= "Country code length should be between 2 and 3 characters. (inclusive)")
    private String countryCode;
-   @Column(length = 100)
+
+   @Column(length = 100, unique = true)
+   @NotNull
+   @Length(min=3, max=100, message= "Country name length should be between 3 and 100 characters.")
    private String countryName;
+
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "country")
+   @JsonManagedReference
+   private List<City> cities;
+
 
    public Country(){}
 
@@ -48,9 +63,6 @@ public class Country {
       this.countryName = countryName;
    }
 
-   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "country")
-   @JsonManagedReference
-   private List<City> cities;
 
    public List<City> getCities() {
       if (cities == null)

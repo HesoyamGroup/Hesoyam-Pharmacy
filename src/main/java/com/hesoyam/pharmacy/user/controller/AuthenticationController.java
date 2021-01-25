@@ -4,18 +4,21 @@ import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.DTO.LoginDTO;
 import com.hesoyam.pharmacy.user.DTO.UserTokenState;
 import com.hesoyam.pharmacy.user.events.OnRegistrationCompletedEvent;
-import com.hesoyam.pharmacy.user.exceptions.EntityNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationUserNotUniqueException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationValidationException;
 import com.hesoyam.pharmacy.user.model.Patient;
+import com.hesoyam.pharmacy.user.model.Role;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.model.VerificationToken;
+import com.hesoyam.pharmacy.user.service.IUserService;
 import com.hesoyam.pharmacy.user.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,6 +34,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +50,7 @@ public class AuthenticationController {
     private TokenUtils tokenUtils;
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -64,7 +68,7 @@ public class AuthenticationController {
 
         Patient patient;
         try {
-            patient = userService.save(registrationDTO);
+            patient = userService.register(registrationDTO);
             applicationEventPublisher.publishEvent(new OnRegistrationCompletedEvent(patient, ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString()));
         } catch (RegistrationValidationException e) {
             return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, e.getErrorMessagesMap()));
@@ -88,9 +92,10 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         //Create token for user
         User user = (User) authentication.getPrincipal();
+        Role userRole = user.getUserRole();
         String jwt = tokenUtils.generateToken(user.getEmail());
         long expiresIn = tokenUtils.getExpiredIn();
-        return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserTokenStateToMap(new UserTokenState(jwt, expiresIn))));
+        return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserTokenStateToMap(new UserTokenState(jwt, expiresIn, userRole))));
     }
 
     @GetMapping("/confirm-registration")
@@ -115,7 +120,7 @@ public class AuthenticationController {
 
         try {
             userService.update(user);
-        } catch (EntityNotFoundException e) {
+        } catch (UserNotFoundException e) {
             error_map.put("internalServerError", "A user account connected with passed token could not be found. Try again later.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(generateUniformResponse(ERRORS_FIELD_NAME, error_map));
         }
@@ -124,6 +129,49 @@ public class AuthenticationController {
         data.put("activationSuccessful", "Activation successful. You can now log in.");
         return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, data));
     }
+
+
+    @GetMapping("/validate-token")
+    public ResponseEntity<Map<String, Map<String, String>>> validateToken(HttpServletRequest request){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(isUserAuthenticated(authentication)){
+            String token = tokenUtils.getToken(request);
+
+            if(isTokenExpired(token)){
+                SecurityContextHolder.getContext().setAuthentication(null);
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(generateUniformResponse(ERRORS_FIELD_NAME, generateTokenExpiredResponse()));
+            }
+
+            return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, generateTokenValidResponse()));
+        }
+        //If not authenticated
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(generateUniformResponse(ERRORS_FIELD_NAME, generateTokenExpiredResponse()));
+    }
+
+    private Map<String, String> generateTokenValidResponse(){
+        Map<String, String> response_map = new HashMap<>();
+        response_map.put("isTokenValid", Boolean.TRUE.toString());
+        return response_map;
+    }
+
+    private Map<String, String> generateTokenExpiredResponse(){
+        Map<String, String> error_map = new HashMap<>();
+        error_map.put("tokenExpired", "A token has expired, please login again.");
+        return error_map;
+    }
+
+    private boolean isTokenExpired(String token){
+        if(token == null) {
+            return true;
+        }
+        Date tokenExpiryDate = tokenUtils.getExpirationDateFromToken(token);
+        return tokenExpiryDate.getTime() <= (new Date()).getTime();
+    }
+
+    private boolean isUserAuthenticated(Authentication authentication){
+        return (authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated());
+    }
+
 
     private boolean isVerificationTokenExpired(VerificationToken verificationToken){
         Calendar calendar = Calendar.getInstance();
@@ -156,7 +204,7 @@ public class AuthenticationController {
         Map<String, String> data = new HashMap<>();
         data.put("token", userTokenState.getToken());
         data.put("expiresIn", userTokenState.getExpiresIn().toString());
-
+        data.put("role", userTokenState.getRole().getRoleName());
         return data;
     }
 

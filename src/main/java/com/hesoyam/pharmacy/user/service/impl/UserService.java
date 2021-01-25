@@ -1,7 +1,7 @@
 package com.hesoyam.pharmacy.user.service.impl;
 
 import com.hesoyam.pharmacy.user.DTO.RegistrationDTO;
-import com.hesoyam.pharmacy.user.exceptions.EntityNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationUserNotUniqueException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationValidationException;
 import com.hesoyam.pharmacy.user.model.Patient;
@@ -41,21 +41,20 @@ public class UserService implements UserDetailsService, IUserService {
     private AuthenticationManager authenticationManager;
 
     @Override
-    public User findById(Long id) {
-        return userRepository.findById(id).orElseGet(null);
+    public User findById(Long id) throws UserNotFoundException {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    }
+    @Override
+    public User findByEmail(String email) throws UserNotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     }
 
     @Override
-    public User findByEmail(String email){
-        return userRepository.findByEmail(email);
-    }
-
-    @Override
-    public User update(User userData) throws EntityNotFoundException {
+    public User update(User userData) throws UserNotFoundException {
         //TODO: Authorization needs to be done here. Do NOT forget.
         //TODO: Test the method furthermore.
         User user = userRepository.getOne(userData.getId());
-        if(user == null) throw new EntityNotFoundException(String.format("An user with ID '%s' could not be found.", userData.getId()));
+        if(user == null) throw new UserNotFoundException(userData.getId());
         user.update(userData);
         user = userRepository.save(user);
 
@@ -69,7 +68,7 @@ public class UserService implements UserDetailsService, IUserService {
     }
 
     @Override
-    public Patient save(RegistrationDTO registrationDTO) throws RegistrationValidationException, RegistrationUserNotUniqueException {
+    public Patient register(RegistrationDTO registrationDTO) throws RegistrationValidationException, RegistrationUserNotUniqueException {
         validateRegistrationRequest(registrationDTO);
 
         Patient patient = new Patient();
@@ -109,7 +108,13 @@ public class UserService implements UserDetailsService, IUserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        User user = this.findByEmail(username);
+        User user;
+        try{
+            user = this.findByEmail(username);
+        }catch (UserNotFoundException e){
+            user = null;
+        }
+
         if(user == null){
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
         }else{
