@@ -23,6 +23,8 @@
 `EMAIL_PORT` - Email SMTP server port  
 `EMAIL_USERNAME` - Email username (most often full email address)  
 `EMAIL_PASSWORD` - Email password  
+`FRONTEND_HOST` - Frontend host (dev: http://localhost)  
+`FRONTEND_PORT` - Frontend port (dev: 8081/8082 often)
 
 ## Files
 
