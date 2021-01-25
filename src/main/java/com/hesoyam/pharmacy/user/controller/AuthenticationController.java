@@ -4,13 +4,14 @@ import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.DTO.LoginDTO;
 import com.hesoyam.pharmacy.user.DTO.UserTokenState;
 import com.hesoyam.pharmacy.user.events.OnRegistrationCompletedEvent;
-import com.hesoyam.pharmacy.user.exceptions.EntityNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationUserNotUniqueException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationValidationException;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Role;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.model.VerificationToken;
+import com.hesoyam.pharmacy.user.service.IUserService;
 import com.hesoyam.pharmacy.user.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -49,7 +50,7 @@ public class AuthenticationController {
     private TokenUtils tokenUtils;
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -67,7 +68,7 @@ public class AuthenticationController {
 
         Patient patient;
         try {
-            patient = userService.save(registrationDTO);
+            patient = userService.register(registrationDTO);
             applicationEventPublisher.publishEvent(new OnRegistrationCompletedEvent(patient, ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString()));
         } catch (RegistrationValidationException e) {
             return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, e.getErrorMessagesMap()));
@@ -119,7 +120,7 @@ public class AuthenticationController {
 
         try {
             userService.update(user);
-        } catch (EntityNotFoundException e) {
+        } catch (UserNotFoundException e) {
             error_map.put("internalServerError", "A user account connected with passed token could not be found. Try again later.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(generateUniformResponse(ERRORS_FIELD_NAME, error_map));
         }
