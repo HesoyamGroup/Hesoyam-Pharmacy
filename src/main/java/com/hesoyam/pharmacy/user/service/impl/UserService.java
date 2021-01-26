@@ -1,13 +1,12 @@
 package com.hesoyam.pharmacy.user.service.impl;
 
+import com.hesoyam.pharmacy.user.DTO.ChangePasswordDTO;
 import com.hesoyam.pharmacy.user.DTO.RegistrationDTO;
+import com.hesoyam.pharmacy.user.exceptions.InvalidChangePasswordRequestException;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
-import com.hesoyam.pharmacy.user.exceptions.RegistrationUserNotUniqueException;
+import com.hesoyam.pharmacy.user.exceptions.UserNotUniqueException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationValidationException;
-import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.user.model.Role;
-import com.hesoyam.pharmacy.user.model.User;
-import com.hesoyam.pharmacy.user.model.VerificationToken;
+import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.user.repository.UserRepository;
 import com.hesoyam.pharmacy.user.repository.VerificationTokensRepository;
 import com.hesoyam.pharmacy.user.service.IUserService;
@@ -61,6 +60,28 @@ public class UserService implements UserDetailsService, IUserService {
         return user;
     }
 
+    @Override
+    public User changePassword(ChangePasswordDTO changePasswordDTO) throws InvalidChangePasswordRequestException {
+        validateChangePasswordRequest(changePasswordDTO);
+        String email = changePasswordDTO.getEmail();
+
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new InvalidChangePasswordRequestException("User not found."));
+        if(!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())){
+            throw new InvalidChangePasswordRequestException("Incorrect password.");
+        }
+
+        user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
+        user.setPasswordReset(false);
+        User updatedUser = userRepository.save(user);
+        return updatedUser;
+    }
+
+    private void validateChangePasswordRequest(ChangePasswordDTO changePasswordDTO) throws InvalidChangePasswordRequestException {
+        if(!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfirmNewPassword())){
+            throw new InvalidChangePasswordRequestException("Passwords must match.");
+        }
+    }
+
 
     @Override
     public Collection<User> findAll() {
@@ -68,7 +89,7 @@ public class UserService implements UserDetailsService, IUserService {
     }
 
     @Override
-    public Patient register(RegistrationDTO registrationDTO) throws RegistrationValidationException, RegistrationUserNotUniqueException {
+    public Patient register(RegistrationDTO registrationDTO) throws RegistrationValidationException, UserNotUniqueException {
         validateRegistrationRequest(registrationDTO);
 
         Patient patient = new Patient();
@@ -88,10 +109,36 @@ public class UserService implements UserDetailsService, IUserService {
         try {
             patient = userRepository.save(patient);
         }catch (DataIntegrityViolationException ex){
-            throw new RegistrationUserNotUniqueException("A user with specified email already exists.");
+            throw new UserNotUniqueException("A user with specified email already exists.");
         }
 
         return patient;
+    }
+
+    @Override
+    public SysAdmin registerSysAdmin(RegistrationDTO registrationDTO) throws UserNotUniqueException {
+        SysAdmin sysAdmin = new SysAdmin();
+        sysAdmin.setEmail(registrationDTO.getEmail());
+        sysAdmin.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
+        sysAdmin.setFirstName(registrationDTO.getFirstName());
+        sysAdmin.setLastName(registrationDTO.getLastName());
+        sysAdmin.setGender(registrationDTO.getGender());
+        sysAdmin.setTelephone(registrationDTO.getTelephone());
+        sysAdmin.setAddress(registrationDTO.getAddress());
+        sysAdmin.setLastPasswordResetDate(new Timestamp((new Date().getTime())));
+        sysAdmin.setPasswordReset(true);
+
+        //TODO: Find by name parameter should be saved somewhere globally.
+        List<Role> roles = (List<Role>) roleService.findByName("ROLE_SYS_ADMIN");
+        sysAdmin.setAuthorities(roles);
+
+        try{
+            sysAdmin = userRepository.save(sysAdmin);
+        }catch (DataIntegrityViolationException ex){
+            throw new UserNotUniqueException("A user with specified email already exists.");
+        }
+
+        return sysAdmin;
     }
 
 
@@ -121,6 +168,7 @@ public class UserService implements UserDetailsService, IUserService {
             return user;
         }
     }
+
 
     private void validateRegistrationRequest(RegistrationDTO registrationDTO) throws RegistrationValidationException{
         HashMap<String, String> errorMap = new HashMap<>();

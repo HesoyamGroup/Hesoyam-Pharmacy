@@ -27,6 +27,8 @@ public class Patient extends User {
    @OneToOne(optional = true, fetch = FetchType.LAZY, mappedBy = "patient")
    private LoyaltyAccount loyaltyAccount;
 
+   public Patient(){}
+
 
    public List<Medicine> getAllergies() {
       if (allergies == null)

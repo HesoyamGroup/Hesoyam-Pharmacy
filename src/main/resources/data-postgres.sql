@@ -47,5 +47,11 @@ INSERT INTO city (city_name, country_id) VALUES ('Skopje', 6);
 INSERT INTO city (city_name, country_id) VALUES ('Berovo', 6);
 
 
+-- SYS ADMIN
+INSERT INTO users(address_line, latitude, longitude, email, enabled, first_name, gender, last_name, last_password_reset_date, password, telephone, city_id, password_reset)
+VALUES ('Koste Sokice 3', '15', '55', 'pharmacyhospital@gmail.com', true, 'Pera', 'MALE', 'Adminko', CURRENT_TIMESTAMP, '$2a$10$4fiTLwOv7lGEVxCnLHLweOMsvlS2MCZ0dhKxtKGXB410dz/GFfswi', '0613095988', 2, true);
+INSERT INTO sys_admin(id) VALUES (1);
+INSERT INTO user_roles(user_id, role_id) VALUES(1, 6);
+
 
 

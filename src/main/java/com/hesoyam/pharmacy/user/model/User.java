@@ -30,7 +30,10 @@ public abstract class User implements UserDetails {
    protected Long id;
 
    @Column(name="enabled")
-   private boolean enabled;
+   protected boolean enabled;
+
+   @Column
+   protected boolean passwordReset;
 
 
    @Column(length=75, name = "first_name")
@@ -176,6 +179,10 @@ public abstract class User implements UserDetails {
    }
 
    public void setPassword(String password) {
+      if(this.password != null && !this.password.equals(password)){
+         //If a password has been changed, update timestamp
+         lastPasswordResetDate = new Timestamp((new Date()).getTime());
+      }
       this.password = password;
    }
 
@@ -221,5 +228,13 @@ public abstract class User implements UserDetails {
 
    public void setEnabled(boolean enabled) {
       this.enabled = enabled;
+   }
+
+   public boolean isPasswordReset() {
+      return passwordReset;
+   }
+
+   public void setPasswordReset(boolean passwordReset) {
+      this.passwordReset = passwordReset;
    }
 }
