@@ -64,3 +64,71 @@ VALUES ('neka zgrada',-0, 16, 'Originalan opis', 'PetronijaPharm', 1, 6);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO manufacturer (name, address_line, latitude, longitude, city_id) VALUES ('GALENIKA AD BEOGRAD', 'Ulica bb', 0, 0, 3);
+INSERT INTO manufacturer (name, address_line, latitude, longitude, city_id) VALUES ('PHARMASWISS D.O.O., BEOGRAD', 'Ulica bb', 0, 0, 3);
+
+INSERT INTO contraindication (name) VALUES ('Alergija na cefaleksin');
+INSERT INTO contraindication (name) VALUES ('Teška insuficijencija jetre');
+INSERT INTO contraindication (name) VALUES ('Teška srčana insuficijencija');
+INSERT INTO contraindication (name) VALUES ('Teška insuficijencija bubrega');
+INSERT INTO contraindication (name) VALUES ('Treći trimestar trudnoće');
+
+INSERT INTO composition_item (name, quantity, unit) VALUES ('Cefaleksin', 250, 'MG');
+INSERT INTO composition_item (name, quantity, unit) VALUES ('Ibuprofen', 200, 'MG');
+INSERT INTO composition_item (name, quantity, unit) VALUES ('Diclofenak-natrijum', 75, 'MG');
+
+-- 1 Palitrex
+INSERT INTO medicine_specification (quantity, unit) VALUES (250, 'MG');
+INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (1, 1);
+INSERT INTO medicine_composition (medicine_specification_id, composition_id) VALUES (1, 1);
+--INSERT INTO replacement_medicine
+INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id) VALUES
+('Palitrex', 'CAPSULE', 4, '', 'WITHOUT_PRESCRIPTION', 1, 1);
+
+-- 2 Rapidol
+INSERT INTO medicine_specification (quantity, unit) VALUES (200, 'MG');
+INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (2, 2);
+INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (2, 3);
+INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (2, 4);
+INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (2, 5);
+INSERT INTO medicine_composition (medicine_specification_id, composition_id) VALUES (2, 2);
+--INSERT INTO replacement_medicine
+INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id) VALUES
+('Rapidol', 'PILL', 5, '', 'WITHOUT_PRESCRIPTION', 2, 2);
+
+-- 3 Diclofenac Duo
+INSERT INTO medicine_specification (quantity, unit) VALUES (75, 'MG');
+INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (3, 2);
+INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (3, 3);
+INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (3, 4);
+INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (3, 5);
+INSERT INTO medicine_composition (medicine_specification_id, composition_id) VALUES (3, 3);
+--INSERT INTO replacement_medicine
+INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id) VALUES
+('Diclofenac Duo', 'CAPSULE', 7, '', 'WITHOUT_PRESCRIPTION', 2, 3);
