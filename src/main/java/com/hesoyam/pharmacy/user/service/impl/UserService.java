@@ -93,14 +93,7 @@ public class UserService implements UserDetailsService, IUserService {
         validateRegistrationRequest(registrationDTO);
 
         Patient patient = new Patient();
-        patient.setEmail(registrationDTO.getEmail());
-        patient.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
-        patient.setFirstName(registrationDTO.getFirstName());
-        patient.setLastName(registrationDTO.getLastName());
-        patient.setGender(registrationDTO.getGender());
-        patient.setTelephone(registrationDTO.getTelephone());
-        patient.setAddress(registrationDTO.getAddress());
-        patient.setLastPasswordResetDate(new Timestamp((new Date().getTime())));
+        loadUserAccountWithRegistrationData(patient,registrationDTO, false);
 
         //TODO: Find by name parameter should be saved somewhere globally.
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_PATIENT");
@@ -118,15 +111,7 @@ public class UserService implements UserDetailsService, IUserService {
     @Override
     public SysAdmin registerSysAdmin(RegistrationDTO registrationDTO) throws UserNotUniqueException {
         SysAdmin sysAdmin = new SysAdmin();
-        sysAdmin.setEmail(registrationDTO.getEmail());
-        sysAdmin.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
-        sysAdmin.setFirstName(registrationDTO.getFirstName());
-        sysAdmin.setLastName(registrationDTO.getLastName());
-        sysAdmin.setGender(registrationDTO.getGender());
-        sysAdmin.setTelephone(registrationDTO.getTelephone());
-        sysAdmin.setAddress(registrationDTO.getAddress());
-        sysAdmin.setLastPasswordResetDate(new Timestamp((new Date().getTime())));
-        sysAdmin.setPasswordReset(true);
+        loadUserAccountWithRegistrationData(sysAdmin, registrationDTO, true);
 
         //TODO: Find by name parameter should be saved somewhere globally.
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_SYS_ADMIN");
@@ -139,6 +124,35 @@ public class UserService implements UserDetailsService, IUserService {
         }
 
         return sysAdmin;
+    }
+
+    @Override
+    public Dermatologist registerDermatologist(RegistrationDTO registrationDTO) throws UserNotUniqueException {
+        Dermatologist dermatologist = new Dermatologist();
+        loadUserAccountWithRegistrationData(dermatologist, registrationDTO, false);
+        //TODO: Find by name parameter should be saved somewhere globally.
+        List<Role> roles = (List<Role>) roleService.findByName("ROLE_DERMATOLOGIST");
+        dermatologist.setAuthorities(roles);
+
+        try{
+            dermatologist = userRepository.save(dermatologist);
+        }catch (DataIntegrityViolationException ex){
+            throw new UserNotUniqueException("A user with specified email already exists.");
+        }
+
+        return dermatologist;
+    }
+
+    private void loadUserAccountWithRegistrationData(User user, RegistrationDTO registrationDTO, boolean passwordReset) {
+        user.setEmail(registrationDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
+        user.setFirstName(registrationDTO.getFirstName());
+        user.setLastName(registrationDTO.getLastName());
+        user.setGender(registrationDTO.getGender());
+        user.setTelephone(registrationDTO.getTelephone());
+        user.setAddress(registrationDTO.getAddress());
+        user.setLastPasswordResetDate(new Timestamp((new Date().getTime())));
+        user.setPasswordReset(passwordReset);
     }
 
 

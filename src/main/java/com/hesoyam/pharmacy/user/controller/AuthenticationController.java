@@ -174,7 +174,26 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
         }
         return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserDataToMap(sysAdmin)));
+    }
 
+    @PostMapping("/register-dermatologist-account")
+    @Secured("ROLE_SYS_ADMIN")
+    public ResponseEntity<Map<String, Map<String, String>>> createDermatologist(@RequestBody @Valid RegistrationDTO registrationDTO, BindingResult errors){
+        Map<String, String> errorsMap = new HashMap<>();
+        if(errors.hasErrors()){
+            errorsMap = extractFieldErrorsFromErrors(errors);
+            return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
+        }
+
+        Dermatologist dermatologist = null;
+        try{
+            dermatologist = userService.registerDermatologist(registrationDTO);
+        } catch (UserNotUniqueException notUniqueException) {
+            errorsMap.put("emailNotUnique", notUniqueException.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
+        }
+
+        return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserDataToMap(dermatologist)));
     }
 
 

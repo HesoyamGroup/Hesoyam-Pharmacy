@@ -6,10 +6,7 @@ import com.hesoyam.pharmacy.user.exceptions.InvalidChangePasswordRequestExceptio
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.UserNotUniqueException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationValidationException;
-import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.user.model.SysAdmin;
-import com.hesoyam.pharmacy.user.model.User;
-import com.hesoyam.pharmacy.user.model.VerificationToken;
+import com.hesoyam.pharmacy.user.model.*;
 
 import java.util.Collection;
 
@@ -21,6 +18,7 @@ public interface IUserService {
     Collection<User> findAll();
     Patient register(RegistrationDTO registrationDTO) throws RegistrationValidationException, UserNotUniqueException;
     SysAdmin registerSysAdmin(RegistrationDTO registrationDTO) throws UserNotUniqueException;
+    Dermatologist registerDermatologist(RegistrationDTO registrationDTO) throws UserNotUniqueException;
     void createVerificationToken(User user, String token);
     VerificationToken getVerificationToken(String token);
 }
