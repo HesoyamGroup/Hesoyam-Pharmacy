@@ -1,5 +1,6 @@
 package com.hesoyam.pharmacy.user.service.impl;
 
+import com.hesoyam.pharmacy.user.DTO.AdministratorRegistrationDTO;
 import com.hesoyam.pharmacy.user.DTO.ChangePasswordDTO;
 import com.hesoyam.pharmacy.user.DTO.RegistrationDTO;
 import com.hesoyam.pharmacy.user.exceptions.InvalidChangePasswordRequestException;
@@ -141,6 +142,25 @@ public class UserService implements UserDetailsService, IUserService {
         }
 
         return dermatologist;
+    }
+
+    @Override
+    public Administrator registerAdministrator(AdministratorRegistrationDTO administratorRegistrationDTO) throws UserNotUniqueException {
+        Administrator administrator = new Administrator();
+        loadUserAccountWithRegistrationData(administrator, administratorRegistrationDTO, false);
+        administrator.setPharmacy(administratorRegistrationDTO.getPharmacy());
+        //TODO: Find by name parameter should be saved somewhere globally.
+        List<Role> roles = (List<Role>) roleService.findByName("ROLE_ADMINISTRATOR");
+        administrator.setAuthorities(roles);
+
+        try{
+            administrator = userRepository.save(administrator);
+        }catch (DataIntegrityViolationException ex){
+            System.out.println(ex.getMessage());
+            throw new UserNotUniqueException("A user with specified email already exists.");
+        }
+
+        return administrator;
     }
 
     private void loadUserAccountWithRegistrationData(User user, RegistrationDTO registrationDTO, boolean passwordReset) {

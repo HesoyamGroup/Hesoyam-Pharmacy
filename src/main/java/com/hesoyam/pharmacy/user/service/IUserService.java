@@ -1,5 +1,6 @@
 package com.hesoyam.pharmacy.user.service;
 
+import com.hesoyam.pharmacy.user.DTO.AdministratorRegistrationDTO;
 import com.hesoyam.pharmacy.user.DTO.ChangePasswordDTO;
 import com.hesoyam.pharmacy.user.DTO.RegistrationDTO;
 import com.hesoyam.pharmacy.user.exceptions.InvalidChangePasswordRequestException;
@@ -19,6 +20,7 @@ public interface IUserService {
     Patient register(RegistrationDTO registrationDTO) throws RegistrationValidationException, UserNotUniqueException;
     SysAdmin registerSysAdmin(RegistrationDTO registrationDTO) throws UserNotUniqueException;
     Dermatologist registerDermatologist(RegistrationDTO registrationDTO) throws UserNotUniqueException;
+    Administrator registerAdministrator(AdministratorRegistrationDTO administratorRegistrationDTO) throws UserNotUniqueException;
     void createVerificationToken(User user, String token);
     VerificationToken getVerificationToken(String token);
 }

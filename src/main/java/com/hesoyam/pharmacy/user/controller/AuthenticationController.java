@@ -1,9 +1,7 @@
 package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.security.TokenUtils;
-import com.hesoyam.pharmacy.user.DTO.ChangePasswordDTO;
-import com.hesoyam.pharmacy.user.DTO.LoginDTO;
-import com.hesoyam.pharmacy.user.DTO.UserTokenState;
+import com.hesoyam.pharmacy.user.DTO.*;
 import com.hesoyam.pharmacy.user.events.OnRegistrationCompletedEvent;
 import com.hesoyam.pharmacy.user.exceptions.InvalidChangePasswordRequestException;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
@@ -27,7 +25,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import com.hesoyam.pharmacy.user.DTO.RegistrationDTO;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -170,7 +167,7 @@ public class AuthenticationController {
         try {
             sysAdmin = userService.registerSysAdmin(registrationDTO);
         } catch (UserNotUniqueException notUniqueException) {
-            errorsMap.put("emailNotUnique", notUniqueException.getMessage());
+            errorsMap.put("userNotUnique", notUniqueException.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
         }
         return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserDataToMap(sysAdmin)));
@@ -189,11 +186,30 @@ public class AuthenticationController {
         try{
             dermatologist = userService.registerDermatologist(registrationDTO);
         } catch (UserNotUniqueException notUniqueException) {
-            errorsMap.put("emailNotUnique", notUniqueException.getMessage());
+            errorsMap.put("userNotUnique", notUniqueException.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
         }
 
         return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserDataToMap(dermatologist)));
+    }
+
+    @PostMapping("/register-administrator-account")
+    @Secured("ROLE_SYS_ADMIN")
+    public ResponseEntity<Map<String, Map<String, String>>> createAdministrator(@RequestBody @Valid AdministratorRegistrationDTO administratorRegistrationDTO, BindingResult errors){
+        Map<String, String> errorsMap = new HashMap<>();
+        if(errors.hasErrors()){
+            errorsMap = extractFieldErrorsFromErrors(errors);
+            return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
+        }
+        Administrator administrator = null;
+        try{
+            administrator = userService.registerAdministrator(administratorRegistrationDTO);
+        } catch (UserNotUniqueException notUniqueException) {
+            errorsMap.put("userNotUnique", notUniqueException.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
+        }
+
+        return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserDataToMap(administrator)));
     }
 
 

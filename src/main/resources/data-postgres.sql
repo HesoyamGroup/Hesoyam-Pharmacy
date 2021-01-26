@@ -54,4 +54,13 @@ INSERT INTO sys_admin(id) VALUES (1);
 INSERT INTO user_roles(user_id, role_id) VALUES(1, 6);
 
 
+-- Pharmacy
+INSERT INTO pharmacy(address_line, latitude, longitude, description, name, rating, city_id)
+VALUES ('aleksandar zgrada',-90, 64, 'Ovo je najbolja apoteka', 'HesoyamPharm', 1, 1);
+INSERT INTO pharmacy(address_line, latitude, longitude, description, name, rating, city_id)
+VALUES ('dalton zgrada',-45, 32, 'Mi smo apoteka', 'NikolaPharm', 1, 4);
+INSERT INTO pharmacy(address_line, latitude, longitude, description, name, rating, city_id)
+VALUES ('neka zgrada',-0, 16, 'Originalan opis', 'PetronijaPharm', 1, 6);
+
+
 
