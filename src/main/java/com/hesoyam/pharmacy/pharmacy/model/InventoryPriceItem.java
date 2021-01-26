@@ -11,6 +11,9 @@ public class InventoryPriceItem extends PriceItem {
     @JoinColumn(name = "inventory_item_id")
     private InventoryItem inventoryItem;
 
+    public InventoryPriceItem() {}
+
+
     public InventoryItem getInventoryItem() {
         return inventoryItem;
     }
