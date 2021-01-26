@@ -32,6 +32,7 @@ public class Pharmacy {
    private String name;
 
    @Column(length = 300)
+   @NotNull
    @Length(max=300, message = "Pharmacy description length should not exceed 300 characters.")
    private String description;
 
