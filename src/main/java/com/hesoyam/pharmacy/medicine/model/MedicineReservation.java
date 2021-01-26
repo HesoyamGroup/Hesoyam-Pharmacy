@@ -6,8 +6,10 @@
 package com.hesoyam.pharmacy.medicine.model;
 
 import com.hesoyam.pharmacy.user.model.Patient;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
@@ -21,12 +23,15 @@ public class MedicineReservation {
    private Long id;
 
    @Column(name = "pick_up_date")
+   @NotNull(message = "Pick up date must be specified.")
    private LocalDateTime pickUpDate;
 
    @Column(length =  50)
+   @NotNull(message = "Medicine reservation code must be provided.")
+   @Length(min=1, max=50, message = "Medicine reservation code length should be between 1 and 50.")
    private String code;
 
-   @OneToMany(fetch = FetchType.LAZY)
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinColumn(name = "medicine_reservation_id", referencedColumnName = "id")
    private List<MedicineReservationItem> medicineReservationItems;
 

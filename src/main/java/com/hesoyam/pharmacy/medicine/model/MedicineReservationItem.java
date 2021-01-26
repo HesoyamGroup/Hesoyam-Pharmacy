@@ -6,6 +6,7 @@
 package com.hesoyam.pharmacy.medicine.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 public class MedicineReservationItem {
@@ -15,6 +16,7 @@ public class MedicineReservationItem {
    private Long id;
 
    @Column
+   @Min(0)
    private int quantity;
 
    @ManyToOne(fetch = FetchType.EAGER, optional = false)
