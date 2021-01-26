@@ -12,7 +12,6 @@ import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 
 import javax.persistence.*;
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -58,6 +57,10 @@ public class Pharmacy {
 
    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
    private List<Sale> sales;
+
+   @OneToMany()
+   @JoinColumn(name = "pharmacy_id", referencedColumnName = "id")
+   private List<ServicePriceItem> servicePriceItems;
 
    public List<Pharmacist> getPharmacists() {
       if (pharmacists == null)
@@ -211,4 +214,44 @@ public class Pharmacy {
          }
       }
    }
+
+   public List<ServicePriceItem> getServicePriceItems() {
+      if (servicePriceItems == null)
+         servicePriceItems = new ArrayList<>();
+      return servicePriceItems;
+   }
+
+   public Iterator<ServicePriceItem> getIteratorServicePriceItems() {
+      if (servicePriceItems == null)
+         servicePriceItems = new java.util.ArrayList<>();
+      return servicePriceItems.iterator();
+   }
+
+   public void setServicePriceItems(List<ServicePriceItem> newServicePriceItems) {
+      removeAllServicePriceItems();
+      for (Iterator<ServicePriceItem> iter = newServicePriceItems.iterator(); iter.hasNext();)
+         addServicePriceItems(iter.next());
+   }
+
+   public void addServicePriceItems(ServicePriceItem newServicePriceItem) {
+      if (newServicePriceItem == null)
+         return;
+      if (this.servicePriceItems == null)
+         this.servicePriceItems = new ArrayList<>();
+      if (!this.servicePriceItems.contains(newServicePriceItem))
+         this.servicePriceItems.add(newServicePriceItem);
+   }
+
+   public void removeServicePriceItems(ServicePriceItem oldServicePriceItem) {
+      if (oldServicePriceItem == null)
+         return;
+      if (this.servicePriceItems != null && this.servicePriceItems.contains(oldServicePriceItem))
+            this.servicePriceItems.remove(oldServicePriceItem);
+   }
+
+   public void removeAllServicePriceItems() {
+      if (servicePriceItems != null)
+         servicePriceItems.clear();
+   }
+
 }
