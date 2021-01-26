@@ -6,6 +6,8 @@
 package com.hesoyam.pharmacy.medicine.model;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,7 +31,9 @@ public class MedicineSpecification {
            inverseJoinColumns = @JoinColumn(name = "composition_id", referencedColumnName = "id"))
    private List<CompositionItem> compositionItems;
 
+   @Valid
    @Embedded
+   @NotNull(message = "Dosage must be specified.")
    private Dosage dosage;
 
    @ManyToMany(fetch = FetchType.LAZY)
@@ -38,8 +42,6 @@ public class MedicineSpecification {
            inverseJoinColumns = @JoinColumn(name = "replacement_medicine_id", referencedColumnName = "id"))
    private List<Medicine> replacementMedicines;
 
-   @OneToOne(fetch = FetchType.EAGER, mappedBy = "medicineSpecification")
-   private Medicine medicine;
 
    public List<Contraindication> getContraindications() {
       if (contraindications == null)
@@ -158,4 +160,19 @@ public class MedicineSpecification {
          replacementMedicines.clear();
    }
 
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public Dosage getDosage() {
+      return dosage;
+   }
+
+   public void setDosage(Dosage dosage) {
+      this.dosage = dosage;
+   }
 }
