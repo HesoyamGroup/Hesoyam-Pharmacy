@@ -7,6 +7,7 @@ package com.hesoyam.pharmacy.pharmacy.model;
 
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.user.model.Administrator;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 
@@ -17,6 +18,7 @@ public class Promotion {
    private Long id;
 
    @Column(length=350)
+   @Length(min=3, max=350, message = "Promotion description length should be between 3 and 350 characters.")
    private String description;
 
    @Embedded

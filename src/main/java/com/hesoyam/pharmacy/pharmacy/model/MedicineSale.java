@@ -17,4 +17,14 @@ public class MedicineSale extends Sale {
    @ManyToOne(fetch = FetchType.EAGER) // Note [Gergo]: optional=false will not let ServiceSale records to be inserted in super table Sales
    @JoinColumn(name="medicine_id")
    private Medicine medicine;
+
+   public MedicineSale() {}
+
+   public Medicine getMedicine() {
+      return medicine;
+   }
+
+   public void setMedicine(Medicine medicine) {
+      this.medicine = medicine;
+   }
 }
