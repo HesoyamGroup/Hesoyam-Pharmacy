@@ -6,6 +6,7 @@ import com.hesoyam.pharmacy.location.service.ICityService;
 import com.hesoyam.pharmacy.location.service.ICountryService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.DTO.AddressDTO;
+import com.hesoyam.pharmacy.user.DTO.PasswordDTO;
 import com.hesoyam.pharmacy.user.DTO.UserBasicInfoDTO;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.User;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +28,9 @@ public class UserProfileController {
 
     private static final String ERRORS_FIELD_NAME = "errors";
     private static final String DATA_FIELD_NAME = "data";
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private TokenUtils tokenUtils;
@@ -120,5 +125,37 @@ public class UserProfileController {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("bad");
         }
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestBody PasswordDTO passwordChanges, HttpServletRequest request){
+
+        String token = tokenUtils.getToken(request);
+        String username = tokenUtils.getUsernameFromToken(token);
+
+        System.out.println("------------------------------------------------------------");
+        System.out.println(passwordChanges.getPassword());
+        System.out.println(passwordChanges.getConfirmPassword());
+        System.out.println(passwordChanges.getOldPassword());
+        System.out.println("------------------------------------------------------------");
+
+
+        try{
+            User user = userService.findByEmail(username);
+
+            if(passwordEncoder.matches(passwordChanges.getOldPassword(), user.getPassword()))
+            {
+                user.setPassword(passwordEncoder.encode(passwordChanges.getPassword()));
+                userService.update(user);
+                return ResponseEntity.ok().body("password successfully changed");
+            }
+            else
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("wrong old password");
+        }
+        catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+        }
+
     }
 }
