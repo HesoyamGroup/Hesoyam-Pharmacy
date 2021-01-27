@@ -6,11 +6,13 @@
 package com.hesoyam.pharmacy.util;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Embeddable
 public class DateTimeRange {
    @Column(name= "from_date")
+   @NotNull(message = "From date must be set.")
    private LocalDateTime from;
    @Column(name= "to_date")
    private LocalDateTime to;
