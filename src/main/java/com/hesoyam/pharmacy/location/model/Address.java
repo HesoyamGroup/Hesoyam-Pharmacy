@@ -10,9 +10,6 @@ import com.hesoyam.pharmacy.location.validators.longitude.LongitudeConstraint;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Embeddable
@@ -34,9 +31,6 @@ public class Address {
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name="city_id")
    private City city;
-
-
-   public Address(){}
 
    public String getAddressLine() {
       return addressLine;

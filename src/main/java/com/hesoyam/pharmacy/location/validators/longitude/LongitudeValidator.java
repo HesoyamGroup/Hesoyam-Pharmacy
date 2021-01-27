@@ -6,11 +6,6 @@ import javax.validation.ConstraintValidatorContext;
 
 public class LongitudeValidator implements ConstraintValidator<LongitudeConstraint, Double> {
     @Override
-    public void initialize(LongitudeConstraint constraintAnnotation) {
-
-    }
-
-    @Override
     public boolean isValid(Double longitude, ConstraintValidatorContext constraintValidatorContext) {
         return (longitude != null && longitude >= -180 && longitude <= 180);
     }

@@ -5,6 +5,8 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.pharmacy.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -22,9 +24,9 @@ public class Inventory {
 
    @OneToOne(fetch = FetchType.LAZY)
    @JoinColumn(name="pharmacy_id", nullable = false)
+   @JsonBackReference
    private Pharmacy pharmacy;
 
-   public Inventory(){}
 
    public Long getId() {
       return id;

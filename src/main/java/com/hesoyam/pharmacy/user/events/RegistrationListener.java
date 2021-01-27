@@ -4,7 +4,6 @@ import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -15,9 +14,6 @@ import java.util.UUID;
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompletedEvent> {
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private MessageSource messages;
 
     @Autowired
     private JavaMailSender mailSender;

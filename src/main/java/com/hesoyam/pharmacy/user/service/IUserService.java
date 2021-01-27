@@ -9,7 +9,6 @@ import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.model.VerificationToken;
 
 import java.util.Collection;
-import java.util.Optional;
 
 public interface IUserService {
     User findById(Long id) throws UserNotFoundException;

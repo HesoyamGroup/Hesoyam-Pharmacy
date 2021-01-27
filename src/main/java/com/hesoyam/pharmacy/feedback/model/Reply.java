@@ -6,8 +6,10 @@
 package com.hesoyam.pharmacy.feedback.model;
 
 import com.hesoyam.pharmacy.user.model.SysAdmin;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Reply {
@@ -17,10 +19,13 @@ public class Reply {
    private Long id;
 
    @Column(length = 400, nullable = false)
+   @NotNull(message = "Reply text must be provided.")
+   @Length(min=5, max=400, message = "Reply length should be between 5 and 400 characters.")
    private String text;
 
    @ManyToOne(fetch = FetchType.LAZY, optional = true)
    @JoinColumn(name="sys_admin_id", nullable = false)
+   @NotNull(message = "Reply must have a placer(Sys admin).")
    private SysAdmin sysAdmin;
 
 }

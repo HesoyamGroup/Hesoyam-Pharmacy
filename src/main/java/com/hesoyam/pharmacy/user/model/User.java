@@ -8,11 +8,8 @@ package com.hesoyam.pharmacy.user.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hesoyam.pharmacy.location.model.Address;
 import com.hesoyam.pharmacy.user.validators.PhoneNumberConstraint;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -78,7 +75,7 @@ public abstract class User implements UserDetails {
            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
    private List<Role> authorities;
 
-   public User(){}
+   protected User(){}
 
    public void update(User user){
       //Everything copied except user ID
@@ -109,7 +106,7 @@ public abstract class User implements UserDetails {
    }
 
    public Role getUserRole(){
-      if(authorities.size() > 0)
+      if(authorities.isEmpty())
          return authorities.get(0);
 
       return null;

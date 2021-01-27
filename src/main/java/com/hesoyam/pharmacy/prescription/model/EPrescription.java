@@ -32,8 +32,6 @@ public class EPrescription {
    @JoinColumn(name="eprescription_id", referencedColumnName="id", nullable = false)
    private List<PrescriptionItem> prescriptionItems;
 
-   public EPrescription(){}
-
    public Long getId() {
       return id;
    }

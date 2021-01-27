@@ -31,8 +31,6 @@ public class InventoryItem {
    @OneToMany(mappedBy = "inventoryItem", cascade = CascadeType.ALL)
    private List<InventoryPriceItem> prices;
 
-   public InventoryItem(){}
-
    public Long getId() {
       return id;
    }

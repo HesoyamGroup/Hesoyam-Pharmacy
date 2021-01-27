@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegistrationValidationException extends Exception{
-    Map<String, String> errorMessages;
-    public RegistrationValidationException(HashMap<String, String> error_map) {
+    private Map<String, String> errorMessages;
+    public RegistrationValidationException(Map<String, String> errorMap) {
         super("Multiple errors exception, check GetErrorMessagesMap().");
-        errorMessages = error_map == null ? new HashMap<>() : error_map;
+        errorMessages = errorMap == null ? new HashMap<>() : errorMap;
     }
 
     public Map<String, String> getErrorMessagesMap(){

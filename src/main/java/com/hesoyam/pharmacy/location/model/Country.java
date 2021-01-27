@@ -9,8 +9,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Iterator;
 import java.util.List;
@@ -36,8 +34,6 @@ public class Country {
    @JsonManagedReference
    private List<City> cities;
 
-
-   public Country(){}
 
    public Long getId() {
       return id;

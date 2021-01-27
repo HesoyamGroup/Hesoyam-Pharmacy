@@ -9,8 +9,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -28,8 +26,6 @@ public class City {
    @JoinColumn(name="country_id", referencedColumnName = "id")
    @JsonBackReference
    private Country country;
-
-   public City(){}
 
    public Long getId() {
       return id;

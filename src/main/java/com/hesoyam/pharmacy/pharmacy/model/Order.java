@@ -41,8 +41,6 @@ public class Order {
    @JoinColumn(name="order_id", referencedColumnName = "id", nullable = false)
    private List<OrderItem> orderItems;
 
-   public Order() {}
-
 
    public Long getId() {
       return id;

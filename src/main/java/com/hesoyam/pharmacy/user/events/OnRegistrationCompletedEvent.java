@@ -1,6 +1,5 @@
 package com.hesoyam.pharmacy.user.events;
 
-import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.context.ApplicationEvent;
 
