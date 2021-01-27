@@ -6,7 +6,6 @@
 package com.hesoyam.pharmacy.feedback.model;
 
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
-import com.hesoyam.pharmacy.user.model.Employee;
 import com.hesoyam.pharmacy.user.model.Patient;
 
 import javax.persistence.Entity;

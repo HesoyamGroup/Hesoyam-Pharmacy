@@ -18,8 +18,6 @@ public class MedicineSale extends Sale {
    @JoinColumn(name="medicine_id")
    private Medicine medicine;
 
-   public MedicineSale() {}
-
    public Medicine getMedicine() {
       return medicine;
    }

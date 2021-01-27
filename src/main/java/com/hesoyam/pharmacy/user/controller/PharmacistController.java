@@ -1,7 +1,6 @@
 package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.user.DTO.EmployeeBasicDTO;
-import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.service.IPharmacistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class PharmacistController {
     public ResponseEntity<List<EmployeeBasicDTO>> getWorkingPharmacistsAtPharmacy(@PathVariable Long id){
         List<Pharmacist> pharmacists = pharmacistService.getWorkingPharmacistsAtPharmacy(id);
         List<EmployeeBasicDTO> employees = new ArrayList<>();
-        pharmacists.forEach((pharmacist) -> employees.add(new EmployeeBasicDTO(pharmacist)));
+        pharmacists.forEach( pharmacist -> employees.add(new EmployeeBasicDTO(pharmacist)));
         return new ResponseEntity<>(employees, pharmacists.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
 }

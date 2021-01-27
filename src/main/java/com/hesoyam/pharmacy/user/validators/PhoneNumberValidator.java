@@ -5,7 +5,9 @@ import javax.validation.ConstraintValidatorContext;
 
 public class PhoneNumberValidator implements ConstraintValidator<PhoneNumberConstraint, String> {
     @Override
-    public void initialize(PhoneNumberConstraint constraintAnnotation) { }
+    public void initialize(PhoneNumberConstraint constraintAnnotation) {
+        //Initialize comment
+    }
 
     @Override
     public boolean isValid(String phoneNumberField, ConstraintValidatorContext constraintValidatorContext) {

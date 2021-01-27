@@ -1,7 +1,6 @@
 package com.hesoyam.pharmacy.user.service.impl;
 
 import com.hesoyam.pharmacy.user.exceptions.PharmacistNotFoundException;
-import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.repository.PharmacistRepository;
 import com.hesoyam.pharmacy.user.service.IPharmacistService;

@@ -25,7 +25,7 @@ public class DermatologistController {
     public ResponseEntity<List<EmployeeBasicDTO>> getWorkingDermatologistsAtPharmacy(@PathVariable Long id){
         List<Dermatologist> dermatologists = dermatologistService.getWorkingDermatologistsAtPharmacy(id);
         List<EmployeeBasicDTO> employees = new ArrayList<>();
-        dermatologists.forEach((dermatologist) -> employees.add(new EmployeeBasicDTO(dermatologist)));
+        dermatologists.forEach( dermatologist -> employees.add(new EmployeeBasicDTO(dermatologist)));
         return new ResponseEntity<>(employees, dermatologists.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
 

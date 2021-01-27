@@ -73,8 +73,6 @@ public class Pharmacy {
    @JoinColumn(name = "pharmacy_id", referencedColumnName = "id")
    private List<ServicePriceItem> servicePriceItems;
 
-   public Pharmacy(){}
-
    public Long getId() {
       return id;
    }

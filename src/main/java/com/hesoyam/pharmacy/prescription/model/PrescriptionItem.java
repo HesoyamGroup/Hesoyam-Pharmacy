@@ -24,8 +24,6 @@ public class PrescriptionItem {
    @JoinColumn(name="medicine_id")
    private Medicine medicine;
 
-   public PrescriptionItem(){}
-
 
    public Long getId() {
       return id;

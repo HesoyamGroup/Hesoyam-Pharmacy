@@ -17,7 +17,7 @@ public class PharmacyService implements IPharmacyService {
 
     @Override
     public List<Pharmacy> getAll() {
-        return null;
+        return pharmacyRepository.findAll();
     }
 
     @Override

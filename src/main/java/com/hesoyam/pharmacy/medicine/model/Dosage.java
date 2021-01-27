@@ -15,8 +15,6 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class Dosage{
 
-   public Dosage() {}
-
    @Column
    @NotNull(message = "Dosage quantity must be provided.")
    @Min(value = 0, message = "Dosage quantity must be a non-negative integer.")

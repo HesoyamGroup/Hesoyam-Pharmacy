@@ -1,8 +1,4 @@
 package com.hesoyam.pharmacy.feedback.DTO;
-
-import com.hesoyam.pharmacy.user.model.Employee;
-import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.user.model.User;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -16,8 +12,6 @@ public class EmployeeComplaintCreateDTO {
 
     @NotNull(message = "Employee ID must be provided.")
     private Long employeeId;
-
-    public EmployeeComplaintCreateDTO(){}
 
     public Long getEmployeeId() {
         return employeeId;

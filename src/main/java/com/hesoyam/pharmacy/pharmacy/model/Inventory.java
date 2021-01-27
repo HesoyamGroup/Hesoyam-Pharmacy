@@ -27,7 +27,6 @@ public class Inventory {
    @JsonBackReference
    private Pharmacy pharmacy;
 
-   public Inventory(){}
 
    public Long getId() {
       return id;

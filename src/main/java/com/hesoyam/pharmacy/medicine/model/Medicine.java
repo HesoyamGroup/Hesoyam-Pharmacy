@@ -8,7 +8,6 @@ package com.hesoyam.pharmacy.medicine.model;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -50,9 +49,6 @@ public class Medicine {
    @Enumerated(EnumType.STRING)
    @NotNull(message = "Prescription mode must be specified.")
    private PrescriptionMode prescriptionMode;
-
-   public Medicine(){}
-
 
    public Long getId() {
       return id;
