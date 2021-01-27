@@ -20,6 +20,15 @@ public class Therapy {
    @JoinColumn(name="therapy_id", referencedColumnName="id", nullable = false)
    private List<TherapyItem> therapyItems;
 
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
    public List<TherapyItem> getTherapyItems() {
       if (therapyItems == null)
          therapyItems = new ArrayList<>();
