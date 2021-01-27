@@ -5,6 +5,8 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.pharmacy.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hesoyam.pharmacy.location.model.Address;
 import com.hesoyam.pharmacy.user.model.Administrator;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
@@ -40,27 +42,31 @@ public class Pharmacy {
    private double rating;
 
    @OneToMany(mappedBy="pharmacy", fetch = FetchType.LAZY)
+   @JsonManagedReference
    private List<Pharmacist> pharmacists;
 
-   @ManyToMany
+   @ManyToMany(fetch = FetchType.LAZY)
    @JoinTable(name="pharmacies_dermatologists", joinColumns = @JoinColumn(name="pharmacy_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name="dermatologist_id", referencedColumnName = "id"))
+   @JsonManagedReference
    private List<Dermatologist> dermatologists;
 
    @Embedded
    private Address address;
 
-
    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+   @JsonManagedReference
    private List<Administrator> administrator;
 
-   @ManyToMany
+   @ManyToMany(fetch = FetchType.LAZY)
    @JoinTable(name = "subscription", joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
    private List<Patient> subscribedPatients;
 
    @OneToOne(optional = true, mappedBy = "pharmacy", cascade = CascadeType.REMOVE)
+   @JsonManagedReference
    private Inventory inventory;
 
    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
+   @JsonBackReference
    private List<Sale> sales;
 
    @OneToMany(cascade = CascadeType.REMOVE)

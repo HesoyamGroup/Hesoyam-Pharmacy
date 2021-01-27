@@ -5,6 +5,7 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.user.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 
@@ -16,6 +17,7 @@ public class Pharmacist extends Employee {
 
    @ManyToOne(fetch = FetchType.EAGER, optional = false)
    @JoinColumn(name="pharmacy_id", referencedColumnName = "id", nullable = false)
+   @JsonBackReference
    private Pharmacy pharmacy;
 
    @OneToMany(fetch = FetchType.LAZY, mappedBy="pharmacist")
