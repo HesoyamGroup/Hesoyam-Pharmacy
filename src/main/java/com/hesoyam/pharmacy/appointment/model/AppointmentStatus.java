@@ -8,5 +8,6 @@ package com.hesoyam.pharmacy.appointment.model;
 public enum AppointmentStatus {
    FREE,
    TAKEN,
-   ABSENT;
+   ABSENT,
+   COMPLETED;
 }
