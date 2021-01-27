@@ -56,6 +56,10 @@ public abstract class User implements UserDetails {
    @NotNull
    protected Gender gender;
 
+   @Enumerated(EnumType.STRING)
+   @NotNull
+   protected RoleEnum roleEnum;
+
    @Column(length=200)
    @NotNull
    @Length(min=8, max=200) //NOTE: Max Length due to JWT length
@@ -84,6 +88,7 @@ public abstract class User implements UserDetails {
       this.telephone = user.getTelephone();
       this.email = user.getEmail();
       this.gender = user.getGender();
+      this.roleEnum = user.getRoleEnum();
       if(!this.password.equals(user.getPassword())){
          //If a password has been changed, update timestamp
          lastPasswordResetDate = new Timestamp((new Date()).getTime());
@@ -221,5 +226,13 @@ public abstract class User implements UserDetails {
 
    public void setEnabled(boolean enabled) {
       this.enabled = enabled;
+   }
+
+   public RoleEnum getRoleEnum() {
+      return roleEnum;
+   }
+
+   public void setRoleEnum(RoleEnum roleEnum) {
+      this.roleEnum = roleEnum;
    }
 }
