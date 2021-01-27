@@ -18,4 +18,9 @@ public class PatientService implements IPatientService {
         return patientRepository.findById(id).orElseThrow(() -> new PatientNotFoundException(id));
     }
 
+    @Override
+    public Boolean isPatientSubscribedToPharmacy(Long patientId, Long pharmacyId) {
+        Patient p = patientRepository.getSubscribedPatientByPharmacy(patientId, pharmacyId);
+        return p != null;
+    }
 }

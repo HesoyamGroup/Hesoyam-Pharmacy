@@ -5,4 +5,5 @@ import com.hesoyam.pharmacy.user.model.Patient;
 
 public interface IPatientService {
     Patient getById(Long id) throws PatientNotFoundException;
+    Boolean isPatientSubscribedToPharmacy(Long patientId, Long pharmacyId);
 }

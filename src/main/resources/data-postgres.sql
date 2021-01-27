@@ -1,3 +1,5 @@
+-- Šifra svakog korisnika je 00000000
+
 INSERT INTO roles (role_name) VALUES ('ROLE_NONE');
 INSERT INTO roles (role_name) VALUES ('ROLE_PATIENT');
 INSERT INTO roles (role_name) VALUES ('ROLE_PHARMACIST');
@@ -46,63 +48,26 @@ INSERT INTO city (city_name, country_id) VALUES ('Prilep', 6);
 INSERT INTO city (city_name, country_id) VALUES ('Skopje', 6);
 INSERT INTO city (city_name, country_id) VALUES ('Berovo', 6);
 
-
 -------------
--- PHARMACIES
+-- MEDICINE
 -------------
 
--- 1 Jankovic
-INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city_id, rating) VALUES
-('Apoteka Janković', 'Poverenje, sigurnost i dostupnost su, već skoro 30 godina, glavna obeležja Apotekarske ustanove Janković', 'Bulevar oslobođenja 135', 45.24147051535973, 19.84340829263456, 1, 0);
---INSERT INTO
-
--- 2 BENU
-INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city_id, rating) VALUES
-('BENU Pharmacy', 'BENU apoteke odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije.', 'Bulevar cara Lazara 57', 45.242099257464965, 19.834720141296856, 1, 0);
-
-
--- 3 Tilia
-INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city_id, rating) VALUES
-('Apoteka Tilia', '', 'Bulevar oslobođenja 3A', 45.26416960023307, 19.830897136780703, 1, 0);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-INSERT INTO manufacturer (name, address_line, latitude, longitude, city_id) VALUES ('GALENIKA AD BEOGRAD', 'Ulica bb', 0, 0, 3);
-INSERT INTO manufacturer (name, address_line, latitude, longitude, city_id) VALUES ('PHARMASWISS D.O.O., BEOGRAD', 'Ulica bb', 0, 0, 3);
+INSERT INTO manufacturer (name, address_line, latitude, longitude, city_id) VALUES ('GALENIKA AD BEOGRAD', 'Ulica bb', 44.79237538733406, 20.45986955932357, 3);
+INSERT INTO manufacturer (name, address_line, latitude, longitude, city_id) VALUES ('PHARMASWISS D.O.O., BEOGRAD', 'Ulica bb', 44.79585941445145, 20.444138466824253, 3);
 
 INSERT INTO contraindication (name) VALUES ('Alergija na cefaleksin');
 INSERT INTO contraindication (name) VALUES ('Teška insuficijencija jetre');
 INSERT INTO contraindication (name) VALUES ('Teška srčana insuficijencija');
 INSERT INTO contraindication (name) VALUES ('Teška insuficijencija bubrega');
 INSERT INTO contraindication (name) VALUES ('Treći trimestar trudnoće');
+INSERT INTO contraindication (name) VALUES ('Preosetljivost na penicilin');
 
 INSERT INTO composition_item (name, quantity, unit) VALUES ('Cefaleksin', 250, 'MG');
 INSERT INTO composition_item (name, quantity, unit) VALUES ('Ibuprofen', 200, 'MG');
 INSERT INTO composition_item (name, quantity, unit) VALUES ('Diclofenak-natrijum', 75, 'MG');
+INSERT INTO composition_item (name, quantity, unit) VALUES ('Amoksicilin', 250, 'MG');
+INSERT INTO composition_item (name, quantity, unit) VALUES ('Klavulanska kiselina', 125, 'MG');
+
 
 -- 1 Palitrex
 INSERT INTO medicine_specification (quantity, unit) VALUES (250, 'MG');
@@ -134,6 +99,33 @@ INSERT INTO medicine_composition (medicine_specification_id, composition_id) VAL
 INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id) VALUES
 ('Diclofenac Duo', 'CAPSULE', 7, '', 'WITHOUT_PRESCRIPTION', 2, 3);
 
+-- 4 Panklav
+INSERT INTO medicine_specification (quantity, unit) VALUES (375, 'MG');
+INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (4, 2);
+INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (4, 6);
+INSERT INTO medicine_composition (medicine_specification_id, composition_id) VALUES (4, 4);
+INSERT INTO medicine_composition (medicine_specification_id, composition_id) VALUES (4, 5);
+--INSERT INTO replacement_medicine
+INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id) VALUES
+('Panklav', 'PILL', 6, '', 'WITH_PRESCRIPTION', 2, 4);
+
+-------------
+-- PHARMACIES
+-------------
+
+-- 1 Jankovic
+INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city_id, rating) VALUES
+('Apoteka Janković', 'Poverenje, sigurnost i dostupnost su, već skoro 30 godina, glavna obeležja Apotekarske ustanove Janković', 'Bulevar oslobođenja 135', 45.24147051535973, 19.84340829263456, 1, 0);
+--INSERT INTO
+
+-- 2 BENU
+INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city_id, rating) VALUES
+('BENU Pharmacy', 'BENU apoteke odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije.', 'Bulevar cara Lazara 57', 45.242099257464965, 19.834720141296856, 1, 0);
+
+
+-- 3 Tilia
+INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city_id, rating) VALUES
+('Apoteka Tilia', '', 'Bulevar oslobođenja 3A', 45.26416960023307, 19.830897136780703, 1, 0);
 
 --------------
 -- SYS ADMIN
