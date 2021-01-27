@@ -5,6 +5,8 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.pharmacy.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hesoyam.pharmacy.location.model.Address;
 import com.hesoyam.pharmacy.user.model.Administrator;
 import com.hesoyam.pharmacy.user.model.Dermatologist;

@@ -7,13 +7,11 @@ package com.hesoyam.pharmacy.appointment.model;
 
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@DiscriminatorValue("CHECKUP")
 public class CheckUp extends Appointment {
    @ManyToOne(fetch = FetchType.LAZY, optional=true)
    @JoinColumn(name="dermatologist_id")

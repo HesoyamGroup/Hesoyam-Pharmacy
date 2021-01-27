@@ -20,7 +20,7 @@ public abstract class Complaint {
 
    @Column(length = 400, nullable = false)
    @NotNull
-   @Length(min=10, max=400, message = "Complaint content length must be between 10 and 40 characters.")
+   @Length(min=10, max=400, message = "Complaint content length must be between 10 and 400 characters.")
    protected String body;
 
    @ManyToOne(fetch = FetchType.LAZY)

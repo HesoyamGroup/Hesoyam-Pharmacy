@@ -5,6 +5,7 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.feedback.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hesoyam.pharmacy.user.model.Employee;
 import com.hesoyam.pharmacy.user.model.Patient;
 
@@ -20,6 +21,7 @@ public class EmployeeComplaint extends Complaint {
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "employee_id")
    @NotNull(message = "Employee must be provided.")
+   @JsonIgnoreProperties({"pharmacies", "checkUps", "counselings", "pharmacy", "iteratorPharmacy", "shifts", "iteratorShift"})
    private Employee employee;
 
    public EmployeeComplaint(){}
@@ -28,7 +30,6 @@ public class EmployeeComplaint extends Complaint {
       super(body, patient, complaintStatus);
       this.employee = employee;
    }
-
 
    public Employee getEmployee() {
       return employee;

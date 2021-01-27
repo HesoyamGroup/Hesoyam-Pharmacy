@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 public class Dermatologist extends Employee {
 
-   @ManyToMany(mappedBy = "dermatologists")
+   @ManyToMany(mappedBy = "dermatologists", fetch = FetchType.LAZY)
    private List<Pharmacy> pharmacies;
 
    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dermatologist")

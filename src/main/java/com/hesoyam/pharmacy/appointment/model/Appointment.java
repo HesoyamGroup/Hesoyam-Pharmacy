@@ -27,7 +27,7 @@ public abstract class Appointment {
    @Length(max=500, message = "Report length should not exceed 500 characters.")
    protected String report;
 
-   @Column
+   @Enumerated(EnumType.STRING)
    @NotNull(message = "Appointment status must be set.")
    protected AppointmentStatus appointmentStatus;
 
@@ -114,6 +114,8 @@ public abstract class Appointment {
          }
       }
    }
+
+
 
 
 }
