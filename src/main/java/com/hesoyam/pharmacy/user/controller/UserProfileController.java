@@ -6,6 +6,7 @@ import com.hesoyam.pharmacy.location.service.ICityService;
 import com.hesoyam.pharmacy.location.service.ICountryService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.DTO.AddressDTO;
+import com.hesoyam.pharmacy.user.DTO.UserBasicInfoDTO;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IUserService;
@@ -80,10 +81,6 @@ public class UserProfileController {
         String token = tokenUtils.getToken(request);
         String username = tokenUtils.getUsernameFromToken(token);
 
-        System.out.println("--------------------------------------------");
-        System.out.println(newAddress.getAddressLine());
-        System.out.println(newAddress.getCity().getCityName());
-        System.out.println("--------------------------------------------");
         try{
             User user = userService.findByEmail(username);
             Address address = new Address();
@@ -98,6 +95,28 @@ public class UserProfileController {
             return ResponseEntity.ok().body("ok");
         }
         catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("bad");
+        }
+    }
+
+    @PostMapping("/change-user-basic-info")
+    public ResponseEntity<String> chanceBasicInfo(@RequestBody UserBasicInfoDTO newInfo, HttpServletRequest request){
+
+        String token = tokenUtils.getToken(request);
+        String username = tokenUtils.getUsernameFromToken(token);
+
+        try{
+            User user = userService.findByEmail(username);
+            user.setFirstName(newInfo.getFirstName());
+            user.setLastName(newInfo.getLastName());
+            user.setGender(newInfo.getGender());
+            user.setTelephone(newInfo.getTelephone());
+
+            userService.update(user);
+
+            return ResponseEntity.ok().body("ok");
+        } catch (UserNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("bad");
         }
