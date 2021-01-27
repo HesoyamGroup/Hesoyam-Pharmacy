@@ -5,7 +5,7 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.feedback.model;
 
-import com.hesoyam.pharmacy.user.model.User;
+import com.hesoyam.pharmacy.user.model.Patient;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -24,9 +24,9 @@ public abstract class Complaint {
    protected String body;
 
    @ManyToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name="user_id", nullable = false)
-   @NotNull(message = "User who placed a complaint must be provided.")
-   protected User user;
+   @JoinColumn(name="patient_id", nullable = false)
+   @NotNull(message = "Patient who placed a complaint must be provided.")
+   protected Patient patient;
 
    @Enumerated(EnumType.STRING)
    @NotNull(message = "Complaint status must be set.")
@@ -34,4 +34,52 @@ public abstract class Complaint {
 
    @OneToOne(fetch = FetchType.LAZY, optional = true)
    protected Reply reply;
+
+   protected Complaint(){}
+
+   protected Complaint(String body, Patient patient, ComplaintStatus complaintStatus){
+      this.body = body;
+      this.patient = patient;
+      this.complaintStatus = complaintStatus;
+   }
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public String getBody() {
+      return body;
+   }
+
+   public void setBody(String body) {
+      this.body = body;
+   }
+
+   public Patient getPatient() {
+      return patient;
+   }
+
+   public void setPatient(Patient patient) {
+      this.patient = patient;
+   }
+
+   public ComplaintStatus getComplaintStatus() {
+      return complaintStatus;
+   }
+
+   public void setComplaintStatus(ComplaintStatus complaintStatus) {
+      this.complaintStatus = complaintStatus;
+   }
+
+   public Reply getReply() {
+      return reply;
+   }
+
+   public void setReply(Reply reply) {
+      this.reply = reply;
+   }
 }

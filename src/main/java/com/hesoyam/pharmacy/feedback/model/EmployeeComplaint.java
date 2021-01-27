@@ -6,6 +6,7 @@
 package com.hesoyam.pharmacy.feedback.model;
 
 import com.hesoyam.pharmacy.user.model.Employee;
+import com.hesoyam.pharmacy.user.model.Patient;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,4 +21,20 @@ public class EmployeeComplaint extends Complaint {
    @JoinColumn(name = "employee_id")
    @NotNull(message = "Employee must be provided.")
    private Employee employee;
+
+   public EmployeeComplaint(){}
+
+   public EmployeeComplaint(String body, Patient patient, ComplaintStatus complaintStatus, Employee employee){
+      super(body, patient, complaintStatus);
+      this.employee = employee;
+   }
+
+
+   public Employee getEmployee() {
+      return employee;
+   }
+
+   public void setEmployee(Employee employee) {
+      this.employee = employee;
+   }
 }
