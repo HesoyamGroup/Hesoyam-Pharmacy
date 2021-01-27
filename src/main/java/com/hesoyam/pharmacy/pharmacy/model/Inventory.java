@@ -16,13 +16,31 @@ public class Inventory {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @OneToMany(fetch = FetchType.LAZY)
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
    @JoinColumn(name = "inventory_id", referencedColumnName = "id", nullable = false)
    private List<InventoryItem> inventoryItems;
 
    @OneToOne(fetch = FetchType.LAZY)
    @JoinColumn(name="pharmacy_id", nullable = false)
    private Pharmacy pharmacy;
+
+   public Inventory(){}
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public Pharmacy getPharmacy() {
+      return pharmacy;
+   }
+
+   public void setPharmacy(Pharmacy pharmacy) {
+      this.pharmacy = pharmacy;
+   }
 
    public List<InventoryItem> getInventoryItems() {
       if (inventoryItems == null)

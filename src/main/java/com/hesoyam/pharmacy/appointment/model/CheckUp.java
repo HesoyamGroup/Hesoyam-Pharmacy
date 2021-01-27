@@ -11,10 +11,21 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class CheckUp extends Appointment {
    @ManyToOne(fetch = FetchType.LAZY, optional=true)
    @JoinColumn(name="dermatologist_id")
+   @NotNull(message = "Dermatologist must be set.")
    private Dermatologist dermatologist;
+
+
+   public Dermatologist getDermatologist() {
+      return dermatologist;
+   }
+
+   public void setDermatologist(Dermatologist dermatologist) {
+      this.dermatologist = dermatologist;
+   }
 }

@@ -8,6 +8,7 @@ package com.hesoyam.pharmacy.prescription.model;
 import com.hesoyam.pharmacy.user.model.Patient;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
@@ -20,15 +21,42 @@ public class EPrescription {
    private Long id;
 
    @Column(nullable = false)
+   @NotNull(message = "Issuing date must be provided.")
    private LocalDateTime issuingDate;
 
    @ManyToOne(fetch = FetchType.EAGER, optional = false)
    @JoinColumn(name = "patient_id", nullable = false)
    private Patient patient;
 
-   @OneToMany(fetch = FetchType.LAZY)
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinColumn(name="eprescription_id", referencedColumnName="id", nullable = false)
    private List<PrescriptionItem> prescriptionItems;
+
+   public EPrescription(){}
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public LocalDateTime getIssuingDate() {
+      return issuingDate;
+   }
+
+   public void setIssuingDate(LocalDateTime issuingDate) {
+      this.issuingDate = issuingDate;
+   }
+
+   public Patient getPatient() {
+      return patient;
+   }
+
+   public void setPatient(Patient patient) {
+      this.patient = patient;
+   }
 
    public List<PrescriptionItem> getPrescriptionItems() {
       if (prescriptionItems == null)

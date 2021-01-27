@@ -8,6 +8,7 @@ package com.hesoyam.pharmacy.pharmacy.model;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 public class OrderItem {
@@ -15,6 +16,7 @@ public class OrderItem {
    @GeneratedValue(strategy= GenerationType.IDENTITY)
    private Long id;
    @Column
+   @Min(0)
    private int quantity;
 
    @ManyToOne(fetch=FetchType.EAGER, optional = false)

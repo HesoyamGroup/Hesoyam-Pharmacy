@@ -6,6 +6,8 @@
 package com.hesoyam.pharmacy.pharmacy.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,8 +17,10 @@ public abstract class Sale {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    protected Long id;
    @Column(nullable = false)
+   @NotNull(message = "Sale date must be specified.")
    protected LocalDateTime dateOfSale;
    @Column
+   @Min(0)
    protected double price;
 
    @ManyToOne(fetch=FetchType.EAGER, optional = false)

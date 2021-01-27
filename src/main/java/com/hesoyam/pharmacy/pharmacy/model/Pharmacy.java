@@ -10,9 +10,11 @@ import com.hesoyam.pharmacy.user.model.Administrator;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.swing.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,16 +27,17 @@ public class Pharmacy {
    private Long id;
 
    @Column(length = 75)
+   @NotNull(message = "Pharmacy name must be provided.")
+   @Length(min=2, max=75, message="Pharmacy name length should be between 2 and 75 characters.")
    private String name;
 
    @Column(length = 300)
+   @Length(max=300, message = "Pharmacy description length should not exceed 300 characters.")
    private String description;
 
    @Column
+   @Min(0)
    private double rating;
-
-   @Embedded
-   private ServicePrice servicePrice;
 
    @OneToMany(mappedBy="pharmacy", fetch = FetchType.LAZY)
    private List<Pharmacist> pharmacists;
@@ -46,18 +49,89 @@ public class Pharmacy {
    @Embedded
    private Address address;
 
-   @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY)
+
+   @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
    private List<Administrator> administrator;
 
    @ManyToMany
    @JoinTable(name = "subscription", joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
    private List<Patient> subscribedPatients;
 
-   @OneToOne(optional = true, mappedBy = "pharmacy")
+   @OneToOne(optional = true, mappedBy = "pharmacy", cascade = CascadeType.REMOVE)
    private Inventory inventory;
 
    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pharmacy")
    private List<Sale> sales;
+
+   @OneToMany(cascade = CascadeType.REMOVE)
+   @JoinColumn(name = "pharmacy_id", referencedColumnName = "id")
+   private List<ServicePriceItem> servicePriceItems;
+
+   public Pharmacy(){}
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
+   public double getRating() {
+      return rating;
+   }
+
+   public void setRating(double rating) {
+      this.rating = rating;
+   }
+
+   public Address getAddress() {
+      return address;
+   }
+
+   public void setAddress(Address address) {
+      this.address = address;
+   }
+
+   public List<Patient> getSubscribedPatients() {
+      return subscribedPatients;
+   }
+
+   public void setSubscribedPatients(List<Patient> subscribedPatients) {
+      this.subscribedPatients = subscribedPatients;
+   }
+
+   public Inventory getInventory() {
+      return inventory;
+   }
+
+   public void setInventory(Inventory inventory) {
+      this.inventory = inventory;
+   }
+
+   public List<Sale> getSales() {
+      return sales;
+   }
+
+   public void setSales(List<Sale> sales) {
+      this.sales = sales;
+   }
 
    public List<Pharmacist> getPharmacists() {
       if (pharmacists == null)
@@ -211,4 +285,46 @@ public class Pharmacy {
          }
       }
    }
+
+   public List<ServicePriceItem> getServicePriceItems() {
+      if (servicePriceItems == null)
+         servicePriceItems = new ArrayList<>();
+      return servicePriceItems;
+   }
+
+   public Iterator<ServicePriceItem> getIteratorServicePriceItems() {
+      if (servicePriceItems == null)
+         servicePriceItems = new java.util.ArrayList<>();
+      return servicePriceItems.iterator();
+   }
+
+   public void setServicePriceItems(List<ServicePriceItem> newServicePriceItems) {
+      removeAllServicePriceItems();
+      for (Iterator<ServicePriceItem> iter = newServicePriceItems.iterator(); iter.hasNext();)
+         addServicePriceItems(iter.next());
+   }
+
+   public void addServicePriceItems(ServicePriceItem newServicePriceItem) {
+      if (newServicePriceItem == null)
+         return;
+      if (this.servicePriceItems == null)
+         this.servicePriceItems = new ArrayList<>();
+      if (!this.servicePriceItems.contains(newServicePriceItem))
+         this.servicePriceItems.add(newServicePriceItem);
+   }
+
+   public void removeServicePriceItems(ServicePriceItem oldServicePriceItem) {
+      if (oldServicePriceItem == null)
+         return;
+      if (this.servicePriceItems != null && this.servicePriceItems.contains(oldServicePriceItem))
+            this.servicePriceItems.remove(oldServicePriceItem);
+   }
+
+   public void removeAllServicePriceItems() {
+      if (servicePriceItems != null)
+         servicePriceItems.clear();
+   }
+
+
+
 }

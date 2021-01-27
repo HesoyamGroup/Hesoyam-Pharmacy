@@ -8,6 +8,8 @@ package com.hesoyam.pharmacy.pharmacy.model;
 import com.hesoyam.pharmacy.user.model.Supplier;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 
@@ -18,9 +20,11 @@ public class Offer {
    private Long id;
 
    @Column(name = "total_price")
+   @Min(0)
    private double totalPrice;
 
    @Column(nullable = false)
+   @NotNull(message = "Delivery date must be specified.")
    private LocalDateTime deliveryDate;
 
    @Enumerated(EnumType.STRING)
@@ -30,6 +34,42 @@ public class Offer {
    @ManyToOne(fetch= FetchType.LAZY, optional=false)
    @JoinColumn(name="supplier_id", nullable = false)
    private Supplier supplier;
+
+
+   public Offer() {}
+
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public double getTotalPrice() {
+      return totalPrice;
+   }
+
+   public void setTotalPrice(double totalPrice) {
+      this.totalPrice = totalPrice;
+   }
+
+   public LocalDateTime getDeliveryDate() {
+      return deliveryDate;
+   }
+
+   public void setDeliveryDate(LocalDateTime deliveryDate) {
+      this.deliveryDate = deliveryDate;
+   }
+
+   public OfferStatus getOfferStatus() {
+      return offerStatus;
+   }
+
+   public void setOfferStatus(OfferStatus offerStatus) {
+      this.offerStatus = offerStatus;
+   }
 
    public Supplier getSupplier() {
       return supplier;
