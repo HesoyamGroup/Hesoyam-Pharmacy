@@ -11,11 +11,13 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class EmployeeComplaint extends Complaint {
 
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "employee_id")
+   @NotNull(message = "Employee must be provided.")
    private Employee employee;
 }
