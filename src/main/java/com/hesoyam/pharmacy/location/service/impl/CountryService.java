@@ -26,7 +26,6 @@ public class CountryService implements ICountryService {
 
     @Override
     public List<Country> getAll() {
-        List<Country> countries = countryRepository.findAllByOrderByCountryNameAsc();
-        return countries;
+        return countryRepository.findAllByOrderByCountryNameAsc();
     }
 }

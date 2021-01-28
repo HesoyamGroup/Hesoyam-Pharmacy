@@ -27,8 +27,6 @@ public class Manufacturer {
    @Embedded
    private Address address;
 
-   public Manufacturer(){}
-
    public Long getId() {
       return id;
    }

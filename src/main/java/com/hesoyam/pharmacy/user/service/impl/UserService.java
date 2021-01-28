@@ -95,6 +95,7 @@ public class UserService implements UserDetailsService, IUserService {
 
         Patient patient = new Patient();
         loadUserAccountWithRegistrationData(patient,registrationDTO, false);
+        patient.setRoleEnum(RoleEnum.PATIENT);
 
         //TODO: Find by name parameter should be saved somewhere globally.
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_PATIENT");

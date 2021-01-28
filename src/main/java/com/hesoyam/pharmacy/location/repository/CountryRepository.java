@@ -1,6 +1,5 @@
 package com.hesoyam.pharmacy.location.repository;
 
-import com.hesoyam.pharmacy.location.model.City;
 import com.hesoyam.pharmacy.location.model.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
 

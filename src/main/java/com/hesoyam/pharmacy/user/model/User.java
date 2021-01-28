@@ -8,11 +8,8 @@ package com.hesoyam.pharmacy.user.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hesoyam.pharmacy.location.model.Address;
 import com.hesoyam.pharmacy.user.validators.PhoneNumberConstraint;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -59,6 +56,10 @@ public abstract class User implements UserDetails {
    @NotNull
    protected Gender gender;
 
+   @Enumerated(EnumType.STRING)
+   @NotNull
+   protected RoleEnum roleEnum;
+
    @Column(length=200)
    @NotNull
    @Length(min=8, max=200) //NOTE: Max Length due to JWT length
@@ -77,7 +78,7 @@ public abstract class User implements UserDetails {
            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
    private List<Role> authorities;
 
-   public User(){}
+   protected User(){}
 
    public void update(User user){
       //Everything copied except user ID
@@ -87,6 +88,7 @@ public abstract class User implements UserDetails {
       this.telephone = user.getTelephone();
       this.email = user.getEmail();
       this.gender = user.getGender();
+      this.roleEnum = user.getRoleEnum();
       if(!this.password.equals(user.getPassword())){
          //If a password has been changed, update timestamp
          lastPasswordResetDate = new Timestamp((new Date()).getTime());
@@ -107,7 +109,7 @@ public abstract class User implements UserDetails {
    }
 
    public Role getUserRole(){
-      if(authorities.size() > 0)
+      if(!authorities.isEmpty())
          return authorities.get(0);
 
       return null;
@@ -236,5 +238,13 @@ public abstract class User implements UserDetails {
 
    public void setPasswordReset(boolean passwordReset) {
       this.passwordReset = passwordReset;
+   }
+   
+   public RoleEnum getRoleEnum() {
+      return roleEnum;
+   }
+
+   public void setRoleEnum(RoleEnum roleEnum) {
+      this.roleEnum = roleEnum;
    }
 }

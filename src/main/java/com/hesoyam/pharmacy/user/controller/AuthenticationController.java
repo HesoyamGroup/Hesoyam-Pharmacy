@@ -107,17 +107,17 @@ public class AuthenticationController {
     @GetMapping("/confirm-registration")
     public ResponseEntity<Map<String, Map<String, String>>> confirmRegistration(@RequestParam("token") String token){
         VerificationToken verificationToken = userService.getVerificationToken(token);
-        Map<String, String> error_map = new HashMap<>();
+        Map<String, String> errorMap = new HashMap<>();
 
 
         if(verificationToken == null){
-            error_map.put("tokenNotFound", "Activation token could not be found.");
-            return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, error_map));
+            errorMap.put("tokenNotFound", "Activation token could not be found.");
+            return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, errorMap));
         }
 
         if(isVerificationTokenExpired(verificationToken)){
-            error_map.put("expiredToken", "Activation token has expired.");
-            return  ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, error_map));
+            errorMap.put("expiredToken", "Activation token has expired.");
+            return  ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, errorMap));
         }
 
         User user = verificationToken.getUser();
@@ -127,8 +127,8 @@ public class AuthenticationController {
         try {
             userService.update(user);
         } catch (UserNotFoundException e) {
-            error_map.put("internalServerError", "A user account connected with passed token could not be found. Try again later.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(generateUniformResponse(ERRORS_FIELD_NAME, error_map));
+            errorMap.put("internalServerError", "A user account connected with passed token could not be found. Try again later.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(generateUniformResponse(ERRORS_FIELD_NAME, errorMap));
         }
 
         Map<String, String> data = new HashMap<>();
@@ -243,15 +243,15 @@ public class AuthenticationController {
     }
 
     private Map<String, String> generateTokenValidResponse(){
-        Map<String, String> response_map = new HashMap<>();
-        response_map.put("isTokenValid", Boolean.TRUE.toString());
-        return response_map;
+        Map<String, String> responseMap = new HashMap<>();
+        responseMap.put("isTokenValid", Boolean.TRUE.toString());
+        return responseMap;
     }
 
     private Map<String, String> generateTokenExpiredResponse(){
-        Map<String, String> error_map = new HashMap<>();
-        error_map.put("tokenExpired", "A token has expired, please login again.");
-        return error_map;
+        Map<String, String> errorsMap = new HashMap<>();
+        errorsMap.put("tokenExpired", "A token has expired, please login again.");
+        return errorsMap;
     }
 
     private boolean isTokenExpired(String token){
@@ -315,8 +315,8 @@ public class AuthenticationController {
 
     @ExceptionHandler(DisabledException.class)
     public ResponseEntity<Map<String, Map<String,String>>> handleException() {
-        Map<String, String> error_map = new HashMap<>();
-        error_map.put("notActivated", "Your account has not been activated yet.");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(generateUniformResponse(ERRORS_FIELD_NAME, error_map));
+        Map<String, String> errorsMap = new HashMap<>();
+        errorsMap.put("notActivated", "Your account has not been activated yet.");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
     }
 }

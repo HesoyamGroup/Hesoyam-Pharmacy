@@ -5,6 +5,7 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.user.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class Dermatologist extends Employee {
 
    @ManyToMany(mappedBy = "dermatologists")
+   @JsonBackReference
    private List<Pharmacy> pharmacies;
 
    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dermatologist")

@@ -9,4 +9,5 @@ public interface IPharmacyService {
     Pharmacy create(PharmacyCreateDTO pharmacyCreateDTO);
     List<Pharmacy> getAll();
     List<Pharmacy> getAllByAdministrator(Long id);
+    Pharmacy findOne(Long id);
 }

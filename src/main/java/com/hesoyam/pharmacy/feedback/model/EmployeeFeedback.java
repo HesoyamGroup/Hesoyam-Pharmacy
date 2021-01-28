@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class EmployeeFeedback extends Feedback {
 
-   @ManyToOne(fetch = FetchType.EAGER)
+   @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "employee_id")
    private Employee employee;
 

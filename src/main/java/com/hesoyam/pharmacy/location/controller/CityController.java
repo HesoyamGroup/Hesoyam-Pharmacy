@@ -15,9 +15,12 @@ public class CityController {
     @Autowired
     private ICityService cityService;
 
-    @GetMapping("/within-country/{id}")
+        @GetMapping("/within-country/{id}")
     public ResponseEntity<List<City>> getCitiesInCountry(@PathVariable Long id){
         if(id == null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok().body(cityService.getAllCitiesInCountry(id));
     }
+
+
+
 }

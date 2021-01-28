@@ -15,8 +15,6 @@ public class LoginDTO {
     @Length(min=8, max=64, message = "Password length should be between 8 and 64 characters.")
     private String password;
 
-    public LoginDTO(){}
-
     public String getEmail() {
         return email;
     }

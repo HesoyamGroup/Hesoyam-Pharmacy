@@ -5,6 +5,7 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.user.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ public class Administrator extends User {
 
    @ManyToOne(fetch = FetchType.LAZY, optional = false)
    @JoinColumn(name="pharmacy_id", nullable=false)
+   @JsonBackReference
    private Pharmacy pharmacy;
 
 

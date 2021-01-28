@@ -25,8 +25,6 @@ public class CompositionItem {
    @Embedded
    private Dosage quantity;
 
-   public CompositionItem(){}
-
    public Long getId() {
       return id;
    }

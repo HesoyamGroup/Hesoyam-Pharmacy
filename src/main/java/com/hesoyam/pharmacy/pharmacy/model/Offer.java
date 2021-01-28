@@ -35,10 +35,6 @@ public class Offer {
    @JoinColumn(name="supplier_id", nullable = false)
    private Supplier supplier;
 
-
-   public Offer() {}
-
-
    public Long getId() {
       return id;
    }

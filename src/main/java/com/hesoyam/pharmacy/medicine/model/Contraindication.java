@@ -22,8 +22,6 @@ public class Contraindication {
    @Length(min=3, max=100, message = "Contraindication name should be between 3 and 100 characters")
    private String name;
 
-   public Contraindication() {
-   }
 
    public Long getId() {
       return id;

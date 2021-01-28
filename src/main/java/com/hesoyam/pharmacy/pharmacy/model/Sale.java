@@ -5,6 +5,8 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.pharmacy.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -25,6 +27,7 @@ public abstract class Sale {
 
    @ManyToOne(fetch=FetchType.EAGER, optional = false)
    @JoinColumn(name="pharmacy_id", nullable = false)
+   @JsonManagedReference
    protected Pharmacy pharmacy;
 
 }
