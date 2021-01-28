@@ -1,17 +1,16 @@
 package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.location.model.Address;
-import com.hesoyam.pharmacy.location.model.Country;
 import com.hesoyam.pharmacy.location.service.ICityService;
 import com.hesoyam.pharmacy.location.service.ICountryService;
 import com.hesoyam.pharmacy.security.TokenUtils;
+import com.hesoyam.pharmacy.user.DTO.AccountInformationDTO;
 import com.hesoyam.pharmacy.user.DTO.AddressDTO;
 import com.hesoyam.pharmacy.user.DTO.PasswordDTO;
 import com.hesoyam.pharmacy.user.DTO.UserBasicInfoDTO;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IUserService;
-import com.sun.mail.iap.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 @RequestMapping(value="/profile", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -127,6 +125,30 @@ public class UserProfileController {
         }
     }
 
+    @PostMapping("/test-password")
+    public ResponseEntity<String> testPassword(@RequestBody String password, HttpServletRequest request){
+        String username = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
+        password = getStringFromJSON(password);
+
+        try{
+            User user = userService.findByEmail(username);
+            if(passwordEncoder.matches(password, user.getPassword())){
+                return ResponseEntity.ok().body("matches");
+            }
+            return ResponseEntity.ok().body("No match");
+        }
+        catch (UserNotFoundException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("no match");
+        }
+    }
+
+    private String getStringFromJSON(String text) {
+        text = text.substring(text.indexOf(':') + 2);
+        text = text.substring(0, text.length() - 2);
+        return text;
+    }
+
     @PostMapping("/change-password")
     public ResponseEntity<String> changePassword(@RequestBody PasswordDTO passwordChanges, HttpServletRequest request){
 
@@ -151,6 +173,52 @@ public class UserProfileController {
             }
             else
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("wrong old password");
+        }
+        catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+        }
+
+    }
+
+    @PostMapping("/change-account-information")
+    public ResponseEntity<String> changeAccountInformation(@RequestBody AccountInformationDTO accountChanges, HttpServletRequest request){
+
+        String token = tokenUtils.getToken(request);
+        String username = tokenUtils.getUsernameFromToken(token);
+
+        try{
+            User user = userService.findByEmail(username);
+
+            if(passwordEncoder.matches(accountChanges.getOldPassword(), user.getPassword()))
+            {
+                user.setPassword(passwordEncoder.encode(accountChanges.getPassword()));
+                user.setEmail(accountChanges.getEmail());
+                userService.update(user);
+                return ResponseEntity.ok().body("account information successfully changed");
+            }
+            else
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("wrong old password");
+        }
+        catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+        }
+
+    }
+
+    @PostMapping("/change-email")
+    public ResponseEntity<String> changeEmail(@RequestBody String email, HttpServletRequest request){
+
+        String token = tokenUtils.getToken(request);
+        String username = tokenUtils.getUsernameFromToken(token);
+        email = getStringFromJSON(email);
+        try{
+            User user = userService.findByEmail(username);
+
+            user.setEmail(email);
+            userService.update(user);
+            return ResponseEntity.ok().body("changed email");
         }
         catch (UserNotFoundException e) {
             e.printStackTrace();

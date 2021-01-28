@@ -1,7 +1,9 @@
 package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.user.DTO.EmployeeBasicDTO;
+import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
+import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPharmacistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,4 +31,5 @@ public class PharmacistController {
         pharmacists.forEach( pharmacist -> employees.add(new EmployeeBasicDTO(pharmacist)));
         return new ResponseEntity<>(employees, pharmacists.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
+
 }
