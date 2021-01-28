@@ -30,6 +30,7 @@ public abstract class User implements UserDetails {
    protected boolean enabled;
 
    @Column
+   @NotNull(message = "Password reset value must be specified.")
    protected boolean passwordReset;
 
 

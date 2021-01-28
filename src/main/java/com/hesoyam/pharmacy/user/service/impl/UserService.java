@@ -25,6 +25,9 @@ import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService, IUserService {
+
+    private static final String EMAIL_ALREADY_TAKEN_ERROR = "A user with specified email already exists.";
+
     @Autowired
     private UserRepository userRepository;
 
@@ -73,8 +76,7 @@ public class UserService implements UserDetailsService, IUserService {
 
         user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
         user.setPasswordReset(false);
-        User updatedUser = userRepository.save(user);
-        return updatedUser;
+        return userRepository.save(user);
     }
 
     private void validateChangePasswordRequest(ChangePasswordDTO changePasswordDTO) throws InvalidChangePasswordRequestException {
@@ -94,7 +96,7 @@ public class UserService implements UserDetailsService, IUserService {
         validateRegistrationRequest(registrationDTO);
 
         Patient patient = new Patient();
-        loadUserAccountWithRegistrationData(patient,registrationDTO, false);
+        loadUserAccountWithRegistrationData(patient,registrationDTO, false, false);
         patient.setRoleEnum(RoleEnum.PATIENT);
 
         //TODO: Find by name parameter should be saved somewhere globally.
@@ -104,7 +106,7 @@ public class UserService implements UserDetailsService, IUserService {
         try {
             patient = userRepository.save(patient);
         }catch (DataIntegrityViolationException ex){
-            throw new UserNotUniqueException("A user with specified email already exists.");
+            throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
         }
 
         return patient;
@@ -113,7 +115,8 @@ public class UserService implements UserDetailsService, IUserService {
     @Override
     public SysAdmin registerSysAdmin(RegistrationDTO registrationDTO) throws UserNotUniqueException {
         SysAdmin sysAdmin = new SysAdmin();
-        loadUserAccountWithRegistrationData(sysAdmin, registrationDTO, true);
+        loadUserAccountWithRegistrationData(sysAdmin, registrationDTO, true, true);
+        sysAdmin.setRoleEnum(RoleEnum.SYS_ADMIN);
 
         //TODO: Find by name parameter should be saved somewhere globally.
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_SYS_ADMIN");
@@ -122,7 +125,7 @@ public class UserService implements UserDetailsService, IUserService {
         try{
             sysAdmin = userRepository.save(sysAdmin);
         }catch (DataIntegrityViolationException ex){
-            throw new UserNotUniqueException("A user with specified email already exists.");
+            throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
         }
 
         return sysAdmin;
@@ -131,7 +134,8 @@ public class UserService implements UserDetailsService, IUserService {
     @Override
     public Dermatologist registerDermatologist(RegistrationDTO registrationDTO) throws UserNotUniqueException {
         Dermatologist dermatologist = new Dermatologist();
-        loadUserAccountWithRegistrationData(dermatologist, registrationDTO, false);
+        loadUserAccountWithRegistrationData(dermatologist, registrationDTO, false, true);
+        dermatologist.setRoleEnum(RoleEnum.DERMATOLOGIST);
         //TODO: Find by name parameter should be saved somewhere globally.
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_DERMATOLOGIST");
         dermatologist.setAuthorities(roles);
@@ -139,7 +143,7 @@ public class UserService implements UserDetailsService, IUserService {
         try{
             dermatologist = userRepository.save(dermatologist);
         }catch (DataIntegrityViolationException ex){
-            throw new UserNotUniqueException("A user with specified email already exists.");
+            throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
         }
 
         return dermatologist;
@@ -148,8 +152,10 @@ public class UserService implements UserDetailsService, IUserService {
     @Override
     public Administrator registerAdministrator(AdministratorRegistrationDTO administratorRegistrationDTO) throws UserNotUniqueException {
         Administrator administrator = new Administrator();
-        loadUserAccountWithRegistrationData(administrator, administratorRegistrationDTO, false);
+        loadUserAccountWithRegistrationData(administrator, administratorRegistrationDTO, false, true);
+        administrator.setRoleEnum(RoleEnum.ADMINISTRATOR);
         administrator.setPharmacy(administratorRegistrationDTO.getPharmacy());
+
         //TODO: Find by name parameter should be saved somewhere globally.
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_ADMINISTRATOR");
         administrator.setAuthorities(roles);
@@ -157,14 +163,13 @@ public class UserService implements UserDetailsService, IUserService {
         try{
             administrator = userRepository.save(administrator);
         }catch (DataIntegrityViolationException ex){
-            System.out.println(ex.getMessage());
-            throw new UserNotUniqueException("A user with specified email already exists.");
+            throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
         }
 
         return administrator;
     }
 
-    private void loadUserAccountWithRegistrationData(User user, RegistrationDTO registrationDTO, boolean passwordReset) {
+    private void loadUserAccountWithRegistrationData(User user, RegistrationDTO registrationDTO, boolean passwordReset, boolean isEnabled) {
         user.setEmail(registrationDTO.getEmail());
         user.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
         user.setFirstName(registrationDTO.getFirstName());
@@ -174,6 +179,7 @@ public class UserService implements UserDetailsService, IUserService {
         user.setAddress(registrationDTO.getAddress());
         user.setLastPasswordResetDate(new Timestamp((new Date().getTime())));
         user.setPasswordReset(passwordReset);
+        user.setEnabled(isEnabled);
     }
 
 
