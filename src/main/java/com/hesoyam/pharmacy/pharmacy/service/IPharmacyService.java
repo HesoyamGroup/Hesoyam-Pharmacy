@@ -8,4 +8,5 @@ public interface IPharmacyService {
     List<Pharmacy> getAll();
     List<Pharmacy> getAllByAdministrator(Long id);
     Pharmacy findOne(Long id);
+    List<Pharmacy> findAllPharmaciesByMedicine(Long id);
 }

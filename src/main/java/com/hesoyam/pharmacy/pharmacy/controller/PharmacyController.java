@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value="/pharmacy", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,5 +33,23 @@ public class PharmacyController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+    }
+
+    @GetMapping(value = "/medicine-{id}")
+    public ResponseEntity<List<PharmacyDTO>> getPharmaciesWithMedicine(@PathVariable Long id){
+
+        try{
+            List<Pharmacy> pharmacies = pharmacyService.findAllPharmaciesByMedicine(id);
+            List<PharmacyDTO> retVal = new ArrayList<>();
+
+            for(Pharmacy p: pharmacies){
+                retVal.add(new PharmacyDTO(p));
+            }
+
+            return  new ResponseEntity<>(retVal, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

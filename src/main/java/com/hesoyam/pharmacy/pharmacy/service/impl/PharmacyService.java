@@ -29,4 +29,9 @@ public class PharmacyService implements IPharmacyService {
     public Pharmacy findOne(Long id) {
         return pharmacyRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
+
+    @Override
+    public List<Pharmacy> findAllPharmaciesByMedicine(Long id) {
+        return pharmacyRepository.getPharmacyByMedicineAvailability(id);
+    }
 }

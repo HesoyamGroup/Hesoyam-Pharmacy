@@ -9,4 +9,5 @@ public interface IMedicineService {
     List<Medicine> getAll();
     Medicine create(Medicine medicine);
     List<MedicineType> getAllMedicineTypes();
+    List<Medicine> findByMedicineName(String name);
 }
