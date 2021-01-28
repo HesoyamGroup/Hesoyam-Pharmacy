@@ -25,6 +25,9 @@ import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService, IUserService {
+
+    private static final String EMAIL_ALREADY_TAKEN_ERROR = "A user with specified email already exists.";
+
     @Autowired
     private UserRepository userRepository;
 
@@ -73,8 +76,7 @@ public class UserService implements UserDetailsService, IUserService {
 
         user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
         user.setPasswordReset(false);
-        User updatedUser = userRepository.save(user);
-        return updatedUser;
+        return userRepository.save(user);
     }
 
     private void validateChangePasswordRequest(ChangePasswordDTO changePasswordDTO) throws InvalidChangePasswordRequestException {
@@ -104,7 +106,7 @@ public class UserService implements UserDetailsService, IUserService {
         try {
             patient = userRepository.save(patient);
         }catch (DataIntegrityViolationException ex){
-            throw new UserNotUniqueException("A user with specified email already exists.");
+            throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
         }
 
         return patient;
@@ -123,7 +125,7 @@ public class UserService implements UserDetailsService, IUserService {
         try{
             sysAdmin = userRepository.save(sysAdmin);
         }catch (DataIntegrityViolationException ex){
-            throw new UserNotUniqueException("A user with specified email already exists.");
+            throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
         }
 
         return sysAdmin;
@@ -141,7 +143,7 @@ public class UserService implements UserDetailsService, IUserService {
         try{
             dermatologist = userRepository.save(dermatologist);
         }catch (DataIntegrityViolationException ex){
-            throw new UserNotUniqueException("A user with specified email already exists.");
+            throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
         }
 
         return dermatologist;
@@ -161,7 +163,7 @@ public class UserService implements UserDetailsService, IUserService {
         try{
             administrator = userRepository.save(administrator);
         }catch (DataIntegrityViolationException ex){
-            throw new UserNotUniqueException("A user with specified email already exists.");
+            throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
         }
 
         return administrator;
