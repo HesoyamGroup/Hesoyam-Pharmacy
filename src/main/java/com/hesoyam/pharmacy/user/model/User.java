@@ -106,7 +106,7 @@ public abstract class User implements UserDetails {
    }
 
    public Role getUserRole(){
-      if(authorities.isEmpty())
+      if(!authorities.isEmpty())
          return authorities.get(0);
 
       return null;
