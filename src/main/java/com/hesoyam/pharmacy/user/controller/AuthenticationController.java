@@ -1,22 +1,20 @@
 package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.security.TokenUtils;
-import com.hesoyam.pharmacy.user.DTO.LoginDTO;
-import com.hesoyam.pharmacy.user.DTO.UserTokenState;
+import com.hesoyam.pharmacy.user.DTO.*;
 import com.hesoyam.pharmacy.user.events.OnRegistrationCompletedEvent;
+import com.hesoyam.pharmacy.user.exceptions.InvalidChangePasswordRequestException;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
-import com.hesoyam.pharmacy.user.exceptions.RegistrationUserNotUniqueException;
+import com.hesoyam.pharmacy.user.exceptions.UserNotUniqueException;
 import com.hesoyam.pharmacy.user.exceptions.RegistrationValidationException;
-import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.user.model.Role;
-import com.hesoyam.pharmacy.user.model.User;
-import com.hesoyam.pharmacy.user.model.VerificationToken;
+import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
@@ -27,7 +25,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import com.hesoyam.pharmacy.user.DTO.RegistrationDTO;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,7 +68,7 @@ public class AuthenticationController {
             applicationEventPublisher.publishEvent(new OnRegistrationCompletedEvent(patient, ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString()));
         } catch (RegistrationValidationException e) {
             return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, e.getErrorMessagesMap()));
-        }catch (RegistrationUserNotUniqueException notUniqueException){
+        }catch (UserNotUniqueException notUniqueException){
             errorsMap.put("emailNotUnique", notUniqueException.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
         }
@@ -86,16 +83,26 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
         }
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-
         //Save logged user in security context
         SecurityContextHolder.getContext().setAuthentication(authentication);
         //Create token for user
         User user = (User) authentication.getPrincipal();
         Role userRole = user.getUserRole();
+        if(isPasswordChangeRequired(user)){
+            return ResponseEntity.status(HttpStatus.PRECONDITION_REQUIRED).body(generateUniformResponse(DATA_FIELD_NAME, changePasswordData()));
+        }
         String jwt = tokenUtils.generateToken(user.getEmail());
         long expiresIn = tokenUtils.getExpiredIn();
         return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserTokenStateToMap(new UserTokenState(jwt, expiresIn, userRole))));
     }
+
+    private boolean isPasswordChangeRequired(User user){
+        Role role = user.getUserRole();
+        if(role == null) return false;
+
+        return user.isPasswordReset();
+    }
+
 
     @GetMapping("/confirm-registration")
     public ResponseEntity<Map<String, Map<String, String>>> confirmRegistration(@RequestParam("token") String token){
@@ -145,6 +152,94 @@ public class AuthenticationController {
         }
         //If not authenticated
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(generateUniformResponse(ERRORS_FIELD_NAME, generateTokenExpiredResponse()));
+    }
+
+    @PostMapping("/register-sys-admin-account")
+    @Secured("ROLE_SYS_ADMIN")
+    public ResponseEntity<Map<String, Map<String, String>>> createSysAdmin(@RequestBody @Valid RegistrationDTO registrationDTO, BindingResult errors){
+        Map<String, String> errorsMap = new HashMap<>();
+        if(errors.hasErrors()){
+            errorsMap = extractFieldErrorsFromErrors(errors);
+            return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
+        }
+
+        SysAdmin sysAdmin = null;
+        try {
+            sysAdmin = userService.registerSysAdmin(registrationDTO);
+        } catch (UserNotUniqueException notUniqueException) {
+            errorsMap.put("userNotUnique", notUniqueException.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
+        }
+        return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserDataToMap(sysAdmin)));
+    }
+
+    @PostMapping("/register-dermatologist-account")
+    @Secured("ROLE_SYS_ADMIN")
+    public ResponseEntity<Map<String, Map<String, String>>> createDermatologist(@RequestBody @Valid RegistrationDTO registrationDTO, BindingResult errors){
+        Map<String, String> errorsMap = new HashMap<>();
+        if(errors.hasErrors()){
+            errorsMap = extractFieldErrorsFromErrors(errors);
+            return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
+        }
+
+        Dermatologist dermatologist = null;
+        try{
+            dermatologist = userService.registerDermatologist(registrationDTO);
+        } catch (UserNotUniqueException notUniqueException) {
+            errorsMap.put("userNotUnique", notUniqueException.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
+        }
+
+        return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserDataToMap(dermatologist)));
+    }
+
+    @PostMapping("/register-administrator-account")
+    @Secured("ROLE_SYS_ADMIN")
+    public ResponseEntity<Map<String, Map<String, String>>> createAdministrator(@RequestBody @Valid AdministratorRegistrationDTO administratorRegistrationDTO, BindingResult errors){
+        Map<String, String> errorsMap = new HashMap<>();
+        if(errors.hasErrors()){
+            errorsMap = extractFieldErrorsFromErrors(errors);
+            return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
+        }
+        Administrator administrator = null;
+        try{
+            administrator = userService.registerAdministrator(administratorRegistrationDTO);
+        } catch (UserNotUniqueException notUniqueException) {
+            errorsMap.put("userNotUnique", notUniqueException.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
+        }
+
+        return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserDataToMap(administrator)));
+    }
+
+
+    //Requires login after pass change for now...
+    @PostMapping("/change-pass")
+    public ResponseEntity<Map<String, Map<String, String>>> changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDTO){
+        User user = null;
+        Map<String, String> errorsMap = new HashMap<>();
+        try {
+            user = userService.changePassword(changePasswordDTO);
+        } catch (UserNotFoundException e) {
+            errorsMap.put("userNotFound", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
+        } catch (InvalidChangePasswordRequestException e) {
+            errorsMap.put("invalidRequest", e.getMessage());
+            return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
+        }
+
+        String jwt = tokenUtils.generateToken(user.getEmail());
+        long expiresIn = tokenUtils.getExpiredIn();
+
+        return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserTokenStateToMap(new UserTokenState(jwt, expiresIn, user.getUserRole()))));
+
+    }
+
+    private Map<String, String> changePasswordData(){
+        Map<String, String> changePassMap = new HashMap<>();
+        changePassMap.put("changePassRequired", Boolean.TRUE.toString());
+        changePassMap.put("changePassAbsoluteURL", ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/auth/change-pass");
+        return changePassMap;
     }
 
     private Map<String, String> generateTokenValidResponse(){
