@@ -75,4 +75,6 @@ public abstract class Employee extends User {
    public void setRating(double rating) {
       this.rating = rating;
    }
+
+   public abstract boolean isAdministratorMyBoss(User administrator);
 }

@@ -58,7 +58,7 @@ public class PharmacistService implements IPharmacistService {
     }
 
     private Predicate<Pharmacist> isAdministratorHisBoss(User administrator){
-        return pharmacist -> pharmacist.getPharmacy().getAdministrator().contains(administrator);
+        return pharmacist -> pharmacist.isAdministratorMyBoss(administrator);
     }
 
 }

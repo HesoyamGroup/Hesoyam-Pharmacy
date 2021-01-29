@@ -59,6 +59,6 @@ public class DermatologistService implements IDermatologistService {
     }
 
     private Predicate<Dermatologist> isAdministratorHisBoss(User administrator){
-        return dermatologist -> dermatologist.getPharmacies().stream().anyMatch(pharmacy -> pharmacy.getAdministrator().contains(administrator));
+        return dermatologist -> dermatologist.isAdministratorMyBoss(administrator);
     }
 }
