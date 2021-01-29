@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,12 +45,20 @@ public class PharmacistService implements IPharmacistService {
         List<Pharmacist> pharmacists = pharmacistRepository.findAll();
         switch (loggedInUser.getRoleEnum()){
             case PATIENT:
-                return pharmacists.stream().filter(pharmacist -> pharmacist.startsWithName(firstName, lastName)).collect(Collectors.toList());
+                return pharmacists.stream().filter(isNameCriteriaSatisfied(firstName, lastName)).collect(Collectors.toList());
             case ADMINISTRATOR:
-                return pharmacists.stream().filter(pharmacist -> pharmacist.startsWithName(firstName, lastName) && pharmacist.getPharmacy().getAdministrator().contains(loggedInUser)).collect(Collectors.toList());
+                return pharmacists.stream().filter(isNameCriteriaSatisfied(firstName, lastName).and(isAdministratorHisBoss(loggedInUser))).collect(Collectors.toList());
             default:
                 return new ArrayList<>();
         }
+    }
+
+    private Predicate<Pharmacist> isNameCriteriaSatisfied(String firstName, String lastName){
+        return pharmacist -> pharmacist.startsWithName(firstName, lastName);
+    }
+
+    private Predicate<Pharmacist> isAdministratorHisBoss(User administrator){
+        return pharmacist -> pharmacist.getPharmacy().getAdministrator().contains(administrator);
     }
 
 }
