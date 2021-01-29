@@ -1,10 +1,12 @@
 package com.hesoyam.pharmacy.user.controller;
 
+import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.DTO.EmployeeBasicDTO;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPharmacistService;
+import com.hesoyam.pharmacy.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,12 +26,33 @@ public class PharmacistController {
     @Autowired
     private IPharmacistService pharmacistService;
 
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private TokenUtils tokenUtils;
+
     @GetMapping(value = "pharmacy/{id}")
     public ResponseEntity<List<EmployeeBasicDTO>> getWorkingPharmacistsAtPharmacy(@PathVariable Long id){
         List<Pharmacist> pharmacists = pharmacistService.getWorkingPharmacistsAtPharmacy(id);
         List<EmployeeBasicDTO> employees = new ArrayList<>();
         pharmacists.forEach( pharmacist -> employees.add(new EmployeeBasicDTO(pharmacist)));
         return new ResponseEntity<>(employees, pharmacists.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+    }
+
+    @GetMapping(value = "pharmacist-workplace")
+    public ResponseEntity<String> getPharmacyForPharmacist(HttpServletRequest request){
+        String token = tokenUtils.getToken(request);
+        String username = tokenUtils.getUsernameFromToken(token);
+
+        try{
+            User user = userService.findByEmail(username);
+            return ResponseEntity.ok().body(pharmacistService.getPharmacyForPharmacist(user.getId()).getName());
+        }
+        catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+        }
     }
 
 }

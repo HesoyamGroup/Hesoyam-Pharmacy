@@ -1,5 +1,6 @@
 package com.hesoyam.pharmacy.user.service.impl;
 
+import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.user.exceptions.PharmacistNotFoundException;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.repository.PharmacistRepository;
@@ -22,5 +23,15 @@ public class PharmacistService implements IPharmacistService {
     @Override
     public List<Pharmacist> getWorkingPharmacistsAtPharmacy(Long id) {
         return pharmacistRepository.findAllByPharmacy_Id(id);
+    }
+
+    @Override
+    public Pharmacy getPharmacyForPharmacist(Long id) {
+        try {
+            return getById(id).getPharmacy();
+        } catch (PharmacistNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
