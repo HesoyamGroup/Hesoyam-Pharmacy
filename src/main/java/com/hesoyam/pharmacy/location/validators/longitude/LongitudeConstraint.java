@@ -11,5 +11,5 @@ import java.lang.annotation.*;
 public @interface LongitudeConstraint {
     String message() default "Invalid longitude value.";
     Class<?>[] groups() default {};
-    Class<? extends Payload>[] payLoad() default {};
+    Class<? extends Payload>[] payload() default {};
 }

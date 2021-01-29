@@ -45,4 +45,8 @@ public class Pharmacist extends Employee {
       }
    }
 
+   @Override
+   public boolean isAdministratorMyBoss(User administrator) {
+      return getPharmacy().getAdministrator().contains(administrator);
+   }
 }
