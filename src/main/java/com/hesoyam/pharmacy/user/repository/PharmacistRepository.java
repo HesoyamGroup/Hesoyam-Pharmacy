@@ -12,6 +12,4 @@ public interface PharmacistRepository extends JpaRepository<Pharmacist, Long> {
 
     @Query("select p from Pharmacist p join p.pharmacy ph join ph.administrator a where a.id = :administrator_id")
     List<Pharmacist> findAllByPharmacyAdministrator(@Param("administrator_id") Long administratorId);
-
-    List<Pharmacist> findAllByFirstNameLikeAndLastNameLike(String firstName, String lastName);
 }

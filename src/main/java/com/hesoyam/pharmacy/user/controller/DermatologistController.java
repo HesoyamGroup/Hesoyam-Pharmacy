@@ -2,9 +2,7 @@ package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.user.DTO.DermatologistDetailsDTO;
 import com.hesoyam.pharmacy.user.DTO.EmployeeBasicDTO;
-import com.hesoyam.pharmacy.user.DTO.PharmacistDetailsDTO;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
-import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IDermatologistService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -39,7 +39,6 @@ public class PharmacistController {
         List<PharmacistDetailsDTO> pharmacistDetailsDTO = new ArrayList<>();
         pharmacists.forEach(pharmacist -> pharmacistDetailsDTO.add(new PharmacistDetailsDTO(pharmacist)));
         return new ResponseEntity<>(pharmacistDetailsDTO, HttpStatus.OK);
-
     }
 
 
