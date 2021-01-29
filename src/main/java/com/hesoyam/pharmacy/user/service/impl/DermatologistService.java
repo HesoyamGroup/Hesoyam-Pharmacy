@@ -10,14 +10,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
 public class DermatologistService implements IDermatologistService {
     
     @Autowired
-    DermatologistRepository dermatologistRepository;
+    private DermatologistRepository dermatologistRepository;
 
     @Override
     public Dermatologist getById(Long id) throws DermatologistNotFoundException {
@@ -46,19 +45,11 @@ public class DermatologistService implements IDermatologistService {
         List<Dermatologist> dermatologists = dermatologistRepository.findAll();
         switch(loggedInUser.getRoleEnum()){
             case PATIENT:
-                return dermatologists.stream().filter(isNameCriteriaSatisfied(firstName, lastName)).collect(Collectors.toList());
+                return dermatologists.stream().filter(dermatologist -> dermatologist.startsWithName(firstName, lastName)).collect(Collectors.toList());
             case ADMINISTRATOR:
-                return dermatologists.stream().filter(isNameCriteriaSatisfied(firstName, lastName).and(isAdministratorHisBoss(loggedInUser))).collect(Collectors.toList());
+                return dermatologists.stream().filter(dermatologist -> dermatologist.startsWithName(firstName, lastName) && dermatologist.isAdministratorMyBoss(loggedInUser)).collect(Collectors.toList());
             default:
                 return new ArrayList<>();
         }
-    }
-
-    private Predicate<Dermatologist> isNameCriteriaSatisfied(String firstName, String lastName){
-        return dermatologist -> dermatologist.startsWithName(firstName, lastName);
-    }
-
-    private Predicate<Dermatologist> isAdministratorHisBoss(User administrator){
-        return dermatologist -> dermatologist.isAdministratorMyBoss(administrator);
     }
 }
