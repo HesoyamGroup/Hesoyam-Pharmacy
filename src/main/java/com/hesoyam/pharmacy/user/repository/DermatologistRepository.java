@@ -12,4 +12,7 @@ public interface DermatologistRepository extends JpaRepository<Dermatologist, Lo
     @Query("select d from Dermatologist d join d.pharmacies p where p.id = :pharmacy_id")
     List<Dermatologist> findAllDermatologistsByPharmacy(@Param("pharmacy_id") Long pharmacyId);
 
+    @Query("select d from Dermatologist d join d.pharmacies ph join ph.administrator a where a.id = :administrator_id")
+    List<Dermatologist> findAllByPharmacyAdministrator(@Param("administrator_id") Long administratorId);
+
 }
