@@ -248,4 +248,21 @@ public abstract class User implements UserDetails {
    public void setRoleEnum(RoleEnum roleEnum) {
       this.roleEnum = roleEnum;
    }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof User)) return false;
+      User user = (User) o;
+      return Objects.equals(getId(), user.getId());
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(getId());
+   }
+
+   public boolean startsWithName(String firstName, String lastName){
+      return getFirstName().toLowerCase().startsWith(firstName.toLowerCase()) && getLastName().toLowerCase().startsWith(lastName.toLowerCase());
+   }
 }
