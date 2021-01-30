@@ -2,12 +2,14 @@ package com.hesoyam.pharmacy.pharmacy.controller;
 
 import com.hesoyam.pharmacy.pharmacy.DTO.PharmacyCreateDTO;
 import com.hesoyam.pharmacy.pharmacy.DTO.PharmacyDTO;
+import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidPharmacyCreateRequest;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,11 +30,17 @@ public class PharmacyController {
     private IPharmacyService pharmacyService;
 
     @PostMapping("/create")
+    @Secured("ROLE_SYS_ADMIN")
     public ResponseEntity<Pharmacy> create(@RequestBody @Valid PharmacyCreateDTO pharmacyCreateDTO, BindingResult errors){
         if(errors.hasErrors()){
             return ResponseEntity.badRequest().build();
         }
-        Pharmacy savedPharmacy = pharmacyService.create(pharmacyCreateDTO);
+        Pharmacy savedPharmacy = null;
+        try {
+            savedPharmacy = pharmacyService.create(pharmacyCreateDTO);
+        } catch (InvalidPharmacyCreateRequest invalidPharmacyCreateRequest) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
         return ResponseEntity.ok(savedPharmacy);
     }
     

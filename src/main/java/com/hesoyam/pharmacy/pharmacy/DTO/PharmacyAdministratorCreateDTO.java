@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.user.DTO;
+package com.hesoyam.pharmacy.pharmacy.DTO;
 
 import com.hesoyam.pharmacy.location.model.Address;
 import com.hesoyam.pharmacy.user.model.Gender;
@@ -10,7 +10,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class RegistrationDTO {
+public class PharmacyAdministratorCreateDTO {
     @NotNull(message="First name must be provided")
     @Length(min=2, max=75, message = "First name length should be between 2 and 75 characters.")
     protected String firstName;
@@ -30,16 +30,7 @@ public class RegistrationDTO {
     protected Gender gender;
 
     @NotNull
-    @Length(min=8, max=64, message = "Password length should be between 8 and 64 characters.")
-    protected String password;
-
-    @NotNull
-    protected String confirmPassword;
-
-    @NotNull
     protected Address address;
-
-    protected RoleEnum roleEnum;
 
     public String getFirstName() {
         return firstName;
@@ -81,22 +72,6 @@ public class RegistrationDTO {
         this.gender = gender;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
     public Address getAddress() {
         return address;
     }
@@ -105,11 +80,4 @@ public class RegistrationDTO {
         this.address = address;
     }
 
-    public RoleEnum getRoleEnum() {
-        return roleEnum;
-    }
-
-    public void setRoleEnum(RoleEnum roleEnum) {
-        this.roleEnum = roleEnum;
-    }
 }
