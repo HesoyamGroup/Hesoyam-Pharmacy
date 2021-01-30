@@ -27,7 +27,11 @@ public abstract class User implements UserDetails {
    protected Long id;
 
    @Column(name="enabled")
-   private boolean enabled;
+   protected boolean enabled;
+
+   @Column
+   @NotNull(message = "Password reset value must be specified.")
+   protected boolean passwordReset;
 
 
    @Column(length=75, name = "first_name")
@@ -106,7 +110,7 @@ public abstract class User implements UserDetails {
    }
 
    public Role getUserRole(){
-      if(authorities.isEmpty())
+      if(!authorities.isEmpty())
          return authorities.get(0);
 
       return null;
@@ -178,6 +182,10 @@ public abstract class User implements UserDetails {
    }
 
    public void setPassword(String password) {
+      if(this.password != null && !this.password.equals(password)){
+         //If a password has been changed, update timestamp
+         lastPasswordResetDate = new Timestamp((new Date()).getTime());
+      }
       this.password = password;
    }
 
@@ -225,11 +233,36 @@ public abstract class User implements UserDetails {
       this.enabled = enabled;
    }
 
+   public boolean isPasswordReset() {
+      return passwordReset;
+   }
+
+   public void setPasswordReset(boolean passwordReset) {
+      this.passwordReset = passwordReset;
+   }
+   
    public RoleEnum getRoleEnum() {
       return roleEnum;
    }
 
    public void setRoleEnum(RoleEnum roleEnum) {
       this.roleEnum = roleEnum;
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof User)) return false;
+      User user = (User) o;
+      return Objects.equals(getId(), user.getId());
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(getId());
+   }
+
+   public boolean startsWithName(String firstName, String lastName){
+      return getFirstName().toLowerCase().startsWith(firstName.toLowerCase()) && getLastName().toLowerCase().startsWith(lastName.toLowerCase());
    }
 }

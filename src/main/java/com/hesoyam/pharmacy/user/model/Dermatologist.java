@@ -75,4 +75,9 @@ public class Dermatologist extends Employee {
          }
       }
    }
+
+   @Override
+   public boolean isAdministratorMyBoss(User administrator) {
+      return getPharmacies().stream().anyMatch(pharmacy -> pharmacy.getAdministrator().contains(administrator));
+   }
 }

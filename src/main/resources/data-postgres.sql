@@ -204,9 +204,9 @@ VALUES (5, 0, 4, 3);
 
 -- 1
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Pera', 'Perić', 'MALE', 'Bulevar cara Lazara 88', 1, 45.24136867255004, 19.829921403835918, '4444444444', 'hesoyampharmacy+admin@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('14-01-2021', 'DD-MM-YYYY'), true, 'SYS_ADMIN');
+('Pera', 'Perić', 'MALE', 'Bulevar cara Lazara 88', 1, 45.24136867255004, 19.829921403835918, '4444444444', 'hesoyampharmacy+admin@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('14-01-2021', 'DD-MM-YYYY'), true, 'SYS_ADMIN', false);
 INSERT INTO sys_admin (id) VALUES (1);
 INSERT INTO user_roles (user_id, role_id) VALUES (1, 6);
 
@@ -216,33 +216,33 @@ INSERT INTO user_roles (user_id, role_id) VALUES (1, 6);
 
 -- 2
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Nikola', 'Dragić', 'MALE', 'Bulevar oslobođenja 147', 1, 45.24046220156171, 19.843969833190673, '4444444444', 'hesoyampharmacy+dragic@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('15-01-2021', 'DD-MM-YYYY'), true, 'ADMINISTRATOR');
+('Nikola', 'Dragić', 'MALE', 'Bulevar oslobođenja 147', 1, 45.24046220156171, 19.843969833190673, '4444444444', 'hesoyampharmacy+dragic@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('15-01-2021', 'DD-MM-YYYY'), true, 'ADMINISTRATOR', false);
 INSERT INTO administrator (id, pharmacy_id) VALUES (2, 1);
 INSERT INTO user_roles (user_id, role_id) VALUES (2, 5);
 
 -- 3
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Luka', 'Kričković', 'MALE', 'Narodnog fronta 187', 1, 45.2373330656835, 19.82722036933235, '4444444444', 'hesoyampharmacy+kricko@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'ADMINISTRATOR');
+('Luka', 'Kričković', 'MALE', 'Narodnog fronta 187', 1, 45.2373330656835, 19.82722036933235, '4444444444', 'hesoyampharmacy+kricko@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'ADMINISTRATOR', false);
 INSERT INTO administrator (id, pharmacy_id) VALUES (3, 2);
 INSERT INTO user_roles (user_id, role_id) VALUES (3, 5);
 
 -- 4
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Aleksa', 'Vučaj', 'MALE', 'Fruškogorska 24', 1, 45.24092378110751, 19.84746195352302, '4444444444', 'hesoyampharmacy+vucaj@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'ADMINISTRATOR');
+('Aleksa', 'Vučaj', 'MALE', 'Fruškogorska 24', 1, 45.24092378110751, 19.84746195352302, '4444444444', 'hesoyampharmacy+vucaj@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'ADMINISTRATOR', false);
 INSERT INTO administrator (id, pharmacy_id) VALUES (4, 2);
 INSERT INTO user_roles (user_id, role_id) VALUES (4, 5);
 
 -- 5
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Gergelj', 'Kiš', 'MALE', 'Bulevar Evrope 42', 1, 45.24366408340239, 19.82013338399792, '4444444444', 'hesoyampharmacy+kis@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'ADMINISTRATOR');
+('Gergelj', 'Kiš', 'MALE', 'Bulevar Evrope 42', 1, 45.24366408340239, 19.82013338399792, '4444444444', 'hesoyampharmacy+kis@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'ADMINISTRATOR', false);
 INSERT INTO administrator (id, pharmacy_id) VALUES (5, 3);
 INSERT INTO user_roles (user_id, role_id) VALUES (5, 5);
 
@@ -252,9 +252,9 @@ INSERT INTO user_roles (user_id, role_id) VALUES (5, 5);
 
 -- 6
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Mila', 'Milanović', 'FEMALE', 'Šabačka 41', 3, 44.80115575659176, 20.49294129684957, '4444444444', 'hesoyampharmacy+mila@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'PHARMACIST');
+('Mila', 'Milanović', 'FEMALE', 'Šabačka 41', 3, 44.80115575659176, 20.49294129684957, '4444444444', 'hesoyampharmacy+mila@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'PHARMACIST', false);
 INSERT INTO employee
 (id, rating) VALUES (6, 0);
 INSERT INTO pharmacist (id, pharmacy_id) VALUES (6, 1);
@@ -262,9 +262,9 @@ INSERT INTO user_roles (user_id, role_id) VALUES (6, 3);
 
 -- 7
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Jovan', 'Jovanović', 'MALE', 'Karađorđeva 32', 2, 44.02636626175418, 20.45674605711011, '4444444444', 'hesoyampharmacy+jovan@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'PHARMACIST');
+('Jovan', 'Jovanović', 'MALE', 'Karađorđeva 32', 2, 44.02636626175418, 20.45674605711011, '4444444444', 'hesoyampharmacy+jovan@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'PHARMACIST', false);
 INSERT INTO employee
 (id, rating) VALUES (7, 0);
 INSERT INTO pharmacist (id, pharmacy_id) VALUES (7, 2);
@@ -272,9 +272,9 @@ INSERT INTO user_roles (user_id, role_id) VALUES (7, 3);
 
 -- 8
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Milan', 'Milanović', 'MALE', 'Savski trg 11', 3, 44.80878328562551, 20.45740555451793, '4444444444', 'hesoyampharmacy+milan@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'PHARMACIST');
+('Milan', 'Milanović', 'MALE', 'Savski trg 11', 3, 44.80878328562551, 20.45740555451793, '4444444444', 'hesoyampharmacy+milan@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'PHARMACIST', false);
 INSERT INTO employee
 (id, rating) VALUES (8, 0);
 INSERT INTO pharmacist (id, pharmacy_id) VALUES (8, 3);
@@ -282,9 +282,9 @@ INSERT INTO user_roles (user_id, role_id) VALUES (8, 3);
 
 -- 9
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Jadranka', 'Jadranovič', 'FEMALE', 'Subotička 21', 1, 45.24542077279943, 19.813604101767236, '4444444444', 'hesoyampharmacy+jadranka@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'PHARMACIST');
+('Jadranka', 'Jadranovič', 'FEMALE', 'Subotička 21', 1, 45.24542077279943, 19.813604101767236, '4444444444', 'hesoyampharmacy+jadranka@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'PHARMACIST', false);
 INSERT INTO employee
 (id, rating) VALUES (9, 0);
 INSERT INTO pharmacist (id, pharmacy_id) VALUES (9, 3);
@@ -296,9 +296,9 @@ INSERT INTO user_roles (user_id, role_id) VALUES (9, 3);
 
 -- 10
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Ivana', 'Ivanović', 'FEMALE', 'Ćirpanova 4', 1, 45.25299175875651, 19.835303400426874, '4444444444', 'hesoyampharmacy+ivana@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'DERMATOLOGIST');
+('Ivana', 'Ivanović', 'FEMALE', 'Ćirpanova 4', 1, 45.25299175875651, 19.835303400426874, '4444444444', 'hesoyampharmacy+ivana@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'DERMATOLOGIST', false);
 INSERT INTO employee
 (id, rating) VALUES (10, 0);
 INSERT INTO dermatologist (id) VALUES (10);
@@ -307,9 +307,9 @@ INSERT INTO user_roles (user_id, role_id) VALUES (10, 4);
 
 -- 11
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Mika', 'Mikić', 'DONT_SAY', 'Tolstojeva 12', 1, 45.24535673373681, 19.833914938362007, '4444444444', 'hesoyampharmacy+mika@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'DERMATOLOGIST');
+('Mika', 'Mikić', 'DONT_SAY', 'Tolstojeva 12', 1, 45.24535673373681, 19.833914938362007, '4444444444', 'hesoyampharmacy+mika@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'DERMATOLOGIST', false);
 INSERT INTO employee
 (id, rating) VALUES (11, 0);
 INSERT INTO dermatologist (id) VALUES (11);
@@ -318,9 +318,9 @@ INSERT INTO user_roles (user_id, role_id) VALUES (11, 4);
 
 -- 12
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Dragan', 'Dragić', 'MALE', 'Dositejeva 17', 1, 45.26315474237813, 19.84141604011822, '4444444444', 'hesoyampharmacy+dragan@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'DERMATOLOGIST');
+('Dragan', 'Dragić', 'MALE', 'Dositejeva 17', 1, 45.26315474237813, 19.84141604011822, '4444444444', 'hesoyampharmacy+dragan@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'DERMATOLOGIST', false);
 INSERT INTO employee
 (id, rating) VALUES (12, 0);
 INSERT INTO dermatologist (id) VALUES (12);
@@ -330,9 +330,9 @@ INSERT INTO user_roles (user_id, role_id) VALUES (12, 4);
 
 -- 13
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Marko', 'Marković', 'MALE', 'Masarikova 18', 1, 45.25780011333192, 19.83853464148449, '4444444444', 'hesoyampharmacy+marko@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'DERMATOLOGIST');
+('Marko', 'Marković', 'MALE', 'Masarikova 18', 1, 45.25780011333192, 19.83853464148449, '4444444444', 'hesoyampharmacy+marko@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'DERMATOLOGIST', false);
 INSERT INTO employee
 (id, rating) VALUES (13, 0);
 INSERT INTO dermatologist (id) VALUES (13);
@@ -346,33 +346,33 @@ INSERT INTO user_roles (user_id, role_id) VALUES (13, 4);
 
 -- 14
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Veselin', 'Tomić', 'MALE', 'Rumenačka 147', 1, 45.265666787857164, 19.81474531978888, '4444444444', 'hesoyampharmacy+veselin@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'PATIENT');
+('Veselin', 'Tomić', 'MALE', 'Rumenačka 147', 1, 45.265666787857164, 19.81474531978888, '4444444444', 'hesoyampharmacy+veselin@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'PATIENT', false);
 INSERT INTO patient (id, penalty_points) VALUES (14, 0);
 INSERT INTO user_roles (user_id, role_id) VALUES (14, 2);
 
 -- 15
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Svetlana', 'Branković', 'FEMALE', 'Futoški put 76', 1, 45.247088659951785, 19.803792899301826, '4444444444', 'hesoyampharmacy+ceca@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'PATIENT');
+('Svetlana', 'Branković', 'FEMALE', 'Futoški put 76', 1, 45.247088659951785, 19.803792899301826, '4444444444', 'hesoyampharmacy+ceca@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'PATIENT', false);
 INSERT INTO patient (id, penalty_points) VALUES (15, 0);
 INSERT INTO user_roles (user_id, role_id) VALUES (15, 2);
 
 -- 16
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Lidija', 'Kovač', 'FEMALE', 'Futoška 46', 1, 45.24900654614174, 19.826952620050363, '4444444444', 'hesoyampharmacy+lidija@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'PATIENT');
+('Lidija', 'Kovač', 'FEMALE', 'Futoška 46', 1, 45.24900654614174, 19.826952620050363, '4444444444', 'hesoyampharmacy+lidija@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'PATIENT', false);
 INSERT INTO patient (id, penalty_points) VALUES (16, 0);
 INSERT INTO user_roles (user_id, role_id) VALUES (16, 2);
 
 -- 17
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Radovan', 'Petrović', 'MALE', 'Novosadskog sajma 41', 1, 45.253902952298034, 19.825503048784817, '4444444444', 'hesoyampharmacy+radovan@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'PATIENT');
+('Radovan', 'Petrović', 'MALE', 'Novosadskog sajma 41', 1, 45.253902952298034, 19.825503048784817, '4444444444', 'hesoyampharmacy+radovan@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'PATIENT', false);
 INSERT INTO patient (id, penalty_points) VALUES (17, 2);
 INSERT INTO user_roles (user_id, role_id) VALUES (17, 2);
 
@@ -382,17 +382,17 @@ INSERT INTO user_roles (user_id, role_id) VALUES (17, 2);
 
 -- 18
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Sandra', 'Filipović', 'FEMALE', 'Sarajevska 83', 3, 44.800638193104234, 20.451638118625414, '4444444444', 'hesoyampharmacy+sandra@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER');
+('Sandra', 'Filipović', 'FEMALE', 'Sarajevska 83', 3, 44.800638193104234, 20.451638118625414, '4444444444', 'hesoyampharmacy+sandra@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
 INSERT INTO supplier (id) VALUES (18);
 INSERT INTO user_roles (user_id, role_id) VALUES (18, 7);
 
 -- 19
 INSERT INTO users
-(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum)
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Marina', 'Marić', 'FEMALE', 'Novosadska 37', 3, 44.914103309371924, 20.267538944371907, '4444444444', 'hesoyampharmacy+marina@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER');
+('Marina', 'Marić', 'FEMALE', 'Novosadska 37', 3, 44.914103309371924, 20.267538944371907, '4444444444', 'hesoyampharmacy+marina@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
 INSERT INTO supplier (id) VALUES (19);
 INSERT INTO user_roles (user_id, role_id) VALUES (19, 7);
 

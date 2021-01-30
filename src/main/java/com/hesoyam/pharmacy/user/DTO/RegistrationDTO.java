@@ -12,31 +12,31 @@ import javax.validation.constraints.NotNull;
 public class RegistrationDTO {
     @NotNull(message="First name must be provided")
     @Length(min=2, max=75, message = "First name length should be between 2 and 75 characters.")
-    private String firstName;
+    protected String firstName;
 
     @NotNull(message = "Last name must be provided.")
     @Length(min=3, max = 100, message = "Last name length should be between 3 and 100 characters.")
-    private String lastName;
+    protected String lastName;
 
     @PhoneNumberConstraint
     protected String telephone;
 
     @NotBlank
     @Email(message = "A valid email address must be provided.")
-    private String email;
+    protected String email;
 
     @NotNull
-    private Gender gender;
+    protected Gender gender;
 
     @NotNull
     @Length(min=8, max=64, message = "Password length should be between 8 and 64 characters.")
-    private String password;
+    protected String password;
 
     @NotNull
-    private String confirmPassword;
+    protected String confirmPassword;
 
     @NotNull
-    private Address address;
+    protected Address address;
 
     public String getFirstName() {
         return firstName;
