@@ -48,6 +48,15 @@ public abstract class Appointment {
    @JoinColumn(name = "patient_id")
    protected Patient patient;
 
+   protected Double price;
+
+   public Double getPrice() {
+      return price;
+   }
+
+   public void setPrice(Double price) {
+      this.price = price;
+   }
 
    public Long getId() {
       return id;
@@ -104,14 +113,7 @@ public abstract class Appointment {
    public void setPharmacy(Pharmacy newPharmacy) {
       if (this.pharmacy == null || !this.pharmacy.equals(newPharmacy))
       {
-         if (this.pharmacy != null)
-         {
-            this.pharmacy = null;
-         }
-         if (newPharmacy != null)
-         {
-            this.pharmacy = newPharmacy;
-         }
+         this.pharmacy = newPharmacy;
       }
    }
 
