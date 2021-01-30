@@ -1,6 +1,8 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
+import com.hesoyam.pharmacy.appointment.DTO.CounselingDTO;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
+import com.hesoyam.pharmacy.appointment.repository.CounselingRepository;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
@@ -11,12 +13,13 @@ import com.hesoyam.pharmacy.util.DateTimeRange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/appointment")
@@ -30,19 +33,37 @@ public class AppointmentController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "/appointments-for-pharmacist")
-    public ResponseEntity<List<Counseling>> getCounselingsForPharmacist(DateTimeRange dateTimeRange, HttpServletRequest request){
+    @GetMapping(value = "/appointments-for-pharmacist/{dateTimeRange}")
+    public ResponseEntity<List<CounselingDTO>> getCounselingsForPharmacist(@PathVariable String dateTimeRange,
+                                                                        HttpServletRequest request){
         String token = tokenUtils.getToken(request);
         String username = tokenUtils.getUsernameFromToken(token);
+
+        String[] parts = dateTimeRange.split("!");
+        LocalDateTime fromDate = LocalDateTime.parse(parts[0].trim().substring(0, parts[0].trim().length() - 1));
+        LocalDateTime toDate = LocalDateTime.parse(parts[1].trim().substring(0, parts[0].trim().length() - 1));
+
         try{
             User user = userService.findByEmail(username);
+            List<CounselingDTO> counselings = convertToCounselingDTO(appointmentService.getCounselingsForPharmacist(
+                    new DateTimeRange(fromDate, toDate), (Pharmacist) user));
 
-            return ResponseEntity.ok().body(appointmentService.getCounselingsForPharmacist(dateTimeRange, (Pharmacist) user));
+            return ResponseEntity.ok().body(counselings);
         }
         catch (UserNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    private List<CounselingDTO> convertToCounselingDTO(List<Counseling> counselingsForPharmacist) {
+        List<CounselingDTO> converted = new ArrayList<>();
+        for(Counseling counseling : counselingsForPharmacist){
+            converted.add(new CounselingDTO(counseling.getPatient().getEmail(), counseling.getPatient().getFirstName(),
+                    counseling.getPatient().getLastName(), counseling.getDateTimeRange().getFrom(),
+                    counseling.getDateTimeRange().getTo()));
+        }
+        return converted;
     }
 
 

@@ -39,7 +39,7 @@ public class AppointmentService implements IAppointmentService {
 
     @Override
     public int getCompletedCounselingsForPatientByPharmacist(Patient patient, Pharmacist pharmacist) {
-        return CounselingRepository.countCounselingsByPatientAndAppointmentStatusAndPharmacist(patient, AppointmentStatus.COMPLETED, pharmacist);
+        return counselingRepository.countCounselingsByPatientAndAppointmentStatusAndPharmacist(patient, AppointmentStatus.COMPLETED, pharmacist);
     }
 
     @Override

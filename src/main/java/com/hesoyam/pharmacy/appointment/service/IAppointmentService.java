@@ -4,6 +4,7 @@ import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
+import com.hesoyam.pharmacy.util.DateRange;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 
 import java.util.List;

@@ -7,6 +7,7 @@ package com.hesoyam.pharmacy.util;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Embeddable
@@ -16,6 +17,13 @@ public class DateTimeRange {
    private LocalDateTime from;
    @Column(name= "to_date")
    private LocalDateTime to;
+
+   public DateTimeRange(){}
+
+   public DateTimeRange(LocalDateTime from, LocalDateTime to){
+      this.from = from;
+      this.to = to;
+   }
 
    public LocalDateTime getFrom() {
       return from;
