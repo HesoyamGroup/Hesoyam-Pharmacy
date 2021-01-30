@@ -61,17 +61,15 @@ public class MedicineReservationController {
 
     @PostMapping("/create")
     //TODO: dodati @secured?
-    public ResponseEntity<MedicineReservation> create(@RequestBody MedicineReservationDTO medicineReservationDTO){
-        //TODO: poslati mejl
+    public ResponseEntity<MedicineReservation> create(@RequestBody MedicineReservationDTO medicineReservationDTO, HttpServletRequest request){
         MedicineReservation medicineReservation = new MedicineReservation();
-        /*String token = tokenUtils.getToken(request);
-        String email = tokenUtils.getUsernameFromToken(token);*/
+        String token = tokenUtils.getToken(request);
+        String email = tokenUtils.getUsernameFromToken(token);
         Patient patient = new Patient();
         try{
-             //User user = userService.findByEmail(email);
-             //patient = patientService.getById(user.getId());
-             patient = patientService.getById(Long.parseLong("14"));
-        } catch (PatientNotFoundException e) {
+             User user = userService.findByEmail(email);
+             patient = patientService.getById(user.getId());
+        } catch (PatientNotFoundException | UserNotFoundException e) {
             ResponseEntity.status(HttpStatus.NOT_FOUND);
         }
         medicineReservation.setPatient(patient);
@@ -81,7 +79,7 @@ public class MedicineReservationController {
         medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CREATED);
 
         try{
-            User user = userService.findById(Long.parseLong("14"));
+            User user = userService.findByEmail(email);
             applicationEventPublisher.publishEvent(new OnMedicineReservationCompletedEvent(user, medicineReservation));
         } catch (UserNotFoundException e) {
             e.printStackTrace();
