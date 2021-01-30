@@ -3,9 +3,10 @@ package com.hesoyam.pharmacy.user.DTO;
 import com.hesoyam.pharmacy.user.model.Employee;
 
 public class EmployeeBasicDTO {
-    private Long id;
-    private String firstName;
-    private String lastName;
+    protected Long id;
+    protected String firstName;
+    protected String lastName;
+    protected double rating;
 
     public EmployeeBasicDTO(){}
 
@@ -13,6 +14,7 @@ public class EmployeeBasicDTO {
         this.id = employee.getId();
         this.firstName = employee.getFirstName();
         this.lastName = employee.getLastName();
+        this.rating = employee.getRating();
     }
 
     public Long getId() {
@@ -37,5 +39,13 @@ public class EmployeeBasicDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }

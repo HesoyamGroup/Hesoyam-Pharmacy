@@ -29,7 +29,7 @@ public class InventoryItem {
    private Medicine medicine;
 
    @OneToMany(mappedBy = "inventoryItem", cascade = CascadeType.ALL)
-   private List<InventoryPriceItem> prices;
+   private List<InventoryItemPrice> prices;
 
    public Long getId() {
       return id;
@@ -63,51 +63,51 @@ public class InventoryItem {
       this.medicine = medicine;
    }
 
-   public List<InventoryPriceItem> getPrices() {
+   public List<InventoryItemPrice> getPrices() {
       if (prices == null)
          prices = new ArrayList<>();
       return prices;
    }
 
-   public Iterator<InventoryPriceItem> getIteratorPrices() {
+   public Iterator<InventoryItemPrice> getIteratorPrices() {
       if (prices == null)
          prices = new ArrayList<>();
       return prices.iterator();
    }
 
-   public void setPrices(List<InventoryPriceItem> newPrices) {
+   public void setPrices(List<InventoryItemPrice> newPrices) {
       removeAllPrices();
-      for (Iterator<InventoryPriceItem> iter = newPrices.iterator(); iter.hasNext();)
+      for (Iterator<InventoryItemPrice> iter = newPrices.iterator(); iter.hasNext();)
          addPrices(iter.next());
    }
 
-   public void addPrices(InventoryPriceItem newInventoryPriceItem) {
-      if (newInventoryPriceItem == null)
+   public void addPrices(InventoryItemPrice newInventoryItemPrice) {
+      if (newInventoryItemPrice == null)
          return;
       if (this.prices == null)
          this.prices = new ArrayList<>();
-      if (!this.prices.contains(newInventoryPriceItem)) {
-         this.prices.add(newInventoryPriceItem);
-         newInventoryPriceItem.setInventoryItem(this);
+      if (!this.prices.contains(newInventoryItemPrice)) {
+         this.prices.add(newInventoryItemPrice);
+         newInventoryItemPrice.setInventoryItem(this);
       }
    }
 
-   public void removePrices(InventoryPriceItem oldInventoryPriceItem) {
-      if (oldInventoryPriceItem == null)
+   public void removePrices(InventoryItemPrice oldInventoryItemPrice) {
+      if (oldInventoryItemPrice == null)
          return;
-      if (this.prices != null && this.prices.contains(oldInventoryPriceItem)) {
-         this.prices.remove(oldInventoryPriceItem);
-         oldInventoryPriceItem.setInventoryItem((InventoryItem)null);
+      if (this.prices != null && this.prices.contains(oldInventoryItemPrice)) {
+         this.prices.remove(oldInventoryItemPrice);
+         oldInventoryItemPrice.setInventoryItem((InventoryItem)null);
       }
    }
 
    public void removeAllPrices() {
       if (prices != null) {
-         InventoryPriceItem oldInventoryPriceItem;
-         for (Iterator<InventoryPriceItem> iter = getIteratorPrices(); iter.hasNext();) {
-            oldInventoryPriceItem = iter.next();
+         InventoryItemPrice oldInventoryItemPrice;
+         for (Iterator<InventoryItemPrice> iter = getIteratorPrices(); iter.hasNext();) {
+            oldInventoryItemPrice = iter.next();
             iter.remove();
-            oldInventoryPriceItem.setInventoryItem((InventoryItem)null);
+            oldInventoryItemPrice.setInventoryItem((InventoryItem)null);
          }
       }
    }

@@ -70,10 +70,6 @@ public class Pharmacy {
    @JsonBackReference
    private List<Sale> sales;
 
-   @OneToMany(cascade = CascadeType.REMOVE)
-   @JoinColumn(name = "pharmacy_id", referencedColumnName = "id")
-   private List<ServicePriceItem> servicePriceItems;
-
    public Long getId() {
       return id;
    }
@@ -290,46 +286,5 @@ public class Pharmacy {
          }
       }
    }
-
-   public List<ServicePriceItem> getServicePriceItems() {
-      if (servicePriceItems == null)
-         servicePriceItems = new ArrayList<>();
-      return servicePriceItems;
-   }
-
-   public Iterator<ServicePriceItem> getIteratorServicePriceItems() {
-      if (servicePriceItems == null)
-         servicePriceItems = new java.util.ArrayList<>();
-      return servicePriceItems.iterator();
-   }
-
-   public void setServicePriceItems(List<ServicePriceItem> newServicePriceItems) {
-      removeAllServicePriceItems();
-      for (Iterator<ServicePriceItem> iter = newServicePriceItems.iterator(); iter.hasNext();)
-         addServicePriceItems(iter.next());
-   }
-
-   public void addServicePriceItems(ServicePriceItem newServicePriceItem) {
-      if (newServicePriceItem == null)
-         return;
-      if (this.servicePriceItems == null)
-         this.servicePriceItems = new ArrayList<>();
-      if (!this.servicePriceItems.contains(newServicePriceItem))
-         this.servicePriceItems.add(newServicePriceItem);
-   }
-
-   public void removeServicePriceItems(ServicePriceItem oldServicePriceItem) {
-      if (oldServicePriceItem == null)
-         return;
-      if (this.servicePriceItems != null && this.servicePriceItems.contains(oldServicePriceItem))
-            this.servicePriceItems.remove(oldServicePriceItem);
-   }
-
-   public void removeAllServicePriceItems() {
-      if (servicePriceItems != null)
-         servicePriceItems.clear();
-   }
-
-
 
 }
