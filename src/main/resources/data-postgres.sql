@@ -61,6 +61,11 @@ INSERT INTO contraindication (name) VALUES ('Teška srčana insuficijencija');
 INSERT INTO contraindication (name) VALUES ('Teška insuficijencija bubrega');
 INSERT INTO contraindication (name) VALUES ('Treći trimestar trudnoće');
 INSERT INTO contraindication (name) VALUES ('Preosetljivost na penicilin');
+INSERT INTO contraindication (name) VALUES ('Alergija na ibuprofen');
+INSERT INTO contraindication (name) VALUES ('Alergija na alprazolam');
+INSERT INTO contraindication (name) VALUES ('Preosetljivost na vitamin C');
+INSERT INTO contraindication (name) VALUES ('Srednje-teska insuficijencija jetre.');
+
 
 INSERT INTO composition_item (name, quantity, unit) VALUES ('Cefaleksin', 250, 'MG');
 INSERT INTO composition_item (name, quantity, unit) VALUES ('Ibuprofen', 200, 'MG');

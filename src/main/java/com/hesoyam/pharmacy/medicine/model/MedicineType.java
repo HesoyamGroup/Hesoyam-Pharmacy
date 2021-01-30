@@ -14,5 +14,4 @@ public enum MedicineType {
    GEL,
    SYRUP,
    SOLUTION;
-
 }
