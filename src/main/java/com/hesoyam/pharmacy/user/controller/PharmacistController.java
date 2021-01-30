@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.DTO.EmployeeBasicDTO;
+import com.hesoyam.pharmacy.user.DTO.PharmacistDTO;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
@@ -40,18 +41,20 @@ public class PharmacistController {
         return new ResponseEntity<>(employees, pharmacists.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
 
-    @GetMapping(value = "pharmacist-workplace")
-    public ResponseEntity<String> getPharmacyForPharmacist(HttpServletRequest request){
+    @GetMapping(value = "pharmacist-information")
+    public ResponseEntity<PharmacistDTO> getPharmacyForPharmacist(HttpServletRequest request){
         String token = tokenUtils.getToken(request);
         String username = tokenUtils.getUsernameFromToken(token);
 
         try{
             User user = userService.findByEmail(username);
-            return ResponseEntity.ok().body(pharmacistService.getPharmacyForPharmacist(user.getId()).getName());
+            PharmacistDTO pharmacistDTO = new PharmacistDTO(user.getFirstName(), user.getLastName(),
+                    pharmacistService.getPharmacyForPharmacist(user.getId()).getName());
+            return ResponseEntity.ok().body(pharmacistDTO);
         }
         catch (UserNotFoundException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
