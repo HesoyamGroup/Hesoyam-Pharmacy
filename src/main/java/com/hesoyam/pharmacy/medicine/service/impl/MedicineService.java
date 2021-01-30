@@ -7,6 +7,7 @@ import com.hesoyam.pharmacy.medicine.service.IMedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,6 +32,15 @@ public class MedicineService implements IMedicineService {
     @Override
     public List<MedicineType> getAllMedicineTypes() {
         return Arrays.asList(MedicineType.values());
+    }
+
+    @Override
+    public List<Medicine> findByMedicineName(String name) {
+        List<Medicine> medicines = medicineRepository.findAllByNameLike(name);
+        if(medicines.isEmpty())
+            throw new EntityNotFoundException();
+
+        return medicines;
     }
 
 

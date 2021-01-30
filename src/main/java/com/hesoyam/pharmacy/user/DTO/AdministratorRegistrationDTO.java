@@ -11,12 +11,6 @@ public class AdministratorRegistrationDTO extends RegistrationDTO{
     @NotNull(message = "Pharmacy must be provided")
     private Pharmacy pharmacy;
 
-    public AdministratorRegistrationDTO(){}
-
-//    public AdministratorRegistrationDTO(@NotNull Pharmacy pharmacy) {
-//        this.pharmacy = pharmacy;
-//    }
-
     public Pharmacy getPharmacy() {
         return pharmacy;
     }

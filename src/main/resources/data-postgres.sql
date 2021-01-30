@@ -61,6 +61,11 @@ INSERT INTO contraindication (name) VALUES ('Teška srčana insuficijencija');
 INSERT INTO contraindication (name) VALUES ('Teška insuficijencija bubrega');
 INSERT INTO contraindication (name) VALUES ('Treći trimestar trudnoće');
 INSERT INTO contraindication (name) VALUES ('Preosetljivost na penicilin');
+INSERT INTO contraindication (name) VALUES ('Alergija na ibuprofen');
+INSERT INTO contraindication (name) VALUES ('Alergija na alprazolam');
+INSERT INTO contraindication (name) VALUES ('Preosetljivost na vitamin C');
+INSERT INTO contraindication (name) VALUES ('Srednje-teska insuficijencija jetre.');
+
 
 INSERT INTO composition_item (name, quantity, unit) VALUES ('Cefaleksin', 250, 'MG');
 INSERT INTO composition_item (name, quantity, unit) VALUES ('Ibuprofen', 200, 'MG');
@@ -126,6 +131,77 @@ INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city
 -- 3 Tilia
 INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city_id, rating) VALUES
 ('Apoteka Tilia', '', 'Bulevar oslobođenja 3A', 45.26416960023307, 19.830897136780703, 1, 0);
+
+-----------------------
+-- PHARMACY INVENTORIES
+-----------------------
+
+-- 1 Jankovic's Inventory
+INSERT INTO inventory(pharmacy_id)
+VALUES (1);
+
+-- 2 BENU's Inventory
+INSERT INTO inventory(pharmacy_id)
+VALUES (2);
+
+-- 3 Tilia's Inventory
+INSERT INTO inventory(pharmacy_id)
+VALUES (3);
+
+----------------------------------------
+-- INVENTORY ITEMS
+---------------------------------------
+-----------------------
+-- Jankovic Inventory Items
+-----------------------
+
+-- Palitrex
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (5, 0, 1, 1);
+-- Rapidol
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (4, 0, 2, 1);
+-- Diclofenac Duo
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (7, 0, 3, 1);
+-- Panklav
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (0, 0, 4, 1);
+
+-----------------------
+-- BENU Inventory Items
+-----------------------
+
+-- Palitrex
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (7, 0, 1, 2);
+-- Rapidol
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (5, 0, 2, 2);
+-- Diclofenac Duo
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (2, 0, 3, 2);
+-- Panklav
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (3, 0, 4, 2);
+
+-----------------------
+-- Tilia Inventory Items
+-----------------------
+
+-- Palitrex
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (2, 0, 1, 3);
+-- Rapidol
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (1, 0, 2, 3);
+-- Diclofenac Duo
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (8, 0, 3, 3);
+-- Panklav
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (5, 0, 4, 3);
+
 
 --------------
 -- SYS ADMIN

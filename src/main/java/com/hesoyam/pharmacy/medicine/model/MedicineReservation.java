@@ -5,6 +5,11 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.medicine.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.hesoyam.pharmacy.user.model.Patient;
 import org.hibernate.validator.constraints.Length;
 
@@ -22,6 +27,9 @@ public class MedicineReservation {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
+   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+   @JsonSerialize(using = LocalDateTimeSerializer.class)
+   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
    @Column(name = "pick_up_date")
    @NotNull(message = "Pick up date must be specified.")
    private LocalDateTime pickUpDate;
@@ -41,6 +49,68 @@ public class MedicineReservation {
 
    @Enumerated(EnumType.STRING)
    private MedicineReservationStatus medicineReservationStatus;
+
+
+   /*public MedicineReservation(Long id, @NotNull(message = "Pick up date must be specified.") LocalDateTime pickUpDate, @NotNull(message = "Medicine reservation code must be provided.") @Length(min = 1, max = 50, message = "Medicine reservation code length should be between 1 and 50.") String code, List<MedicineReservationItem> medicineReservationItems, Patient patient, MedicineReservationStatus medicineReservationStatus) {
+      this.id = id;
+      this.pickUpDate = pickUpDate;
+      this.code = code;
+      this.medicineReservationItems = medicineReservationItems;
+      this.patient = patient;
+      this.medicineReservationStatus = medicineReservationStatus;
+   }*/
+
+   public MedicineReservation(Long id, LocalDateTime pickUpDate, @Length(min = 1, max = 50, message = "Medicine reservation code length should be between 1 and 50.") String code, List<MedicineReservationItem> medicineReservationItems, Patient patient, MedicineReservationStatus medicineReservationStatus) {
+      this.id = id;
+      this.pickUpDate = pickUpDate;
+      this.code = code;
+      this.medicineReservationItems = medicineReservationItems;
+      this.patient = patient;
+      this.medicineReservationStatus = medicineReservationStatus;
+   }
+
+   public MedicineReservation() {
+   }
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public LocalDateTime getPickUpDate() {
+      return pickUpDate;
+   }
+
+   public void setPickUpDate(LocalDateTime pickUpDate) {
+      this.pickUpDate = pickUpDate;
+   }
+
+   public String getCode() {
+      return code;
+   }
+
+   public void setCode(String code) {
+      this.code = code;
+   }
+
+   public Patient getPatient() {
+      return patient;
+   }
+
+   public void setPatient(Patient patient) {
+      this.patient = patient;
+   }
+
+   public MedicineReservationStatus getMedicineReservationStatus() {
+      return medicineReservationStatus;
+   }
+
+   public void setMedicineReservationStatus(MedicineReservationStatus medicineReservationStatus) {
+      this.medicineReservationStatus = medicineReservationStatus;
+   }
 
    public List<MedicineReservationItem> getMedicineReservationItems() {
       if (medicineReservationItems == null)
@@ -80,5 +150,4 @@ public class MedicineReservation {
       if (medicineReservationItems != null)
          medicineReservationItems.clear();
    }
-
 }

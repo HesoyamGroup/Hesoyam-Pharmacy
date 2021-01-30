@@ -15,8 +15,8 @@ import java.util.List;
 @Entity
 public class Pharmacist extends Employee {
 
-   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-   @JoinColumn(name="pharmacy_id", referencedColumnName = "id", nullable = false)
+   @ManyToOne(fetch = FetchType.LAZY, optional = true)
+   @JoinColumn(name="pharmacy_id", referencedColumnName = "id", nullable = true)
    @JsonBackReference
    private Pharmacy pharmacy;
 

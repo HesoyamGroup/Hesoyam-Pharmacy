@@ -54,7 +54,7 @@ public class Pharmacy {
    @Embedded
    private Address address;
 
-   @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+   @OneToMany(targetEntity = Administrator.class,mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JsonManagedReference
    private List<Administrator> administrator;
 
@@ -250,8 +250,9 @@ public class Pharmacy {
 
    public void setAdministrator(List<Administrator> newAdministrator) {
       removeAllAdministrator();
-      for (Iterator<Administrator> iter = newAdministrator.iterator(); iter.hasNext();)
+      for (Iterator<Administrator> iter = newAdministrator.iterator(); iter.hasNext();){
          addAdministrator(iter.next());
+      }
    }
 
    public void addAdministrator(Administrator newAdministrator) {
