@@ -29,4 +29,9 @@ public class MedicineReservationService implements IMedicineReservationService {
     public List<MedicineReservation> getByPatientId(Long id) {
         return medicineReservationRepository.findByPatient_Id(id);
     }
+
+    @Override
+    public MedicineReservation getByMedicineReservationCode(String code) {
+        return medicineReservationRepository.findByCode(code);
+    }
 }

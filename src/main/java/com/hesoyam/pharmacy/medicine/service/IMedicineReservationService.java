@@ -8,4 +8,5 @@ public interface IMedicineReservationService {
     List<MedicineReservation> getAll();
     MedicineReservation create(MedicineReservation medicineReservation);
     List<MedicineReservation> getByPatientId(Long id);
+    MedicineReservation getByMedicineReservationCode(String code);
 }
