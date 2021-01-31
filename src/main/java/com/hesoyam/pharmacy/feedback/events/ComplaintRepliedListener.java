@@ -1,7 +1,6 @@
 package com.hesoyam.pharmacy.feedback.events;
 
 import com.hesoyam.pharmacy.feedback.model.Complaint;
-import com.hesoyam.pharmacy.user.model.SysAdmin;
 import com.hesoyam.pharmacy.util.notifications.EmailClient;
 import com.hesoyam.pharmacy.util.notifications.EmailObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +15,10 @@ public class ComplaintRepliedListener implements ApplicationListener<OnComplaint
 
     @Override
     public void onApplicationEvent(OnComplaintRepliedEvent onComplaintRepliedEvent) {
-        System.out.println("Event uhvacen");
         this.sendNotificationEmail(onComplaintRepliedEvent);
     }
 
     private void sendNotificationEmail(OnComplaintRepliedEvent onComplaintRepliedEvent){
-        System.out.println("Uslo ovde");
         Complaint complaint = onComplaintRepliedEvent.getComplaint();
         String subject = "Complaint resolved notification.";
         StringBuilder stringBuilder = new StringBuilder("");

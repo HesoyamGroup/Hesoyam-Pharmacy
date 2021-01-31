@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.user.DTO;
+package com.hesoyam.pharmacy.user.dto;
 
 import org.hibernate.validator.constraints.Length;
 

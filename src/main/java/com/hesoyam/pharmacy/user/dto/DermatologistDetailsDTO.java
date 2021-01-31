@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.user.DTO;
+package com.hesoyam.pharmacy.user.dto;
 
 import com.hesoyam.pharmacy.pharmacy.DTO.PharmacyDTO;
 import com.hesoyam.pharmacy.user.model.Dermatologist;

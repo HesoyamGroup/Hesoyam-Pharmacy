@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.user.DTO;
+package com.hesoyam.pharmacy.user.dto;
 
 public class PasswordDTO {
     String password;
