@@ -1,6 +1,8 @@
 package com.hesoyam.pharmacy.appointment.service.impl;
 
+import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
+import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.repository.AppointmentRepository;
 import com.hesoyam.pharmacy.appointment.repository.CheckUpRepository;
@@ -46,6 +48,21 @@ public class AppointmentService implements IAppointmentService {
     public List<Counseling> getCounselingsForPharmacist(DateTimeRange dateTimeRange, Pharmacist pharmacist) {
         List<Counseling> allCounselings = counselingRepository.findByPharmacist(pharmacist);
         return filterByDateRange(dateTimeRange, allCounselings);
+    }
+
+    @Override
+    public List<CheckUp> getCheckUpsForDermatologist(DateTimeRange dateTimeRange, Dermatologist dermatologist) {
+        List<CheckUp> allCheckups = checkUpRepository.findCheckUpsByDermatologist(dermatologist);
+        return filterCheckupsByDateRange(allCheckups, dateTimeRange);
+    }
+
+    private List<CheckUp> filterCheckupsByDateRange(List<CheckUp> allCheckups, DateTimeRange dateTimeRange) {
+        List<CheckUp> filtered = new ArrayList<>();
+        for(CheckUp checkUp : allCheckups){
+            if(isInRange(checkUp.getDateTimeRange(), dateTimeRange))
+                filtered.add(checkUp);
+        }
+        return filtered;
     }
 
     private List<Counseling> filterByDateRange(DateTimeRange dateTimeRange, List<Counseling> allCounselings) {

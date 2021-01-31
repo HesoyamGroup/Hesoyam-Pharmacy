@@ -67,6 +67,7 @@ public class PharmacistController {
     }
 
     @GetMapping(value = "pharmacist-information")
+    @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<PharmacistDTO> getPharmacyForPharmacist(HttpServletRequest request){
         String token = tokenUtils.getToken(request);
         String username = tokenUtils.getUsernameFromToken(token);

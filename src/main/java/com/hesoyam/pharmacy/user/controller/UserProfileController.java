@@ -226,4 +226,18 @@ public class UserProfileController {
         }
 
     }
+
+    @GetMapping(value = "/check-role")
+    public ResponseEntity<String> checkRole(HttpServletRequest request){
+        String token = tokenUtils.getToken(request);
+        String username = tokenUtils.getUsernameFromToken(token);
+        try{
+            User user = userService.findByEmail(username);
+            return ResponseEntity.ok().body(user.getRoleEnum().toString());
+        }
+        catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+        }
+    }
 }
