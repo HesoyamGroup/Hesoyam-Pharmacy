@@ -54,7 +54,6 @@ public class ComplaintService implements IComplaintService {
 
     @Override
     public List<ComplaintDataDTO> getAllUnanswered() {
-//        Long id, String patientFirstName, String patientLastName, String patientEmail, String complaintBody, String entityName
         List<Complaint> unansweredComplaints = complaintRepository.findAllByComplaintStatus(ComplaintStatus.OPENED);
         return unansweredComplaints.stream().map(complaint -> mapComplaintToDTO(complaint)).collect(Collectors.toList());
     }

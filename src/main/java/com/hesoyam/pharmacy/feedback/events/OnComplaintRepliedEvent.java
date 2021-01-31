@@ -10,7 +10,6 @@ public class OnComplaintRepliedEvent extends ApplicationEvent {
     public OnComplaintRepliedEvent(Complaint complaint) {
         super(complaint);
         this.complaint = complaint;
-        System.out.println("Kreiran event");
     }
 
     public Complaint getComplaint() {

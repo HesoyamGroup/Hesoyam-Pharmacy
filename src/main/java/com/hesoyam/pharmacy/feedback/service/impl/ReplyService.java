@@ -48,9 +48,7 @@ public class ReplyService implements IReplyService {
             reply = create(reply);
             complaint.setReply(reply);
             complaint = complaintService.save(complaint);
-            System.out.println("pre  eventpublisher");
             applicationEventPublisher.publishEvent(new OnComplaintRepliedEvent(complaint));
-            System.out.println("posle eventpublisher");
         }catch (DataIntegrityViolationException dataIntegrityViolationException){
             throw new InvalidReplyRequest("Data integrity violation.");
         }
