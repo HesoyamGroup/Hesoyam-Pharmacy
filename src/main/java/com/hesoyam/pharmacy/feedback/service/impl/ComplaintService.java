@@ -1,16 +1,18 @@
 package com.hesoyam.pharmacy.feedback.service.impl;
 
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
-import com.hesoyam.pharmacy.feedback.DTO.EmployeeComplaintCreateDTO;
-import com.hesoyam.pharmacy.feedback.DTO.PharmacyComplaintCreateDTO;
+import com.hesoyam.pharmacy.feedback.dto.ComplaintDataDTO;
+import com.hesoyam.pharmacy.feedback.dto.EmployeeComplaintCreateDTO;
+import com.hesoyam.pharmacy.feedback.dto.PharmacyComplaintCreateDTO;
 import com.hesoyam.pharmacy.feedback.exceptions.InvalidComplaintRequestException;
-import com.hesoyam.pharmacy.feedback.model.ComplaintStatus;
-import com.hesoyam.pharmacy.feedback.model.EmployeeComplaint;
-import com.hesoyam.pharmacy.feedback.model.PharmacyComplaint;
+import com.hesoyam.pharmacy.feedback.model.*;
 import com.hesoyam.pharmacy.feedback.repository.ComplaintRepository;
 import com.hesoyam.pharmacy.feedback.service.IComplaintService;
+import com.hesoyam.pharmacy.feedback.service.IReplyService;
+import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
+import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
-import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.PharmacistNotFoundException;
 import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.user.service.IDermatologistService;
@@ -18,6 +20,10 @@ import com.hesoyam.pharmacy.user.service.IPatientService;
 import com.hesoyam.pharmacy.user.service.IPharmacistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ComplaintService implements IComplaintService {
@@ -35,11 +41,32 @@ public class ComplaintService implements IComplaintService {
     private IAppointmentService appointmentService;
 
     @Autowired
+    private IPharmacyService pharmacyService;
+
+    @Autowired
+    private IMedicineReservationService medicineReservationService;
+
+    @Autowired
     private ComplaintRepository complaintRepository;
+
+    @Autowired
+    private IReplyService replyService;
+
+    @Override
+    public List<ComplaintDataDTO> getAllUnanswered() {
+//        Long id, String patientFirstName, String patientLastName, String patientEmail, String complaintBody, String entityName
+        List<Complaint> unansweredComplaints = complaintRepository.findAllByComplaintStatus(ComplaintStatus.OPENED);
+        return unansweredComplaints.stream().map(complaint -> mapComplaintToDTO(complaint)).collect(Collectors.toList());
+    }
+
+    private ComplaintDataDTO mapComplaintToDTO(Complaint complaint){
+        Patient patient = complaint.getPatient();
+        return new ComplaintDataDTO(complaint.getId(), patient.getFirstName(), patient.getLastName(), patient.getEmail(), complaint.getBody(), complaint.getEntityName(), patient.getGender());
+    }
 
     @Override
     public EmployeeComplaint createEmployeeComplaint(EmployeeComplaintCreateDTO employeeComplaintCreateDTO) throws InvalidComplaintRequestException {
-        Patient patient = getPatientFromEmployeeComplaintDTO(employeeComplaintCreateDTO);
+        Patient patient = employeeComplaintCreateDTO.getPatient();
         Employee employee = getEmployeeFromEmployeeComplaintDTO(employeeComplaintCreateDTO);
         validateEmployeeComplaint(patient,employee);
         EmployeeComplaint employeeComplaint = new EmployeeComplaint(employeeComplaintCreateDTO.getBody(), patient, ComplaintStatus.OPENED, employee);
@@ -49,19 +76,45 @@ public class ComplaintService implements IComplaintService {
     }
 
     @Override
-    public PharmacyComplaint createPharmacyComplaint(PharmacyComplaintCreateDTO pharmacyComplaintCreateDTO) {
-        return null;
+    public PharmacyComplaint createPharmacyComplaint(PharmacyComplaintCreateDTO pharmacyComplaintCreateDTO) throws InvalidComplaintRequestException {
+        Patient patient = pharmacyComplaintCreateDTO.getPatient();
+        Pharmacy pharmacy = getPharmacyFromPharmacyComplaintDTO(pharmacyComplaintCreateDTO);
+        PharmacyComplaint pharmacyComplaint = new PharmacyComplaint(pharmacyComplaintCreateDTO.getBody(), patient, ComplaintStatus.OPENED, pharmacy);
+        validatePharmacyComplaint(pharmacyComplaint);
+
+        pharmacyComplaint =  complaintRepository.save(pharmacyComplaint);
+
+        return pharmacyComplaint;
     }
 
-    private Patient getPatientFromEmployeeComplaintDTO(EmployeeComplaintCreateDTO employeeComplaintCreateDTO){
-        Patient patient;
-        try{
-            patient = patientService.getById(employeeComplaintCreateDTO.getPatientId());
-        }catch (PatientNotFoundException patientNotFoundException) {
-            patient = null;
-        }
+    @Override
+    public Complaint findComplaintByIdAndComplaintStatus(Long id, ComplaintStatus complaintStatus) {
+        return complaintRepository.findComplaintByIdAndComplaintStatus(id, complaintStatus);
+    }
 
-        return patient;
+    @Override
+    public Complaint save(Complaint complaint) {
+        return complaintRepository.save(complaint);
+    }
+
+    private void validatePharmacyComplaint(PharmacyComplaint pharmacyComplaint) throws InvalidComplaintRequestException {
+        Patient patient = pharmacyComplaint.getPatient();
+        Pharmacy pharmacy = pharmacyComplaint.getPharmacy();
+        if(pharmacy == null || patient == null) throw new InvalidComplaintRequestException("Both pharmacy and patient must be specified.");
+        int numberOfPickedupReservations = medicineReservationService.getPickedupReservationsCountForPatientId(patient.getId());
+        int numberOfCompletedAppointments = appointmentService.getCompletedAppointmentsCountInPharmacyByPatient(pharmacy, patient);
+        if(numberOfPickedupReservations == 0 && numberOfCompletedAppointments == 0)
+            throw new InvalidComplaintRequestException("You must have at least one completed medicine reservation or at least one completed appointment.");
+
+
+    }
+
+    private Pharmacy getPharmacyFromPharmacyComplaintDTO(PharmacyComplaintCreateDTO pharmacyComplaintCreateDTO){
+        try{
+            return pharmacyService.findOne(pharmacyComplaintCreateDTO.getPharmacyId());
+        }catch (EntityNotFoundException entityNotFoundException){
+            return null;
+        }
     }
 
     private Employee getEmployeeFromEmployeeComplaintDTO(EmployeeComplaintCreateDTO employeeComplaintCreateDTO){
