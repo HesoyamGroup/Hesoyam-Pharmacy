@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ import java.util.List;
 import java.util.Random;
 
 @RestController
-@RequestMapping("/medicine-reservation")
+@RequestMapping(value="/medicine-reservation", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MedicineReservationController {
 
     @Autowired
@@ -70,7 +71,7 @@ public class MedicineReservationController {
              User user = userService.findByEmail(email);
              patient = patientService.getById(user.getId());
         } catch (PatientNotFoundException | UserNotFoundException e) {
-            ResponseEntity.status(HttpStatus.NOT_FOUND);
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED);
         }
         medicineReservation.setPatient(patient);
         medicineReservation.setMedicineReservationItems(medicineReservationDTO.getMedicineReservationItemList());

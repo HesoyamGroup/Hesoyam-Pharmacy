@@ -63,6 +63,14 @@ public class InventoryItem {
       this.medicine = medicine;
    }
 
+   public void update(InventoryItem inventoryItem){
+      this.id = inventoryItem.getId();
+      this.available = inventoryItem.getAvailable();
+      this.reserved = inventoryItem.getReserved();
+      this.medicine = inventoryItem.getMedicine();
+      this.prices = inventoryItem.getPrices();
+   }
+
    public List<InventoryItemPrice> getPrices() {
       if (prices == null)
          prices = new ArrayList<>();
