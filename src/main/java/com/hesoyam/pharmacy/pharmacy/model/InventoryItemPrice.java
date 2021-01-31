@@ -4,6 +4,7 @@ import com.hesoyam.pharmacy.util.DateTimeRange;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.util.Objects;
 
 @Entity
 public class InventoryItemPrice {
@@ -42,26 +43,20 @@ public class InventoryItemPrice {
         this.validThrough = validThrough;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "inventory_item_id")
-    private InventoryItem inventoryItem;
-
-    public InventoryItem getInventoryItem() {
-        return inventoryItem;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InventoryItemPrice)) return false;
+        InventoryItemPrice itemPrice = (InventoryItemPrice) o;
+        return Objects.equals(getId(), itemPrice.getId());
     }
 
-    public void setInventoryItem(InventoryItem newInventoryItem) {
-        if (this.inventoryItem == null || !this.inventoryItem.equals(newInventoryItem)) {
-            if (this.inventoryItem != null) {
-                InventoryItem oldInventoryItem = this.inventoryItem;
-                this.inventoryItem = null;
-                oldInventoryItem.removePrices(this);
-            }
-            if (newInventoryItem != null) {
-                this.inventoryItem = newInventoryItem;
-                this.inventoryItem.addPrices(this);
-            }
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 
+    public boolean isConflictingWith(InventoryItemPrice newInventoryItemPrice) {
+        return this.validThrough.overlaps(newInventoryItemPrice.getValidThrough());
+    }
 }
