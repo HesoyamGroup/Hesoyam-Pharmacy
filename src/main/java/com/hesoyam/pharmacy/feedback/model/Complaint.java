@@ -23,7 +23,7 @@ public abstract class Complaint {
    @Length(min=10, max=400, message = "Complaint content length must be between 10 and 400 characters.")
    protected String body;
 
-   @ManyToOne(fetch = FetchType.LAZY)
+   @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name="patient_id", nullable = false)
    @NotNull(message = "Patient who placed a complaint must be provided.")
    protected Patient patient;
@@ -81,5 +81,12 @@ public abstract class Complaint {
 
    public void setReply(Reply reply) {
       this.reply = reply;
+      if(this.reply != null){
+         setComplaintStatus(ComplaintStatus.CLOSED);
+      }
+   }
+
+   public String getEntityName(){
+      return "Undefined complaint";
    }
 }

@@ -410,14 +410,39 @@ INSERT INTO user_roles (user_id, role_id) VALUES (19, 7);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 15, 1, 10, null);
+VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 15, 3, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 16, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 1, 10, null);
+VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 2, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, 11, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
+VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 2, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
+
+
+-----------------------
+-- Complaints
+-----------------------
+
+--1
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('EmployeeComplaint', 'Ovo je prvi complaint', 'OPENED', 17, null, 6, null);
+--2
+INSERT INTO reply (text, sys_admin_id) VALUES ('Ovo je odgovor na drugi complaint od strane sys admin 1', 1);
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('EmployeeComplaint', 'Ovo je drugi complaint', 'CLOSED', 16, 1, 6, null);
+--3
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('EmployeeComplaint', 'Ovo je treci complaint', 'OPENED', 17, null, 11, null);
+
+--4
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('PharmacyComplaint', 'Ovo je prvi PHARMACY complaint, neodgovoren complaint', 'OPENED', 16, null, null, 1);
+
+--5
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('PharmacyComplaint', 'Ovo je drugi PHARMACY complaint, ODGOVOREN complaint', 'CLOSED', 16, null, null, 1);
+

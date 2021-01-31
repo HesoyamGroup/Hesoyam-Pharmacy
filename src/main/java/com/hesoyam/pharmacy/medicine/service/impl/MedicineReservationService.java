@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.medicine.service.impl;
 
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
 import com.hesoyam.pharmacy.medicine.repository.MedicineReservationRepository;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,10 @@ public class MedicineReservationService implements IMedicineReservationService {
     @Override
     public MedicineReservation getByMedicineReservationCode(String code) {
         return medicineReservationRepository.findByCode(code);
+    }
+
+    @Override
+    public int getPickedupReservationsCountForPatientId(Long patientId) {
+        return medicineReservationRepository.countMedicineReservationsByPatient_IdAndAndMedicineReservationStatus(patientId, MedicineReservationStatus.COMPLETED);
     }
 }

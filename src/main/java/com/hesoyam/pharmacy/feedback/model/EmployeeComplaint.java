@@ -38,4 +38,9 @@ public class EmployeeComplaint extends Complaint {
    public void setEmployee(Employee employee) {
       this.employee = employee;
    }
+
+   @Override
+   public String getEntityName(){
+      return employee.getFirstName() + " " + employee.getLastName();
+   }
 }
