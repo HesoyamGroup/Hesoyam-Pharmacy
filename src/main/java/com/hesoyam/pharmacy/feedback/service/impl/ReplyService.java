@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.feedback.service.impl;
 
 import com.hesoyam.pharmacy.feedback.dto.ReplyDTO;
+import com.hesoyam.pharmacy.feedback.events.OnComplaintRepliedEvent;
 import com.hesoyam.pharmacy.feedback.exceptions.InvalidReplyRequest;
 import com.hesoyam.pharmacy.feedback.model.Complaint;
 import com.hesoyam.pharmacy.feedback.model.ComplaintStatus;
@@ -9,6 +10,7 @@ import com.hesoyam.pharmacy.feedback.repository.ReplyRepository;
 import com.hesoyam.pharmacy.feedback.service.IComplaintService;
 import com.hesoyam.pharmacy.feedback.service.IReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -16,11 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ReplyService implements IReplyService {
+
+
+
     @Autowired
     private ReplyRepository replyRepository;
 
     @Autowired
     private IComplaintService complaintService;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
 
     @Override
     @Transactional
@@ -38,7 +47,10 @@ public class ReplyService implements IReplyService {
         try{
             reply = create(reply);
             complaint.setReply(reply);
-            complaintService.save(complaint);
+            complaint = complaintService.save(complaint);
+            System.out.println("pre  eventpublisher");
+            applicationEventPublisher.publishEvent(new OnComplaintRepliedEvent(complaint));
+            System.out.println("posle eventpublisher");
         }catch (DataIntegrityViolationException dataIntegrityViolationException){
             throw new InvalidReplyRequest("Data integrity violation.");
         }
@@ -48,5 +60,6 @@ public class ReplyService implements IReplyService {
     private Reply createReplyFromDTO(ReplyDTO replyDTO){
         return new Reply(replyDTO.getText(), replyDTO.getSysAdmin());
     }
+
 
 }
