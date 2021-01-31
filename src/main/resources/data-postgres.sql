@@ -446,3 +446,22 @@ VALUES ('PharmacyComplaint', 'Ovo je prvi PHARMACY complaint, neodgovoren compla
 INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
 VALUES ('PharmacyComplaint', 'Ovo je drugi PHARMACY complaint, ODGOVOREN complaint', 'CLOSED', 16, null, null, 1);
 
+
+-----------------------
+-- Loyalty system
+-----------------------
+
+INSERT INTO loyalty_program_config (check_up_points, counseling_points, last_updated) VALUES (1, 2, CURRENT_TIMESTAMP);
+INSERT INTO loyalty_account_membership (discount, min_points, name, config_id) VALUES (0, 0, 'BASIC', 1);
+INSERT INTO loyalty_account_membership (discount, min_points, name, config_id) VALUES (12.5, 15, 'BRONZE', 1);
+INSERT INTO loyalty_account_membership (discount, min_points, name, config_id) VALUES (25.0, 50, 'SILVER', 1);
+INSERT INTO loyalty_account_membership (discount, min_points, name, config_id) VALUES (35.0, 150, 'GOLD', 1);
+
+--14
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 14);
+--15
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 15);
+--16 (Lidija)
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (30, 3, 16);
+--17 (Radovan)
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (36, 4, 17);
