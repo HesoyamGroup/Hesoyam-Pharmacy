@@ -1,7 +1,7 @@
 package com.hesoyam.pharmacy.medicine.service;
 
-import com.hesoyam.pharmacy.medicine.DTO.MedicineSearchDTO;
-import com.hesoyam.pharmacy.medicine.DTO.MedicineSearchResultDTO;
+import com.hesoyam.pharmacy.medicine.dto.MedicineSearchDTO;
+import com.hesoyam.pharmacy.medicine.dto.MedicineSearchResultDTO;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineType;
 

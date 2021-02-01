@@ -1,6 +1,6 @@
 package com.hesoyam.pharmacy.medicine.service.impl;
 
-import com.hesoyam.pharmacy.medicine.DTO.MedicineSpecificationFindResultDTO;
+import com.hesoyam.pharmacy.medicine.dto.MedicineSpecificationFindResultDTO;
 import com.hesoyam.pharmacy.medicine.mapper.MedicineSpecificationMapper;
 import com.hesoyam.pharmacy.medicine.repository.MedicineSpecificationRepository;
 import com.hesoyam.pharmacy.medicine.service.IMedicineSpecificationService;

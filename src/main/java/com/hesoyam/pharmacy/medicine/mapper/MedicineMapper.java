@@ -1,6 +1,6 @@
 package com.hesoyam.pharmacy.medicine.mapper;
 
-import com.hesoyam.pharmacy.medicine.DTO.MedicineSearchResultDTO;
+import com.hesoyam.pharmacy.medicine.dto.MedicineSearchResultDTO;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 
 public class MedicineMapper {

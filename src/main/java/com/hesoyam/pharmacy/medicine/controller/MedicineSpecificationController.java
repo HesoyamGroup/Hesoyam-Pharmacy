@@ -1,6 +1,6 @@
 package com.hesoyam.pharmacy.medicine.controller;
 
-import com.hesoyam.pharmacy.medicine.DTO.MedicineSpecificationFindResultDTO;
+import com.hesoyam.pharmacy.medicine.dto.MedicineSpecificationFindResultDTO;
 import com.hesoyam.pharmacy.medicine.service.IMedicineSpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

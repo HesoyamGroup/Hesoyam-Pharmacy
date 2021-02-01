@@ -1,6 +1,6 @@
 package com.hesoyam.pharmacy.medicine.mapper;
 
-import com.hesoyam.pharmacy.medicine.DTO.MedicineSpecificationFindResultDTO;
+import com.hesoyam.pharmacy.medicine.dto.MedicineSpecificationFindResultDTO;
 import com.hesoyam.pharmacy.medicine.model.*;
 
 import java.util.List;
