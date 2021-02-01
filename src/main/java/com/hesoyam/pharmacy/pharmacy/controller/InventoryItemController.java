@@ -6,6 +6,14 @@ import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.user.model.User;
+import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemReservationDTO;
+import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
+import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
+import com.hesoyam.pharmacy.security.TokenUtils;
+import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
+import com.hesoyam.pharmacy.user.model.User;
+import com.hesoyam.pharmacy.user.service.IUserService;
+import javassist.bytecode.stackmap.BasicBlock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,12 +27,23 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import java.awt.*;
 
 @RestController
 @RequestMapping(value = "/inventory-item", produces = MediaType.APPLICATION_JSON_VALUE)
 public class InventoryItemController {
     @Autowired
     private IInventoryItemService inventoryItemService;
+
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private TokenUtils tokenUtils;
 
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     @PostMapping(value = "/{id}/price", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -66,11 +85,43 @@ public class InventoryItemController {
     }
 
     @GetMapping(value = "/pharmacy/{id}")
-    public ResponseEntity<List<InventoryItemDTO>> getInventoryItemsByPharmacy(@PathVariable Long id){
+    public ResponseEntity<List<InventoryItemDTO>> getInventoryItemsByPharmacy(@PathVariable Long id) {
         List<InventoryItem> inventoryItems = inventoryItemService.getAllByPharmacy(id);
         List<InventoryItemDTO> inventoryItemsDTO = new ArrayList<>();
         inventoryItems.forEach(inventoryItem -> inventoryItemsDTO.add(new InventoryItemDTO(inventoryItem)));
 
         return ResponseEntity.status(HttpStatus.OK).body(inventoryItemsDTO);
+    }
+
+
+
+    @PostMapping("/reserve-inventory-item")
+    public ResponseEntity<InventoryItem> reserveInventoryItem(@RequestBody InventoryItemReservationDTO inventoryItemReservationDTO, HttpServletRequest request){
+
+        String token = tokenUtils.getToken(request);
+        String email = tokenUtils.getUsernameFromToken(token);
+
+        try{
+            User user = userService.findByEmail(email);
+        } catch (UserNotFoundException e) {
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED);
+        }
+
+        try {
+            InventoryItem inventoryItem = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(inventoryItemReservationDTO.getPharmacyId(), inventoryItemReservationDTO.getMedicineId());
+
+            System.out.println(inventoryItem.getId()+"--"+inventoryItem.getMedicine().getId()+"-----------------------------------------------------------------");
+
+            inventoryItem.setReserved(inventoryItem.getReserved() + 1);
+            inventoryItem.setAvailable(inventoryItem.getAvailable() - 1);
+
+            inventoryItemService.update(inventoryItem);
+
+            return ResponseEntity.ok().body(inventoryItem);
+        } catch (EntityNotFoundException e)
+        {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 }

@@ -11,4 +11,7 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, Lo
 
     @Query("select ii from Pharmacy p join p.inventory i join i.inventoryItems ii where i.id = :pharmacy_id")
     List<InventoryItem> getAllByPharmacyId(@Param("pharmacy_id") Long pharmacyId);
+
+    @Query("select it from Inventory i join i.inventoryItems it where i.pharmacy.id = :pharmacy_id and it.medicine.id = :medicine_id")
+    InventoryItem getInventoryItemByPharmacyIdAndMedicineId(@Param("pharmacy_id") Long pharmacyId, @Param("medicine_id") Long medicineId);
 }

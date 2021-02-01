@@ -1,4 +1,5 @@
-package com.hesoyam.pharmacy.feedback.DTO;
+package com.hesoyam.pharmacy.feedback.dto;
+import com.hesoyam.pharmacy.user.model.Patient;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -8,7 +9,7 @@ public class EmployeeComplaintCreateDTO {
     @Length(min=10, max=400, message = "Complaint content length must be between 10 and 40 characters.")
     private String body;
 
-    private Long patientId;
+    private Patient patient;
 
     @NotNull(message = "Employee ID must be provided.")
     private Long employeeId;
@@ -21,11 +22,11 @@ public class EmployeeComplaintCreateDTO {
         return body;
     }
 
-    public Long getPatientId() {
-        return patientId;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 }

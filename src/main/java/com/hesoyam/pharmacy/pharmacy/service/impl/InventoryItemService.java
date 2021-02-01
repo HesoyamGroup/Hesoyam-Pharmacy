@@ -12,6 +12,8 @@ import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+
 import java.util.List;
 
 @Service
@@ -65,4 +67,18 @@ public class InventoryItemService implements IInventoryItemService {
         }
     }
 
+    @Override
+    public InventoryItem update(InventoryItem inventoryItemData) throws EntityNotFoundException {
+        InventoryItem inventoryItem = inventoryItemRepository.getOne(inventoryItemData.getId());
+        if(inventoryItem == null) throw new EntityNotFoundException();
+        inventoryItem.update(inventoryItemData);
+        inventoryItem = inventoryItemRepository.save(inventoryItem);
+
+        return inventoryItem;
+    }
+
+    @Override
+    public InventoryItem getInventoryItemByPharmacyIdAndMedicineId(Long pharmacyId, Long medicineId){
+        return inventoryItemRepository.getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, medicineId);
+    }
 }
