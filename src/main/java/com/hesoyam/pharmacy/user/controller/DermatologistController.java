@@ -1,12 +1,11 @@
 package com.hesoyam.pharmacy.user.controller;
 
-import com.hesoyam.pharmacy.user.DTO.DermatologistDetailsDTO;
-import com.hesoyam.pharmacy.user.DTO.DermatologistInformationDTO;
-import com.hesoyam.pharmacy.user.DTO.EmployeeBasicDTO;
-import com.hesoyam.pharmacy.user.DTO.PharmacistDTO;
+import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
+import com.hesoyam.pharmacy.user.DTO.*;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Employee;
+import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IDermatologistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,9 @@ public class DermatologistController {
     @Autowired
     private IDermatologistService dermatologistService;
 
+    @Autowired
+    private IAppointmentService appointmentService;
+
     @GetMapping(value = "")
     @PreAuthorize("hasAnyRole('PATIENT', 'ADMINISTRATOR')")
     public ResponseEntity<List<DermatologistDetailsDTO>> getAllDermatologists(@AuthenticationPrincipal User user){
@@ -35,6 +37,12 @@ public class DermatologistController {
         dermatologists.forEach(dermatologist -> dermatologistsDTO.add(new DermatologistDetailsDTO(dermatologist)));
 
         return new ResponseEntity<>(dermatologistsDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/patients-for-dermatologist")
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<PatientDTO>> getPatientsForDermatologist(@AuthenticationPrincipal User user){
+        return new ResponseEntity<>(appointmentService.extractPatientsFromCheckups((Dermatologist) user), HttpStatus.OK);
     }
 
     @GetMapping(value = "search")
@@ -66,5 +74,6 @@ public class DermatologistController {
                                                                                                        user){
         return new ResponseEntity<>(new DermatologistInformationDTO((Dermatologist) user), HttpStatus.OK);
     }
+
 
 }

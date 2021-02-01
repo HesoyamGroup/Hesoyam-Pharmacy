@@ -9,10 +9,12 @@ import com.hesoyam.pharmacy.appointment.repository.CheckUpRepository;
 import com.hesoyam.pharmacy.appointment.repository.CounselingRepository;
 import com.hesoyam.pharmacy.appointment.repository.TherapyRepository;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
+import com.hesoyam.pharmacy.user.DTO.PatientDTO;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.util.DateTimeRange;
+import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +56,60 @@ public class AppointmentService implements IAppointmentService {
     public List<CheckUp> getCheckUpsForDermatologist(DateTimeRange dateTimeRange, Dermatologist dermatologist) {
         List<CheckUp> allCheckups = checkUpRepository.findCheckUpsByDermatologist(dermatologist);
         return filterCheckupsByDateRange(allCheckups, dateTimeRange);
+    }
+
+
+    @Override
+    public List<PatientDTO> extractPatientsFromCheckups(Dermatologist dermatologist){
+        List<CheckUp> checkUps = checkUpRepository.findCheckUpsByDermatologist(dermatologist);
+        List<CheckUp> completedCheckUps = new ArrayList<>();
+        checkUps.forEach(checkUp -> {
+            if(checkUp.getAppointmentStatus() == AppointmentStatus.COMPLETED)
+                completedCheckUps.add(checkUp);
+        });
+        List<PatientDTO> patients = extractPatients(completedCheckUps);
+        return filterUniquePatients(patients);
+    }
+
+    private List<PatientDTO> filterUniquePatients(List<PatientDTO> patients) {
+        List<PatientDTO> unique = new ArrayList<>();
+        for(PatientDTO patient : patients){
+            if(!hasPatientWithEmail(unique, patient.getEmail())){
+                unique.add(patient);
+            } else {
+                unique = overwrite(unique, patient);
+            }
+        }
+        return unique;
+    }
+
+    private List<PatientDTO> overwrite(List<PatientDTO> unique, PatientDTO patient) {
+        List<PatientDTO> overwritten = new ArrayList<>();
+
+        for(PatientDTO test : unique){
+            if(test.getEmail().equals(patient.getEmail())){
+                overwritten.add(patient);
+            } else {
+                overwritten.add(test);
+            }
+        }
+
+        return overwritten;
+    }
+
+    private boolean hasPatientWithEmail(List<PatientDTO> unique, String email) {
+        for(PatientDTO patient : unique){
+            if(patient.getEmail().equals(email)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private List<PatientDTO> extractPatients(List<CheckUp> completedCheckUps) {
+        List<PatientDTO> patients = new ArrayList<>();
+        completedCheckUps.forEach(checkUp -> patients.add(new PatientDTO(checkUp)));
+        return patients;
     }
 
     private List<CheckUp> filterCheckupsByDateRange(List<CheckUp> allCheckups, DateTimeRange dateTimeRange) {

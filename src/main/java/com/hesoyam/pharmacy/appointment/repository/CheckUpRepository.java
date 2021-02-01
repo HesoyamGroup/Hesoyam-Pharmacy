@@ -14,4 +14,5 @@ public interface CheckUpRepository extends JpaRepository<CheckUp, Long> {
     Integer countChecksUpByPatientAndAppointmentStatusAndDermatologist(Patient patient, AppointmentStatus appointmentStatus, Dermatologist dermatologist);
 
     List<CheckUp> findCheckUpsByDermatologist(Dermatologist dermatologist);
+
 }
