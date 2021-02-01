@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.medicine.DTO;
+package com.hesoyam.pharmacy.medicine.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

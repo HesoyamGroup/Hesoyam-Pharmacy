@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.medicine.DTO;
+package com.hesoyam.pharmacy.medicine.dto;
 
 import com.hesoyam.pharmacy.medicine.model.Dosage;
 

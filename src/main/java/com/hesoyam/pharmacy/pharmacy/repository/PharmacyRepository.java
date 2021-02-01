@@ -11,4 +11,7 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Long> {
 
     @Query("select p from Pharmacy p join p.inventory i join i.inventoryItems it join it.medicine m where m.id = :medicine_id and it.available>0")
     List<Pharmacy> getPharmacyByMedicineAvailability(@Param("medicine_id") Long medicineId);
+
+    @Query("select p from Pharmacy p join p.administrator a where a.id = :administrator_id")
+    Pharmacy getPharmacyByAdministrator(@Param("administrator_id") Long administratorId);
 }

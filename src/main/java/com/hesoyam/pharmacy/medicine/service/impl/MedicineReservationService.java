@@ -1,12 +1,16 @@
 package com.hesoyam.pharmacy.medicine.service.impl;
 
+import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotFoundException;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
 import com.hesoyam.pharmacy.medicine.repository.MedicineReservationRepository;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
+import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Service
@@ -14,6 +18,21 @@ public class MedicineReservationService implements IMedicineReservationService {
 
     @Autowired
     MedicineReservationRepository medicineReservationRepository;
+
+    @Override
+    public MedicineReservation getById(Long id) throws MedicineReservationNotFoundException {
+        return medicineReservationRepository.findById(id).orElseThrow(() -> new MedicineReservationNotFoundException((id)));
+    }
+
+    @Override
+    public MedicineReservation update(MedicineReservation medicineReservation) throws MedicineReservationNotFoundException {
+        MedicineReservation updatedMedicineReservation = medicineReservationRepository.getOne(medicineReservation.getId());
+        if(updatedMedicineReservation == null) throw new MedicineReservationNotFoundException(medicineReservation.getId());
+        updatedMedicineReservation.update(medicineReservation);
+        updatedMedicineReservation = medicineReservationRepository.save(updatedMedicineReservation);
+
+        return updatedMedicineReservation;
+    }
 
     @Override
     public List<MedicineReservation> getAll() {
