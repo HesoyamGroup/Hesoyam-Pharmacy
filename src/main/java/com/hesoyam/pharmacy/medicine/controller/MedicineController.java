@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.medicine.controller;
 
 import com.hesoyam.pharmacy.medicine.DTO.MedicineSearchDTO;
+import com.hesoyam.pharmacy.medicine.DTO.MedicineSearchResultDTO;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineType;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
@@ -18,8 +19,6 @@ public class MedicineController {
     @Autowired
     private IMedicineService medicineService;
 
-
-    //todo: Perform authorization
     @GetMapping("/all")
     public ResponseEntity<List<Medicine>> getAllMedicines(){
         return ResponseEntity.ok(medicineService.getAll());
@@ -38,8 +37,9 @@ public class MedicineController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Medicine>> search(@RequestParam(required = false) String name, @RequestParam(required = false) MedicineType medicineType, @RequestParam(required = false) Double minRating, @RequestParam(required = false) Double maxRating){
-        MedicineSearchDTO medicineSearchDTO = new MedicineSearchDTO(name, medicineType, minRating, maxRating);
+    public ResponseEntity<List<MedicineSearchResultDTO>> search(@RequestParam(required = false) String name, @RequestParam(required = false) MedicineType medicineType, @RequestParam(required = false) Double minRating, @RequestParam(required = false) Double maxRating, @RequestParam(required = false) Integer page){
+        if(page == null || page < 1) page = 1;
+        MedicineSearchDTO medicineSearchDTO = new MedicineSearchDTO(name, medicineType, minRating, maxRating, page);
         return ResponseEntity.ok(medicineService.search(medicineSearchDTO));
     }
 }
