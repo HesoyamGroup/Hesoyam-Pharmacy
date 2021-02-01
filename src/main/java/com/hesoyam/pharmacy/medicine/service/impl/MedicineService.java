@@ -1,5 +1,6 @@
 package com.hesoyam.pharmacy.medicine.service.impl;
 
+import com.hesoyam.pharmacy.medicine.DTO.MedicineSearchDTO;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineType;
 import com.hesoyam.pharmacy.medicine.repository.MedicineRepository;
@@ -41,6 +42,11 @@ public class MedicineService implements IMedicineService {
             throw new EntityNotFoundException();
 
         return medicines;
+    }
+
+    @Override
+    public List<Medicine> search(MedicineSearchDTO medicineSearchDTO) {
+        return medicineRepository.search(medicineSearchDTO);
     }
 
 

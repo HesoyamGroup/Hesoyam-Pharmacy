@@ -1,5 +1,6 @@
 package com.hesoyam.pharmacy.medicine.controller;
 
+import com.hesoyam.pharmacy.medicine.DTO.MedicineSearchDTO;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineType;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
@@ -34,5 +35,11 @@ public class MedicineController {
     public ResponseEntity<Medicine> create(@RequestBody(required = true) @Valid Medicine medicine){
         //Validation is done on model level + db level.
         return ResponseEntity.ok(medicineService.create(medicine));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Medicine>> search(@RequestParam(required = false) String name, @RequestParam(required = false) MedicineType medicineType, @RequestParam(required = false) Double minRating, @RequestParam(required = false) Double maxRating){
+        MedicineSearchDTO medicineSearchDTO = new MedicineSearchDTO(name, medicineType, minRating, maxRating);
+        return ResponseEntity.ok(medicineService.search(medicineSearchDTO));
     }
 }
