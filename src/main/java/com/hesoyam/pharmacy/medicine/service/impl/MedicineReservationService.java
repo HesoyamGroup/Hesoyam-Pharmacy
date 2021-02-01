@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.medicine.service.impl;
 
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotFoundException;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
 import com.hesoyam.pharmacy.medicine.repository.MedicineReservationRepository;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
 import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
@@ -52,5 +53,10 @@ public class MedicineReservationService implements IMedicineReservationService {
     @Override
     public MedicineReservation getByMedicineReservationCode(String code) {
         return medicineReservationRepository.findByCode(code);
+    }
+
+    @Override
+    public int getPickedupReservationsCountForPatientId(Long patientId) {
+        return medicineReservationRepository.countMedicineReservationsByPatient_IdAndAndMedicineReservationStatus(patientId, MedicineReservationStatus.COMPLETED);
     }
 }

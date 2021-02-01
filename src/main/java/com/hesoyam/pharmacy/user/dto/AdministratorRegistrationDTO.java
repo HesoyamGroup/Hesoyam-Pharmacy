@@ -1,7 +1,6 @@
-package com.hesoyam.pharmacy.user.DTO;
+package com.hesoyam.pharmacy.user.dto;
 
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
-import com.hesoyam.pharmacy.user.model.Administrator;
 
 import javax.validation.constraints.NotNull;
 

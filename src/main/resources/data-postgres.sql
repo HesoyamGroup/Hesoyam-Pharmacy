@@ -439,14 +439,58 @@ VALUES (6, 1, 4, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 15, 1, 10, null);
+VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 15, 3, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 16, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 1, 10, null);
+VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 2, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, 11, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
+VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 2, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
+
+
+-----------------------
+-- Complaints
+-----------------------
+
+--1
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('EmployeeComplaint', 'Ovo je prvi complaint', 'OPENED', 17, null, 6, null);
+--2
+INSERT INTO reply (text, sys_admin_id) VALUES ('Ovo je odgovor na drugi complaint od strane sys admin 1', 1);
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('EmployeeComplaint', 'Ovo je drugi complaint', 'CLOSED', 16, 1, 6, null);
+--3
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('EmployeeComplaint', 'Ovo je treci complaint', 'OPENED', 17, null, 11, null);
+
+--4
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('PharmacyComplaint', 'Ovo je prvi PHARMACY complaint, neodgovoren complaint', 'OPENED', 16, null, null, 1);
+
+--5
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('PharmacyComplaint', 'Ovo je drugi PHARMACY complaint, ODGOVOREN complaint', 'CLOSED', 16, null, null, 1);
+
+
+-----------------------
+-- Loyalty system
+-----------------------
+
+INSERT INTO loyalty_program_config (check_up_points, counseling_points, last_updated) VALUES (1, 2, CURRENT_TIMESTAMP);
+INSERT INTO loyalty_account_membership (discount, min_points, name, config_id) VALUES (0, 0, 'BASIC', 1);
+INSERT INTO loyalty_account_membership (discount, min_points, name, config_id) VALUES (12.5, 15, 'BRONZE', 1);
+INSERT INTO loyalty_account_membership (discount, min_points, name, config_id) VALUES (25.0, 50, 'SILVER', 1);
+INSERT INTO loyalty_account_membership (discount, min_points, name, config_id) VALUES (35.0, 150, 'GOLD', 1);
+
+--14
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 14);
+--15
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 15);
+--16 (Lidija)
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (30, 3, 16);
+--17 (Radovan)
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (36, 4, 17);

@@ -1,8 +1,8 @@
 package com.hesoyam.pharmacy.user.service.impl;
 
-import com.hesoyam.pharmacy.user.DTO.AdministratorRegistrationDTO;
-import com.hesoyam.pharmacy.user.DTO.ChangePasswordDTO;
-import com.hesoyam.pharmacy.user.DTO.RegistrationDTO;
+import com.hesoyam.pharmacy.user.dto.AdministratorRegistrationDTO;
+import com.hesoyam.pharmacy.user.dto.ChangePasswordDTO;
+import com.hesoyam.pharmacy.user.dto.RegistrationDTO;
 import com.hesoyam.pharmacy.user.exceptions.*;
 import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.user.repository.UserRepository;

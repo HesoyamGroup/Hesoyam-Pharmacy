@@ -2,10 +2,10 @@ package com.hesoyam.pharmacy.user.events;
 
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.impl.UserService;
+import com.hesoyam.pharmacy.util.notifications.EmailClient;
+import com.hesoyam.pharmacy.util.notifications.EmailObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -16,7 +16,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     private UserService userService;
 
     @Autowired
-    private JavaMailSender mailSender;
+    private EmailClient emailClient;
 
     @Override
     public void onApplicationEvent(OnRegistrationCompletedEvent onRegistrationCompletedEvent) {
@@ -37,10 +37,6 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         stringBuilder.append(" . \n\nKing regards,\n Hesoyam Pharmacy");
         String message = stringBuilder.toString();
 
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(recipientEmailAddress);
-        email.setSubject(subject);
-        email.setText(message);
-        mailSender.send(email);
+        emailClient.sendEmail(new EmailObject(subject, recipientEmailAddress, message));
     }
 }

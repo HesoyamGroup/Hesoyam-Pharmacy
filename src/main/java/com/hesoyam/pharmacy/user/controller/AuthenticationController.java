@@ -1,7 +1,7 @@
 package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.security.TokenUtils;
-import com.hesoyam.pharmacy.user.DTO.*;
+import com.hesoyam.pharmacy.user.dto.*;
 import com.hesoyam.pharmacy.user.events.OnRegistrationCompletedEvent;
 import com.hesoyam.pharmacy.user.exceptions.*;
 import com.hesoyam.pharmacy.user.model.*;

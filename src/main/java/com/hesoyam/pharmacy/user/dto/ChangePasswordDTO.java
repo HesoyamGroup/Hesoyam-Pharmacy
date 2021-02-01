@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.user.DTO;
+package com.hesoyam.pharmacy.user.dto;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -21,8 +21,6 @@ public class ChangePasswordDTO {
 
     private String confirmNewPassword;
 
-    public ChangePasswordDTO() {
-    }
 
     public String getEmail() {
         return email;
