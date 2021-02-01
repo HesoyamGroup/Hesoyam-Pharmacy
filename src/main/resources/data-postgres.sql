@@ -158,15 +158,28 @@ VALUES (3);
 -- Palitrex
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
 VALUES (5, 0, 1, 1);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (555, '2021-01-29', '2021-02-28', 1);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (500, '2021-03-01', '2021-03-15', 1);
 -- Rapidol
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
 VALUES (4, 0, 2, 1);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (888, '2021-01-25', '2021-02-25', 2);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (666, '2021-02-26', '2021-03-10', 2);
 -- Diclofenac Duo
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
 VALUES (7, 0, 3, 1);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (999, '2021-01-29', '2021-03-28', 3);
 -- Panklav
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
 VALUES (0, 0, 4, 1);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (444, '2021-01-29', '2021-03-26', 4);
+
 
 -----------------------
 -- BENU Inventory Items
@@ -175,15 +188,29 @@ VALUES (0, 0, 4, 1);
 -- Palitrex
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
 VALUES (7, 0, 1, 2);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (500, '2021-01-29', '2021-02-28', 5);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (555, '2021-03-01', '2021-03-15', 5);
 -- Rapidol
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
 VALUES (5, 0, 2, 2);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (999, '2021-01-29', '2021-03-28', 6);
 -- Diclofenac Duo
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
 VALUES (2, 0, 3, 2);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (888, '2021-01-25', '2021-02-25', 7);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (666, '2021-02-26', '2021-03-10', 7);
 -- Panklav
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
 VALUES (3, 0, 4, 2);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (333, '2021-01-29', '2021-02-28', 8);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (222, '2021-03-01', '2021-03-15', 8);
 
 -----------------------
 -- Tilia Inventory Items
@@ -192,15 +219,29 @@ VALUES (3, 0, 4, 2);
 -- Palitrex
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
 VALUES (2, 0, 1, 3);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (222, '2021-01-29', '2021-02-28', 9);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (333, '2021-03-01', '2021-03-15', 9);
 -- Rapidol
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
 VALUES (1, 0, 2, 3);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (777, '2021-01-25', '2021-02-25', 10);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (700, '2021-02-26', '2021-03-10', 10);
 -- Diclofenac Duo
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
 VALUES (8, 0, 3, 3);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (567, '2021-01-29', '2021-03-28', 11);
 -- Panklav
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
 VALUES (5, 0, 4, 3);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (333, '2021-01-29', '2021-02-28', 12);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (222, '2021-03-01', '2021-03-15', 12);
 
 --------------
 -- SYS ADMIN

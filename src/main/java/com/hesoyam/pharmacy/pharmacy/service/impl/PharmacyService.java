@@ -95,8 +95,8 @@ public class PharmacyService implements IPharmacyService {
     }
 
     @Override
-    public List<Pharmacy> getAllByAdministrator(Long id) {
-        return null;
+    public Pharmacy getByAdministrator(Long id) {
+        return pharmacyRepository.getPharmacyByAdministrator(id);
     }
 
     @Override
