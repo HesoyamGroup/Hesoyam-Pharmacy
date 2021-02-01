@@ -1,10 +1,12 @@
 package com.hesoyam.pharmacy.medicine.controller;
 
-import com.hesoyam.pharmacy.medicine.DTO.MedicineReservationDTO;
+import com.hesoyam.pharmacy.medicine.dto.MedicineReservationCancellationDTO;
+import com.hesoyam.pharmacy.medicine.dto.MedicineReservationDTO;
 import com.hesoyam.pharmacy.medicine.events.OnMedicineReservationCompletedEvent;
-import com.hesoyam.pharmacy.medicine.model.Medicine;
+import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationExpiredCancellationException;
+import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotCreatedException;
+import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotFoundException;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
-import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationItemService;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
@@ -15,21 +17,16 @@ import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPatientService;
 import com.hesoyam.pharmacy.user.service.IUserService;
-import com.sun.mail.iap.Response;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -60,8 +57,22 @@ public class MedicineReservationController {
         return ResponseEntity.ok(medicineReservationService.getAll());
     }
 
+    @GetMapping("/get-reservations")
+    public ResponseEntity<List<MedicineReservation>> getAllMedicineReservationsByPatient(HttpServletRequest request){
+
+        String token = tokenUtils.getToken(request);
+        String email = tokenUtils.getUsernameFromToken(token);
+
+        try{
+            User user = userService.findByEmail(email);
+            return ResponseEntity.ok().body(medicineReservationService.getByPatientId(user.getId()));
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+    }
+
     @PostMapping("/create")
-    //TODO: dodati @secured?
     public ResponseEntity<MedicineReservation> create(@RequestBody MedicineReservationDTO medicineReservationDTO, HttpServletRequest request){
         MedicineReservation medicineReservation = new MedicineReservation();
         String token = tokenUtils.getToken(request);
@@ -88,6 +99,44 @@ public class MedicineReservationController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(medicineReservationService.create(medicineReservation));
+    }
+
+    @PostMapping("/cancel-reservation")
+    public ResponseEntity<Long> cancelMedicineReservation(@RequestBody MedicineReservationCancellationDTO medicineReservationCancellationDTO, HttpServletRequest request){
+
+        /*String token = tokenUtils.getToken(request);
+        String email = tokenUtils.getUsernameFromToken(token);
+
+        try{
+            User user = userService.findByEmail(email);
+        } catch (UserNotFoundException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Long.parseLong("-1"));
+        }*/
+
+        try{
+            MedicineReservation medicineReservation = medicineReservationService.getById(medicineReservationCancellationDTO.getId());
+
+            if(medicineReservation.getPickUpDate().isBefore(LocalDateTime.now().plusDays(1)))
+                throw new MedicineReservationExpiredCancellationException(medicineReservation.getId());
+            if(medicineReservation.getMedicineReservationStatus() != MedicineReservationStatus.CREATED)
+                throw new MedicineReservationNotCreatedException(medicineReservation.getId());
+
+            medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
+            medicineReservationService.update(medicineReservation);
+
+            return ResponseEntity.ok().body(medicineReservation.getId());
+        } catch (MedicineReservationNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Long.parseLong("-2"));
+        } catch (MedicineReservationExpiredCancellationException e) {
+            e.printStackTrace();
+            ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE);
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Long.parseLong("-3"));
+        } catch(MedicineReservationNotCreatedException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Long.parseLong("-4"));
+        }
     }
 
     private String generateString() {

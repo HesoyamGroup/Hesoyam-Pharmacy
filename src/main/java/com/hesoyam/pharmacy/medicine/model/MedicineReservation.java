@@ -150,4 +150,13 @@ public class MedicineReservation {
       if (medicineReservationItems != null)
          medicineReservationItems.clear();
    }
+
+   public void update(MedicineReservation medicineReservation){
+      this.id = medicineReservation.getId();
+      this.code = medicineReservation.getCode();
+      this.medicineReservationItems = medicineReservation.getMedicineReservationItems();
+      this.medicineReservationStatus = medicineReservation.getMedicineReservationStatus();
+      this.patient = medicineReservation.getPatient();
+      this.pickUpDate = medicineReservation.getPickUpDate();
+   }
 }
