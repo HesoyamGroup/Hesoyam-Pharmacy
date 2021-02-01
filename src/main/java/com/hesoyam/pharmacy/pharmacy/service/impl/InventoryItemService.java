@@ -27,8 +27,8 @@ public class InventoryItemService implements IInventoryItemService {
 
 
     @Override
-    public List<InventoryItemPrice> create(InventoryItemPriceDTO itemPriceDTO, User loggedInUser) throws IllegalAccessException {
-        InventoryItem inventoryItem = inventoryItemRepository.getOne(itemPriceDTO.getInventoryItemId());
+    public List<InventoryItemPrice> create(Long inventoryItemId, InventoryItemPriceDTO itemPriceDTO, User loggedInUser) throws IllegalAccessException {
+        InventoryItem inventoryItem = inventoryItemRepository.getOne(inventoryItemId);
         checkAdministrator(inventoryItem, loggedInUser);
 
         InventoryItemPrice itemPrice = new InventoryItemPrice();
@@ -40,8 +40,8 @@ public class InventoryItemService implements IInventoryItemService {
     }
 
     @Override
-    public List<InventoryItemPrice> update(InventoryItemPriceDTO itemPriceDTO, User loggedInUser) throws IllegalAccessException {
-        InventoryItem inventoryItem = inventoryItemRepository.getOne(itemPriceDTO.getInventoryItemId());
+    public List<InventoryItemPrice> update(Long inventoryItemId, InventoryItemPriceDTO itemPriceDTO, User loggedInUser) throws IllegalAccessException {
+        InventoryItem inventoryItem = inventoryItemRepository.getOne(inventoryItemId);
         checkAdministrator(inventoryItem, loggedInUser);
 
         InventoryItemPrice itemPrice = inventoryItemPriceRepository.getOne(itemPriceDTO.getId());
@@ -50,6 +50,11 @@ public class InventoryItemService implements IInventoryItemService {
 
         boolean success = inventoryItem.updatePrices(itemPrice);
         return success ? inventoryItemRepository.save(inventoryItem).getPrices() : null;
+    }
+
+    @Override
+    public List<InventoryItem> getAllByPharmacy(Long pharmacyId) {
+        return inventoryItemRepository.getAllByPharmacyId(pharmacyId);
     }
 
     private void checkAdministrator(InventoryItem inventoryItem, User loggedInUser) throws IllegalAccessException {

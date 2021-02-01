@@ -16,18 +16,14 @@ public class InventoryItemPriceDTO {
     @NotNull
     private DateTimeRange range;
 
-    @NotNull
-    private Long inventoryItemId;
-
     public InventoryItemPriceDTO(){
         //Empty ctor for JSON serializer
     }
 
-    public InventoryItemPriceDTO(InventoryItemPrice itemPrice, Long inventoryItemId){
+    public InventoryItemPriceDTO(InventoryItemPrice itemPrice){
         this.id = itemPrice.getId();
         this.price = itemPrice.getPrice();
         this.range = itemPrice.getValidThrough();
-        this.inventoryItemId = inventoryItemId;
     }
 
     public Long getId() {
@@ -52,13 +48,5 @@ public class InventoryItemPriceDTO {
 
     public void setRange(DateTimeRange range) {
         this.range = range;
-    }
-
-    public Long getInventoryItemId() {
-        return inventoryItemId;
-    }
-
-    public void setInventoryItemId(Long inventoryItemId) {
-        this.inventoryItemId = inventoryItemId;
     }
 }

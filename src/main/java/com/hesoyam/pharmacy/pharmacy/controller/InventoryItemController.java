@@ -1,6 +1,8 @@
 package com.hesoyam.pharmacy.pharmacy.controller;
 
+import com.hesoyam.pharmacy.pharmacy.DTO.InventoryItemDTO;
 import com.hesoyam.pharmacy.pharmacy.DTO.InventoryItemPriceDTO;
+import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.user.model.User;
@@ -25,16 +27,16 @@ public class InventoryItemController {
     private IInventoryItemService inventoryItemService;
 
     @PreAuthorize("hasRole('ADMINISTRATOR')")
-    @PostMapping(value = "/price", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<InventoryItemPriceDTO>> createInventoryItemPrice(@AuthenticationPrincipal User user, @RequestBody @Valid InventoryItemPriceDTO itemPriceDTO){
+    @PostMapping(value = "/{id}/price", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<InventoryItemPriceDTO>> createInventoryItemPrice(@AuthenticationPrincipal User user, @RequestBody @Valid InventoryItemPriceDTO itemPriceDTO, @PathVariable Long id){
         try {
-            List<InventoryItemPrice> newItemPrices = inventoryItemService.create(itemPriceDTO, user);
+            List<InventoryItemPrice> newItemPrices = inventoryItemService.create(id, itemPriceDTO, user);
             if(newItemPrices == null){
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
             }
             else{
                 List<InventoryItemPriceDTO> itemPricesDTO = new ArrayList<>();
-                newItemPrices.forEach(itemPrice -> itemPricesDTO.add(new InventoryItemPriceDTO(itemPrice, itemPriceDTO.getInventoryItemId())));
+                newItemPrices.forEach(itemPrice -> itemPricesDTO.add(new InventoryItemPriceDTO(itemPrice)));
                 return ResponseEntity.status(HttpStatus.CREATED).body(itemPricesDTO);
             }
         } catch (IllegalAccessException e){
@@ -43,15 +45,15 @@ public class InventoryItemController {
     }
 
     @PreAuthorize("hasRole('ADMINISTRATOR')")
-    @PutMapping(value = "/price", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<InventoryItemPriceDTO>> updateInventoryItemPrice(@AuthenticationPrincipal User user, @RequestBody @Valid InventoryItemPriceDTO itemPriceDTO){
+    @PutMapping(value = "/{id}/price", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<InventoryItemPriceDTO>> updateInventoryItemPrice(@AuthenticationPrincipal User user, @RequestBody @Valid InventoryItemPriceDTO itemPriceDTO, @PathVariable Long id){
         try {
-            List<InventoryItemPrice> updatedItemPrices = inventoryItemService.update(itemPriceDTO, user);
+            List<InventoryItemPrice> updatedItemPrices = inventoryItemService.update(id, itemPriceDTO, user);
             if(updatedItemPrices == null)
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
             else {
                 List<InventoryItemPriceDTO> itemPricesDTO = new ArrayList<>();
-                updatedItemPrices.forEach(itemPrice -> itemPricesDTO.add(new InventoryItemPriceDTO(itemPrice, itemPriceDTO.getInventoryItemId())));
+                updatedItemPrices.forEach(itemPrice -> itemPricesDTO.add(new InventoryItemPriceDTO(itemPrice)));
                 return ResponseEntity.status(HttpStatus.OK).body(itemPricesDTO);
             }
         } catch (IllegalAccessException e){
@@ -61,5 +63,14 @@ public class InventoryItemController {
         } catch (ConstraintViolationException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+    }
+
+    @GetMapping(value = "/pharmacy/{id}")
+    public ResponseEntity<List<InventoryItemDTO>> getInventoryItemsByPharmacy(@PathVariable Long id){
+        List<InventoryItem> inventoryItems = inventoryItemService.getAllByPharmacy(id);
+        List<InventoryItemDTO> inventoryItemsDTO = new ArrayList<>();
+        inventoryItems.forEach(inventoryItem -> inventoryItemsDTO.add(new InventoryItemDTO(inventoryItem)));
+
+        return ResponseEntity.status(HttpStatus.OK).body(inventoryItemsDTO);
     }
 }
