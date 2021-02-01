@@ -9,7 +9,7 @@ import java.util.List;
 public interface IPharmacyService {
     Pharmacy create(PharmacyCreateDTO pharmacyCreateDTO) throws InvalidPharmacyCreateRequest;
     List<Pharmacy> getAll();
-    List<Pharmacy> getAllByAdministrator(Long id);
+    Pharmacy getByAdministrator(Long id);
     Pharmacy findOne(Long id);
     List<Pharmacy> findAllPharmaciesByMedicine(Long id);
 }
