@@ -12,4 +12,5 @@ public interface IMedicineReservationService {
     MedicineReservation create(MedicineReservation medicineReservation);
     List<MedicineReservation> getByPatientId(Long id);
     MedicineReservation getByMedicineReservationCode(String code) throws MedicineReservationNotFoundException;
+    int getPickedupReservationsCountForPatientId(Long patientId);
 }
