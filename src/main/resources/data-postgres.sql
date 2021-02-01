@@ -120,17 +120,17 @@ INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_m
 
 -- 1 Jankovic
 INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city_id, rating) VALUES
-('Apoteka Janković', 'Poverenje, sigurnost i dostupnost su, već skoro 30 godina, glavna obeležja Apotekarske ustanove Janković', 'Bulevar oslobođenja 135', 45.24147051535973, 19.84340829263456, 1, 0);
+('Apoteka Janković', 'Poverenje, sigurnost i dostupnost su, već skoro 30 godina, glavna obeležja Apotekarske ustanove Janković', 'Bulevar oslobođenja 135', 45.24147051535973, 19.84340829263456, 1, 2.35);
 --INSERT INTO
 
 -- 2 BENU
 INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city_id, rating) VALUES
-('BENU Pharmacy', 'BENU apoteke odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije.', 'Bulevar cara Lazara 57', 45.242099257464965, 19.834720141296856, 1, 0);
+('BENU Pharmacy', 'BENU apoteke odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije.', 'Bulevar cara Lazara 57', 45.242099257464965, 19.834720141296856, 1, 5);
 
 
 -- 3 Tilia
 INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city_id, rating) VALUES
-('Apoteka Tilia', '', 'Bulevar oslobođenja 3A', 45.26416960023307, 19.830897136780703, 1, 0);
+('Apoteka Tilia', '', 'Bulevar oslobođenja 3A', 45.26416960023307, 19.830897136780703, 1, 3);
 
 -----------------------
 -- PHARMACY INVENTORIES
