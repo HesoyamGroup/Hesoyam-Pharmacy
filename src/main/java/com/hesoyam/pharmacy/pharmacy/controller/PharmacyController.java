@@ -1,7 +1,7 @@
 package com.hesoyam.pharmacy.pharmacy.controller;
 
-import com.hesoyam.pharmacy.pharmacy.DTO.PharmacyCreateDTO;
-import com.hesoyam.pharmacy.pharmacy.DTO.PharmacyDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.PharmacyCreateDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.PharmacyDTO;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidPharmacyCreateRequest;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
