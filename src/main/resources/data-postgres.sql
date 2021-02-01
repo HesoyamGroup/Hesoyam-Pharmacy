@@ -79,8 +79,8 @@ INSERT INTO medicine_specification (quantity, unit) VALUES (250, 'MG');
 INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (1, 1);
 INSERT INTO medicine_composition (medicine_specification_id, composition_id) VALUES (1, 1);
 --INSERT INTO replacement_medicine
-INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id) VALUES
-('Palitrex', 'CAPSULE', 4, '', 'WITHOUT_PRESCRIPTION', 1, 1);
+INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id, rating) VALUES
+('Palitrex', 'CAPSULE', 4, '', 'WITHOUT_PRESCRIPTION', 1, 1, 5);
 
 -- 2 Rapidol
 INSERT INTO medicine_specification (quantity, unit) VALUES (200, 'MG');
@@ -90,8 +90,8 @@ INSERT INTO medicine_contraindication (medicine_specification_id, contraindicati
 INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (2, 5);
 INSERT INTO medicine_composition (medicine_specification_id, composition_id) VALUES (2, 2);
 --INSERT INTO replacement_medicine
-INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id) VALUES
-('Rapidol', 'PILL', 5, '', 'WITHOUT_PRESCRIPTION', 2, 2);
+INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id, rating) VALUES
+('Rapidol', 'PILL', 5, '', 'WITHOUT_PRESCRIPTION', 2, 2, 4);
 
 -- 3 Diclofenac Duo
 INSERT INTO medicine_specification (quantity, unit) VALUES (75, 'MG');
@@ -101,8 +101,8 @@ INSERT INTO medicine_contraindication (medicine_specification_id, contraindicati
 INSERT INTO medicine_contraindication (medicine_specification_id, contraindication_id) VALUES (3, 5);
 INSERT INTO medicine_composition (medicine_specification_id, composition_id) VALUES (3, 3);
 --INSERT INTO replacement_medicine
-INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id) VALUES
-('Diclofenac Duo', 'CAPSULE', 7, '', 'WITHOUT_PRESCRIPTION', 2, 3);
+INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id, rating) VALUES
+('Diclofenac Duo', 'CAPSULE', 7, '', 'WITHOUT_PRESCRIPTION', 2, 3, 4);
 
 -- 4 Panklav
 INSERT INTO medicine_specification (quantity, unit) VALUES (375, 'MG');
@@ -111,8 +111,8 @@ INSERT INTO medicine_contraindication (medicine_specification_id, contraindicati
 INSERT INTO medicine_composition (medicine_specification_id, composition_id) VALUES (4, 4);
 INSERT INTO medicine_composition (medicine_specification_id, composition_id) VALUES (4, 5);
 --INSERT INTO replacement_medicine
-INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id) VALUES
-('Panklav', 'PILL', 6, '', 'WITH_PRESCRIPTION', 2, 4);
+INSERT INTO medicine (name, medicine_type, loyalty_points, notes, prescription_mode, manufacturer_id, medicine_specification_id, rating) VALUES
+('Panklav', 'PILL', 6, '', 'WITH_PRESCRIPTION', 2, 4, 0);
 
 -------------
 -- PHARMACIES
