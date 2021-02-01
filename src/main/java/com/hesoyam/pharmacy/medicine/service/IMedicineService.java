@@ -1,5 +1,7 @@
 package com.hesoyam.pharmacy.medicine.service;
 
+import com.hesoyam.pharmacy.medicine.dto.MedicineSearchDTO;
+import com.hesoyam.pharmacy.medicine.dto.MedicineSearchResultDTO;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineType;
 
@@ -10,4 +12,5 @@ public interface IMedicineService {
     Medicine create(Medicine medicine);
     List<MedicineType> getAllMedicineTypes();
     List<Medicine> findByMedicineName(String name);
+    List<MedicineSearchResultDTO> search(MedicineSearchDTO medicineSearchDTO);
 }

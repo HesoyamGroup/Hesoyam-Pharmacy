@@ -5,6 +5,7 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.medicine.model;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -49,6 +50,12 @@ public class Medicine {
    @Enumerated(EnumType.STRING)
    @NotNull(message = "Prescription mode must be specified.")
    private PrescriptionMode prescriptionMode;
+
+   @Column
+   @ColumnDefault("0")
+   @Min(0)
+   //TODO: Add max rating(5 vs 10 scale)
+   private Double rating = 0d;
 
    public Long getId() {
       return id;
@@ -112,5 +119,13 @@ public class Medicine {
 
    public void setPrescriptionMode(PrescriptionMode prescriptionMode) {
       this.prescriptionMode = prescriptionMode;
+   }
+
+   public double getRating() {
+      return rating;
+   }
+
+   public void setRating(double rating) {
+      this.rating = rating;
    }
 }
