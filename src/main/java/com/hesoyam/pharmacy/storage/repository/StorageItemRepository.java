@@ -12,4 +12,8 @@ import java.util.List;
 public interface StorageItemRepository extends JpaRepository<StorageItem, Long> {
     @Query("SELECT storageitem FROM Storage storage JOIN StorageItem storageitem ON storage = storageitem.storage AND storage.supplier.id = :id ORDER BY storageitem.medicine.name")
     List<StorageItem> getStorageItemsByUserId(@Param("id") Long id, Pageable pageable);
+
+    @Query("SELECT storageitem FROM StorageItem storageitem WHERE storageitem.storage.supplier.id = :userId AND storageitem.id=:itemId")
+    StorageItem getStorageItemByIdAndUserId(@Param("itemId") Long itemId, @Param("userId") Long userId);
+
 }

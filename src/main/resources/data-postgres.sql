@@ -435,9 +435,9 @@ INSERT INTO supplier (id) VALUES (18);
 INSERT INTO user_roles (user_id, role_id) VALUES (18, 7);
 
 insert into STORAGE (id, supplier_id) VALUES (1, 18);
-INSERT INTO storage_item(stock, medicine_id, storage_id) VALUES (5, 1, 1);
-INSERT INTO storage_item(stock, medicine_id, storage_id) VALUES (5, 2, 1);
-INSERT INTO storage_item(stock, medicine_id, storage_id) VALUES (5, 3, 1);
+INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (5,0, 1, 1);
+INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (3,0, 2, 1);
+INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (77,55, 3, 1);
 
 -- 19
 INSERT INTO users
@@ -448,7 +448,7 @@ INSERT INTO supplier (id) VALUES (19);
 INSERT INTO user_roles (user_id, role_id) VALUES (19, 7);
 
 insert into STORAGE (id, supplier_id) VALUES (2, 19);
-INSERT INTO storage_item(stock, medicine_id, storage_id) VALUES (6, 2, 2);
+INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (6,0, 2, 2);
 
 -----------------------
 -- Medicine Reservation

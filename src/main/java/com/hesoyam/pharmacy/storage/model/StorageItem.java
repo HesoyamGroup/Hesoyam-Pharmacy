@@ -24,9 +24,13 @@ public class StorageItem implements Serializable {
     @JoinColumn(name="medicine_id", nullable = false)
     private Medicine medicine;
 
-    @Column(name="stock")
+    @Column(name="stock", nullable = false)
     @Min(0)
     private int stock;
+
+    @Column(name="reserved", nullable = false)
+    @Min(0)
+    private int reserved;
 
 
 
@@ -50,7 +54,29 @@ public class StorageItem implements Serializable {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(int stock) throws IllegalArgumentException {
+        if(stock < this.reserved){
+            throw new IllegalArgumentException("Stock must be higher or equal than reserved.");
+        }
         this.stock = stock;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getReserved() {
+        return reserved;
+    }
+
+    public void setReserved(int reserved) throws IllegalArgumentException {
+        if(reserved > this.stock){
+            throw new IllegalArgumentException("Reserved value must be less or equal than stock value.");
+        }
+        this.reserved = reserved;
     }
 }
