@@ -10,15 +10,16 @@ import com.hesoyam.pharmacy.appointment.repository.TherapyRepository;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
 import com.hesoyam.pharmacy.user.dto.PatientDTO;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
-import com.hesoyam.pharmacy.user.model.Dermatologist;
-import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.user.model.Pharmacist;
+import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.util.DateTimeRange;
+import com.hesoyam.pharmacy.util.search.QueryMatchResult;
+import com.hesoyam.pharmacy.util.search.UserSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class AppointmentService implements IAppointmentService {
@@ -33,6 +34,9 @@ public class AppointmentService implements IAppointmentService {
 
     @Autowired
     private CounselingRepository counselingRepository;
+
+    private static final double MATCHES_FULLY = 1;
+    private static final double MATCHES_PARTIALLY = 0.5;
 
 
     @Override
@@ -67,6 +71,18 @@ public class AppointmentService implements IAppointmentService {
                 completedCheckUps.add(checkUp);
         });
         List<PatientDTO> patients = extractPatients(completedCheckUps);
+        return filterUniquePatients(patients);
+    }
+
+    @Override
+    public List<PatientDTO> extractPatientsFromCounselings(Pharmacist pharmacist) {
+        List<Counseling> counselings = counselingRepository.findByPharmacist(pharmacist);
+        List<Counseling> completedCounselings = new ArrayList<>();
+        counselings.forEach(counseling -> {
+            if(counseling.getAppointmentStatus() == AppointmentStatus.COMPLETED)
+                completedCounselings.add(counseling);
+        });
+        List<PatientDTO> patients = extractCounselingPatients(completedCounselings);
         return filterUniquePatients(patients);
     }
 
@@ -111,6 +127,12 @@ public class AppointmentService implements IAppointmentService {
         return patients;
     }
 
+    private List<PatientDTO> extractCounselingPatients(List<Counseling> completedCounselings) {
+        List<PatientDTO> patients = new ArrayList<>();
+        completedCounselings.forEach(counseling -> patients.add(new PatientDTO(counseling)));
+        return patients;
+    }
+
     private List<CheckUp> filterCheckupsByDateRange(List<CheckUp> allCheckups, DateTimeRange dateTimeRange) {
         List<CheckUp> filtered = new ArrayList<>();
         for(CheckUp checkUp : allCheckups){
@@ -152,5 +174,75 @@ public class AppointmentService implements IAppointmentService {
 
     public int getCompletedAppointmentsCountInPharmacyByPatient(Pharmacy pharmacy, Patient patient) {
         return appointmentRepository.countAppointmentsByPatientAndAppointmentStatusAndPharmacy(patient, AppointmentStatus.COMPLETED, pharmacy);
+    }
+
+    @Override
+    public List<UserSearchResult> searchUsers(Employee user, String query) {
+        List<PatientDTO> patients = new ArrayList<>();
+        if(user.getRoleEnum().equals(RoleEnum.PHARMACIST))
+            patients = extractPatientsFromCounselings((Pharmacist) user);
+        else if(user.getRoleEnum().equals(RoleEnum.DERMATOLOGIST))
+            patients = extractPatientsFromCheckups((Dermatologist) user);
+
+        return filterPatientsByQuery(patients, query);
+    }
+
+    private List<UserSearchResult> filterPatientsByQuery(List<PatientDTO> patients, String query) {
+        List<UserSearchResult> filtered = new ArrayList<>();
+        QueryMatchResult currentIterationResult = null;
+        for(PatientDTO patient : patients){
+            currentIterationResult = matchesQuery(patient, query);
+            if(currentIterationResult.getMatches()){
+                filtered.add(new UserSearchResult(patient, currentIterationResult.getGrade()));
+            }
+        }
+        return filtered;
+    }
+
+    private QueryMatchResult matchesQuery(PatientDTO patient, String query) {
+        String normalized = Normalizer.normalize(query, Normalizer.Form.NFD);
+        String[] parts = normalized.split(" ");
+        String singleEntry = "";
+        String firstName = "";
+        String lastName = "";
+
+        if(parts.length == 1){
+            singleEntry = parts[0];
+        }
+        else if(parts.length > 1){
+            firstName = parts[0];
+            lastName = parts[1];
+        }
+        else{
+            return new QueryMatchResult(false);
+        }
+
+        if(!singleEntry.isBlank()) {
+            if(Normalizer.normalize(patient.getFirstName(), Normalizer.Form.NFD).equalsIgnoreCase(singleEntry.toLowerCase())
+            || Normalizer.normalize(patient.getLastName(), Normalizer.Form.NFD).equalsIgnoreCase(singleEntry.toLowerCase()))
+                return new QueryMatchResult(true, MATCHES_FULLY);
+            else if(Normalizer.normalize(patient.getFirstName(), Normalizer.Form.NFD)
+                    .toLowerCase().startsWith(singleEntry.toLowerCase())
+                    || Normalizer.normalize(patient.getLastName(), Normalizer.Form.NFD)
+                    .toLowerCase().startsWith(singleEntry.toLowerCase())){
+                return new QueryMatchResult(true, MATCHES_PARTIALLY);
+            }
+            return new QueryMatchResult(false);
+        } else {
+            if(Normalizer.normalize(patient.getFirstName(), Normalizer.Form.NFD).equalsIgnoreCase(firstName.toLowerCase()) &&
+                    Normalizer.normalize(patient.getLastName(), Normalizer.Form.NFD).equalsIgnoreCase(lastName.toLowerCase()))
+                return new QueryMatchResult(true, MATCHES_FULLY);
+            else if(Normalizer.normalize(patient.getFirstName(), Normalizer.Form.NFD).equalsIgnoreCase(lastName.toLowerCase()) &&
+                    Normalizer.normalize(patient.getLastName(), Normalizer.Form.NFD).equalsIgnoreCase(firstName.toLowerCase()))
+                return new QueryMatchResult(true, MATCHES_FULLY);
+            else if(Normalizer.normalize(patient.getFirstName(), Normalizer.Form.NFD).toLowerCase().startsWith(firstName.toLowerCase()) &&
+                    Normalizer.normalize(patient.getLastName(), Normalizer.Form.NFD).toLowerCase().startsWith(lastName.toLowerCase()))
+                return new QueryMatchResult(true, MATCHES_PARTIALLY);
+            else if(Normalizer.normalize(patient.getFirstName(), Normalizer.Form.NFD).toLowerCase().startsWith(lastName.toLowerCase()) &&
+                    Normalizer.normalize(patient.getLastName(), Normalizer.Form.NFD).toLowerCase().startsWith(firstName.toLowerCase()))
+                return new QueryMatchResult(true, MATCHES_PARTIALLY);
+            else
+                return new QueryMatchResult(false);
+        }
     }
 }
