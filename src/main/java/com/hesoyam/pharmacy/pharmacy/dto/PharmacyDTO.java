@@ -10,7 +10,7 @@ public class PharmacyDTO {
     private double rating;
 
     public PharmacyDTO(){
-
+        //Empty ctor for JSON serializer
     }
 
     public PharmacyDTO(Pharmacy pharmacy){
