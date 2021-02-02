@@ -1,12 +1,9 @@
 package com.hesoyam.pharmacy.user.service.impl;
 
-import com.hesoyam.pharmacy.user.DTO.AdministratorRegistrationDTO;
-import com.hesoyam.pharmacy.user.DTO.ChangePasswordDTO;
-import com.hesoyam.pharmacy.user.DTO.RegistrationDTO;
-import com.hesoyam.pharmacy.user.exceptions.InvalidChangePasswordRequestException;
-import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
-import com.hesoyam.pharmacy.user.exceptions.UserNotUniqueException;
-import com.hesoyam.pharmacy.user.exceptions.RegistrationValidationException;
+import com.hesoyam.pharmacy.user.dto.AdministratorRegistrationDTO;
+import com.hesoyam.pharmacy.user.dto.ChangePasswordDTO;
+import com.hesoyam.pharmacy.user.dto.RegistrationDTO;
+import com.hesoyam.pharmacy.user.exceptions.*;
 import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.user.repository.UserRepository;
 import com.hesoyam.pharmacy.user.repository.VerificationTokensRepository;
@@ -113,6 +110,38 @@ public class UserService implements UserDetailsService, IUserService {
     }
 
     @Override
+    public Employee registerEmployeeAccount(RegistrationDTO registrationDTO) throws InvalidRegisterEmployeeRequestException, UserNotUniqueException {
+        Employee employee = getEmployeeProfile(registrationDTO);
+        try{
+            return userRepository.save(employee);
+        }catch (DataIntegrityViolationException ex){
+            throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
+        }
+    }
+
+    private Employee getEmployeeProfile(RegistrationDTO registrationDTO) throws InvalidRegisterEmployeeRequestException {
+        RoleEnum roleEnum = registrationDTO.getRoleEnum();
+        Employee employee;
+        if(roleEnum == null) throw new InvalidRegisterEmployeeRequestException("Invalid role specified.");
+        switch(roleEnum){
+            case DERMATOLOGIST:{
+                employee = createDermatologistAccount(registrationDTO);
+                break;
+            }
+            case PHARMACIST:{
+                employee = createPharmacistAccount(registrationDTO);
+                break;
+            }
+            default:{
+                throw new InvalidRegisterEmployeeRequestException("Invalid role specified.");
+            }
+        }
+
+        return employee;
+    }
+
+
+    @Override
     public SysAdmin registerSysAdmin(RegistrationDTO registrationDTO) throws UserNotUniqueException {
         SysAdmin sysAdmin = new SysAdmin();
         loadUserAccountWithRegistrationData(sysAdmin, registrationDTO, true, true);
@@ -131,23 +160,26 @@ public class UserService implements UserDetailsService, IUserService {
         return sysAdmin;
     }
 
-    @Override
-    public Dermatologist registerDermatologist(RegistrationDTO registrationDTO) throws UserNotUniqueException {
+
+
+    private Dermatologist createDermatologistAccount(RegistrationDTO registrationDTO){
         Dermatologist dermatologist = new Dermatologist();
         loadUserAccountWithRegistrationData(dermatologist, registrationDTO, false, true);
         dermatologist.setRoleEnum(RoleEnum.DERMATOLOGIST);
-        //TODO: Find by name parameter should be saved somewhere globally.
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_DERMATOLOGIST");
         dermatologist.setAuthorities(roles);
-
-        try{
-            dermatologist = userRepository.save(dermatologist);
-        }catch (DataIntegrityViolationException ex){
-            throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
-        }
-
         return dermatologist;
     }
+
+    private Pharmacist createPharmacistAccount(RegistrationDTO registrationDTO){
+        Pharmacist pharmacist = new Pharmacist();
+        loadUserAccountWithRegistrationData(pharmacist, registrationDTO, false, true);
+        pharmacist.setRoleEnum(RoleEnum.PHARMACIST);
+        List<Role> roles = (List<Role>) roleService.findByName("ROLE_PHARMACIST");
+        pharmacist.setAuthorities(roles);
+        return pharmacist;
+    }
+
 
     @Override
     public Administrator registerAdministrator(AdministratorRegistrationDTO administratorRegistrationDTO) throws UserNotUniqueException {
@@ -167,6 +199,23 @@ public class UserService implements UserDetailsService, IUserService {
         }
 
         return administrator;
+    }
+
+    @Override
+    public Supplier registerSupplier(RegistrationDTO registrationDTO) throws UserNotUniqueException {
+        Supplier supplier = new Supplier();
+        loadUserAccountWithRegistrationData(supplier, registrationDTO, true, true);
+        supplier.setRoleEnum(RoleEnum.SUPPLIER);
+        List<Role> roles = (List<Role>) roleService.findByName("ROLE_SUPPLIER");
+        supplier.setAuthorities(roles);
+
+        try{
+            supplier = userRepository.save(supplier);
+        }catch (DataIntegrityViolationException ex){
+            throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
+        }
+
+        return supplier;
     }
 
     private void loadUserAccountWithRegistrationData(User user, RegistrationDTO registrationDTO, boolean passwordReset, boolean isEnabled) {

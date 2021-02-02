@@ -5,6 +5,8 @@ import com.hesoyam.pharmacy.user.DTO.EmployeeBasicDTO;
 import com.hesoyam.pharmacy.user.DTO.PharmacistDTO;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.DTO.PharmacistDetailsDTO;
+import com.hesoyam.pharmacy.user.dto.EmployeeBasicDTO;
+import com.hesoyam.pharmacy.user.dto.PharmacistDetailsDTO;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPharmacistService;

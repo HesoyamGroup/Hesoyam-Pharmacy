@@ -254,12 +254,12 @@ public abstract class User implements UserDetails {
       if (this == o) return true;
       if (!(o instanceof User)) return false;
       User user = (User) o;
-      return Objects.equals(getId(), user.getId());
+      return Objects.equals(getEmail(), user.getEmail());
    }
 
    @Override
    public int hashCode() {
-      return Objects.hash(getId());
+      return getEmail().hashCode();
    }
 
    public boolean startsWithName(String firstName, String lastName){

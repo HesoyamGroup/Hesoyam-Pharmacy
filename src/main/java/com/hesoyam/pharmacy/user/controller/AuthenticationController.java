@@ -1,12 +1,9 @@
 package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.security.TokenUtils;
-import com.hesoyam.pharmacy.user.DTO.*;
+import com.hesoyam.pharmacy.user.dto.*;
 import com.hesoyam.pharmacy.user.events.OnRegistrationCompletedEvent;
-import com.hesoyam.pharmacy.user.exceptions.InvalidChangePasswordRequestException;
-import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
-import com.hesoyam.pharmacy.user.exceptions.UserNotUniqueException;
-import com.hesoyam.pharmacy.user.exceptions.RegistrationValidationException;
+import com.hesoyam.pharmacy.user.exceptions.*;
 import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,6 +151,39 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(generateUniformResponse(ERRORS_FIELD_NAME, generateTokenExpiredResponse()));
     }
 
+    @PostMapping("/register-employee-account")
+    @Secured("ROLE_SYS_ADMIN")
+    public ResponseEntity<Employee> createEmployeeAccount(@RequestBody @Valid RegistrationDTO registrationDTO, BindingResult errors){
+        if(errors.hasErrors()){
+            return ResponseEntity.badRequest().build();
+        }
+
+        try {
+            Employee employee = userService.registerEmployeeAccount(registrationDTO);
+            return ResponseEntity.ok(employee);
+        } catch (InvalidRegisterEmployeeRequestException exc){
+            return ResponseEntity.badRequest().build();
+        } catch (UserNotUniqueException exc) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+    }
+
+    @PostMapping("/register-supplier-account")
+    @Secured("ROLE_SYS_ADMIN")
+    public ResponseEntity<Supplier> createSupplierAccount(@RequestBody @Valid RegistrationDTO registrationDTO, BindingResult errors){
+        if(errors.hasErrors()){
+            return ResponseEntity.badRequest().build();
+        }
+
+        try{
+            Supplier supplier = userService.registerSupplier(registrationDTO);
+            return ResponseEntity.ok(supplier);
+        } catch (UserNotUniqueException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
     @PostMapping("/register-sys-admin-account")
     @Secured("ROLE_SYS_ADMIN")
     public ResponseEntity<Map<String, Map<String, String>>> createSysAdmin(@RequestBody @Valid RegistrationDTO registrationDTO, BindingResult errors){
@@ -171,26 +201,6 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
         }
         return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserDataToMap(sysAdmin)));
-    }
-
-    @PostMapping("/register-dermatologist-account")
-    @Secured("ROLE_SYS_ADMIN")
-    public ResponseEntity<Map<String, Map<String, String>>> createDermatologist(@RequestBody @Valid RegistrationDTO registrationDTO, BindingResult errors){
-        Map<String, String> errorsMap = new HashMap<>();
-        if(errors.hasErrors()){
-            errorsMap = extractFieldErrorsFromErrors(errors);
-            return ResponseEntity.badRequest().body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
-        }
-
-        Dermatologist dermatologist = null;
-        try{
-            dermatologist = userService.registerDermatologist(registrationDTO);
-        } catch (UserNotUniqueException notUniqueException) {
-            errorsMap.put("userNotUnique", notUniqueException.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(generateUniformResponse(ERRORS_FIELD_NAME, errorsMap));
-        }
-
-        return ResponseEntity.ok().body(generateUniformResponse(DATA_FIELD_NAME, extractUserDataToMap(dermatologist)));
     }
 
     @PostMapping("/register-administrator-account")

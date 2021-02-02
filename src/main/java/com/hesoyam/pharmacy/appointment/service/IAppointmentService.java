@@ -4,6 +4,7 @@ import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.user.DTO.PatientDTO;
+import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
@@ -18,4 +19,6 @@ public interface IAppointmentService {
     List<Counseling> getCounselingsForPharmacist(DateTimeRange dateTimeRange, Pharmacist pharmacist);
     List<CheckUp> getCheckUpsForDermatologist(DateTimeRange dateTimeRange, Dermatologist dermatologist);
     List<PatientDTO> extractPatientsFromCheckups(Dermatologist dermatologist);
+    int getCompletedAppointmentsCountInPharmacyByPatient(Pharmacy pharmacy, Patient patient);
+
 }

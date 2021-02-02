@@ -2,10 +2,10 @@ package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
 import com.hesoyam.pharmacy.user.DTO.*;
-import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
+import com.hesoyam.pharmacy.user.dto.DermatologistDetailsDTO;
+import com.hesoyam.pharmacy.user.dto.EmployeeBasicDTO;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Employee;
-import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IDermatologistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,9 +69,9 @@ public class DermatologistController {
 
     @GetMapping(value = "dermatologist-information-edit")
     @PreAuthorize("hasRole('DERMATOLOGIST')")
-    public ResponseEntity<DermatologistInformationDTO> getDermatologistEditableInformation(@AuthenticationPrincipal User
+    public ResponseEntity<DermatologistBasicInformationDTO> getDermatologistEditableInformation(@AuthenticationPrincipal User
                                                                                                        user){
-        return new ResponseEntity<>(new DermatologistInformationDTO((Dermatologist) user), HttpStatus.OK);
+        return new ResponseEntity<>(new DermatologistBasicInformationDTO((Dermatologist) user), HttpStatus.OK);
     }
 
 

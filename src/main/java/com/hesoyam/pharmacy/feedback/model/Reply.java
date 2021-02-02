@@ -28,4 +28,34 @@ public class Reply {
    @NotNull(message = "Reply must have a placer(Sys admin).")
    private SysAdmin sysAdmin;
 
+   public Reply(){}
+
+   public Reply(String text, SysAdmin sysAdmin) {
+      this.text = text;
+      this.sysAdmin = sysAdmin;
+   }
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public String getText() {
+      return text;
+   }
+
+   public void setText(String text) {
+      this.text = text;
+   }
+
+   public SysAdmin getSysAdmin() {
+      return sysAdmin;
+   }
+
+   public void setSysAdmin(SysAdmin sysAdmin) {
+      this.sysAdmin = sysAdmin;
+   }
 }

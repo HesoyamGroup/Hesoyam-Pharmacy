@@ -28,7 +28,8 @@ public class InventoryItem {
    @JoinColumn(name="medicine_id")
    private Medicine medicine;
 
-   @OneToMany(mappedBy = "inventoryItem", cascade = CascadeType.ALL)
+   @OneToMany(cascade = CascadeType.ALL)
+   @JoinColumn(name = "inventory_item_id", referencedColumnName = "id", nullable = false)
    private List<InventoryItemPrice> prices;
 
    public Long getId() {
@@ -37,6 +38,19 @@ public class InventoryItem {
 
    public void setId(Long id) {
       this.id = id;
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof InventoryItem)) return false;
+      InventoryItem that = (InventoryItem) o;
+      return getId().equals(that.getId());
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(getId());
    }
 
    public int getAvailable() {
@@ -63,6 +77,14 @@ public class InventoryItem {
       this.medicine = medicine;
    }
 
+   public void update(InventoryItem inventoryItem){
+      this.id = inventoryItem.getId();
+      this.available = inventoryItem.getAvailable();
+      this.reserved = inventoryItem.getReserved();
+      this.medicine = inventoryItem.getMedicine();
+      this.prices = inventoryItem.getPrices();
+   }
+
    public List<InventoryItemPrice> getPrices() {
       if (prices == null)
          prices = new ArrayList<>();
@@ -81,15 +103,31 @@ public class InventoryItem {
          addPrices(iter.next());
    }
 
-   public void addPrices(InventoryItemPrice newInventoryItemPrice) {
+   public boolean addPrices(InventoryItemPrice newInventoryItemPrice) {
       if (newInventoryItemPrice == null)
-         return;
+         return false;
       if (this.prices == null)
          this.prices = new ArrayList<>();
-      if (!this.prices.contains(newInventoryItemPrice)) {
+
+      if (!this.prices.contains(newInventoryItemPrice) && !datesAreConflicting(newInventoryItemPrice)) {
          this.prices.add(newInventoryItemPrice);
-         newInventoryItemPrice.setInventoryItem(this);
+         return true;
       }
+      return false;
+   }
+
+   public boolean updatePrices(InventoryItemPrice updatedItemPrice){
+      if(updatedItemPrice == null)
+         return false;
+      if(this.prices == null)
+         this.prices = new ArrayList<>();
+      if(!this.prices.contains(updatedItemPrice))
+         return false;
+      if(!datesAreConflictingForUpdate(updatedItemPrice)){
+         this.prices.set(this.prices.indexOf(updatedItemPrice), updatedItemPrice);
+         return true;
+      }
+      return false;
    }
 
    public void removePrices(InventoryItemPrice oldInventoryItemPrice) {
@@ -97,19 +135,23 @@ public class InventoryItem {
          return;
       if (this.prices != null && this.prices.contains(oldInventoryItemPrice)) {
          this.prices.remove(oldInventoryItemPrice);
-         oldInventoryItemPrice.setInventoryItem((InventoryItem)null);
       }
    }
 
    public void removeAllPrices() {
       if (prices != null) {
-         InventoryItemPrice oldInventoryItemPrice;
          for (Iterator<InventoryItemPrice> iter = getIteratorPrices(); iter.hasNext();) {
-            oldInventoryItemPrice = iter.next();
             iter.remove();
-            oldInventoryItemPrice.setInventoryItem((InventoryItem)null);
          }
       }
+   }
+
+   private boolean datesAreConflicting(InventoryItemPrice newItemPrice){
+      return this.getPrices().stream().anyMatch(itemPrice -> itemPrice.isConflictingWith(newItemPrice));
+   }
+
+   private boolean datesAreConflictingForUpdate(InventoryItemPrice updatedItemPrice){
+      return this.getPrices().stream().anyMatch(itemPrice -> !itemPrice.equals(updatedItemPrice) && itemPrice.isConflictingWith(updatedItemPrice));
    }
 
 }

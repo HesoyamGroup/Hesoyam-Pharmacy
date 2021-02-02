@@ -61,6 +61,11 @@ INSERT INTO contraindication (name) VALUES ('Teška srčana insuficijencija');
 INSERT INTO contraindication (name) VALUES ('Teška insuficijencija bubrega');
 INSERT INTO contraindication (name) VALUES ('Treći trimestar trudnoće');
 INSERT INTO contraindication (name) VALUES ('Preosetljivost na penicilin');
+INSERT INTO contraindication (name) VALUES ('Alergija na ibuprofen');
+INSERT INTO contraindication (name) VALUES ('Alergija na alprazolam');
+INSERT INTO contraindication (name) VALUES ('Preosetljivost na vitamin C');
+INSERT INTO contraindication (name) VALUES ('Srednje-teska insuficijencija jetre.');
+
 
 INSERT INTO composition_item (name, quantity, unit) VALUES ('Cefaleksin', 250, 'MG');
 INSERT INTO composition_item (name, quantity, unit) VALUES ('Ibuprofen', 200, 'MG');
@@ -126,6 +131,117 @@ INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city
 -- 3 Tilia
 INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city_id, rating) VALUES
 ('Apoteka Tilia', '', 'Bulevar oslobođenja 3A', 45.26416960023307, 19.830897136780703, 1, 0);
+
+-----------------------
+-- PHARMACY INVENTORIES
+-----------------------
+
+-- 1 Jankovic's Inventory
+INSERT INTO inventory(pharmacy_id)
+VALUES (1);
+
+-- 2 BENU's Inventory
+INSERT INTO inventory(pharmacy_id)
+VALUES (2);
+
+-- 3 Tilia's Inventory
+INSERT INTO inventory(pharmacy_id)
+VALUES (3);
+
+----------------------------------------
+-- INVENTORY ITEMS
+---------------------------------------
+-----------------------
+-- Jankovic Inventory Items
+-----------------------
+
+-- Palitrex
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (5, 0, 1, 1);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (555, '2021-01-29', '2021-02-28', 1);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (500, '2021-03-01', '2021-03-15', 1);
+-- Rapidol
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (4, 0, 2, 1);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (888, '2021-01-25', '2021-02-25', 2);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (666, '2021-02-26', '2021-03-10', 2);
+-- Diclofenac Duo
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (7, 0, 3, 1);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (999, '2021-01-29', '2021-03-28', 3);
+-- Panklav
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (0, 0, 4, 1);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (444, '2021-01-29', '2021-03-26', 4);
+
+
+-----------------------
+-- BENU Inventory Items
+-----------------------
+
+-- Palitrex
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (7, 0, 1, 2);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (500, '2021-01-29', '2021-02-28', 5);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (555, '2021-03-01', '2021-03-15', 5);
+-- Rapidol
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (5, 0, 2, 2);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (999, '2021-01-29', '2021-03-28', 6);
+-- Diclofenac Duo
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (2, 0, 3, 2);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (888, '2021-01-25', '2021-02-25', 7);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (666, '2021-02-26', '2021-03-10', 7);
+-- Panklav
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (3, 0, 4, 2);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (333, '2021-01-29', '2021-02-28', 8);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (222, '2021-03-01', '2021-03-15', 8);
+
+-----------------------
+-- Tilia Inventory Items
+-----------------------
+
+-- Palitrex
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (2, 0, 1, 3);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (222, '2021-01-29', '2021-02-28', 9);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (333, '2021-03-01', '2021-03-15', 9);
+-- Rapidol
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (1, 0, 2, 3);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (777, '2021-01-25', '2021-02-25', 10);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (700, '2021-02-26', '2021-03-10', 10);
+-- Diclofenac Duo
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (8, 0, 3, 3);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (567, '2021-01-29', '2021-03-28', 11);
+-- Panklav
+INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
+VALUES (5, 0, 4, 3);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (333, '2021-01-29', '2021-02-28', 12);
+INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
+VALUES (222, '2021-03-01', '2021-03-15', 12);
 
 --------------
 -- SYS ADMIN
@@ -325,7 +441,37 @@ VALUES
 INSERT INTO supplier (id) VALUES (19);
 INSERT INTO user_roles (user_id, role_id) VALUES (19, 7);
 
+-----------------------
+-- Medicine Reservation
+-----------------------
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
+VALUES (1, 'sdadasdadadasasdasasdda', 'CREATED', '2021-02-01 23:59:59', 14);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
+VALUES (2, 'wqksdhajdhaushydhwqkjmsdkami', 'COMPLETED', '2021-02-19 23:59:59', 14);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
+VALUES (3, 'bcvobocjiwque878dusijksdfj', 'CREATED', '2021-03-01 23:59:59', 14);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
+VALUES (4, 'dfjiwdjas8idlak0ti9kdsmklc', 'CANCELLED', '2021-02-16 23:59:59', 14);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
+VALUES (5, 'sdfjiosdofsdipkdogjuhuas', 'COMPLETED', '2021-01-31 23:59:59', 14);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
+VALUES (6, 'jcjsiajdojiosd0weoklssmad', 'CREATED', '2021-05-12 23:59:59', 14);
 
+---------------------------
+--Medicine Reservation Item
+---------------------------
+INSERT INTO medicine_reservation_item(id, quantity, medicine_id, medicine_reservation_id)
+VALUES (1, 1, 2, 1);
+INSERT INTO medicine_reservation_item(id, quantity, medicine_id, medicine_reservation_id)
+VALUES (2, 1, 1, 2);
+INSERT INTO medicine_reservation_item(id, quantity, medicine_id, medicine_reservation_id)
+VALUES (3, 1, 3, 3);
+INSERT INTO medicine_reservation_item(id, quantity, medicine_id, medicine_reservation_id)
+VALUES (4, 1, 1, 4);
+INSERT INTO medicine_reservation_item(id, quantity, medicine_id, medicine_reservation_id)
+VALUES (5, 1, 2, 5);
+INSERT INTO medicine_reservation_item(id, quantity, medicine_id, medicine_reservation_id)
+VALUES (6, 1, 4, 6);
 
 -------------------
 -- APPOINTMENTS (needs to be redone with better data)
@@ -334,14 +480,58 @@ INSERT INTO user_roles (user_id, role_id) VALUES (19, 7);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 15, 1, 10, null);
+VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 15, 3, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 16, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 1, 10, null);
+VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 2, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, 11, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
+VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 2, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
+
+
+-----------------------
+-- Complaints
+-----------------------
+
+--1
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('EmployeeComplaint', 'Ovo je prvi complaint', 'OPENED', 17, null, 6, null);
+--2
+INSERT INTO reply (text, sys_admin_id) VALUES ('Ovo je odgovor na drugi complaint od strane sys admin 1', 1);
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('EmployeeComplaint', 'Ovo je drugi complaint', 'CLOSED', 16, 1, 6, null);
+--3
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('EmployeeComplaint', 'Ovo je treci complaint', 'OPENED', 17, null, 11, null);
+
+--4
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('PharmacyComplaint', 'Ovo je prvi PHARMACY complaint, neodgovoren complaint', 'OPENED', 16, null, null, 1);
+
+--5
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('PharmacyComplaint', 'Ovo je drugi PHARMACY complaint, ODGOVOREN complaint', 'CLOSED', 16, null, null, 1);
+
+
+-----------------------
+-- Loyalty system
+-----------------------
+
+INSERT INTO loyalty_program_config (check_up_points, counseling_points, last_updated) VALUES (1, 2, CURRENT_TIMESTAMP);
+INSERT INTO loyalty_account_membership (discount, min_points, name, config_id) VALUES (0, 0, 'BASIC', 1);
+INSERT INTO loyalty_account_membership (discount, min_points, name, config_id) VALUES (12.5, 15, 'BRONZE', 1);
+INSERT INTO loyalty_account_membership (discount, min_points, name, config_id) VALUES (25.0, 50, 'SILVER', 1);
+INSERT INTO loyalty_account_membership (discount, min_points, name, config_id) VALUES (35.0, 150, 'GOLD', 1);
+
+--14
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 14);
+--15
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 15);
+--16 (Lidija)
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (30, 3, 16);
+--17 (Radovan)
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (36, 4, 17);

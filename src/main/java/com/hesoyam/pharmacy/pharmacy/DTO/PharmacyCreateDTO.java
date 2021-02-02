@@ -1,10 +1,12 @@
 package com.hesoyam.pharmacy.pharmacy.DTO;
 
 import com.hesoyam.pharmacy.location.model.Address;
+import com.hesoyam.pharmacy.user.model.Administrator;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
-
+import java.util.ArrayList;
+import java.util.List;
 public class PharmacyCreateDTO {
     @NotNull(message = "Pharmacy name must be provided.")
     @Length(min=2, max=75, message = "Pharmacy name length should be between 2 and 75 characters.")
@@ -17,7 +19,11 @@ public class PharmacyCreateDTO {
     @NotNull
     private Address address;
 
-    public PharmacyCreateDTO() { }
+    private List<PharmacyAdministratorCreateDTO> administrators;
+
+    public PharmacyCreateDTO() {
+        administrators = new ArrayList<>();
+    }
 
     public String getName() {
         return name;
@@ -41,5 +47,13 @@ public class PharmacyCreateDTO {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public List<PharmacyAdministratorCreateDTO> getAdministrators() {
+        return administrators;
+    }
+
+    public void setAdministrators(List<PharmacyAdministratorCreateDTO> administrators) {
+        this.administrators = administrators;
     }
 }

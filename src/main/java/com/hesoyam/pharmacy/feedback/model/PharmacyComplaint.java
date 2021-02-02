@@ -37,4 +37,8 @@ public class PharmacyComplaint extends Complaint {
    public void setPharmacy(Pharmacy pharmacy) {
       this.pharmacy = pharmacy;
    }
+
+   public String getEntityName(){
+      return pharmacy.getName();
+   }
 }

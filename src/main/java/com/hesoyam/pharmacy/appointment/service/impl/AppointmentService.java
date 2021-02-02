@@ -10,6 +10,7 @@ import com.hesoyam.pharmacy.appointment.repository.CounselingRepository;
 import com.hesoyam.pharmacy.appointment.repository.TherapyRepository;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
 import com.hesoyam.pharmacy.user.DTO.PatientDTO;
+import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
@@ -151,4 +152,7 @@ public class AppointmentService implements IAppointmentService {
         return toCheck.getFrom().isAfter(constraintRange.getFrom()) && toCheck.getTo().isBefore(constraintRange.getTo());
     }
 
+    public int getCompletedAppointmentsCountInPharmacyByPatient(Pharmacy pharmacy, Patient patient) {
+        return appointmentRepository.countAppointmentsByPatientAndAppointmentStatusAndPharmacy(patient, AppointmentStatus.COMPLETED, pharmacy);
+    }
 }

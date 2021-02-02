@@ -6,6 +6,7 @@
 package com.hesoyam.pharmacy.user.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 public class LoyaltyAccount {
@@ -14,6 +15,7 @@ public class LoyaltyAccount {
    private Long id;
 
    @Column
+   @Min(0)
    private int points;
 
    @OneToOne(optional=false, fetch = FetchType.EAGER)
@@ -24,4 +26,36 @@ public class LoyaltyAccount {
    @JoinColumn(name="membership_id", nullable = false)
    private LoyaltyAccountMembership loyaltyAccountMembership;
 
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public int getPoints() {
+      return points;
+   }
+
+   public void setPoints(int points) {
+      this.points = points;
+   }
+
+   public Patient getPatient() {
+      return patient;
+   }
+
+   public void setPatient(Patient patient) {
+      this.patient = patient;
+   }
+
+   public LoyaltyAccountMembership getLoyaltyAccountMembership() {
+      return loyaltyAccountMembership;
+   }
+
+   public void setLoyaltyAccountMembership(LoyaltyAccountMembership loyaltyAccountMembership) {
+      this.loyaltyAccountMembership = loyaltyAccountMembership;
+   }
 }
