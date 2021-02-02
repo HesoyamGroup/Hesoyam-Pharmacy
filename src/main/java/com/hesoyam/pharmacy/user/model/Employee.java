@@ -5,6 +5,8 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.user.model;
 import com.hesoyam.pharmacy.employee_management.model.Shift;
+import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.util.DateTimeRange;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -77,4 +79,14 @@ public abstract class Employee extends User {
    }
 
    public abstract boolean isAdministratorMyBoss(User administrator);
+
+   protected boolean isAtWork(DateTimeRange dateTimeRange, Pharmacy pharmacy){
+      return getShifts().stream().anyMatch(shift -> shift.isAvailableFor(dateTimeRange, pharmacy));
+   }
+
+   protected abstract boolean hasClearSchedule(DateTimeRange dateTimeRange);
+
+   public boolean isAvailable(DateTimeRange dateTimeRange, Pharmacy pharmacy){
+      return isAtWork(dateTimeRange, pharmacy) && hasClearSchedule(dateTimeRange);
+   }
 }

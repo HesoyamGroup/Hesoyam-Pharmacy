@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
@@ -23,7 +24,6 @@ public abstract class Appointment {
    protected Long id;
 
    @Column(length = 500)
-   @NotNull(message = "Report must be provided.")
    @Length(max=500, message = "Report length should not exceed 500 characters.")
    protected String report;
 
@@ -117,7 +117,12 @@ public abstract class Appointment {
       }
    }
 
+   public boolean isConflictingWith(DateTimeRange range){
+      return this.dateTimeRange.overlaps(range);
+   }
 
 
-
+   public boolean isUpcoming(){
+      return this.dateTimeRange.getFrom().isAfter(LocalDateTime.now());
+   }
 }

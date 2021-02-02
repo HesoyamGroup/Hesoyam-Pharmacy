@@ -18,6 +18,10 @@ public class CheckUp extends Appointment {
    @NotNull(message = "Dermatologist must be set.")
    private Dermatologist dermatologist;
 
+   public CheckUp(){
+      //Empty ctor for JSON serializer
+   }
+
 
    public Dermatologist getDermatologist() {
       return dermatologist;

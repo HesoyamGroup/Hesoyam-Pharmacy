@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.pharmacy.DTO;
+package com.hesoyam.pharmacy.pharmacy.dto;
 
 import com.hesoyam.pharmacy.location.model.Address;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
@@ -10,7 +10,7 @@ public class PharmacyDTO {
     private double rating;
 
     public PharmacyDTO(){
-
+        //Empty ctor for JSON serializer
     }
 
     public PharmacyDTO(Pharmacy pharmacy){

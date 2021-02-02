@@ -1,8 +1,7 @@
-package com.hesoyam.pharmacy.pharmacy.DTO;
+package com.hesoyam.pharmacy.pharmacy.dto;
 
 import com.hesoyam.pharmacy.location.model.Address;
 import com.hesoyam.pharmacy.user.model.Gender;
-import com.hesoyam.pharmacy.user.model.RoleEnum;
 import com.hesoyam.pharmacy.user.validators.PhoneNumberConstraint;
 import org.hibernate.validator.constraints.Length;
 
