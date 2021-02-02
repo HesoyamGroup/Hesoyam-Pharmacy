@@ -8,8 +8,7 @@ public class PharmacySearchDTO {
     String description;
     String cityName;
     String addressLine;
-    Double latitude;
-    Double longitude;
+    PharmacyLocationDTO pharmacyLocationDTO;
 
     public PharmacySearchDTO() {
     }
@@ -21,8 +20,8 @@ public class PharmacySearchDTO {
         this.description = description;
         this.cityName = cityName;
         this.addressLine = addressLine;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.pharmacyLocationDTO = new PharmacyLocationDTO(latitude, longitude);
+
     }
 
     public Long getId() {
@@ -73,19 +72,11 @@ public class PharmacySearchDTO {
         this.addressLine = addressLine;
     }
 
-    public Double getLatitude() {
-        return latitude;
+    public PharmacyLocationDTO getPharmacyLocationDTO() {
+        return pharmacyLocationDTO;
     }
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+    public void setPharmacyLocationDTO(PharmacyLocationDTO pharmacyLocationDTO) {
+        this.pharmacyLocationDTO = pharmacyLocationDTO;
     }
 }
