@@ -5,11 +5,14 @@
  */
 package com.hesoyam.pharmacy.user.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hesoyam.pharmacy.pharmacy.model.Inventory;
 import com.hesoyam.pharmacy.pharmacy.model.Offer;
+import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.storage.model.Storage;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +22,10 @@ public class Supplier extends User {
 
    @OneToMany(fetch = FetchType.LAZY, mappedBy="supplier")
    private List<Offer> offers;
+
+   @OneToOne(optional = true, mappedBy = "supplier", cascade = CascadeType.REMOVE)
+   @JsonManagedReference
+   private Storage storage;
 
    public List<Offer> getOffers() {
       if (offers == null)
@@ -72,9 +79,19 @@ public class Supplier extends User {
       }
    }
 
+   public Storage getStorage() {
+      return storage;
+   }
+
+   public void setStorage(Storage storage) {
+      this.storage = storage;
+   }
+
    @Override
    public boolean isEnabled() {
       return true;
    }
+
+
 
 }

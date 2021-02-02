@@ -425,6 +425,7 @@ INSERT INTO user_roles (user_id, role_id) VALUES (17, 2);
 -- SUPPLIERS
 --------------
 
+
 -- 18
 INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
@@ -433,6 +434,8 @@ VALUES
 INSERT INTO supplier (id) VALUES (18);
 INSERT INTO user_roles (user_id, role_id) VALUES (18, 7);
 
+insert into STORAGE (id, supplier_id) VALUES (1, 18);
+
 -- 19
 INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
@@ -440,6 +443,8 @@ VALUES
 ('Marina', 'Marić', 'FEMALE', 'Novosadska 37', 3, 44.914103309371924, 20.267538944371907, '4444444444', 'hesoyampharmacy+marina@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
 INSERT INTO supplier (id) VALUES (19);
 INSERT INTO user_roles (user_id, role_id) VALUES (19, 7);
+
+insert into STORAGE (id, supplier_id) VALUES (2, 19);
 
 -----------------------
 -- Medicine Reservation
