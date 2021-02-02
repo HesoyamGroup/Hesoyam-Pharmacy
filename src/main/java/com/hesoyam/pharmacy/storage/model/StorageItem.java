@@ -8,15 +8,20 @@ import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 @Entity
+@Table(uniqueConstraints= @UniqueConstraint(columnNames={"storage_id", "medicine_id"}))
 public class StorageItem implements Serializable {
 
-    @ManyToOne
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name="storage_id", nullable = false)
+    @JsonBackReference
     private Storage storage;
 
     @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="medicine_id", nullable = false)
-    @Id
     private Medicine medicine;
 
     @Column(name="stock")

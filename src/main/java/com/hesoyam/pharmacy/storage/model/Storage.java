@@ -16,6 +16,7 @@ public class Storage implements Serializable {
     private Long id;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy="storage")
+    @JsonManagedReference
     private List<StorageItem> storageItems;
 
     @OneToOne(fetch = FetchType.LAZY)
