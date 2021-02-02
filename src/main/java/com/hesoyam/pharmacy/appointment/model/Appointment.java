@@ -23,7 +23,6 @@ public abstract class Appointment {
    protected Long id;
 
    @Column(length = 500)
-   @NotNull(message = "Report must be provided.")
    @Length(max=500, message = "Report length should not exceed 500 characters.")
    protected String report;
 
@@ -115,6 +114,10 @@ public abstract class Appointment {
       {
          this.pharmacy = newPharmacy;
       }
+   }
+
+   public boolean isConflictingWith(DateTimeRange range){
+      return this.dateTimeRange.overlaps(range);
    }
 
 
