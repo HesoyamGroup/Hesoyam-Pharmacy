@@ -1,5 +1,6 @@
 package com.hesoyam.pharmacy.user.service.impl;
 
+import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.user.exceptions.PharmacistNotFoundException;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
@@ -28,6 +29,14 @@ public class PharmacistService implements IPharmacistService {
     }
 
     @Override
+    public Pharmacy getPharmacyForPharmacist(Long id) {
+        try {
+            return getById(id).getPharmacy();
+        } catch (PharmacistNotFoundException e) {
+            e.printStackTrace();
+            return null;
+		}
+	}
     public List<Pharmacist> getAll(User loggedInUser) {
         switch (loggedInUser.getRoleEnum()){
             case PATIENT:
@@ -37,7 +46,8 @@ public class PharmacistService implements IPharmacistService {
             default:
                 return new ArrayList<>();
         }
-    }
+	}
+    
 
     @Override
     public List<Pharmacist> search(User loggedInUser, String firstName, String lastName) {

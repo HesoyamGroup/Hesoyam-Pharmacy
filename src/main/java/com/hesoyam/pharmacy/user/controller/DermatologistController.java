@@ -1,8 +1,11 @@
 package com.hesoyam.pharmacy.user.controller;
 
+import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
+import com.hesoyam.pharmacy.user.dto.*;
 import com.hesoyam.pharmacy.user.dto.DermatologistDetailsDTO;
 import com.hesoyam.pharmacy.user.dto.EmployeeBasicDTO;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
+import com.hesoyam.pharmacy.user.model.Employee;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IDermatologistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ public class DermatologistController {
     @Autowired
     private IDermatologistService dermatologistService;
 
+    @Autowired
+    private IAppointmentService appointmentService;
+
     @GetMapping(value = "")
     @PreAuthorize("hasAnyRole('PATIENT', 'ADMINISTRATOR')")
     public ResponseEntity<List<DermatologistDetailsDTO>> getAllDermatologists(@AuthenticationPrincipal User user){
@@ -30,6 +36,12 @@ public class DermatologistController {
         dermatologists.forEach(dermatologist -> dermatologistsDTO.add(new DermatologistDetailsDTO(dermatologist)));
 
         return new ResponseEntity<>(dermatologistsDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/patients-for-dermatologist")
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<PatientDTO>> getPatientsForDermatologist(@AuthenticationPrincipal User user){
+        return new ResponseEntity<>(appointmentService.extractPatientsFromCheckups((Dermatologist) user), HttpStatus.OK);
     }
 
     @GetMapping(value = "search")
@@ -47,6 +59,19 @@ public class DermatologistController {
         List<EmployeeBasicDTO> employees = new ArrayList<>();
         dermatologists.forEach( dermatologist -> employees.add(new EmployeeBasicDTO(dermatologist)));
         return new ResponseEntity<>(employees, dermatologists.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
+    }
+
+    @GetMapping(value = "dermatologist-information")
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<EmployeeBasicDTO> getDermatologistInformation(@AuthenticationPrincipal User user){
+        return new ResponseEntity<>(new EmployeeBasicDTO((Employee) user), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "dermatologist-information-edit")
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<DermatologistBasicInformationDTO> getDermatologistEditableInformation(@AuthenticationPrincipal User
+                                                                                                       user){
+        return new ResponseEntity<>(new DermatologistBasicInformationDTO((Dermatologist) user), HttpStatus.OK);
     }
 
 
