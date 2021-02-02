@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.pharmacy.controller;
 
 import com.hesoyam.pharmacy.pharmacy.dto.PharmacyCreateDTO;
 import com.hesoyam.pharmacy.pharmacy.dto.PharmacyDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.PharmacySearchDTO;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidPharmacyCreateRequest;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
@@ -55,6 +56,19 @@ public class PharmacyController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+    }
+
+    @GetMapping(value="/all")
+    public ResponseEntity<List<PharmacySearchDTO>> getAllPharmacies(){
+        List<Pharmacy> pharmacies = pharmacyService.getAll();
+
+        List<PharmacySearchDTO> pharmacySearchDTOList = new ArrayList<>();
+
+        for(Pharmacy p: pharmacies){
+            pharmacySearchDTOList.add(new PharmacySearchDTO(p.getId(), p.getName(), p.getRating(), p.getDescription(), p.getAddress().getCity().getCityName(), p.getAddress().getAddressLine(), p.getAddress().getLatitude(), p.getAddress().getLongitude()));
+        }
+
+        return ResponseEntity.ok().body(pharmacySearchDTOList);
     }
 
     @GetMapping(value = "/medicine-{id}")
