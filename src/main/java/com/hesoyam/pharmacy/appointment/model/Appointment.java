@@ -13,6 +13,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
@@ -121,6 +122,7 @@ public abstract class Appointment {
    }
 
 
-
-
+   public boolean isUpcoming(){
+      return this.dateTimeRange.getFrom().isAfter(LocalDateTime.now());
+   }
 }
