@@ -1,7 +1,7 @@
 package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
-import com.hesoyam.pharmacy.user.DTO.*;
+import com.hesoyam.pharmacy.user.dto.*;
 import com.hesoyam.pharmacy.user.dto.DermatologistDetailsDTO;
 import com.hesoyam.pharmacy.user.dto.EmployeeBasicDTO;
 import com.hesoyam.pharmacy.user.model.Dermatologist;

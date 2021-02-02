@@ -2,10 +2,8 @@ package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.dto.EmployeeBasicDTO;
-import com.hesoyam.pharmacy.user.DTO.PharmacistDTO;
+import com.hesoyam.pharmacy.user.dto.PharmacistDTO;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
-import com.hesoyam.pharmacy.user.dto.PharmacistDetailsDTO;
-import com.hesoyam.pharmacy.user.dto.EmployeeBasicDTO;
 import com.hesoyam.pharmacy.user.dto.PharmacistDetailsDTO;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;

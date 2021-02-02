@@ -1,7 +1,4 @@
-package com.hesoyam.pharmacy.appointment.DTO;
-
-import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.util.DateTimeRange;
+package com.hesoyam.pharmacy.appointment.dto;
 
 import java.time.LocalDateTime;
 

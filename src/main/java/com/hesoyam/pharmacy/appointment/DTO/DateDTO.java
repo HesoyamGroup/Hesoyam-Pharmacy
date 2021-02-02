@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 public class DateDTO {
     private String from;

@@ -1,6 +1,5 @@
 package com.hesoyam.pharmacy.appointment.service.impl;
 
-import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
@@ -9,13 +8,12 @@ import com.hesoyam.pharmacy.appointment.repository.CheckUpRepository;
 import com.hesoyam.pharmacy.appointment.repository.CounselingRepository;
 import com.hesoyam.pharmacy.appointment.repository.TherapyRepository;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
-import com.hesoyam.pharmacy.user.DTO.PatientDTO;
+import com.hesoyam.pharmacy.user.dto.PatientDTO;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.util.DateTimeRange;
-import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 import java.time.LocalDateTime;
 

@@ -1,10 +1,9 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
-import com.hesoyam.pharmacy.appointment.DTO.CheckUpDTO;
-import com.hesoyam.pharmacy.appointment.DTO.CounselingDTO;
+import com.hesoyam.pharmacy.appointment.dto.CheckUpDTO;
+import com.hesoyam.pharmacy.appointment.dto.CounselingDTO;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
-import com.hesoyam.pharmacy.appointment.repository.CounselingRepository;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
