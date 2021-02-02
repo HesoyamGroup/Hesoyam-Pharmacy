@@ -59,4 +59,8 @@ public class DateTimeRange {
     public boolean overlaps(DateTimeRange other) {
         return this.from.isBefore(other.getTo()) && this.to.isAfter(other.getFrom());
     }
+
+    public boolean includes(DateTimeRange other) {
+        return (this.from.isBefore(other.getFrom()) || this.from.isEqual(other.getFrom())) && (this.to.isAfter(other.getTo()) || this.to.isEqual(other.getTo()));
+    }
 }
