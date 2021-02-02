@@ -37,14 +37,6 @@ public class DateTimeRange {
     }
 
 
-   public DateTimeRange(){}
-
-   public DateTimeRange(LocalDateTime from, LocalDateTime to){
-      this.from = from;
-      this.to = to;
-   }
-
-
     public LocalDateTime getFrom() {
 
       return from;
