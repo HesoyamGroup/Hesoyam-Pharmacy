@@ -544,3 +544,51 @@ INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 15
 INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (30, 3, 16);
 --17 (Radovan)
 INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (36, 4, 17);
+
+-------------------
+-- SHIFTS
+-------------------
+
+-- dermatologist 12, pharmacy 1
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-02 08:00', '2021-02-02 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-03 08:00', '2021-02-03 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-04 08:00', '2021-02-04 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-05 08:00', '2021-02-05 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-06 08:00', '2021-02-06 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-07 08:00', '2021-02-07 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-08 08:00', '2021-02-08 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-09 08:00', '2021-02-09 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-10 08:00', '2021-02-10 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-11 08:00', '2021-02-11 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-12 08:00', '2021-02-12 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-13 08:00', '2021-02-13 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-14 08:00', '2021-02-14 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-15 08:00', '2021-02-15 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-16 08:00', '2021-02-16 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-17 08:00', '2021-02-17 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-18 08:00', '2021-02-18 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-19 08:00', '2021-02-19 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-20 08:00', '2021-02-20 12:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 1, '2021-02-21 08:00', '2021-02-21 12:00', 'WORK');
+
+-- dermatologist 12, pharmacy 3
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-04 12:30', '2021-02-04 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-02 12:30', '2021-02-02 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-03 12:30', '2021-02-03 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-05 12:30', '2021-02-05 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-06 12:30', '2021-02-06 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-07 12:30', '2021-02-07 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-08 12:30', '2021-02-08 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-09 12:30', '2021-02-09 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-10 12:30', '2021-02-10 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-11 12:30', '2021-02-11 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-12 12:30', '2021-02-12 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-13 12:30', '2021-02-13 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-14 12:30', '2021-02-14 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-15 12:30', '2021-02-15 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-16 12:30', '2021-02-16 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-17 12:30', '2021-02-17 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-18 12:30', '2021-02-18 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-19 12:30', '2021-02-19 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-20 12:30', '2021-02-20 14:00', 'WORK');
+INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-21 12:30', '2021-02-21 14:00', 'WORK');

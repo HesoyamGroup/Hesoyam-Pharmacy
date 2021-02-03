@@ -1,10 +1,10 @@
 package com.hesoyam.pharmacy.pharmacy.service;
 
-import com.hesoyam.pharmacy.pharmacy.DTO.InventoryItemPriceDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemPriceDTO;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
 import com.hesoyam.pharmacy.user.model.User;
-import org.springframework.stereotype.Service;
+
 import javax.persistence.EntityNotFoundException;
 
 import java.util.List;

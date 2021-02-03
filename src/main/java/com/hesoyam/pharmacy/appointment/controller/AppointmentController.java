@@ -8,14 +8,18 @@ import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
+import com.hesoyam.pharmacy.user.model.Employee;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.impl.UserService;
 import com.hesoyam.pharmacy.util.DateTimeRange;
+import com.hesoyam.pharmacy.util.search.UserSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -105,6 +109,13 @@ public class AppointmentController {
     private String extractUsername(HttpServletRequest request) {
         String token = tokenUtils.getToken(request);
         return tokenUtils.getUsernameFromToken(token);
+    }
+
+    @GetMapping(value = "/search-for-user/{query}")
+    @PreAuthorize("hasAnyRole('PHARMACIST', 'DERMATOLOGIST')")
+    public ResponseEntity<List<UserSearchResult>> searchPatients(@AuthenticationPrincipal User user,
+                                                                 @PathVariable String query){
+        return new ResponseEntity<>(appointmentService.searchUsers((Employee) user, query), HttpStatus.OK);
     }
 
 }

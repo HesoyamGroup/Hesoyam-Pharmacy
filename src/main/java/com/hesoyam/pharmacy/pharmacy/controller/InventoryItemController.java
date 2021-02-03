@@ -1,17 +1,14 @@
 package com.hesoyam.pharmacy.pharmacy.controller;
 
-import com.hesoyam.pharmacy.pharmacy.DTO.InventoryItemDTO;
-import com.hesoyam.pharmacy.pharmacy.DTO.InventoryItemPriceDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemPriceDTO;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemReservationDTO;
-import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
-import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
-import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,9 +23,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
