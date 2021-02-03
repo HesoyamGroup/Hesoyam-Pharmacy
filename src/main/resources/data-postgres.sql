@@ -550,32 +550,32 @@ INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (36, 4, 1
 -----------------------
 
 --1 Deadline : 3rd March 2020, CREATED by Administrator 2 in Pharmacy 1
-INSERT INTO orders (id, dead_line, order_status, administrator_id, pharmacy_id) VALUES (1, '2021-3-03 00:00:00-07', 'CREATED', 2, 1);
-INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (1, 20, 1, 1);
-INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (2, 45, 2, 1);
-INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (3, 15, 3, 1);
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-3-03 00:00:00-07', 'CREATED', 2, 1);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (20, 1, 1);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (45, 2, 1);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (15, 3, 1);
 
 --2 Deadline : 18th April 2020, CREATED by Administrator 2 in Pharmacy 1
-INSERT INTO orders (id, dead_line, order_status, administrator_id, pharmacy_id) VALUES (2, '2021-4-18 00:00:00-07' , 'CREATED', 2, 1);
-INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (4, 18, 4, 2);
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-4-18 00:00:00-07' , 'CREATED', 2, 1);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (18, 4, 2);
 --3 Accepted : Administrator 2 Pharmacy 1
-INSERT INTO orders (id, dead_line, order_status, administrator_id, pharmacy_id) VALUES (3, '2021-1-6 00:00:00-07' , 'ACCEPTED', 3, 2);
-INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (5, 55, 1, 3);
-INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (6, 150, 4, 3);
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-1-6 00:00:00-07' , 'ACCEPTED', 3, 2);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (55, 1, 3);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (150, 4, 3);
 
 --4
-INSERT INTO orders (id, dead_line, order_status, administrator_id, pharmacy_id) VALUES (4, '2021-12-10 00:00:00-07' , 'CREATED', 3, 2);
-INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (7, 55, 1, 4);
-INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (8, 150, 4, 4);
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-12-10 00:00:00-07' , 'CREATED', 3, 2);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (55, 1, 4);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (150, 4, 4);
 
 --1 Offer by Sandra(18) for order 3 which is accepted
-INSERT INTO offer (id, delivery_date, offer_status, total_price, supplier_id, order_id) VALUES (1, '2021-1-2 00:00:00-07', 'ACCEPTED', '666', 18, 3);
+INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-1-2 00:00:00-07', 'ACCEPTED', '666', 18, 3);
 --2 Offer by Marina(19) for order 3 which is rejected
-INSERT INTO offer (id, delivery_date, offer_status, total_price, supplier_id, order_id) VALUES (2, '2021-1-3 00:00:00-07', 'REJECTED', '755', 19, 3);
+INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-1-3 00:00:00-07', 'REJECTED', '755', 19, 3);
 --3 Offer by Sandra(18) for order 1 which is created
-INSERT INTO offer (id, delivery_date, offer_status, total_price, supplier_id, order_id) VALUES (3, '2021-2-18 00:00:00-07', 'CREATED', '2500', 18, 1);
+INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-2-18 00:00:00-07', 'CREATED', '2500', 18, 1);
 --4 Offer by Marina(19) for order 1 which is CREATED
-INSERT INTO offer (id, delivery_date, offer_status, total_price, supplier_id, order_id) VALUES (4, '2021-2-1 00:00:00-07', 'CREATED', '755', 19, 2);
+INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-2-1 00:00:00-07', 'CREATED', '755', 19, 2);
 
 
 
