@@ -53,13 +53,12 @@ public class PatientService implements IPatientService {
         return notAllergicTo;
     }
 
-    /*@Override
+    @Override
     public Patient update(Patient patientData) throws PatientNotFoundException {
         Patient patient = patientRepository.getOne(patientData.getId());
         if(patient == null) throw new PatientNotFoundException(patientData.getId());
-        patient.updatePatient(patientData);
-        patient = patientRepository.save(patient);
+        patient = patientRepository.save(patientData);
 
         return patient;
-    }*/
+    }
 }

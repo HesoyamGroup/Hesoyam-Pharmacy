@@ -1,5 +1,6 @@
 package com.hesoyam.pharmacy.user.controller;
 
+import com.hesoyam.pharmacy.medicine.dto.MedicineAllergyDTO;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
@@ -69,8 +70,8 @@ public class PatientController {
         }
     }
 
-    /*@PostMapping(value = "/add-allergy")
-    public ResponseEntity<List<AllergiesDTO>> addAllergy(@RequestBody Long medicineId, HttpServletRequest request){
+    @PostMapping(value = "/add-allergy")
+    public ResponseEntity<List<AllergiesDTO>> addAllergy(@RequestBody MedicineAllergyDTO medicineAllergyDTO, HttpServletRequest request){
 
         String token = tokenUtils.getToken(request);
         String username = tokenUtils.getUsernameFromToken(token);
@@ -79,7 +80,7 @@ public class PatientController {
             User user = userService.findByEmail(username);
             Patient patient = patientService.getById(user.getId());
 
-            Medicine addedMedicine = medicineService.findById(medicineId);
+            Medicine addedMedicine = medicineService.findById(medicineAllergyDTO.getId());
 
             if(patient.getAllergies().contains(addedMedicine))
                 throw new PatientAlreadyAllergicException(addedMedicine.getId());
@@ -103,7 +104,7 @@ public class PatientController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
-    }*/
+    }
 
     @GetMapping(value = "/not-allergic-to")
     public ResponseEntity<List<AllergiesDTO>> getAllMedicineNotAllergicTo(HttpServletRequest request){

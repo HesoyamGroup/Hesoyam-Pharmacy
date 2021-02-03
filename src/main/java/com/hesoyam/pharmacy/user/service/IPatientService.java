@@ -11,5 +11,5 @@ public interface IPatientService {
     Boolean isPatientSubscribedToPharmacy(Long patientId, Long pharmacyId);
     List<Medicine> getAllergiesByPatientId(Long id) throws PatientNotFoundException;
     List<Medicine> getMedicineNotAllergicToByPatientId(Long id) throws PatientNotFoundException;
-    //Patient update(Patient patient) throws PatientNotFoundException;
+    Patient update(Patient patient) throws PatientNotFoundException;
 }
