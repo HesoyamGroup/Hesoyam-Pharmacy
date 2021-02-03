@@ -40,10 +40,10 @@ public class CheckUpController {
         }
     }
 
-    @GetMapping(value = "free/dermatologist/{id}")
-    public ResponseEntity<List<FreeCheckupDTO>> getUpcomingFreeCheckupsByEmployee(@PathVariable Long id) {
+    @GetMapping(value = "free/dermatologist/{dermatologistId}")
+    public ResponseEntity<List<FreeCheckupDTO>> getUpcomingFreeCheckupsByEmployee(@PathVariable Long dermatologistId, @RequestParam String pharmacy) {
 
-        List<CheckUp> checkUps = checkUpService.getUpcomingFreeCheckupsByEmployee(id);
+        List<CheckUp> checkUps = checkUpService.getUpcomingFreeCheckupsByEmployeeAndPharmacy(dermatologistId, pharmacy);
         List<FreeCheckupDTO> freeCheckUps = new ArrayList<>();
         checkUps.forEach(checkUp -> freeCheckUps.add(new FreeCheckupDTO(checkUp)));
 

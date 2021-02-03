@@ -15,6 +15,7 @@ import com.hesoyam.pharmacy.user.service.IDermatologistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,8 +52,13 @@ public class CheckUpService implements ICheckUpService {
     }
 
     @Override
-    public List<CheckUp> getUpcomingFreeCheckupsByEmployee(Long id) {
-        List<CheckUp> checkUps = checkUpRepository.getAllByDermatologist_Id(id);
+    public List<CheckUp> getUpcomingFreeCheckupsByEmployeeAndPharmacy(Long dermatologistId, String pharmacyId) {
+        List<CheckUp> checkUps;
+
+        if(pharmacyId == null || pharmacyId.isEmpty())
+            checkUps = checkUpRepository.getAllByDermatologist_Id(dermatologistId);
+        else
+            checkUps = checkUpRepository.getAllByDermatologist_IdAndPharmacy_Id(dermatologistId, Long.parseLong(pharmacyId));
         return getUpcomingCheckUps(checkUps);
     }
 
