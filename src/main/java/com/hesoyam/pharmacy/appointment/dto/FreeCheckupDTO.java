@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.appointment.dto;
 
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.pharmacy.dto.PharmacyDTO;
+import com.hesoyam.pharmacy.user.dto.EmployeeBasicDTO;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 
 public class FreeCheckupDTO {
@@ -9,6 +10,7 @@ public class FreeCheckupDTO {
     private DateTimeRange range;
     private PharmacyDTO pharmacy;
     private double price;
+    private EmployeeBasicDTO dermatologist;
 
     public FreeCheckupDTO(){
         //Empty ctor for JSON serializer
@@ -19,6 +21,7 @@ public class FreeCheckupDTO {
         this.range = checkUp.getDateTimeRange();
         this.price = checkUp.getPrice();
         this.pharmacy = new PharmacyDTO(checkUp.getPharmacy());
+        this.dermatologist = new EmployeeBasicDTO(checkUp.getDermatologist());
     }
 
     public Long getId() {
@@ -51,5 +54,13 @@ public class FreeCheckupDTO {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public EmployeeBasicDTO getDermatologist() {
+        return dermatologist;
+    }
+
+    public void setDermatologist(EmployeeBasicDTO dermatologist) {
+        this.dermatologist = dermatologist;
     }
 }

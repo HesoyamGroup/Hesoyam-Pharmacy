@@ -10,5 +10,5 @@ import java.util.List;
 public interface ICheckUpService {
     CheckUp createFreeCheckUp(User administrator, FreeCheckupDTO freeCheckupDTO, Long dermatologistId) throws DermatologistNotFoundException, IllegalAccessException;
 
-    List<CheckUp> getUpcomingFreeCheckupsByEmployee(Long id);
+    List<CheckUp> getUpcomingFreeCheckupsByEmployeeAndPharmacy(Long dermatologistId, String pharmacyId);
 }
