@@ -9,4 +9,6 @@ import java.util.List;
 public interface IOrderService {
     List<Order> getAll();
     List<ShowOrdersDTO> getActiveForSupplier(Integer page, User user);
+    Order get(Long id);
+    Order update(Order order);
 }

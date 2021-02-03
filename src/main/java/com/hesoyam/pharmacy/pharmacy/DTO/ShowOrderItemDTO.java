@@ -3,14 +3,17 @@ package com.hesoyam.pharmacy.pharmacy.DTO;
 public class ShowOrderItemDTO {
     private Long id;
     private String medicineName;
+    private Integer quantity;
     private Long medicineId;
+
 
     public ShowOrderItemDTO(){}
 
-    public ShowOrderItemDTO(Long id, String medicineName, Long medicineId) {
+    public ShowOrderItemDTO(Long id, String medicineName, Long medicineId, Integer quantity) {
         this.id = id;
         this.medicineName = medicineName;
         this.medicineId = medicineId;
+        this.quantity = quantity;
     }
 
     public Long getId() {
@@ -35,5 +38,13 @@ public class ShowOrderItemDTO {
 
     public void setMedicineId(Long medicineId) {
         this.medicineId = medicineId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }

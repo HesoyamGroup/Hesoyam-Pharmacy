@@ -556,7 +556,7 @@ INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (45, 2, 1);
 INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (15, 3, 1);
 
 --2 Deadline : 18th April 2020, CREATED by Administrator 2 in Pharmacy 1
-INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-4-18 00:00:00-07' , 'CREATED', 2, 1);
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-2-18 00:00:00-07' , 'CREATED', 2, 1);
 INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (18, 4, 2);
 --3 Accepted : Administrator 2 Pharmacy 1
 INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-1-6 00:00:00-07' , 'ACCEPTED', 3, 2);

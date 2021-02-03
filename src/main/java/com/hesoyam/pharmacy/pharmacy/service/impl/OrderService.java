@@ -3,7 +3,6 @@ package com.hesoyam.pharmacy.pharmacy.service.impl;
 import com.hesoyam.pharmacy.pharmacy.DTO.ShowOrdersDTO;
 import com.hesoyam.pharmacy.pharmacy.mapper.OrderMapper;
 import com.hesoyam.pharmacy.pharmacy.model.Order;
-import com.hesoyam.pharmacy.pharmacy.model.OrderStatus;
 import com.hesoyam.pharmacy.pharmacy.repository.OrderItemRepository;
 import com.hesoyam.pharmacy.pharmacy.repository.OrderRepository;
 import com.hesoyam.pharmacy.pharmacy.service.IOrderService;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +30,21 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<ShowOrdersDTO> getActiveForSupplier(Integer page, User user) {
-        List<Order> activeOrders = orderRepository.getUserPendingActionOrders(user.getId());
+        List<Order> activeOrders = orderRepository.getUserPendingActionOrders(user.getId(), PageRequest.of(page-1, 6));
         return activeOrders.stream().map((order) -> OrderMapper.mapOrderToShowOrderDTO(order)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Order get(Long id) {
+        return orderRepository.getOne(id);
+    }
+
+    @Override
+    public Order update(Order order) {
+        if(order.getId() == null){
+            return null;
+        }
+        return orderRepository.save(order);
+
     }
 }

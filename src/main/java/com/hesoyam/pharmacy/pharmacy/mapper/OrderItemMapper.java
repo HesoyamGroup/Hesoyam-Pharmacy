@@ -8,6 +8,6 @@ public class OrderItemMapper {
     private OrderItemMapper(){}
 
     public static ShowOrderItemDTO mapOrderItemToShowOrderItemDTO(OrderItem orderItem){
-        return new ShowOrderItemDTO(orderItem.getId(), orderItem.getMedicine().getName(), orderItem.getMedicine().getId());
+        return new ShowOrderItemDTO(orderItem.getId(), orderItem.getMedicine().getName(), orderItem.getMedicine().getId(), orderItem.getQuantity());
     }
 }

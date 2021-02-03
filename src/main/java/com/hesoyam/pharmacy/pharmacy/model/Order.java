@@ -4,6 +4,7 @@
  * Purpose: Defines the Class Order
  ***********************************************************************/
 package com.hesoyam.pharmacy.pharmacy.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hesoyam.pharmacy.user.model.Administrator;
 
@@ -34,8 +35,9 @@ public class Order {
    @JoinColumn(name="pharmacy_id", nullable = false)
    private Pharmacy pharmacy;
 
-   @OneToMany(fetch=FetchType.LAZY)
-   @JoinColumn(name="order_id", referencedColumnName = "id", nullable = false)
+//   @OneToMany(fetch=FetchType.LAZY)
+//   @JoinColumn(name="order_id", referencedColumnName = "id", nullable = false)
+   @OneToMany(fetch = FetchType.LAZY, mappedBy="order")
    private List<Offer> offers;
 
    @OneToMany(fetch=FetchType.LAZY)
@@ -97,5 +99,15 @@ public class Order {
 
    public void setOrderItems(List<OrderItem> orderItems) {
       this.orderItems = orderItems;
+   }
+
+   public boolean isOfferValidForOrder(Offer offer){
+      for(Offer off : this.offers){
+         if(off.getSupplier().getId().equals(offer.getSupplier().getId())){
+            return false;
+         }
+      }
+      LocalDateTime deliveryDate = offer.getDeliveryDate();
+      return deliveryDate.compareTo(deadLine) < 0 && deliveryDate.compareTo(LocalDateTime.now()) > 0 && orderStatus == OrderStatus.CREATED;
    }
 }

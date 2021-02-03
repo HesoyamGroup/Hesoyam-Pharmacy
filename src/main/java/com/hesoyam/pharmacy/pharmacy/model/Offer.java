@@ -35,6 +35,17 @@ public class Offer {
    @JoinColumn(name="supplier_id", nullable = false)
    private Supplier supplier;
 
+   @ManyToOne(fetch= FetchType.LAZY, optional=false)
+   @JoinColumn(name="order_id", nullable = false)
+   private Order order;
+
+   public Offer() {
+   }
+
+   public Offer(double totalPrice, LocalDateTime deliveryDate) {
+      this.totalPrice = totalPrice;
+      this.deliveryDate = deliveryDate;
+   }
 
    public Long getId() {
       return id;
@@ -89,4 +100,11 @@ public class Offer {
       }
    }
 
+   public Order getOrder() {
+      return order;
+   }
+
+   public void setOrder(Order order) {
+      this.order = order;
+   }
 }

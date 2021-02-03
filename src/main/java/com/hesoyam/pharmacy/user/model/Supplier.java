@@ -27,6 +27,12 @@ public class Supplier extends User {
    @JsonManagedReference
    private Storage storage;
 
+   public Supplier(){}
+
+   public Supplier(Long id){
+      this.id = id;
+   }
+
    public List<Offer> getOffers() {
       if (offers == null)
          offers = new ArrayList<>();
