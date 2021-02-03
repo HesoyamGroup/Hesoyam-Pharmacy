@@ -1,5 +1,6 @@
 package com.hesoyam.pharmacy.storage.controller;
 
+import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.storage.dto.AddStorageItemDTO;
 import com.hesoyam.pharmacy.storage.dto.UpdateStorageItemDTO;
 import com.hesoyam.pharmacy.storage.exceptions.InvalidAddInventoryItemException;
@@ -17,6 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -76,5 +78,12 @@ public class StorageController {
         }catch (InvalidAddInventoryItemException e){
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("/my/unadded")
+    @Secured("ROLE_SUPPLIER")
+    public ResponseEntity<List<Medicine>> getUnaddedMedicines(@RequestParam Integer page, @AuthenticationPrincipal User user){
+        if(page == null || page < 1) page = 1;
+        return ResponseEntity.ok(storageItemService.getUnaddedMedicines(page, user));
     }
 }

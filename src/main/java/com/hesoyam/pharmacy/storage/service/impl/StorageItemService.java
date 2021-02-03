@@ -68,9 +68,13 @@ public class StorageItemService implements IStorageItemService {
         StorageItem storageItem = storageItemRepository.getStorageItemByMedicineIdAndUserId(medicine.getId(), loggedUser.getId());
         if(storageItem != null) throw new InvalidAddInventoryItemException("The selected medicine is already added.");
         Storage storage = storageService.getUserStorage(loggedUser);
-
         storageItem = new StorageItem(storage, medicine);
         return storageItemRepository.save(storageItem);
+    }
+
+    @Override
+    public List<Medicine> getUnaddedMedicines(Integer page, User loggedUser) {
+        return storageItemRepository.getUnaddedMedicine(loggedUser.getId(), PageRequest.of(page-1, 8));
     }
 
 }

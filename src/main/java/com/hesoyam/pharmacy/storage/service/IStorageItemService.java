@@ -12,4 +12,5 @@ public interface IStorageItemService {
     StorageItem update(UpdateStorageItemDTO updateStorageItemDTO);
     void delete(Long itemId, User loggedUser);
     StorageItem add(Medicine medicine, User loggedUser);
+    List<Medicine> getUnaddedMedicines(Integer page, User loggedUser);
 }
