@@ -32,7 +32,13 @@ public class StorageItem implements Serializable {
     @Min(0)
     private int reserved;
 
+    public StorageItem(){
 
+    }
+    public StorageItem(Storage storage, Medicine medicine) {
+        this.storage = storage;
+        this.medicine = medicine;
+    }
 
     public Storage getStorage() {
         return storage;

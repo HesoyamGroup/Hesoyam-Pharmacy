@@ -16,4 +16,6 @@ public interface StorageItemRepository extends JpaRepository<StorageItem, Long> 
     @Query("SELECT storageitem FROM StorageItem storageitem WHERE storageitem.storage.supplier.id = :userId AND storageitem.id=:itemId")
     StorageItem getStorageItemByIdAndUserId(@Param("itemId") Long itemId, @Param("userId") Long userId);
 
+    @Query("SELECT storageitem from StorageItem storageitem WHERE storageitem.storage.supplier.id = :userId AND storageitem.medicine.id=:medicineId")
+    StorageItem getStorageItemByMedicineIdAndUserId(@Param("medicineId") Long medicineId, @Param("userId") Long userId);
 }

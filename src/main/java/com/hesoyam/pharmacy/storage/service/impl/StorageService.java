@@ -21,6 +21,15 @@ public class StorageService implements IStorageService {
         return storageRepository.save(storage);
     }
 
+    @Override
+    public Storage get(Long id) {
+        return storageRepository.getOne(id);
+    }
+
+    @Override
+    public Storage getUserStorage(User user) {
+        return storageRepository.getStorageBySupplier_Id(user.getId());
+    }
 
 
 }

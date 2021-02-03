@@ -1,11 +1,16 @@
 package com.hesoyam.pharmacy.storage.service.impl;
 
+import com.hesoyam.pharmacy.medicine.model.Medicine;
+import com.hesoyam.pharmacy.medicine.service.IMedicineService;
 import com.hesoyam.pharmacy.storage.dto.UpdateStorageItemDTO;
+import com.hesoyam.pharmacy.storage.exceptions.InvalidAddInventoryItemException;
 import com.hesoyam.pharmacy.storage.exceptions.InvalidDeleteStorageItemRequestException;
 import com.hesoyam.pharmacy.storage.exceptions.InvalidUpdateStorageItemRequestException;
+import com.hesoyam.pharmacy.storage.model.Storage;
 import com.hesoyam.pharmacy.storage.model.StorageItem;
 import com.hesoyam.pharmacy.storage.repository.StorageItemRepository;
 import com.hesoyam.pharmacy.storage.service.IStorageItemService;
+import com.hesoyam.pharmacy.storage.service.IStorageService;
 import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +25,12 @@ public class StorageItemService implements IStorageItemService {
 
     @Autowired
     private StorageItemRepository storageItemRepository;
+
+    @Autowired
+    private IMedicineService medicineService;
+
+    @Autowired
+    private IStorageService storageService;
 
     @Override
     public List<StorageItem> getStorageItemsByUserId(Long id, Integer page) {
@@ -50,6 +61,16 @@ public class StorageItemService implements IStorageItemService {
             throw new InvalidDeleteStorageItemRequestException("You can't delete items which are reserved.");
         }
         storageItemRepository.delete(storageItem);
+    }
+
+    @Override
+    public StorageItem add(Medicine medicine, User loggedUser) {
+        StorageItem storageItem = storageItemRepository.getStorageItemByMedicineIdAndUserId(medicine.getId(), loggedUser.getId());
+        if(storageItem != null) throw new InvalidAddInventoryItemException("The selected medicine is already added.");
+        Storage storage = storageService.getUserStorage(loggedUser);
+
+        storageItem = new StorageItem(storage, medicine);
+        return storageItemRepository.save(storageItem);
     }
 
 }

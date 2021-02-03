@@ -1,6 +1,8 @@
 package com.hesoyam.pharmacy.storage.controller;
 
+import com.hesoyam.pharmacy.storage.dto.AddStorageItemDTO;
 import com.hesoyam.pharmacy.storage.dto.UpdateStorageItemDTO;
+import com.hesoyam.pharmacy.storage.exceptions.InvalidAddInventoryItemException;
 import com.hesoyam.pharmacy.storage.exceptions.InvalidDeleteStorageItemRequestException;
 import com.hesoyam.pharmacy.storage.exceptions.InvalidUpdateStorageItemRequestException;
 import com.hesoyam.pharmacy.storage.model.StorageItem;
@@ -61,6 +63,18 @@ public class StorageController {
             return ResponseEntity.badRequest().build();
         }catch (EntityNotFoundException e){
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/my/add")
+    @Secured("ROLE_SUPPLIER")
+    public ResponseEntity<StorageItem> addStorageItem(@RequestBody AddStorageItemDTO addStorageItemDTO, @AuthenticationPrincipal User user){
+        try{
+            return ResponseEntity.ok(storageItemService.add(addStorageItemDTO.getMedicine(), user));
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }catch (InvalidAddInventoryItemException e){
+            return ResponseEntity.badRequest().build();
         }
     }
 }
