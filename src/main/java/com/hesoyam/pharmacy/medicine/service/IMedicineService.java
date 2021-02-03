@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.medicine.service;
 
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchResultDTO;
+import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineType;
 
@@ -13,4 +14,5 @@ public interface IMedicineService {
     List<MedicineType> getAllMedicineTypes();
     List<Medicine> findByMedicineName(String name);
     List<MedicineSearchResultDTO> search(MedicineSearchDTO medicineSearchDTO);
+    Medicine findById(Long id) throws MedicineNotFoundException;
 }

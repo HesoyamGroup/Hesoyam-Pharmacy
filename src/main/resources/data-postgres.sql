@@ -492,6 +492,15 @@ VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospod
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
 
+--------------------
+-- Patient allergies
+--------------------
+
+INSERT INTO patient_allergies(patient_id, medicine_id)
+VALUES (14, 2);
+INSERT INTO patient_allergies(patient_id, medicine_id)
+VALUES (14, 4);
+
 
 -----------------------
 -- Complaints
