@@ -544,3 +544,33 @@ INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 15
 INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (30, 3, 16);
 --17 (Radovan)
 INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (36, 4, 17);
+
+-----------------------
+-- Orders
+-----------------------
+
+--1 Deadline : 3rd March 2020, CREATED by Administrator 2 in Pharmacy 1
+INSERT INTO orders (id, dead_line, order_status, administrator_id, pharmacy_id) VALUES (1, '2020-3-03 00:00:00-07', 'CREATED', 2, 1);
+INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (1, 20, 1, 1);
+INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (2, 45, 2, 1);
+INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (3, 15, 3, 1);
+
+--2 Deadline : 18th April 2020, CREATED by Administrator 2 in Pharmacy 1
+INSERT INTO orders (id, dead_line, order_status, administrator_id, pharmacy_id) VALUES (2, '2020-4-18 00:00:00-07' , 'CREATED', 2, 1);
+INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (4, 18, 4, 2);
+--3 Accepted : Administrator 2 Pharmacy 1
+INSERT INTO orders (id, dead_line, order_status, administrator_id, pharmacy_id) VALUES (3, '2020-1-6 00:00:00-07' , 'ACCEPTED', 3, 2);
+INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (5, 55, 1, 3);
+INSERT INTO order_item (id, quantity, medicine_id, order_id) VALUES (6, 150, 4, 3);
+
+--1 Offer by Sandra(18) for order 3 which is accepted
+INSERT INTO offer (id, delivery_date, offer_status, total_price, supplier_id, order_id) VALUES (1, '2020-1-2 00:00:00-07', 'ACCEPTED', '666', 18, 3);
+--2 Offer by Marina(19) for order 3 which is rejected
+INSERT INTO offer (id, delivery_date, offer_status, total_price, supplier_id, order_id) VALUES (2, '2020-1-3 00:00:00-07', 'REJECTED', '755', 19, 3);
+--3 Offer by Sandra(18) for order 1 which is created
+INSERT INTO offer (id, delivery_date, offer_status, total_price, supplier_id, order_id) VALUES (3, '2020-2-18 00:00:00-07', 'CREATED', '2500', 18, 1);
+--4 Offer by Marina(19) for order 3 which is rejected
+INSERT INTO offer (id, delivery_date, offer_status, total_price, supplier_id, order_id) VALUES (4, '2020-2-1 00:00:00-07', 'CREATED', '755', 19, 1);
+
+
+
