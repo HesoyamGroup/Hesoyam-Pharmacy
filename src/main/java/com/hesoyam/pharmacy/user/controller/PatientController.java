@@ -6,6 +6,7 @@ import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.DTO.AllergiesDTO;
+import com.hesoyam.pharmacy.user.exceptions.PatientAllergyNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.PatientAlreadyAllergicException;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
@@ -13,6 +14,7 @@ import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPatientService;
 import com.hesoyam.pharmacy.user.service.IUserService;
+import com.sun.mail.iap.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -104,6 +106,43 @@ public class PatientController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
+    }
+
+    @PostMapping(value = "/delete-allergy")
+    public ResponseEntity<List<AllergiesDTO>> deleteAllergy(@RequestBody MedicineAllergyDTO medicineAllergyDTO, HttpServletRequest request){
+
+        String token = tokenUtils.getToken(request);
+        String username = tokenUtils.getUsernameFromToken(token);
+
+        try{
+            User user = userService.findByEmail(username);
+            Patient patient = patientService.getById(user.getId());
+
+            Medicine deletedAllergy = medicineService.findById(medicineAllergyDTO.getId());
+
+            if(!patient.getAllergies().contains(deletedAllergy))
+                throw new PatientAllergyNotFoundException(deletedAllergy.getId());
+
+            patient.getAllergies().remove(deletedAllergy);
+
+            patientService.update(patient);
+
+            List<AllergiesDTO> allergiesDTOList = new ArrayList<>();
+
+            for(Medicine m: patient.getAllergies()){
+                allergiesDTOList.add(new AllergiesDTO(m.getId(), m.getName(), m.getManufacturer().getName()));
+            }
+
+            return ResponseEntity.ok().body(allergiesDTOList);
+
+        } catch (UserNotFoundException | PatientNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ArrayList<>());
+        } catch (MedicineNotFoundException | PatientAllergyNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+
     }
 
     @GetMapping(value = "/not-allergic-to")
