@@ -4,6 +4,7 @@
  * Purpose: Defines the Class Order
  ***********************************************************************/
 package com.hesoyam.pharmacy.pharmacy.model;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hesoyam.pharmacy.user.model.Administrator;
 
 import javax.persistence.*;
@@ -25,7 +26,7 @@ public class Order {
    @Enumerated(EnumType.STRING)
    private OrderStatus orderStatus;
 
-   @ManyToOne(fetch = FetchType.LAZY, optional = false)
+   @ManyToOne(fetch = FetchType.LAZY, optional = true)
    @JoinColumn(name = "administrator_id", nullable = false)
    private Administrator administrator;
 

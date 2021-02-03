@@ -1,7 +1,6 @@
 package com.hesoyam.pharmacy.pharmacy.DTO;
 
 import com.hesoyam.pharmacy.location.model.Address;
-import com.hesoyam.pharmacy.user.model.Administrator;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
