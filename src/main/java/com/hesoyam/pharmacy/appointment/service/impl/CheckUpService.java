@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.appointment.service.impl;
 
 import com.hesoyam.pharmacy.appointment.dto.FreeCheckupDTO;
+import com.hesoyam.pharmacy.appointment.exceptions.CheckupNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
@@ -57,8 +58,31 @@ public class CheckUpService implements ICheckUpService {
         if(pharmacyId == null || pharmacyId.isEmpty())
             checkUps = checkUpRepository.getAllByDermatologist_Id(dermatologistId);
         else
-            checkUps = checkUpRepository.getAllByDermatologist_IdAndPharmacy_Id(dermatologistId, Long.parseLong(pharmacyId));
+            checkUps = checkUpRepository.getAllByDermatologist_IdAndPharmacy_IdAndAppointmentStatus(dermatologistId, Long.parseLong(pharmacyId), AppointmentStatus.FREE);
         return getUpcomingCheckUps(checkUps);
+    }
+
+    @Override
+    public List<CheckUp> getUpcomingFreeCheckupsByPharmacy(Long pharmacyId) {
+        List<CheckUp> checkUps = checkUpRepository.getAllByPharmacy_IdAndAppointmentStatus(pharmacyId, AppointmentStatus.FREE);
+
+        return getUpcomingCheckUps(checkUps);
+    }
+
+    @Override
+    public CheckUp findById(Long id) throws CheckupNotFoundException {
+        return checkUpRepository.findById(id).orElseThrow(() -> new CheckupNotFoundException(id));
+    }
+
+    @Override
+    public CheckUp update(CheckUp checkupData) throws CheckupNotFoundException {
+        CheckUp checkUp = checkUpRepository.getOne(checkupData.getId());
+        if(checkUp == null) throw new CheckupNotFoundException(checkUp.getId());
+
+        checkUp.update(checkupData);
+        checkUp = checkUpRepository.save(checkUp);
+
+        return checkUp;
     }
 
     private List<CheckUp> getUpcomingCheckUps(List<CheckUp> checkUps) {
