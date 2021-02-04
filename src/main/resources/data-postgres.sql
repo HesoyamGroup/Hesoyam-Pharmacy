@@ -491,6 +491,14 @@ INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, p
 VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 2, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('CHECKUP', 'FREE', '2021-02-04 21:00:00.189796', '2021-02-04 21:15:00.189796', 2500.0 , 'Gospodine...', null, 1, 10, null);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('CHECKUP', 'FREE', '2021-02-04 21:30:00.189796', '2021-02-04 21:45:00.189796', 1500.0 , 'Gospodine...', null, 1, 10, null);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('CHECKUP', 'FREE', '2021-02-04 21:45:00.189796', '2021-02-04 22:00:00.189796', 1750.0 , 'Gospodine...', null, 1, 10, null);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('CHECKUP', 'FREE', '2021-02-04 22:00:00.189796', '2021-02-04 22:15:00.189796', 1250.0 , 'Gospodine...', null, 1, 10, null);
 
 --------------------
 -- Patient allergies

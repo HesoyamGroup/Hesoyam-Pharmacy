@@ -30,4 +30,16 @@ public class CheckUp extends Appointment {
    public void setDermatologist(Dermatologist dermatologist) {
       this.dermatologist = dermatologist;
    }
+
+   public void update(CheckUp checkup){
+      this.id = checkup.getId();
+      this.dermatologist = checkup.getDermatologist();
+      this.dateTimeRange = checkup.getDateTimeRange();
+      this.pharmacy = checkup.getPharmacy();
+      this.appointmentStatus = checkup.getAppointmentStatus();
+      this.patient = checkup.getPatient();
+      this.price = checkup.getPrice();
+      this.report = checkup.getReport();
+      this.therapy = checkup.getTherapy();
+   }
 }
