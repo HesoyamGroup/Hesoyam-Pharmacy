@@ -64,6 +64,14 @@ public class CheckUpService implements ICheckUpService {
     }
 
     @Override
+    public List<CheckUp> getUpcomingFreeCheckupsByPharmacy(Long pharmacyId) {
+        List<CheckUp> checkUps;
+        checkUps = checkUpRepository.getAllByPharmacy_Id(pharmacyId);
+
+        return getUpcomingCheckUps(checkUps);
+    }
+
+    @Override
     public CheckUp findById(Long id) throws CheckupNotFoundException {
         return checkUpRepository.findById(id).orElseThrow(() -> new CheckupNotFoundException(id));
     }

@@ -92,5 +92,14 @@ public class CheckUpController {
         }
     }
 
+    @GetMapping(value = "/free/pharmacy/{id}")
+    ResponseEntity<List<FreeCheckupDTO>> getFreeCheckupsByPharmacy(@PathVariable Long id){
+
+        List<CheckUp> checkUps = checkUpService.getUpcomingFreeCheckupsByPharmacy(id);
+        List<FreeCheckupDTO> freeCheckUps = new ArrayList<>();
+        checkUps.forEach(checkUp -> freeCheckUps.add(new FreeCheckupDTO(checkUp)));
+
+        return ResponseEntity.status(HttpStatus.OK).body(freeCheckUps);
+    }
 
 }

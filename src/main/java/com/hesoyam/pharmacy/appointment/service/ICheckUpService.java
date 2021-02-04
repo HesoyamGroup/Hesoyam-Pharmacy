@@ -12,6 +12,7 @@ public interface ICheckUpService {
     CheckUp createFreeCheckUp(User administrator, FreeCheckupDTO freeCheckupDTO, Long dermatologistId) throws DermatologistNotFoundException, IllegalAccessException;
 
     List<CheckUp> getUpcomingFreeCheckupsByEmployeeAndPharmacy(Long dermatologistId, String pharmacyId);
+    List<CheckUp> getUpcomingFreeCheckupsByPharmacy(Long pharmacyId);
 
     CheckUp findById(Long id) throws CheckupNotFoundException;
     CheckUp update(CheckUp checkup) throws CheckupNotFoundException;
