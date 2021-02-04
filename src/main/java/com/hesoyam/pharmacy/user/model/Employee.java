@@ -4,15 +4,16 @@
  * Purpose: Defines the Class Employee
  ***********************************************************************/
 package com.hesoyam.pharmacy.user.model;
+
 import com.hesoyam.pharmacy.employee_management.model.Shift;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)

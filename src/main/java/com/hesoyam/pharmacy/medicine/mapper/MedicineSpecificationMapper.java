@@ -1,7 +1,10 @@
 package com.hesoyam.pharmacy.medicine.mapper;
 
 import com.hesoyam.pharmacy.medicine.dto.MedicineSpecificationFindResultDTO;
-import com.hesoyam.pharmacy.medicine.model.*;
+import com.hesoyam.pharmacy.medicine.model.CompositionItem;
+import com.hesoyam.pharmacy.medicine.model.Contraindication;
+import com.hesoyam.pharmacy.medicine.model.Medicine;
+import com.hesoyam.pharmacy.medicine.model.MedicineSpecification;
 
 import java.util.List;
 import java.util.stream.Collectors;

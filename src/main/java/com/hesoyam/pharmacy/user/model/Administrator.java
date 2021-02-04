@@ -8,7 +8,10 @@ package com.hesoyam.pharmacy.user.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Administrator extends User {

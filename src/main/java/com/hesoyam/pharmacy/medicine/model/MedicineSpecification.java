@@ -8,9 +8,9 @@ package com.hesoyam.pharmacy.medicine.model;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 @Entity
 public class MedicineSpecification {

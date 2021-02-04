@@ -4,12 +4,10 @@
  * Purpose: Defines the Class DateTimeRange
  ***********************************************************************/
 package com.hesoyam.pharmacy.util;
-import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Embeddable

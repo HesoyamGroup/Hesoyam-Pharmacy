@@ -1,5 +1,7 @@
 package com.hesoyam.pharmacy.user.service.impl;
 
+import com.hesoyam.pharmacy.storage.model.Storage;
+import com.hesoyam.pharmacy.storage.service.IStorageService;
 import com.hesoyam.pharmacy.user.dto.AdministratorRegistrationDTO;
 import com.hesoyam.pharmacy.user.dto.ChangePasswordDTO;
 import com.hesoyam.pharmacy.user.dto.RegistrationDTO;
@@ -18,7 +20,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService, IUserService {
@@ -30,6 +35,9 @@ public class UserService implements UserDetailsService, IUserService {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private IStorageService storageService;
 
     @Autowired
     private VerificationTokensRepository verificationTokensRepository;
@@ -211,11 +219,17 @@ public class UserService implements UserDetailsService, IUserService {
 
         try{
             supplier = userRepository.save(supplier);
+            supplier.setStorage(createStorage(supplier));
+            supplier = userRepository.save(supplier);
         }catch (DataIntegrityViolationException ex){
             throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
         }
 
         return supplier;
+    }
+
+    private Storage createStorage(Supplier supplier){
+        return storageService.create(new Storage(supplier));
     }
 
     private void loadUserAccountWithRegistrationData(User user, RegistrationDTO registrationDTO, boolean passwordReset, boolean isEnabled) {

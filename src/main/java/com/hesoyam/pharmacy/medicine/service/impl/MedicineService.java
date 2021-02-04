@@ -25,6 +25,11 @@ public class MedicineService implements IMedicineService {
 
 
     @Override
+    public Medicine get(Long id) {
+        return medicineRepository.getOne(id);
+    }
+
+    @Override
     public List<Medicine> getAll() {
         return medicineRepository.findAll();
     }

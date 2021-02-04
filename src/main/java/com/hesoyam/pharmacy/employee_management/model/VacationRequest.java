@@ -5,8 +5,8 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.employee_management.model;
 
-import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.user.model.Employee;
+import com.hesoyam.pharmacy.util.DateTimeRange;
 
 import javax.persistence.*;
 

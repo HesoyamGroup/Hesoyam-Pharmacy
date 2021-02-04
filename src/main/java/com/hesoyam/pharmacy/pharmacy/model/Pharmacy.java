@@ -8,10 +8,7 @@ package com.hesoyam.pharmacy.pharmacy.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hesoyam.pharmacy.location.model.Address;
-import com.hesoyam.pharmacy.user.model.Administrator;
-import com.hesoyam.pharmacy.user.model.Dermatologist;
-import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.user.model.Pharmacist;
+import com.hesoyam.pharmacy.user.model.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -287,6 +284,13 @@ public class Pharmacy {
             oldAdministrator.setPharmacy((Pharmacy)null);
          }
       }
+   }
+
+   public boolean isPatientSubscribed(Patient patient){
+      for(User subscriber : subscribedPatients){
+         if(subscriber.getId().equals(patient.getId())) return true;
+      }
+      return false;
    }
 
    @Override

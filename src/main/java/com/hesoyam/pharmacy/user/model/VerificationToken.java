@@ -2,7 +2,6 @@ package com.hesoyam.pharmacy.user.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 

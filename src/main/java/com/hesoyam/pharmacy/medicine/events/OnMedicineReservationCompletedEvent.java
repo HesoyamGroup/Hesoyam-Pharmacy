@@ -1,7 +1,6 @@
 package com.hesoyam.pharmacy.medicine.events;
 
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
-import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.context.ApplicationEvent;
 

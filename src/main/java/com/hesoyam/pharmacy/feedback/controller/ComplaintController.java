@@ -1,7 +1,6 @@
 package com.hesoyam.pharmacy.feedback.controller;
 
 import com.hesoyam.pharmacy.feedback.dto.*;
-import com.hesoyam.pharmacy.feedback.events.OnComplaintRepliedEvent;
 import com.hesoyam.pharmacy.feedback.exceptions.InvalidComplaintRequestException;
 import com.hesoyam.pharmacy.feedback.exceptions.InvalidReplyRequest;
 import com.hesoyam.pharmacy.feedback.model.EmployeeComplaint;
@@ -13,7 +12,6 @@ import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.SysAdmin;
 import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -21,7 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
