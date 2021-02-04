@@ -1,14 +1,14 @@
 package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
-import com.hesoyam.pharmacy.user.dto.*;
+import com.hesoyam.pharmacy.user.dto.DermatologistBasicInformationDTO;
 import com.hesoyam.pharmacy.user.dto.DermatologistDetailsDTO;
 import com.hesoyam.pharmacy.user.dto.EmployeeBasicDTO;
+import com.hesoyam.pharmacy.user.dto.PatientDTO;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Employee;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IDermatologistService;
-import com.hesoyam.pharmacy.util.search.UserSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

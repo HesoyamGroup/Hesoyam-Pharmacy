@@ -1,7 +1,6 @@
 package com.hesoyam.pharmacy.storage.service;
 
 import com.hesoyam.pharmacy.storage.model.Storage;
-import com.hesoyam.pharmacy.user.model.Supplier;
 import com.hesoyam.pharmacy.user.model.User;
 
 

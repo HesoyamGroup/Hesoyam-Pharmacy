@@ -12,4 +12,5 @@ public interface IPharmacyService {
     Pharmacy getByAdministrator(Long id);
     Pharmacy findOne(Long id);
     List<Pharmacy> findAllPharmaciesByMedicine(Long id);
+    Pharmacy update(Pharmacy pharmacy);
 }

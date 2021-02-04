@@ -8,9 +8,9 @@ package com.hesoyam.pharmacy.pharmacy.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 @Entity
 public class Inventory {
