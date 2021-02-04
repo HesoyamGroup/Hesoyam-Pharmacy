@@ -9,6 +9,7 @@ import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Embeddable
@@ -35,7 +36,9 @@ public class DateTimeRange {
 
     }
 
+
     public LocalDateTime getFrom() {
+
       return from;
     }
 
@@ -55,5 +58,9 @@ public class DateTimeRange {
 
     public boolean overlaps(DateTimeRange other) {
         return this.from.isBefore(other.getTo()) && this.to.isAfter(other.getFrom());
+    }
+
+    public boolean includes(DateTimeRange other) {
+        return (this.from.isBefore(other.getFrom()) || this.from.isEqual(other.getFrom())) && (this.to.isAfter(other.getTo()) || this.to.isEqual(other.getTo()));
     }
 }

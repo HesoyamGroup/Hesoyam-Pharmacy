@@ -1,7 +1,7 @@
 package com.hesoyam.pharmacy.pharmacy.service.impl;
 
-import com.hesoyam.pharmacy.pharmacy.DTO.PharmacyAdministratorCreateDTO;
-import com.hesoyam.pharmacy.pharmacy.DTO.PharmacyCreateDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.PharmacyAdministratorCreateDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.PharmacyCreateDTO;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidPharmacyCreateRequest;
 import com.hesoyam.pharmacy.pharmacy.model.Inventory;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 
 @Service
 public class PharmacyService implements IPharmacyService {

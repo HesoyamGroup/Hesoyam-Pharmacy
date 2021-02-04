@@ -1,6 +1,4 @@
-package com.hesoyam.pharmacy.pharmacy.DTO;
-
-import com.hesoyam.pharmacy.pharmacy.model.OrderItem;
+package com.hesoyam.pharmacy.pharmacy.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;

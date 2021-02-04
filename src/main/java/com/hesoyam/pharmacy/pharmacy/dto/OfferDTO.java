@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.pharmacy.DTO;
+package com.hesoyam.pharmacy.pharmacy.dto;
 
 import com.hesoyam.pharmacy.pharmacy.model.OfferStatus;
 

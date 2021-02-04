@@ -1,6 +1,4 @@
-package com.hesoyam.pharmacy.pharmacy.DTO;
-
-import org.springframework.format.annotation.DateTimeFormat;
+package com.hesoyam.pharmacy.pharmacy.dto;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.medicine.service.impl;
 
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchResultDTO;
+import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
 import com.hesoyam.pharmacy.medicine.mapper.MedicineMapper;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineType;
@@ -57,6 +58,11 @@ public class MedicineService implements IMedicineService {
     public List<MedicineSearchResultDTO> search(MedicineSearchDTO medicineSearchDTO) {
         List<Medicine> medicines = medicineRepository.search(medicineSearchDTO, PageRequest.of(medicineSearchDTO.getPage()-1, 10));
         return medicines.stream().map(medicine -> MedicineMapper.mapMedicineToMedicineResultDTO(medicine)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Medicine findById(Long id) throws MedicineNotFoundException {
+        return medicineRepository.findById(id).orElseThrow(() -> new MedicineNotFoundException(id));
     }
 
 

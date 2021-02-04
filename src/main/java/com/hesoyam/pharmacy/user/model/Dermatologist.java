@@ -8,6 +8,7 @@ package com.hesoyam.pharmacy.user.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.util.DateTimeRange;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -76,8 +77,65 @@ public class Dermatologist extends Employee {
       }
    }
 
+   public List<CheckUp> getCheckUps() {
+      if (checkUps == null)
+         checkUps = new ArrayList<>();
+      return checkUps;
+   }
+
+   public Iterator<CheckUp> getIteratorCheckUps() {
+      if (checkUps == null)
+         checkUps = new ArrayList<>();
+      return checkUps.iterator();
+   }
+
+   public void setCheckUps(List<CheckUp> newCheckUps) {
+      removeAllCheckUps();
+      for (CheckUp newCheckUp : newCheckUps) addCheckUps(newCheckUp);
+   }
+
+   public void addCheckUps(CheckUp newCheckUp) {
+      if (newCheckUp == null)
+         return;
+      if (this.checkUps == null)
+         this.checkUps = new ArrayList<>();
+      if (!this.checkUps.contains(newCheckUp))
+      {
+         this.checkUps.add(newCheckUp);
+         newCheckUp.setDermatologist(this);
+      }
+   }
+
+   public void removeCheckUps(CheckUp oldCheckUp) {
+      if (oldCheckUp == null)
+         return;
+      if (this.checkUps != null && this.checkUps.contains(oldCheckUp))
+         {
+            this.checkUps.remove(oldCheckUp);
+            oldCheckUp.setDermatologist(null);
+         }
+   }
+
+   public void removeAllCheckUps() {
+      if (checkUps != null)
+      {
+         CheckUp oldCheckUp;
+         for (Iterator<CheckUp> iter = getIteratorCheckUps(); iter.hasNext();)
+         {
+            oldCheckUp = iter.next();
+            iter.remove();
+            oldCheckUp.setDermatologist(null);
+         }
+      }
+   }
+
    @Override
    public boolean isAdministratorMyBoss(User administrator) {
       return getPharmacies().stream().anyMatch(pharmacy -> pharmacy.getAdministrator().contains(administrator));
+   }
+
+   @Override
+   protected boolean hasClearSchedule(DateTimeRange dateTimeRange) {
+      return getCheckUps().stream().noneMatch(checkUp -> checkUp.isConflictingWith(dateTimeRange));
    }
 }
