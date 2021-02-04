@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
 import com.hesoyam.pharmacy.appointment.dto.FreeCheckupDTO;
+import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
 import com.hesoyam.pharmacy.appointment.exceptions.CheckupNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
@@ -11,6 +12,7 @@ import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,9 @@ public class CheckUpController {
 
     @Autowired
     private IPatientService patientService;
+
+    @Autowired
+    ApplicationEventPublisher applicationEventPublisher;
 
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     @PostMapping(value = "/free/dermatologist/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -73,6 +78,8 @@ public class CheckUpController {
             checkup.update(checkup);
 
             checkup = checkUpService.update(checkup);
+
+            applicationEventPublisher.publishEvent(new OnCheckupReservationCompletedEvent(user));
 
             return ResponseEntity.ok().body(freeCheckupDTO);
 
