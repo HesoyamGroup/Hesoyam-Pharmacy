@@ -17,6 +17,6 @@ public interface CheckUpRepository extends JpaRepository<CheckUp, Long> {
     List<CheckUp> getAllByDermatologist_IdAndPharmacy_IdAndAppointmentStatus(Long dermatologistId, Long pharmacyId, AppointmentStatus appointmentStatus);
     List<CheckUp> getAllByDermatologist_Id(Long dermatologistId);
     List<CheckUp> findCheckUpsByDermatologist(Dermatologist dermatologist);
-    List<CheckUp> getAllByPharmacy_Id(Long id);
+    List<CheckUp> getAllByPharmacy_IdAndAppointmentStatus(Long id, AppointmentStatus appointmentStatus);
 
 }

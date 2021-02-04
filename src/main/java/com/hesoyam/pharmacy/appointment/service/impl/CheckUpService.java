@@ -65,8 +65,7 @@ public class CheckUpService implements ICheckUpService {
 
     @Override
     public List<CheckUp> getUpcomingFreeCheckupsByPharmacy(Long pharmacyId) {
-        List<CheckUp> checkUps;
-        checkUps = checkUpRepository.getAllByPharmacy_Id(pharmacyId);
+        List<CheckUp> checkUps = checkUpRepository.getAllByPharmacy_IdAndAppointmentStatus(pharmacyId, AppointmentStatus.FREE);
 
         return getUpcomingCheckUps(checkUps);
     }
