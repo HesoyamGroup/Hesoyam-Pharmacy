@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.storage.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
+import com.hesoyam.pharmacy.pharmacy.model.OrderItem;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -84,5 +85,17 @@ public class StorageItem implements Serializable {
             throw new IllegalArgumentException("Reserved value must be less or equal than stock value.");
         }
         this.reserved = reserved;
+    }
+
+    public int getAvailable(){
+        return stock - reserved;
+    }
+
+    public boolean canFulfillOrderItem(OrderItem orderItem){
+        return this.getAvailable() >= orderItem.getQuantity();
+    }
+
+    public void incReservedBy(int value){
+        setReserved(reserved + value);
     }
 }

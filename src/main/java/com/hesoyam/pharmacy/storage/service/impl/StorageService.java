@@ -8,6 +8,8 @@ import com.hesoyam.pharmacy.storage.service.IStorageService;
 import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,6 +31,12 @@ public class StorageService implements IStorageService {
     @Override
     public Storage getUserStorage(User user) {
         return storageRepository.getStorageBySupplier_Id(user.getId());
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Storage update(Storage storage) {
+        return storageRepository.save(storage);
     }
 
 

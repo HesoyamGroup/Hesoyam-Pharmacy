@@ -40,7 +40,7 @@ public class Order {
    @OneToMany(fetch = FetchType.LAZY, mappedBy="order")
    private List<Offer> offers;
 
-   @OneToMany(fetch=FetchType.LAZY)
+   @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinColumn(name="order_id", referencedColumnName = "id", nullable = false)
    private List<OrderItem> orderItems;
 

@@ -9,4 +9,5 @@ public interface IStorageService {
     Storage create(Storage storage);
     Storage get(Long id);
     Storage getUserStorage(User user);
+    Storage update(Storage storage);
 }

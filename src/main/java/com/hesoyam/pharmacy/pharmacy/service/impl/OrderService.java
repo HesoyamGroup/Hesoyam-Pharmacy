@@ -10,6 +10,8 @@ import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +42,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Order update(Order order) {
         if(order.getId() == null){
             return null;
