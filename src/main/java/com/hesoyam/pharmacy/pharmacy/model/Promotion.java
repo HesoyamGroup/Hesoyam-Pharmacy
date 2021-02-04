@@ -5,8 +5,8 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.pharmacy.model;
 
-import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.user.model.Administrator;
+import com.hesoyam.pharmacy.util.DateTimeRange;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;

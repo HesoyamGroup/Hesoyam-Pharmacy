@@ -1,6 +1,5 @@
 package com.hesoyam.pharmacy.feedback.dto;
 
-import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.user.model.Patient;
 import org.hibernate.validator.constraints.Length;
 

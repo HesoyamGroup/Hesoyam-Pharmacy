@@ -5,11 +5,8 @@
  */
 package com.hesoyam.pharmacy.user.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.hesoyam.pharmacy.pharmacy.model.Inventory;
 import com.hesoyam.pharmacy.pharmacy.model.Offer;
-import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.storage.model.Storage;
 
 import javax.persistence.*;

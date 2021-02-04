@@ -2,9 +2,9 @@ package com.hesoyam.pharmacy.pharmacy.dto;
 
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
 import com.hesoyam.pharmacy.util.DateTimeRange;
-import javax.validation.constraints.NotNull;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 public class InventoryItemPriceDTO {
 

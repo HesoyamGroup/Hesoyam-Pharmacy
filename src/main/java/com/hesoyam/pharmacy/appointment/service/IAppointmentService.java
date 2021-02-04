@@ -2,8 +2,8 @@ package com.hesoyam.pharmacy.appointment.service;
 
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
-import com.hesoyam.pharmacy.user.dto.PatientDTO;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.user.dto.PatientDTO;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Employee;
 import com.hesoyam.pharmacy.user.model.Patient;

@@ -6,7 +6,6 @@ import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
 import com.hesoyam.pharmacy.user.model.User;
 
 import javax.persistence.EntityNotFoundException;
-
 import java.util.List;
 
 

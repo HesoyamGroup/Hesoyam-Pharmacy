@@ -2,12 +2,9 @@ package com.hesoyam.pharmacy.storage.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.hesoyam.pharmacy.medicine.model.Medicine;
-import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidCreateOfferException;
 import com.hesoyam.pharmacy.pharmacy.model.Order;
 import com.hesoyam.pharmacy.pharmacy.model.OrderItem;
 import com.hesoyam.pharmacy.user.model.Supplier;
-import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import java.io.Serializable;

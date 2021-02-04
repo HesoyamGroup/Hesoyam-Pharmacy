@@ -8,14 +8,15 @@ import com.hesoyam.pharmacy.appointment.repository.CheckUpRepository;
 import com.hesoyam.pharmacy.appointment.repository.CounselingRepository;
 import com.hesoyam.pharmacy.appointment.repository.TherapyRepository;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
-import com.hesoyam.pharmacy.user.dto.PatientDTO;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.user.dto.PatientDTO;
 import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.util.search.QueryMatchResult;
 import com.hesoyam.pharmacy.util.search.UserSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
