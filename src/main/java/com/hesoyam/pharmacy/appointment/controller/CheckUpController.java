@@ -59,6 +59,7 @@ public class CheckUpController {
         return ResponseEntity.status(HttpStatus.OK).body(freeCheckUps);
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping(value = "/reserve")
     public ResponseEntity<FreeCheckupDTO> reserveFreeCheckup(@AuthenticationPrincipal User user, @RequestBody FreeCheckupDTO freeCheckupDTO){
 
