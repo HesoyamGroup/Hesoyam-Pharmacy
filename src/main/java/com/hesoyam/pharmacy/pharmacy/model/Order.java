@@ -4,8 +4,7 @@
  * Purpose: Defines the Class Order
  ***********************************************************************/
 package com.hesoyam.pharmacy.pharmacy.model;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import com.hesoyam.pharmacy.user.model.Administrator;
 
 import javax.persistence.*;
@@ -103,11 +102,16 @@ public class Order {
 
    public boolean isOfferValidForOrder(Offer offer){
       for(Offer off : this.offers){
-         if(off.getSupplier().getId().equals(offer.getSupplier().getId())){
+         if(off.getSupplier().getId().equals(offer.getSupplier().getId()) && off.getOfferStatus() == OfferStatus.CREATED){
             return false;
          }
       }
       LocalDateTime deliveryDate = offer.getDeliveryDate();
       return deliveryDate.compareTo(deadLine) < 0 && deliveryDate.compareTo(LocalDateTime.now()) > 0 && orderStatus == OrderStatus.CREATED;
+   }
+
+   public boolean isOfferEditable(Offer offer){
+      return LocalDateTime.now().compareTo(deadLine) < 0 && offer.getOfferStatus() == OfferStatus.CREATED;
+      //TODO: Check if today date is before date specified as the last day for canceling.
    }
 }

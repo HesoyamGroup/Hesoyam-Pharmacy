@@ -7,6 +7,7 @@ import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidCreateOfferException;
 import com.hesoyam.pharmacy.pharmacy.model.Order;
 import com.hesoyam.pharmacy.pharmacy.model.OrderItem;
 import com.hesoyam.pharmacy.user.model.Supplier;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -73,6 +74,16 @@ public class Storage implements Serializable {
         }
 
         return true;
+    }
+
+    public void releaseResourceReservation(Order order){
+        for(OrderItem orderItem : order.getOrderItems()){
+            for(StorageItem storageItem : storageItems){
+                if(storageItem.getMedicine().getId().equals(orderItem.getMedicine().getId())){
+                    storageItem.decReservedBy(orderItem.getQuantity());
+                }
+            }
+        }
     }
 
     private boolean canFulfillOrder(Order order){

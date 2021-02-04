@@ -8,11 +8,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
@@ -27,5 +25,15 @@ public class OrderController {
     public ResponseEntity<List<ShowOrdersDTO>> getAllActive(@RequestParam(required = false)Integer page, @AuthenticationPrincipal User user){
         page = (page == null ? 1 : page);
         return ResponseEntity.ok(orderService.getActiveForSupplier(page, user));
+    }
+
+    @GetMapping("/id/{id}")
+    @Secured("ROLE_SUPPLIER") //note: Add more roles if neccessary.
+    public ResponseEntity<ShowOrdersDTO> getBasicOrderInfo(@PathVariable("id") Long id){
+        try{
+            return ResponseEntity.ok(orderService.getBasicOrderInfo(id));
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 }

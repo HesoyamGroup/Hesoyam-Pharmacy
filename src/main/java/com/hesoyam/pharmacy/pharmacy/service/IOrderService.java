@@ -11,4 +11,5 @@ public interface IOrderService {
     List<ShowOrdersDTO> getActiveForSupplier(Integer page, User user);
     Order get(Long id);
     Order update(Order order);
+    ShowOrdersDTO getBasicOrderInfo(Long id);
 }

@@ -98,4 +98,7 @@ public class StorageItem implements Serializable {
     public void incReservedBy(int value){
         setReserved(reserved + value);
     }
+    public void decReservedBy(int value) {
+        setReserved(reserved - value);
+    }
 }

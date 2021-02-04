@@ -7,6 +7,7 @@ package com.hesoyam.pharmacy.pharmacy.model;
 
 public enum OfferStatus {
    CREATED,
+   CANCELLED,
    ACCEPTED,
    REJECTED;
 }

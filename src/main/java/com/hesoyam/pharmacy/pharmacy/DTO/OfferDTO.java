@@ -9,13 +9,15 @@ public class OfferDTO {
     private double totalPrice;
     private LocalDateTime deliveryDate;
     private OfferStatus offerStatus;
+    private Long orderId;
     public OfferDTO(){}
 
-    public OfferDTO(Long id, double totalPrice, LocalDateTime deliveryDate, OfferStatus offerStatus) {
+    public OfferDTO(Long id, double totalPrice, LocalDateTime deliveryDate, OfferStatus offerStatus, Long orderId) {
         this.id = id;
         this.totalPrice = totalPrice;
         this.deliveryDate = deliveryDate;
         this.offerStatus = offerStatus;
+        this.orderId = orderId;
     }
 
     public Long getId() {
@@ -48,5 +50,13 @@ public class OfferDTO {
 
     public void setOfferStatus(OfferStatus offerStatus) {
         this.offerStatus = offerStatus;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 }

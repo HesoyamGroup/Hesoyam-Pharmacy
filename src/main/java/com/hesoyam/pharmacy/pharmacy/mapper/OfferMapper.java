@@ -14,6 +14,6 @@ public class OfferMapper {
     }
 
     public static OfferDTO mapOfferToOfferDTO(Offer offer){
-        return new OfferDTO(offer.getId(),offer.getTotalPrice(), offer.getDeliveryDate(), offer.getOfferStatus());
+        return new OfferDTO(offer.getId(),offer.getTotalPrice(), offer.getDeliveryDate(), offer.getOfferStatus(), offer.getOrder().getId());
     }
 }

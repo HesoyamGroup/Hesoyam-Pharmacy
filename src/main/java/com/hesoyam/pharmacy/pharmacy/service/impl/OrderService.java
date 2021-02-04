@@ -50,4 +50,9 @@ public class OrderService implements IOrderService {
         return orderRepository.save(order);
 
     }
+
+    @Override
+    public ShowOrdersDTO getBasicOrderInfo(Long id) {
+        return OrderMapper.mapOrderToShowOrderDTO(orderRepository.getOne(id));
+    }
 }
