@@ -9,6 +9,7 @@ import com.hesoyam.pharmacy.medicine.model.MedicineType;
 import java.util.List;
 
 public interface IMedicineService {
+    Medicine get(Long id);
     List<Medicine> getAll();
     Medicine create(Medicine medicine);
     List<MedicineType> getAllMedicineTypes();
