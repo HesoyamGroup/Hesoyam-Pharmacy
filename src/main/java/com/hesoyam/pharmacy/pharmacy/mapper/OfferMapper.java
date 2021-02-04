@@ -1,9 +1,8 @@
 package com.hesoyam.pharmacy.pharmacy.mapper;
 
-import com.hesoyam.pharmacy.pharmacy.DTO.CreateOfferDTO;
-import com.hesoyam.pharmacy.pharmacy.DTO.OfferDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.CreateOfferDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.OfferDTO;
 import com.hesoyam.pharmacy.pharmacy.model.Offer;
-import com.hesoyam.pharmacy.pharmacy.model.OfferStatus;
 
 public class OfferMapper {
 

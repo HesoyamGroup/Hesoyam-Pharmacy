@@ -1,24 +1,21 @@
 package com.hesoyam.pharmacy.pharmacy.service.impl;
 
-import com.hesoyam.pharmacy.pharmacy.DTO.CreateOfferDTO;
-import com.hesoyam.pharmacy.pharmacy.DTO.OfferDTO;
-import com.hesoyam.pharmacy.pharmacy.DTO.OfferFilterCriteria;
+import com.hesoyam.pharmacy.pharmacy.dto.CreateOfferDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.OfferDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.OfferFilterCriteria;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidCreateOfferException;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidEditOfferException;
 import com.hesoyam.pharmacy.pharmacy.mapper.OfferMapper;
 import com.hesoyam.pharmacy.pharmacy.model.Offer;
 import com.hesoyam.pharmacy.pharmacy.model.OfferStatus;
 import com.hesoyam.pharmacy.pharmacy.model.Order;
-import com.hesoyam.pharmacy.pharmacy.model.OrderItem;
 import com.hesoyam.pharmacy.pharmacy.repository.OfferRepository;
 import com.hesoyam.pharmacy.pharmacy.service.IOfferService;
 import com.hesoyam.pharmacy.pharmacy.service.IOrderService;
 import com.hesoyam.pharmacy.storage.model.Storage;
-import com.hesoyam.pharmacy.storage.model.StorageItem;
 import com.hesoyam.pharmacy.storage.service.IStorageService;
 import com.hesoyam.pharmacy.user.model.Supplier;
 import com.hesoyam.pharmacy.user.model.User;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;

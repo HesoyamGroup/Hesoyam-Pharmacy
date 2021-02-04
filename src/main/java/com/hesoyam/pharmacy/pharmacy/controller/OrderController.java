@@ -1,6 +1,6 @@
 package com.hesoyam.pharmacy.pharmacy.controller;
 
-import com.hesoyam.pharmacy.pharmacy.DTO.ShowOrdersDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.ShowOrdersDTO;
 import com.hesoyam.pharmacy.pharmacy.service.IOrderService;
 import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;

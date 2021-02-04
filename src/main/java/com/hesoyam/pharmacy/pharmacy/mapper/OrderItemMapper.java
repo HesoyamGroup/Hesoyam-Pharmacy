@@ -1,6 +1,6 @@
 package com.hesoyam.pharmacy.pharmacy.mapper;
 
-import com.hesoyam.pharmacy.pharmacy.DTO.ShowOrderItemDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.ShowOrderItemDTO;
 import com.hesoyam.pharmacy.pharmacy.model.OrderItem;
 
 public class OrderItemMapper {

@@ -1,9 +1,7 @@
 package com.hesoyam.pharmacy.pharmacy.repository;
 
-import com.hesoyam.pharmacy.pharmacy.DTO.OfferFilterCriteria;
+import com.hesoyam.pharmacy.pharmacy.dto.OfferFilterCriteria;
 import com.hesoyam.pharmacy.pharmacy.model.Offer;
-import com.hesoyam.pharmacy.pharmacy.model.Order;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

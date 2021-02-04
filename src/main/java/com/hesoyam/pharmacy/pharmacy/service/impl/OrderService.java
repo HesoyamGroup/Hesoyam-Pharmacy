@@ -1,6 +1,6 @@
 package com.hesoyam.pharmacy.pharmacy.service.impl;
 
-import com.hesoyam.pharmacy.pharmacy.DTO.ShowOrdersDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.ShowOrdersDTO;
 import com.hesoyam.pharmacy.pharmacy.mapper.OrderMapper;
 import com.hesoyam.pharmacy.pharmacy.model.Order;
 import com.hesoyam.pharmacy.pharmacy.repository.OrderItemRepository;

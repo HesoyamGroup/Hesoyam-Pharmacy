@@ -1,11 +1,10 @@
 package com.hesoyam.pharmacy.pharmacy.controller;
 
-import com.hesoyam.pharmacy.pharmacy.DTO.CreateOfferDTO;
-import com.hesoyam.pharmacy.pharmacy.DTO.OfferDTO;
-import com.hesoyam.pharmacy.pharmacy.DTO.OfferFilterCriteria;
+import com.hesoyam.pharmacy.pharmacy.dto.CreateOfferDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.OfferDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.OfferFilterCriteria;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidCreateOfferException;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidEditOfferException;
-import com.hesoyam.pharmacy.pharmacy.model.Offer;
 import com.hesoyam.pharmacy.pharmacy.service.IOfferService;
 import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;

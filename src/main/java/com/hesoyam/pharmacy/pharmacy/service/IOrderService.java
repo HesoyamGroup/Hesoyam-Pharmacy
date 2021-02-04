@@ -1,6 +1,6 @@
 package com.hesoyam.pharmacy.pharmacy.service;
 
-import com.hesoyam.pharmacy.pharmacy.DTO.ShowOrdersDTO;
+import com.hesoyam.pharmacy.pharmacy.dto.ShowOrdersDTO;
 import com.hesoyam.pharmacy.pharmacy.model.Order;
 import com.hesoyam.pharmacy.user.model.User;
 
