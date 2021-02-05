@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.user.dto;
 
 import com.hesoyam.pharmacy.user.model.Gender;
+import com.hesoyam.pharmacy.user.model.User;
 
 public class UserBasicInfoDTO {
     String firstName;
@@ -9,6 +10,7 @@ public class UserBasicInfoDTO {
     String telephone;
 
     public UserBasicInfoDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public UserBasicInfoDTO(String firstName, String lastName, Gender gender, String telephone) {
@@ -16,6 +18,13 @@ public class UserBasicInfoDTO {
         this.lastName = lastName;
         this.gender = gender;
         this.telephone = telephone;
+    }
+
+    public UserBasicInfoDTO(User user){
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.gender = user.getGender();
+        this.telephone = user.getTelephone();
     }
 
     public String getFirstName() {
