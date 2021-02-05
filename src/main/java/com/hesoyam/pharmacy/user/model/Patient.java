@@ -69,4 +69,8 @@ public class Patient extends User {
          allergies.clear();
    }
 
+
+
+
+
 }

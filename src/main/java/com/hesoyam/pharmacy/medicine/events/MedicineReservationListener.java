@@ -1,9 +1,7 @@
 package com.hesoyam.pharmacy.medicine.events;
 
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
-import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.user.model.User;
-import com.hesoyam.pharmacy.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.mail.SimpleMailMessage;

@@ -3,31 +3,23 @@ package com.hesoyam.pharmacy.user.controller;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.dto.EmployeeBasicDTO;
-import com.hesoyam.pharmacy.user.dto.PatientDTO;
 import com.hesoyam.pharmacy.user.dto.PharmacistDTO;
-import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.dto.PharmacistDetailsDTO;
-import com.hesoyam.pharmacy.user.model.Dermatologist;
-import com.hesoyam.pharmacy.user.model.Employee;
+import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPharmacistService;
 import com.hesoyam.pharmacy.user.service.IUserService;
 import com.hesoyam.pharmacy.util.search.UserSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -23,4 +23,27 @@ public class OrderItem {
    @JoinColumn(name="medicine_id", nullable=false)
    private Medicine medicine;
 
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public int getQuantity() {
+      return quantity;
+   }
+
+   public void setQuantity(int quantity) {
+      this.quantity = quantity;
+   }
+
+   public Medicine getMedicine() {
+      return medicine;
+   }
+
+   public void setMedicine(Medicine medicine) {
+      this.medicine = medicine;
+   }
 }

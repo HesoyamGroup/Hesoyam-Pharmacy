@@ -4,6 +4,7 @@
  * Purpose: Defines the Class Order
  ***********************************************************************/
 package com.hesoyam.pharmacy.pharmacy.model;
+
 import com.hesoyam.pharmacy.user.model.Administrator;
 
 import javax.persistence.*;
@@ -25,7 +26,7 @@ public class Order {
    @Enumerated(EnumType.STRING)
    private OrderStatus orderStatus;
 
-   @ManyToOne(fetch = FetchType.LAZY, optional = false)
+   @ManyToOne(fetch = FetchType.LAZY, optional = true)
    @JoinColumn(name = "administrator_id", nullable = false)
    private Administrator administrator;
 
@@ -33,11 +34,12 @@ public class Order {
    @JoinColumn(name="pharmacy_id", nullable = false)
    private Pharmacy pharmacy;
 
-   @OneToMany(fetch=FetchType.LAZY)
-   @JoinColumn(name="order_id", referencedColumnName = "id", nullable = false)
+//   @OneToMany(fetch=FetchType.LAZY)
+//   @JoinColumn(name="order_id", referencedColumnName = "id", nullable = false)
+   @OneToMany(fetch = FetchType.LAZY, mappedBy="order")
    private List<Offer> offers;
 
-   @OneToMany(fetch=FetchType.LAZY)
+   @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinColumn(name="order_id", referencedColumnName = "id", nullable = false)
    private List<OrderItem> orderItems;
 
@@ -96,5 +98,20 @@ public class Order {
 
    public void setOrderItems(List<OrderItem> orderItems) {
       this.orderItems = orderItems;
+   }
+
+   public boolean isOfferValidForOrder(Offer offer){
+      for(Offer off : this.offers){
+         if(off.getSupplier().getId().equals(offer.getSupplier().getId()) && off.getOfferStatus() == OfferStatus.CREATED){
+            return false;
+         }
+      }
+      LocalDateTime deliveryDate = offer.getDeliveryDate();
+      return deliveryDate.compareTo(deadLine) < 0 && deliveryDate.compareTo(LocalDateTime.now()) > 0 && orderStatus == OrderStatus.CREATED;
+   }
+
+   public boolean isOfferEditable(Offer offer){
+      return LocalDateTime.now().compareTo(deadLine) < 0 && offer.getOfferStatus() == OfferStatus.CREATED;
+      //TODO: Check if today date is before date specified as the last day for canceling.
    }
 }

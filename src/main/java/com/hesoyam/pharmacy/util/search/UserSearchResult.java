@@ -2,7 +2,6 @@ package com.hesoyam.pharmacy.util.search;
 
 import com.hesoyam.pharmacy.user.dto.PatientDTO;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class UserSearchResult {
