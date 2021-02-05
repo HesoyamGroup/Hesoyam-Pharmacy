@@ -59,9 +59,4 @@ public class MedicineReservationService implements IMedicineReservationService {
     public int getPickedupReservationsCountForPatientId(Long patientId) {
         return medicineReservationRepository.countMedicineReservationsByPatient_IdAndAndMedicineReservationStatus(patientId, MedicineReservationStatus.COMPLETED);
     }
-
-    @Override
-    public MedicineReservation findByCodeAndPharmacy(String code, long id) {
-        return medicineReservationRepository.findByCodeAndPharmacy_Id(code, id);
-    }
 }

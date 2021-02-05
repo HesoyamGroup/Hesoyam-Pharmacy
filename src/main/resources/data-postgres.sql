@@ -444,18 +444,18 @@ INSERT INTO user_roles (user_id, role_id) VALUES (19, 7);
 -----------------------
 -- Medicine Reservation
 -----------------------
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (1, 'sdadasdadadasasdasasdda', 'CREATED', '2021-02-01 23:59:59', 14, 1);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (2, 'wqksdhajdhaushydhwqkjmsdkami', 'COMPLETED', '2021-02-19 23:59:59', 14, 1);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (3, 'bcvobocjiwque878dusijksdfj', 'CREATED', '2021-03-01 23:59:59', 14, 1);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (4, 'dfjiwdjas8idlak0ti9kdsmklc', 'CANCELLED', '2021-02-16 23:59:59', 14, 2);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (5, 'sdfjiosdofsdipkdogjuhuas', 'COMPLETED', '2021-01-31 23:59:59', 14, 2);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (6, 'jcjsiajdojiosd0weoklssmad', 'CREATED', '2021-05-12 23:59:59', 14, 2);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
+VALUES (1, 'sdadasdadadasasdasasdda', 'CREATED', '2021-02-01 23:59:59', 14);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
+VALUES (2, 'wqksdhajdhaushydhwqkjmsdkami', 'COMPLETED', '2021-02-19 23:59:59', 14);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
+VALUES (3, 'bcvobocjiwque878dusijksdfj', 'CREATED', '2021-03-01 23:59:59', 14);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
+VALUES (4, 'dfjiwdjas8idlak0ti9kdsmklc', 'CANCELLED', '2021-02-16 23:59:59', 14);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
+VALUES (5, 'sdfjiosdofsdipkdogjuhuas', 'COMPLETED', '2021-01-31 23:59:59', 14);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
+VALUES (6, 'jcjsiajdojiosd0weoklssmad', 'CREATED', '2021-05-12 23:59:59', 14);
 
 ---------------------------
 --Medicine Reservation Item

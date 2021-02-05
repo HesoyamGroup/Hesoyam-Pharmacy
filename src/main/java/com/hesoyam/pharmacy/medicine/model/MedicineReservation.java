@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.user.model.Patient;
 import org.hibernate.validator.constraints.Length;
 
@@ -50,10 +49,6 @@ public class MedicineReservation {
 
    @Enumerated(EnumType.STRING)
    private MedicineReservationStatus medicineReservationStatus;
-
-   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   @JoinColumn(name = "pharmacy_id", nullable = false)
-   private Pharmacy pharmacy;
 
 
    /*public MedicineReservation(Long id, @NotNull(message = "Pick up date must be specified.") LocalDateTime pickUpDate, @NotNull(message = "Medicine reservation code must be provided.") @Length(min = 1, max = 50, message = "Medicine reservation code length should be between 1 and 50.") String code, List<MedicineReservationItem> medicineReservationItems, Patient patient, MedicineReservationStatus medicineReservationStatus) {
@@ -163,13 +158,5 @@ public class MedicineReservation {
       this.medicineReservationStatus = medicineReservation.getMedicineReservationStatus();
       this.patient = medicineReservation.getPatient();
       this.pickUpDate = medicineReservation.getPickUpDate();
-   }
-
-   public Pharmacy getPharmacy() {
-      return pharmacy;
-   }
-
-   public void setPharmacy(Pharmacy pharmacy) {
-      this.pharmacy = pharmacy;
    }
 }
