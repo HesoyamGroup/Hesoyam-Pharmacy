@@ -7,15 +7,17 @@ public class PharmacyWithPrescriptionPriceDTO {
     private String name;
     private Address address;
     private int price;
+    private double rating;
 
     public PharmacyWithPrescriptionPriceDTO() {
     }
 
-    public PharmacyWithPrescriptionPriceDTO(Long id, String name, Address address, int price) {
+    public PharmacyWithPrescriptionPriceDTO(Long id, String name, Address address, int price, double pharmacyRating) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.price = price;
+        this.rating = pharmacyRating;
     }
 
     public Long getId() {
@@ -48,5 +50,13 @@ public class PharmacyWithPrescriptionPriceDTO {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }

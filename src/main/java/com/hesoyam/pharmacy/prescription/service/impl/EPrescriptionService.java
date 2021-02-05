@@ -70,7 +70,7 @@ public class EPrescriptionService implements IEPrescriptionService {
     }
 
     private PharmacyWithPrescriptionPriceDTO mapPharmacyToPharmacyWithPrescriptionDataDTO(Pharmacy pharmacy, int price){
-        return new PharmacyWithPrescriptionPriceDTO(pharmacy.getId(), pharmacy.getName(), pharmacy.getAddress(), price);
+        return new PharmacyWithPrescriptionPriceDTO(pharmacy.getId(), pharmacy.getName(), pharmacy.getAddress(), price, pharmacy.getRating());
     }
 
     private List<PharmacyWithPrescriptionPriceDTO> getPharmaciesWhoCanFulfillPrescription(EPrescription ePrescription){
