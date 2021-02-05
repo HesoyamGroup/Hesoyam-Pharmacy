@@ -425,6 +425,7 @@ INSERT INTO user_roles (user_id, role_id) VALUES (17, 2);
 -- SUPPLIERS
 --------------
 
+
 -- 18
 INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
@@ -440,6 +441,7 @@ VALUES
 ('Marina', 'Marić', 'FEMALE', 'Novosadska 37', 3, 44.914103309371924, 20.267538944371907, '4444444444', 'hesoyampharmacy+marina@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
 INSERT INTO supplier (id) VALUES (19);
 INSERT INTO user_roles (user_id, role_id) VALUES (19, 7);
+
 
 -----------------------
 -- Medicine Reservation
@@ -491,6 +493,23 @@ INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, p
 VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 2, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('CHECKUP', 'FREE', '2021-02-04 21:00:00.189796', '2021-02-04 21:15:00.189796', 2500.0 , 'Gospodine...', null, 1, 10, null);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('CHECKUP', 'FREE', '2021-02-04 21:30:00.189796', '2021-02-04 21:45:00.189796', 1500.0 , 'Gospodine...', null, 1, 10, null);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('CHECKUP', 'FREE', '2021-02-04 21:45:00.189796', '2021-02-04 22:00:00.189796', 1750.0 , 'Gospodine...', null, 1, 10, null);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('CHECKUP', 'FREE', '2021-02-04 22:00:00.189796', '2021-02-04 22:15:00.189796', 1250.0 , 'Gospodine...', null, 1, 10, null);
+
+--------------------
+-- Patient allergies
+--------------------
+
+INSERT INTO patient_allergies(patient_id, medicine_id)
+VALUES (14, 2);
+INSERT INTO patient_allergies(patient_id, medicine_id)
+VALUES (14, 4);
 
 
 -----------------------
@@ -535,6 +554,46 @@ INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 15
 INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (30, 3, 16);
 --17 (Radovan)
 INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (36, 4, 17);
+
+-----------------------
+-- Orders
+-----------------------
+
+--1 Deadline : 3rd March 2020, CREATED by Administrator 2 in Pharmacy 1
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-3-03 00:00:00-07', 'CREATED', 2, 1);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (15, 1, 1);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (30, 2, 1);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (45, 3, 1);
+
+--2 Deadline : 18th April 2020, CREATED by Administrator 2 in Pharmacy 1
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-2-18 00:00:00-07' , 'CREATED', 2, 1);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (950, 1, 2);
+--3 Accepted : Administrator 2 Pharmacy 1
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-1-6 00:00:00-07' , 'ACCEPTED', 3, 2);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (55, 1, 3);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (150, 4, 3);
+
+--4
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-12-10 00:00:00-07' , 'CREATED', 3, 2);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (55, 1, 4);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (150, 4, 4);
+
+
+--5
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-12-10 00:00:00-07' , 'CREATED', 3, 2);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (5, 1, 5);
+INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (3, 2, 5);
+
+--1 Offer by Sandra(18) for order 3 which is accepted
+INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-1-2 00:00:00-07', 'ACCEPTED', '666', 18, 3);
+--2 Offer by Marina(19) for order 3 which is rejected
+INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-1-3 00:00:00-07', 'REJECTED', '755', 19, 3);
+--3 Offer by Sandra(18) for order 1 which is created
+INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-2-18 00:00:00-07', 'CREATED', '2500', 18, 1);
+--4 Offer by Marina(19) for order 1 which is CREATED
+-- INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-2-1 00:00:00-07', 'CREATED', '755', 19, 2);
+
+
 
 -------------------
 -- SHIFTS
@@ -583,3 +642,4 @@ INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (1
 INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-19 12:30', '2021-02-19 14:00', 'WORK');
 INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-20 12:30', '2021-02-20 14:00', 'WORK');
 INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-21 12:30', '2021-02-21 14:00', 'WORK');
+
