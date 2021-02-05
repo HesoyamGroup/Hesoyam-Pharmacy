@@ -1,13 +1,22 @@
 package com.hesoyam.pharmacy.util.notifications;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EmailObject {
     private String subject;
-    private String recipient;
+    private List<String> recipients = new ArrayList<>();
     private String body;
 
     public EmailObject(String subject, String recipient, String body) {
         this.subject = subject;
-        this.recipient = recipient;
+        this.recipients.add(recipient);
+        this.body = body;
+    }
+
+    public EmailObject(String subject, List<String> recipients, String body){
+        this.subject = subject;
+        this.recipients = recipients;
         this.body = body;
     }
 
@@ -19,12 +28,12 @@ public class EmailObject {
         this.subject = subject;
     }
 
-    public String getRecipient() {
-        return recipient;
+    public List<String> getRecipients() {
+        return recipients;
     }
 
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
+    public void setRecipients(List<String> recipients) {
+        this.recipients = recipients;
     }
 
     public String getBody() {
