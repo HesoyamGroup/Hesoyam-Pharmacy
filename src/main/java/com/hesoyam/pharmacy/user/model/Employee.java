@@ -81,6 +81,8 @@ public abstract class Employee extends User {
 
    public abstract boolean isAdministratorMyBoss(User administrator);
 
+   public abstract boolean isWorkingAt(Pharmacy pharmacy);
+
    protected boolean isAtWork(DateTimeRange dateTimeRange, Pharmacy pharmacy){
       return getShifts().stream().anyMatch(shift -> shift.isAvailableFor(dateTimeRange, pharmacy));
    }

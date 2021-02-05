@@ -138,6 +138,11 @@ public class Dermatologist extends Employee {
    }
 
    @Override
+   public boolean isWorkingAt(Pharmacy pharmacy) {
+      return getPharmacies().contains(pharmacy);
+   }
+
+   @Override
    protected boolean hasClearSchedule(DateTimeRange dateTimeRange) {
       return getCheckUps().stream().noneMatch(checkUp -> checkUp.isConflictingWith(dateTimeRange));
    }

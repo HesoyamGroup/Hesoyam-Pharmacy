@@ -105,6 +105,11 @@ public class Pharmacist extends Employee {
    }
 
    @Override
+   public boolean isWorkingAt(Pharmacy pharmacy) {
+      return this.pharmacy.equals(pharmacy);
+   }
+
+   @Override
    public boolean hasClearSchedule(DateTimeRange dateTimeRange) {
       return getCounselings().stream().noneMatch(counseling -> counseling.isConflictingWith(dateTimeRange));
    }
