@@ -6,7 +6,6 @@ import com.hesoyam.pharmacy.pharmacy.model.Promotion;
 import com.hesoyam.pharmacy.pharmacy.repository.PromotionRepository;
 import com.hesoyam.pharmacy.pharmacy.service.IPromotionService;
 import com.hesoyam.pharmacy.user.model.Administrator;
-import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
