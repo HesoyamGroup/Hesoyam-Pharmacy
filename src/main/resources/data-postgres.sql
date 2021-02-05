@@ -664,3 +664,10 @@ INSERT INTO promotion (from_date, to_date, description, title, administrator_id,
 VALUES('2021-02-10', '2021-02-25', 'Opis druge promocije', 'Druga promocija', 4, 2);
 INSERT INTO promotion (from_date, to_date, description, title, administrator_id, pharmacy_id)
 VALUES('2021-02-13', '2021-03-01', 'Opis treće promocije', 'Treća promocija', 5, 3);
+
+----------------------
+-- VACATION REQUESTS
+----------------------
+
+INSERT INTO vacation_request (employee_id, from_date, to_date, status) VALUES (12, '2021-02-13', '2021-02-17', 'CREATED');
+INSERT INTO vacation_request (employee_id, from_date, to_date, status) VALUES (7, '2021-02-13', '2021-02-17', 'CREATED');
