@@ -3,7 +3,6 @@ package com.hesoyam.pharmacy.employee_management.controller;
 import com.hesoyam.pharmacy.employee_management.dto.VacationRequestDTO;
 import com.hesoyam.pharmacy.employee_management.model.VacationRequest;
 import com.hesoyam.pharmacy.employee_management.service.IVacationRequestService;
-import com.hesoyam.pharmacy.user.model.Administrator;
 import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

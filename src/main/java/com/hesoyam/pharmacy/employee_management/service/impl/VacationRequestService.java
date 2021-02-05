@@ -6,7 +6,6 @@ import com.hesoyam.pharmacy.employee_management.model.VacationRequest;
 import com.hesoyam.pharmacy.employee_management.model.VacationRequestStatus;
 import com.hesoyam.pharmacy.employee_management.repository.VacationRequestRepository;
 import com.hesoyam.pharmacy.employee_management.service.IVacationRequestService;
-import com.hesoyam.pharmacy.pharmacy.events.OnNewPromotionEvent;
 import com.hesoyam.pharmacy.user.model.Administrator;
 import com.hesoyam.pharmacy.user.model.RoleEnum;
 import com.hesoyam.pharmacy.user.model.User;
@@ -37,7 +36,7 @@ public class VacationRequestService implements IVacationRequestService {
             Administrator administrator = administratorRepository.getOne(user.getId());
             return newRequests.stream().filter(vr -> vr.isRequestedForPharmacy(administrator.getPharmacy()) && vr.isPharmacistVacationRequest()).collect(Collectors.toList());
         } else if(user.getRoleEnum() == RoleEnum.SYS_ADMIN){
-            return newRequests.stream().filter(vr -> vr.isDermatologistVacationRequest()).collect(Collectors.toList());
+            return newRequests.stream().filter(VacationRequest::isDermatologistVacationRequest).collect(Collectors.toList());
         }
         return new ArrayList<>();
     }
