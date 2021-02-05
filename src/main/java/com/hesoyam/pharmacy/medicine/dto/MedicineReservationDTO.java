@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,14 +19,23 @@ public class MedicineReservationDTO {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     LocalDateTime pickUpDate;
     List<MedicineReservationItem> medicineReservationItemList;
+    MedicineReservationStatus medicineReservationStatus;
 
-    public MedicineReservationDTO() {
-        medicineReservationItemList = new ArrayList<>();
+    public MedicineReservationDTO(){
     }
 
-    public MedicineReservationDTO(LocalDateTime pickUpDate, List<MedicineReservationItem> medicineReservationItemList) {
-        this.pickUpDate = pickUpDate;
-        this.medicineReservationItemList = medicineReservationItemList;
+    public MedicineReservationDTO(MedicineReservation medicineReservation) {
+        this.pickUpDate = medicineReservation.getPickUpDate();
+        this.medicineReservationItemList = medicineReservation.getMedicineReservationItems();
+        this.medicineReservationStatus = medicineReservation.getMedicineReservationStatus();
+    }
+
+    public MedicineReservationStatus getMedicineReservationStatus() {
+        return medicineReservationStatus;
+    }
+
+    public void setMedicineReservationStatus(MedicineReservationStatus medicineReservationStatus) {
+        this.medicineReservationStatus = medicineReservationStatus;
     }
 
     public LocalDateTime getPickUpDate() {

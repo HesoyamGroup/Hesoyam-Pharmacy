@@ -70,18 +70,13 @@ public class MedicineReservationController {
     }
 
     @GetMapping("/get-reservations")
-    public ResponseEntity<List<MedicineReservation>> getAllMedicineReservationsByPatient(HttpServletRequest request){
+    public ResponseEntity<List<MedicineReservationDTO>> getAllMedicineReservationsByPatient(@AuthenticationPrincipal User user){
 
-        String token = tokenUtils.getToken(request);
-        String email = tokenUtils.getUsernameFromToken(token);
+            List<MedicineReservation> medicineReservationList = medicineReservationService.getByPatientId(user.getId());
+            List<MedicineReservationDTO> medicineReservationDTOList = new ArrayList<>();
+            medicineReservationList.forEach(medicineReservation -> medicineReservationDTOList.add(new MedicineReservationDTO(medicineReservation)));
 
-        try{
-            User user = userService.findByEmail(email);
-            return ResponseEntity.ok().body(medicineReservationService.getByPatientId(user.getId()));
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
-        }
+            return ResponseEntity.ok().body(medicineReservationDTOList);
     }
 
     @PostMapping("/create")
