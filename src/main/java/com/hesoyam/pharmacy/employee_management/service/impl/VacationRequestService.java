@@ -64,4 +64,25 @@ public class VacationRequestService implements IVacationRequestService {
         applicationEventPublisher.publishEvent(new OnVacationRequestRejectionEvent(rejectedVacationRequest));
         return rejectedVacationRequest;
     }
+
+    @Override
+    public VacationRequest accept(User user, Long id) throws IllegalAccessException {
+        VacationRequest acceptingVacationRequest = vacationRequestRepository.getOne(id);
+
+        if(user.getRoleEnum() == RoleEnum.ADMINISTRATOR){
+            Administrator administrator = administratorRepository.getOne(user.getId());
+            if(acceptingVacationRequest.isPharmacistVacationRequest() && acceptingVacationRequest.isRequestedForPharmacy(administrator.getPharmacy()))
+                acceptingVacationRequest.accept();
+            else
+                throw new IllegalAccessException(String.format("Administrator '%s' doesn't have a permission to accept this vacation request [id: '%s']", administrator.getId(), acceptingVacationRequest.getId()));
+        }
+        else if(user.getRoleEnum() == RoleEnum.SYS_ADMIN){
+            if(acceptingVacationRequest.isDermatologistVacationRequest())
+                acceptingVacationRequest.accept();
+            else
+                throw new IllegalAccessException(String.format("System administrator doesn't have a permission to accept pharmacist vacation request [id: '%s']", acceptingVacationRequest.getId()));
+        }
+
+        return vacationRequestRepository.save(acceptingVacationRequest);
+    }
 }

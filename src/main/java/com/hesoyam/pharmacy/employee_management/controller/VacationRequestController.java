@@ -49,4 +49,20 @@ public class VacationRequestController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
+
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'SYS_ADMIN')")
+    @PutMapping(value = "/accept/{id}")
+    public ResponseEntity<VacationRequestDTO> accept(@AuthenticationPrincipal User user, @PathVariable Long id){
+        try{
+            VacationRequest acceptedVacationRequest = vacationRequestService.accept(user, id);
+            return ResponseEntity.status(HttpStatus.OK).body(new VacationRequestDTO(acceptedVacationRequest));
+        } catch (IllegalStateException e){
+            //conflict (vacation request is already rejected or accepted)
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (IllegalAccessException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    }
 }

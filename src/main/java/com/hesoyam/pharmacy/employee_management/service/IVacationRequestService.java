@@ -11,4 +11,6 @@ public interface IVacationRequestService {
     List<VacationRequest> getNewVacationRequestsByAdministrator(User user);
 
     VacationRequest reject(User user, VacationRequestDTO vacationRequest) throws IllegalAccessException;
+
+    VacationRequest accept(User user, Long id) throws IllegalAccessException;
 }

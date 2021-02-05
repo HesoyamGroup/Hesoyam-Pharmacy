@@ -8,7 +8,6 @@ package com.hesoyam.pharmacy.employee_management.model;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.user.model.Employee;
 import com.hesoyam.pharmacy.user.model.RoleEnum;
-import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import org.hibernate.validator.constraints.Length;
 
@@ -28,7 +27,7 @@ public class VacationRequest {
     @Embedded
     private DateTimeRange dateTimeRange;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name="employee_id", nullable = false)
     private Employee employee;
 
@@ -103,5 +102,15 @@ public class VacationRequest {
 
     public boolean isDermatologistVacationRequest() {
         return employee.getRoleEnum() == RoleEnum.DERMATOLOGIST;
+    }
+
+    public void accept() {
+        if (status == VacationRequestStatus.CREATED) {
+            setStatus(VacationRequestStatus.ACCEPTED);
+            employee.clearShiftsFor(dateTimeRange);
+            employee.addVacation(this);
+        }
+        else
+            throw new IllegalStateException(String.format("Cannot accept vacation request with status '%s'", status));
     }
 }

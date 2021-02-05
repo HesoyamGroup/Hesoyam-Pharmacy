@@ -6,6 +6,8 @@
 package com.hesoyam.pharmacy.user.model;
 
 import com.hesoyam.pharmacy.employee_management.model.Shift;
+import com.hesoyam.pharmacy.employee_management.model.ShiftType;
+import com.hesoyam.pharmacy.employee_management.model.VacationRequest;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 
@@ -14,6 +16,7 @@ import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
@@ -23,7 +26,7 @@ public abstract class Employee extends User {
    //TODO: Add max rating(5 vs 10 scale)
    protected double rating;
 
-   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
    @JoinColumn(name="employee_id", referencedColumnName="id")
    protected List<Shift> shifts;
 
@@ -50,8 +53,7 @@ public abstract class Employee extends User {
          return;
       if (this.shifts == null)
          this.shifts = new ArrayList<>();
-      if (!this.shifts.contains(newShift))
-         this.shifts.add(newShift);
+      this.shifts.add(newShift);
    }
 
    public void removeShift(Shift oldShift) {
@@ -92,4 +94,11 @@ public abstract class Employee extends User {
    public boolean isAvailable(DateTimeRange dateTimeRange, Pharmacy pharmacy){
       return isAtWork(dateTimeRange, pharmacy) && hasClearSchedule(dateTimeRange);
    }
+
+   public void clearShiftsFor(DateTimeRange dateTimeRange){
+      List<Shift> shiftsToRemove = shifts.stream().filter(shift -> shift.getType() == ShiftType.WORK && shift.getDateTimeRange().overlaps(dateTimeRange)).collect(Collectors.toList());
+      this.shifts.removeAll(shiftsToRemove);
+   }
+
+   public abstract void addVacation(VacationRequest vacationRequest);
 }
