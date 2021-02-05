@@ -8,5 +8,5 @@ package com.hesoyam.pharmacy.employee_management.model;
 public enum VacationRequestStatus {
    ACCEPTED,
    REJECTED,
-   CREATED;
+   CREATED
 }

@@ -7,6 +7,9 @@ package com.hesoyam.pharmacy.user.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
+import com.hesoyam.pharmacy.employee_management.model.Shift;
+import com.hesoyam.pharmacy.employee_management.model.ShiftType;
+import com.hesoyam.pharmacy.employee_management.model.VacationRequest;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 
@@ -138,7 +141,23 @@ public class Dermatologist extends Employee {
    }
 
    @Override
+   public boolean isWorkingAt(Pharmacy pharmacy) {
+      return getPharmacies().contains(pharmacy);
+   }
+
+   @Override
    protected boolean hasClearSchedule(DateTimeRange dateTimeRange) {
       return getCheckUps().stream().noneMatch(checkUp -> checkUp.isConflictingWith(dateTimeRange));
+   }
+
+   @Override
+   public void addVacation(VacationRequest vacationRequest) {
+      for (Pharmacy pharmacy: pharmacies) {
+         Shift vacation = new Shift();
+         vacation.setType(ShiftType.VACATION);
+         vacation.setDateTimeRange(vacationRequest.getDateTimeRange());
+         vacation.setPharmacy(pharmacy);
+         addShift(vacation);
+      }
    }
 }
