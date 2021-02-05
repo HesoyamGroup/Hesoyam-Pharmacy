@@ -114,4 +114,14 @@ public class PharmacyService implements IPharmacyService {
     public Pharmacy update(Pharmacy pharmacy) {
         return pharmacyRepository.save(pharmacy);
     }
+
+    @Override
+    public List<Pharmacy> getPharmaciesByMedicineAvailability(List<Long> medicineIds) {
+        return pharmacyRepository.getPharmaciesByMedicineAvailability(medicineIds,Long.valueOf(medicineIds.size()));
+    }
+
+    @Override
+    public Boolean canPharmacyOfferMedicineQuantity(Long pharmacyId, Long medicineId, int quantity) {
+        return pharmacyRepository.canPharmacyOfferMedicineQuantity(pharmacyId, medicineId, quantity);
+    }
 }

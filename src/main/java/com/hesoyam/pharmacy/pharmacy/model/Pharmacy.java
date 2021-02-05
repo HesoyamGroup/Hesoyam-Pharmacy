@@ -8,6 +8,7 @@ package com.hesoyam.pharmacy.pharmacy.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hesoyam.pharmacy.location.model.Address;
+import com.hesoyam.pharmacy.prescription.model.EPrescription;
 import com.hesoyam.pharmacy.user.model.*;
 import org.hibernate.validator.constraints.Length;
 
