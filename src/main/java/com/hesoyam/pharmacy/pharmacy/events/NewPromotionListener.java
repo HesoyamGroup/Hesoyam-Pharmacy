@@ -38,7 +38,7 @@ public class NewPromotionListener implements ApplicationListener<OnNewPromotionE
         String fromDate = promotion.getDateTimeRange().getFrom().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         String toDate = promotion.getDateTimeRange().getTo().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
-        String subject = String.format("%s - %s", promotion.getTitle(), pharmacyName);
+        String subject = String.format("Hesoyam Pharmacy - %s - %s", promotion.getTitle(), pharmacyName);
         String message = String.format("%s%n%nPromotion lasts from %s to %s", promotion.getDescription(), fromDate, toDate);
 
         emailClient.sendEmail(new EmailObject(subject, recipients, message));

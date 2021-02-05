@@ -8,6 +8,7 @@ package com.hesoyam.pharmacy.employee_management.model;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.user.model.Employee;
 import com.hesoyam.pharmacy.user.model.RoleEnum;
+import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import org.hibernate.validator.constraints.Length;
 
@@ -98,5 +99,9 @@ public class VacationRequest {
 
     public boolean isPharmacistVacationRequest() {
         return employee.getRoleEnum() == RoleEnum.PHARMACIST;
+    }
+
+    public boolean isDermatologistVacationRequest() {
+        return employee.getRoleEnum() == RoleEnum.DERMATOLOGIST;
     }
 }

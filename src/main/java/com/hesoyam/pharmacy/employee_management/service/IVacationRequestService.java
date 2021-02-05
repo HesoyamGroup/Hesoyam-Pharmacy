@@ -10,5 +10,5 @@ import java.util.List;
 public interface IVacationRequestService {
     List<VacationRequest> getNewVacationRequestsByAdministrator(User user);
 
-    VacationRequest reject(User user, VacationRequestDTO vacationRequest);
+    VacationRequest reject(User user, VacationRequestDTO vacationRequest) throws IllegalAccessException;
 }
