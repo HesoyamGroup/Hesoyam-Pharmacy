@@ -643,3 +643,24 @@ INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (1
 INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-20 12:30', '2021-02-20 14:00', 'WORK');
 INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-21 12:30', '2021-02-21 14:00', 'WORK');
 
+------------------------
+-- SUBSCRIBED PATIENTS
+------------------------
+
+INSERT INTO subscription (pharmacy_id, patient_id) VALUES (3, 15);
+INSERT INTO subscription (pharmacy_id, patient_id) VALUES (3, 16);
+INSERT INTO subscription (pharmacy_id, patient_id) VALUES (3, 17);
+
+INSERT INTO subscription (pharmacy_id, patient_id) VALUES (2, 14);
+INSERT INTO subscription (pharmacy_id, patient_id) VALUES (2, 15);
+
+----------------
+-- PROMOTIONS
+----------------
+
+INSERT INTO promotion (from_date, to_date, description, title, administrator_id, pharmacy_id)
+VALUES('2021-02-08', '2021-02-15', 'Opis prve promocije', 'Prva promocija', 3, 2);
+INSERT INTO promotion (from_date, to_date, description, title, administrator_id, pharmacy_id)
+VALUES('2021-02-10', '2021-02-25', 'Opis druge promocije', 'Druga promocija', 4, 2);
+INSERT INTO promotion (from_date, to_date, description, title, administrator_id, pharmacy_id)
+VALUES('2021-02-13', '2021-03-01', 'Opis treće promocije', 'Treća promocija', 5, 3);
