@@ -7,6 +7,7 @@ package com.hesoyam.pharmacy.employee_management.model;
 
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.user.model.Employee;
+import com.hesoyam.pharmacy.user.model.RoleEnum;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import org.hibernate.validator.constraints.Length;
 
@@ -84,5 +85,18 @@ public class VacationRequest {
 
     public boolean isRecent(){
         return this.dateTimeRange.getTo().isAfter(LocalDateTime.now());
+    }
+
+    public void reject(String rejectReason) {
+        if(status == VacationRequestStatus.CREATED){
+            setStatus(VacationRequestStatus.REJECTED);
+            setRejectReason(rejectReason);
+        }
+        else
+            throw new IllegalStateException(String.format("Cannot reject vacation request with status '%s'", status));
+    }
+
+    public boolean isPharmacistVacationRequest() {
+        return employee.getRoleEnum() == RoleEnum.PHARMACIST;
     }
 }
