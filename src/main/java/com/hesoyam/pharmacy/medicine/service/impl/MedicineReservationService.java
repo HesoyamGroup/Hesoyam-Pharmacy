@@ -5,9 +5,12 @@ import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
 import com.hesoyam.pharmacy.medicine.repository.MedicineReservationRepository;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
+import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Service
@@ -55,5 +58,10 @@ public class MedicineReservationService implements IMedicineReservationService {
     @Override
     public int getPickedupReservationsCountForPatientId(Long patientId) {
         return medicineReservationRepository.countMedicineReservationsByPatient_IdAndAndMedicineReservationStatus(patientId, MedicineReservationStatus.COMPLETED);
+    }
+
+    @Override
+    public MedicineReservation findByCodeAndPharmacy(String code, long id) {
+        return medicineReservationRepository.findByCodeAndPharmacy_Id(code, id);
     }
 }
