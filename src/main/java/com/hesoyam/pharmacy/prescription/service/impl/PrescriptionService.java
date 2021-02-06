@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.prescription.service.impl;
 
 import com.hesoyam.pharmacy.medicine.model.Medicine;
+import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.prescription.exceptions.PatientIsAllergicException;
 import com.hesoyam.pharmacy.prescription.model.EPrescription;
 import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
@@ -19,8 +20,11 @@ public class PrescriptionService implements IPrescriptionService {
     @Autowired
     private PrescriptionRepository prescriptionRepository;
 
+    @Autowired
+    private IInventoryItemService inventoryItemService;
+
     @Override
-    public EPrescription createPrescription(List<PrescriptionItem> prescriptionItems, Patient patient) throws PatientIsAllergicException {
+    public EPrescription createPrescription(List<PrescriptionItem> prescriptionItems, Patient patient, long pharmacyId) throws PatientIsAllergicException {
         List<Medicine> allergies = patient.getAllergies();
 
         testForAllergies(prescriptionItems, allergies);
@@ -30,6 +34,8 @@ public class PrescriptionService implements IPrescriptionService {
         prescription.setIssuingDate(LocalDateTime.now());
         prescription.setPatient(patient);
         prescriptionRepository.save(prescription);
+
+        inventoryItemService.removeItems(prescriptionItems, pharmacyId);
         return prescription;
     }
 

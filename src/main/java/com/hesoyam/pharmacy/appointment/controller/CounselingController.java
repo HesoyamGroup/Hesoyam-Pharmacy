@@ -5,6 +5,7 @@ import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.service.ICounselingService;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
+import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.prescription.dto.PrescriptionItemDTO;
 import com.hesoyam.pharmacy.prescription.exceptions.PatientIsAllergicException;
 import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
@@ -43,17 +44,19 @@ public class CounselingController {
     @Autowired
     private IMedicineService medicineService;
 
+
     @PostMapping(value = "/finish-counseling")
     @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<String> finishCounseling(@RequestBody @Valid CounselingReportDTO counselingReportDTO,
                                                    @AuthenticationPrincipal Pharmacist user){
         Patient patient = patientService.getByEmail(counselingReportDTO.getPatientEmail());
         try {
-            counselingService.updateCounselingAfterAppointment(patient.getId(), counselingReportDTO.getFrom(),
+            Counseling counseling = counselingService.updateCounselingAfterAppointment(patient.getId(), counselingReportDTO.getFrom(),
                     counselingReportDTO.getReport(), user);
             List<PrescriptionItem> converted = convertPrescriptionItems(counselingReportDTO.getPrescriptionItems());
             try {
-                prescriptionService.createPrescription(converted, patient);
+                prescriptionService.createPrescription(converted, patient, counseling.getPharmacy().getId());
+
             } catch (PatientIsAllergicException e1) {
                 e1.printStackTrace();
                 return new ResponseEntity<>("Patient is allergic to medicine!", HttpStatus.OK);

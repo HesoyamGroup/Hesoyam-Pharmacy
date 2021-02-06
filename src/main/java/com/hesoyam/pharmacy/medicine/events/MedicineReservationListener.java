@@ -29,7 +29,7 @@ public class MedicineReservationListener implements ApplicationListener<OnMedici
         stringBuilder.append("You have successfully reserved medicament!");
         stringBuilder.append("\n\n Unique Code: ");
         stringBuilder.append(medicineReservation.getCode());
-        stringBuilder.append(" . \n\nKing regards,\n Hesoyam Pharmacy");
+        stringBuilder.append(".\n\nKing regards,\nHesoyam Pharmacy");
         String message = stringBuilder.toString();
 
         SimpleMailMessage email = new SimpleMailMessage();

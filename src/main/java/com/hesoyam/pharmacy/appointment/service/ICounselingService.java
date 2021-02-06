@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ICounselingService {
-    void updateCounselingAfterAppointment(long patientId, LocalDateTime from, String report, Pharmacist pharmacist) throws CounselingNotFoundException;
+    Counseling updateCounselingAfterAppointment(long patientId, LocalDateTime from, String report, Pharmacist pharmacist) throws CounselingNotFoundException;
 
     List<Counseling> getAllCounselingsForPatientAndPharmacist(Patient patient, Pharmacist user);
+
+    Counseling cancelCounseling(Patient patient, LocalDateTime from, Pharmacist pharmacist);
 }

@@ -11,11 +11,13 @@ import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
+import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IDermatologistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,6 +92,14 @@ public class CheckUpService implements ICheckUpService {
         checkUp = checkUpRepository.save(checkUp);
 
         return checkUp;
+    }
+
+    @Override
+    public CheckUp cancelCheckup(Patient patient, LocalDateTime from, Dermatologist user) {
+        CheckUp checkup = checkUpRepository.findCheckUpByPatientAndDermatologistAndDateTimeRange_From(patient, user, from);
+        checkup.setAppointmentStatus(AppointmentStatus.ABSENT);
+        checkUpRepository.save(checkup);
+        return checkup;
     }
 
     private List<CheckUp> getUpcomingCheckUps(List<CheckUp> checkUps) {

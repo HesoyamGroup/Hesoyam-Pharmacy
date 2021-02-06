@@ -6,6 +6,7 @@ import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CheckUpRepository extends JpaRepository<CheckUp, Long> {
@@ -17,5 +18,5 @@ public interface CheckUpRepository extends JpaRepository<CheckUp, Long> {
     List<CheckUp> findCheckUpsByDermatologist(Dermatologist dermatologist);
     List<CheckUp> getAllByPharmacy_IdAndAppointmentStatus(Long id, AppointmentStatus appointmentStatus);
     List<CheckUp> getAllByPatient_Id(Long patientId);
-
+    CheckUp findCheckUpByPatientAndDermatologistAndDateTimeRange_From(Patient patient, Dermatologist user, LocalDateTime from);
 }

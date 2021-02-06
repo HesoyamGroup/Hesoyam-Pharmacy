@@ -97,6 +97,15 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
         return loyaltyAccountRepository.save(loyaltyAccount);
     }
 
+    @Override
+    public int penalizeForMissingAppointment(Patient patient) {
+        LoyaltyAccount loyaltyAccount = getPatientLoyaltyAccount(patient);
+        int points = loyaltyAccount.getPoints();
+        loyaltyAccount.setPoints(points - 1);
+        update(loyaltyAccount);
+        return loyaltyAccount.getPoints();
+    }
+
     private LoyaltyAccountMembership loadLoyaltyAccountMembershipWithDTOData(LoyaltyAccountMembership loyaltyAccountMembership, LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO){
         loyaltyAccountMembership.setLoyaltyProgramConfig(loyaltyAccountMembershipDTO.getLoyaltyProgramConfig());
         loyaltyAccountMembership.setDiscount(loyaltyAccountMembershipDTO.getDiscount());

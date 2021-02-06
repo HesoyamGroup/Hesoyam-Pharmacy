@@ -8,5 +8,5 @@ import com.hesoyam.pharmacy.user.model.Patient;
 import java.util.List;
 
 public interface IPrescriptionService {
-    EPrescription createPrescription(List<PrescriptionItem> prescriptionItems, Patient patient) throws PatientIsAllergicException;
+    EPrescription createPrescription(List<PrescriptionItem> prescriptionItems, Patient patient, long pharmacyId) throws PatientIsAllergicException;
 }
