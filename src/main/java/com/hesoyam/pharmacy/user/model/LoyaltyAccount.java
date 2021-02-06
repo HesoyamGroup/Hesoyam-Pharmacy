@@ -22,10 +22,18 @@ public class LoyaltyAccount {
    @JoinColumn(name="patient_id", nullable = false)
    private Patient patient;
 
-   @ManyToOne(optional = false, fetch = FetchType.EAGER)
-   @JoinColumn(name="membership_id", nullable = false)
+   @ManyToOne(optional = true)
+   @JoinColumn(name="membership_id", nullable = true)
    private LoyaltyAccountMembership loyaltyAccountMembership;
 
+   public LoyaltyAccount() {
+   }
+
+   public LoyaltyAccount(int points, Patient patient, LoyaltyAccountMembership loyaltyAccountMembership) {
+      this.points = points;
+      this.patient = patient;
+      this.loyaltyAccountMembership = loyaltyAccountMembership;
+   }
 
    public Long getId() {
       return id;
@@ -57,5 +65,16 @@ public class LoyaltyAccount {
 
    public void setLoyaltyAccountMembership(LoyaltyAccountMembership loyaltyAccountMembership) {
       this.loyaltyAccountMembership = loyaltyAccountMembership;
+   }
+
+   public double getDiscountedPrice(double price){
+      if(loyaltyAccountMembership == null) return price;
+
+      double discount = loyaltyAccountMembership.getDiscount();
+      return price - calculatePercentage(price, discount);
+   }
+
+   private double calculatePercentage(double value, double percentage){
+      return (value * percentage)/100;
    }
 }

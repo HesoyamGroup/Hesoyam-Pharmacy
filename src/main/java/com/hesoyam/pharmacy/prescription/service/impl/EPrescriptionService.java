@@ -26,7 +26,8 @@ import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 import com.hesoyam.pharmacy.prescription.model.PrescriptionStatus;
 import com.hesoyam.pharmacy.prescription.repository.EPrescriptionRepository;
 import com.hesoyam.pharmacy.prescription.service.IEPrescriptionService;
-import com.hesoyam.pharmacy.user.model.User;
+import com.hesoyam.pharmacy.user.model.Patient;
+import com.hesoyam.pharmacy.user.service.ILoyaltyAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -36,11 +37,9 @@ import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EPrescriptionService implements IEPrescriptionService {
@@ -55,17 +54,20 @@ public class EPrescriptionService implements IEPrescriptionService {
     private IInventoryItemService inventoryItemService;
 
     @Autowired
+    private ILoyaltyAccountService loyaltyAccountService;
+
+    @Autowired
     private ApplicationEventPublisher eventPublisher;
 
     @Override
-    public List<PharmacyWithPrescriptionPriceDTO> get(File qrCodeImage, User user) {
+    public List<PharmacyWithPrescriptionPriceDTO> get(File qrCodeImage, Patient patient) {
         if(!isImage(qrCodeImage)) throw new InvalidEPrescriptionFormat("Uploaded file is not an image.");
 
         try {
             BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(ImageIO.read(qrCodeImage))));
             Result result = new MultiFormatReader().decode(binaryBitmap);
             EPrescriptionQRData ePrescriptionQRData = extractEPrescriptionDataFromDecodedQRCode(result);
-            EPrescription ePrescription = ePrescriptionRepository.getEPrescriptionByIdAndPatient_IdAndPrescriptionStatus(ePrescriptionQRData.getId(), user.getId(), PrescriptionStatus.ACTIVE);
+            EPrescription ePrescription = ePrescriptionRepository.getEPrescriptionByIdAndPatient_IdAndPrescriptionStatus(ePrescriptionQRData.getId(), patient.getId(), PrescriptionStatus.ACTIVE);
             if(ePrescription == null) throw new EntityNotFoundException();
 
             return getPharmaciesWhoCanFulfillPrescription(ePrescription);
@@ -80,8 +82,8 @@ public class EPrescriptionService implements IEPrescriptionService {
 
     @Override
     //TODO: Transactional. (!!!!!!)
-    public EPrescription complete(CompletePrescriptionDTO completePrescriptionDTO, User user) {
-        EPrescription ePrescription = ePrescriptionRepository.getEPrescriptionByIdAndPatient_IdAndPrescriptionStatus(completePrescriptionDTO.getPrescriptionId(), user.getId(), PrescriptionStatus.ACTIVE);
+    public EPrescription complete(CompletePrescriptionDTO completePrescriptionDTO, Patient patient) {
+        EPrescription ePrescription = ePrescriptionRepository.getEPrescriptionByIdAndPatient_IdAndPrescriptionStatus(completePrescriptionDTO.getPrescriptionId(), patient.getId(), PrescriptionStatus.ACTIVE);
         if(ePrescription == null) throw new EntityNotFoundException();
         Pharmacy pharmacy = pharmacyService.findOne(completePrescriptionDTO.getPharmacyId());
         boolean canFulfil = true;
@@ -96,6 +98,9 @@ public class EPrescriptionService implements IEPrescriptionService {
             inventoryItem.setAvailable(inventoryItem.getAvailable() - prescriptionItem.getQuantity());
             inventoryItemService.update(inventoryItem);
             double calculatedPrice = inventoryItem.calculateTodayPriceForQuantity(prescriptionItem.getQuantity());
+            System.out.println("Calculated price " + calculatedPrice);
+            calculatedPrice = loyaltyAccountService.calculateDiscountedPrice(patient, calculatedPrice);
+            System.out.println("Discoutned price " + calculatedPrice);
             price += calculatedPrice;
             medicineSales.add(new MedicineSale(LocalDateTime.now(), calculatedPrice, pharmacy, medicine));
         }

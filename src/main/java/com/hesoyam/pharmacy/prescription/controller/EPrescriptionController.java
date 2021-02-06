@@ -8,6 +8,7 @@ import com.hesoyam.pharmacy.prescription.exception.InvalidCompleteEPrescriptionE
 import com.hesoyam.pharmacy.prescription.exception.InvalidEPrescriptionFormat;
 import com.hesoyam.pharmacy.prescription.model.EPrescription;
 import com.hesoyam.pharmacy.prescription.service.IEPrescriptionService;
+import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,12 +34,12 @@ public class EPrescriptionController {
 
     @PostMapping("/upload")
     @Secured("ROLE_PATIENT")
-    public ResponseEntity<List<PharmacyWithPrescriptionPriceDTO>> getEPrescription(@RequestParam(required = true, name = "file") MultipartFile multipartFile, @AuthenticationPrincipal User user){
+    public ResponseEntity<List<PharmacyWithPrescriptionPriceDTO>> getEPrescription(@RequestParam(required = true, name = "file") MultipartFile multipartFile, @AuthenticationPrincipal Patient patient){
         File file;
         try {
             file = new File(System.getProperty("java.io.tmpdir") + randomizeFileName(multipartFile));
             multipartFile.transferTo(file);
-            return ResponseEntity.ok(prescriptionService.get(file, user));
+            return ResponseEntity.ok(prescriptionService.get(file, patient));
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -51,9 +52,9 @@ public class EPrescriptionController {
 
     @PostMapping("/complete")
     @Secured("ROLE_PATIENT")
-    public ResponseEntity<EPrescription> complete(@RequestBody CompletePrescriptionDTO completePrescriptionDTO, @AuthenticationPrincipal  User user){
+    public ResponseEntity<EPrescription> complete(@RequestBody CompletePrescriptionDTO completePrescriptionDTO, @AuthenticationPrincipal  Patient patient){
         try{
-            return ResponseEntity.ok(prescriptionService.complete(completePrescriptionDTO, user));
+            return ResponseEntity.ok(prescriptionService.complete(completePrescriptionDTO, patient));
         }catch (EntityNotFoundException e){
             return ResponseEntity.notFound().build();
         }catch (InvalidCompleteEPrescriptionException e){

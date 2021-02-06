@@ -9,6 +9,7 @@ import com.hesoyam.pharmacy.user.exceptions.*;
 import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.user.repository.UserRepository;
 import com.hesoyam.pharmacy.user.repository.VerificationTokensRepository;
+import com.hesoyam.pharmacy.user.service.ILoyaltyAccountService;
 import com.hesoyam.pharmacy.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -44,6 +47,9 @@ public class UserService implements UserDetailsService, IUserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ILoyaltyAccountService loyaltyAccountService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -97,19 +103,20 @@ public class UserService implements UserDetailsService, IUserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = UserNotUniqueException.class)
     public Patient register(RegistrationDTO registrationDTO) throws RegistrationValidationException, UserNotUniqueException {
         validateRegistrationRequest(registrationDTO);
 
         Patient patient = new Patient();
         loadUserAccountWithRegistrationData(patient,registrationDTO, false, false);
         patient.setRoleEnum(RoleEnum.PATIENT);
-
-        //TODO: Find by name parameter should be saved somewhere globally.
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_PATIENT");
         patient.setAuthorities(roles);
 
         try {
+
             patient = userRepository.save(patient);
+            loyaltyAccountService.createDefaultLoyaltyAccount(patient);
         }catch (DataIntegrityViolationException ex){
             throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
         }

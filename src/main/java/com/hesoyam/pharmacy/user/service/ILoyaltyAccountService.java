@@ -3,8 +3,7 @@ package com.hesoyam.pharmacy.user.service;
 import com.hesoyam.pharmacy.user.dto.LoyaltyAccountMembershipDTO;
 import com.hesoyam.pharmacy.user.dto.LoyaltyProgramConfigUpdateDTO;
 import com.hesoyam.pharmacy.user.exceptions.LoyaltyAccountMembershipInvalidUpdateException;
-import com.hesoyam.pharmacy.user.model.LoyaltyAccountMembership;
-import com.hesoyam.pharmacy.user.model.LoyaltyProgramConfig;
+import com.hesoyam.pharmacy.user.model.*;
 
 import java.util.List;
 
@@ -14,4 +13,6 @@ public interface ILoyaltyAccountService {
     LoyaltyProgramConfig updateLoyaltyProgramConfig(LoyaltyProgramConfigUpdateDTO loyaltyProgramConfigUpdateDTO);
     LoyaltyAccountMembership updateLoyaltyAccountMembership(LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO) throws LoyaltyAccountMembershipInvalidUpdateException;
     LoyaltyAccountMembership createLoyaltyAccountMembership(LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO) throws LoyaltyAccountMembershipInvalidUpdateException;
+    double calculateDiscountedPrice(Patient patient, double currentPrice);
+    LoyaltyAccount createDefaultLoyaltyAccount(Patient patient);
 }

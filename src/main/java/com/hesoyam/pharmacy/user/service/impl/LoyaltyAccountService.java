@@ -3,14 +3,16 @@ package com.hesoyam.pharmacy.user.service.impl;
 import com.hesoyam.pharmacy.user.dto.LoyaltyAccountMembershipDTO;
 import com.hesoyam.pharmacy.user.dto.LoyaltyProgramConfigUpdateDTO;
 import com.hesoyam.pharmacy.user.exceptions.LoyaltyAccountMembershipInvalidUpdateException;
-import com.hesoyam.pharmacy.user.model.LoyaltyAccountMembership;
-import com.hesoyam.pharmacy.user.model.LoyaltyProgramConfig;
+import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.user.repository.LoyaltyAccountMembershipRepository;
+import com.hesoyam.pharmacy.user.repository.LoyaltyAccountRepository;
 import com.hesoyam.pharmacy.user.repository.LoyaltyProgramConfigRepository;
 import com.hesoyam.pharmacy.user.service.ILoyaltyAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +24,11 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
 
     @Autowired
     private LoyaltyProgramConfigRepository loyaltyProgramConfigRepository;
+
+    @Autowired
+    private LoyaltyAccountRepository loyaltyAccountRepository;
+
+
     @Override
     public List<LoyaltyAccountMembership> getAllLoyaltyAccountMemberships() {
         return loyaltyAccountMembershipRepository.findAll();
@@ -64,6 +71,20 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
         }catch (DataIntegrityViolationException e){
             throw new LoyaltyAccountMembershipInvalidUpdateException("Loyalty membership name must be unique.");
         }
+    }
+
+    @Override
+    public double calculateDiscountedPrice(Patient patient, double currentPrice) {
+        LoyaltyAccount loyaltyAccount = loyaltyAccountRepository.getByPatientId(patient.getId());
+        return loyaltyAccount.getDiscountedPrice(currentPrice);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public LoyaltyAccount createDefaultLoyaltyAccount(Patient patient) {
+        LoyaltyAccountMembership loyaltyAccountMembership = loyaltyAccountMembershipRepository.findLoyaltyAccountMembershipByMinPoints(0);
+        LoyaltyAccount loyaltyAccount = new LoyaltyAccount(0, patient, loyaltyAccountMembership);
+        return loyaltyAccountRepository.save(loyaltyAccount);
     }
 
     private LoyaltyAccountMembership loadLoyaltyAccountMembershipWithDTOData(LoyaltyAccountMembership loyaltyAccountMembership, LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO){
