@@ -649,6 +649,28 @@ INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (1
 INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-20 12:30', '2021-02-20 14:00', 'WORK');
 INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (12, 3, '2021-02-21 12:30', '2021-02-21 14:00', 'WORK');
 
+
+
+-------------------
+-- E-Prescriptions
+-------------------
+--Veselin(id=14)
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 14, 'ACTIVE'); -- (id=1)
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 14, 'ACTIVE'); -- (id=2)
+
+-- (eprescription 1)
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 1 ,1);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (1, 2, 1);
+
+-- (eprescription 2) (only pharmacy 3 can fulfill)
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (8,3,2);
+
+
+--Radovan(id=17)
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 17, 'ACTIVE'); -- (id=3);
+-- (eprescription 3)
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 1,3);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (2,4,3);
 ------------------------
 -- SUBSCRIBED PATIENTS
 ------------------------

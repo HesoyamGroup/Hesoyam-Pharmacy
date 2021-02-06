@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Embeddable
 public class DateTimeRange {
@@ -82,5 +83,9 @@ public class DateTimeRange {
 
     public boolean includes(DateTimeRange other) {
         return (this.from.isBefore(other.getFrom()) || this.from.isEqual(other.getFrom())) && (this.to.isAfter(other.getTo()) || this.to.isEqual(other.getTo()));
+    }
+
+    public boolean includes(LocalDateTime localDateTime){
+        return localDateTime.isAfter(this.from) && localDateTime.isBefore(this.to);
     }
 }
