@@ -179,7 +179,7 @@ public class UserService implements UserDetailsService, IUserService {
 
     private Dermatologist createDermatologistAccount(RegistrationDTO registrationDTO){
         Dermatologist dermatologist = new Dermatologist();
-        loadUserAccountWithRegistrationData(dermatologist, registrationDTO, false, true);
+        loadUserAccountWithRegistrationData(dermatologist, registrationDTO, true, true);
         dermatologist.setRoleEnum(RoleEnum.DERMATOLOGIST);
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_DERMATOLOGIST");
         dermatologist.setAuthorities(roles);
@@ -188,7 +188,7 @@ public class UserService implements UserDetailsService, IUserService {
 
     private Pharmacist createPharmacistAccount(RegistrationDTO registrationDTO){
         Pharmacist pharmacist = new Pharmacist();
-        loadUserAccountWithRegistrationData(pharmacist, registrationDTO, false, true);
+        loadUserAccountWithRegistrationData(pharmacist, registrationDTO, true, true);
         pharmacist.setRoleEnum(RoleEnum.PHARMACIST);
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_PHARMACIST");
         pharmacist.setAuthorities(roles);
@@ -199,7 +199,7 @@ public class UserService implements UserDetailsService, IUserService {
     @Override
     public Administrator registerAdministrator(AdministratorRegistrationDTO administratorRegistrationDTO) throws UserNotUniqueException {
         Administrator administrator = new Administrator();
-        loadUserAccountWithRegistrationData(administrator, administratorRegistrationDTO, false, true);
+        loadUserAccountWithRegistrationData(administrator, administratorRegistrationDTO, true, true);
         administrator.setRoleEnum(RoleEnum.ADMINISTRATOR);
         administrator.setPharmacy(administratorRegistrationDTO.getPharmacy());
 
