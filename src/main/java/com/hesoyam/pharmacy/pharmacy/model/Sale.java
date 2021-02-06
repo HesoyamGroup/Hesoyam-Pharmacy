@@ -30,4 +30,44 @@ public abstract class Sale {
    @JsonManagedReference
    protected Pharmacy pharmacy;
 
+   public Sale() {
+   }
+
+   public Sale(LocalDateTime dateOfSale, double price, Pharmacy pharmacy) {
+      this.dateOfSale = dateOfSale;
+      this.price = price;
+      this.pharmacy = pharmacy;
+   }
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public LocalDateTime getDateOfSale() {
+      return dateOfSale;
+   }
+
+   public void setDateOfSale(LocalDateTime dateOfSale) {
+      this.dateOfSale = dateOfSale;
+   }
+
+   public double getPrice() {
+      return price;
+   }
+
+   public void setPrice(double price) {
+      this.price = price;
+   }
+
+   public Pharmacy getPharmacy() {
+      return pharmacy;
+   }
+
+   public void setPharmacy(Pharmacy pharmacy) {
+      this.pharmacy = pharmacy;
+   }
 }

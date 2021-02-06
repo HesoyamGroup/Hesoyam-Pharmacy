@@ -3,6 +3,8 @@ package com.hesoyam.pharmacy.prescription.controller;
 import com.hesoyam.pharmacy.pharmacy.dto.PharmacyDTO;
 import com.hesoyam.pharmacy.pharmacy.dto.PharmacyWithPrescriptionPriceDTO;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.prescription.dto.CompletePrescriptionDTO;
+import com.hesoyam.pharmacy.prescription.exception.InvalidCompleteEPrescriptionException;
 import com.hesoyam.pharmacy.prescription.exception.InvalidEPrescriptionFormat;
 import com.hesoyam.pharmacy.prescription.model.EPrescription;
 import com.hesoyam.pharmacy.prescription.service.IEPrescriptionService;
@@ -43,6 +45,18 @@ public class EPrescriptionController {
         }catch (EntityNotFoundException e){
             return ResponseEntity.notFound().build();
         }catch (InvalidEPrescriptionFormat e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/complete")
+    @Secured("ROLE_PATIENT")
+    public ResponseEntity<EPrescription> complete(@RequestBody CompletePrescriptionDTO completePrescriptionDTO, @AuthenticationPrincipal  User user){
+        try{
+            return ResponseEntity.ok(prescriptionService.complete(completePrescriptionDTO, user));
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }catch (InvalidCompleteEPrescriptionException e){
             return ResponseEntity.badRequest().build();
         }
     }

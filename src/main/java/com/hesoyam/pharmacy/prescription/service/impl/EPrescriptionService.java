@@ -11,11 +11,15 @@ import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.pharmacy.dto.PharmacyWithPrescriptionPriceDTO;
+import com.hesoyam.pharmacy.pharmacy.events.OnMedicineSaleEvent;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
+import com.hesoyam.pharmacy.pharmacy.model.MedicineSale;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
+import com.hesoyam.pharmacy.prescription.dto.CompletePrescriptionDTO;
 import com.hesoyam.pharmacy.prescription.dto.EPrescriptionQRData;
+import com.hesoyam.pharmacy.prescription.exception.InvalidCompleteEPrescriptionException;
 import com.hesoyam.pharmacy.prescription.exception.InvalidEPrescriptionFormat;
 import com.hesoyam.pharmacy.prescription.model.EPrescription;
 import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
@@ -24,6 +28,7 @@ import com.hesoyam.pharmacy.prescription.repository.EPrescriptionRepository;
 import com.hesoyam.pharmacy.prescription.service.IEPrescriptionService;
 import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -32,6 +37,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,6 +53,9 @@ public class EPrescriptionService implements IEPrescriptionService {
 
     @Autowired
     private IInventoryItemService inventoryItemService;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     @Override
     public List<PharmacyWithPrescriptionPriceDTO> get(File qrCodeImage, User user) {
@@ -69,8 +78,39 @@ public class EPrescriptionService implements IEPrescriptionService {
         }
     }
 
-    private PharmacyWithPrescriptionPriceDTO mapPharmacyToPharmacyWithPrescriptionDataDTO(Pharmacy pharmacy, int price){
-        return new PharmacyWithPrescriptionPriceDTO(pharmacy.getId(), pharmacy.getName(), pharmacy.getAddress(), price, pharmacy.getRating());
+    @Override
+    //TODO: Transactional. (!!!!!!)
+    public EPrescription complete(CompletePrescriptionDTO completePrescriptionDTO, User user) {
+        EPrescription ePrescription = ePrescriptionRepository.getEPrescriptionByIdAndPatient_IdAndPrescriptionStatus(completePrescriptionDTO.getPrescriptionId(), user.getId(), PrescriptionStatus.ACTIVE);
+        if(ePrescription == null) throw new EntityNotFoundException();
+        Pharmacy pharmacy = pharmacyService.findOne(completePrescriptionDTO.getPharmacyId());
+        boolean canFulfil = true;
+        double price = 0;
+        List<MedicineSale> medicineSales = new ArrayList<>();
+        for(PrescriptionItem prescriptionItem : ePrescription.getPrescriptionItems()){
+            Medicine medicine = prescriptionItem.getMedicine();
+            if(!pharmacyService.canPharmacyOfferMedicineQuantity(pharmacy.getId(), medicine.getId(), prescriptionItem.getQuantity())){
+                throw new InvalidCompleteEPrescriptionException("Not enough medicine!");
+            }
+            InventoryItem inventoryItem = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(pharmacy.getId(), medicine.getId());
+            inventoryItem.setAvailable(inventoryItem.getAvailable() - prescriptionItem.getQuantity());
+            inventoryItemService.update(inventoryItem);
+            double calculatedPrice = inventoryItem.calculateTodayPriceForQuantity(prescriptionItem.getQuantity());
+            price += calculatedPrice;
+            medicineSales.add(new MedicineSale(LocalDateTime.now(), calculatedPrice, pharmacy, medicine));
+        }
+        ePrescription.setPrescriptionStatus(PrescriptionStatus.COMPLETED);
+        ePrescriptionRepository.save(ePrescription);
+
+        eventPublisher.publishEvent(new OnMedicineSaleEvent(medicineSales));
+
+
+        return null;
+
+    }
+
+    private PharmacyWithPrescriptionPriceDTO mapPharmacyToPharmacyWithPrescriptionDataDTO(Pharmacy pharmacy, int price, Long eprescriptionId){
+        return new PharmacyWithPrescriptionPriceDTO(pharmacy.getId(), pharmacy.getName(), pharmacy.getAddress(), price, pharmacy.getRating(), eprescriptionId);
     }
 
     private List<PharmacyWithPrescriptionPriceDTO> getPharmaciesWhoCanFulfillPrescription(EPrescription ePrescription){
@@ -89,7 +129,7 @@ public class EPrescriptionService implements IEPrescriptionService {
                 finalPrice += inventoryItem.calculateTodayPriceForQuantity(prescriptionItem.getQuantity());
             }
             if (canFulfill) {
-                pharmacyInfo.add(mapPharmacyToPharmacyWithPrescriptionDataDTO(pharmacy, finalPrice));
+                pharmacyInfo.add(mapPharmacyToPharmacyWithPrescriptionDataDTO(pharmacy, finalPrice, ePrescription.getId()));
             }
         }
         return pharmacyInfo;
