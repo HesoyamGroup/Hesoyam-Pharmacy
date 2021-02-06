@@ -97,7 +97,7 @@ public class CheckUpController {
     }
 
     @GetMapping(value = "/free/pharmacy/{id}")
-    ResponseEntity<List<FreeCheckupDTO>> getFreeCheckupsByPharmacy(@PathVariable Long id){
+    public ResponseEntity<List<FreeCheckupDTO>> getFreeCheckupsByPharmacy(@PathVariable Long id){
 
         List<CheckUp> checkUps = checkUpService.getUpcomingFreeCheckupsByPharmacy(id);
         List<FreeCheckupDTO> freeCheckUps = new ArrayList<>();
@@ -108,7 +108,7 @@ public class CheckUpController {
 
     @PreAuthorize("hasRole('PATIENT')")
     @GetMapping(value = "/future/patient")
-    ResponseEntity<List<FutureCheckupDTO>> getFutureCheckupsByPatient(@AuthenticationPrincipal User user){
+    public ResponseEntity<List<FutureCheckupDTO>> getFutureCheckupsByPatient(@AuthenticationPrincipal User user){
 
         List<CheckUp> checkUps = checkUpService.getUpcomingCheckupsByPatient(user.getId());
         List<FutureCheckupDTO> futureCheckupDTO = new ArrayList<>();
@@ -119,7 +119,7 @@ public class CheckUpController {
 
     @PreAuthorize("hasRole('PATIENT')")
     @PostMapping(value = "/cancel/patient")
-    ResponseEntity<FutureCheckupDTO> cancelFutureCheckup(@RequestBody FutureCheckupDTO futureCheckupDTO){
+    public ResponseEntity<FutureCheckupDTO> cancelFutureCheckup(@RequestBody FutureCheckupDTO futureCheckupDTO){
 
         try{
             CheckUp checkUp = checkUpService.findById(futureCheckupDTO.getId());
