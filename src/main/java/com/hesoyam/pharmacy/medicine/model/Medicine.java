@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 public class Medicine {
@@ -127,5 +128,18 @@ public class Medicine {
 
    public void setRating(double rating) {
       this.rating = rating;
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof Medicine)) return false;
+      Medicine medicine = (Medicine) o;
+      return getId().equals(medicine.getId());
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(getId());
    }
 }
