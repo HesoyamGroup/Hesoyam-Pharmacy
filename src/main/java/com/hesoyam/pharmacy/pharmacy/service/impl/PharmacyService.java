@@ -14,6 +14,7 @@ import com.hesoyam.pharmacy.user.model.RoleEnum;
 import com.hesoyam.pharmacy.user.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -35,6 +36,9 @@ public class PharmacyService implements IPharmacyService {
 
     @Autowired
     private IRoleService roleService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Pharmacy create(PharmacyCreateDTO pharmacyCreateDTO) throws InvalidPharmacyCreateRequest {
@@ -72,10 +76,10 @@ public class PharmacyService implements IPharmacyService {
     private Administrator createAdministratorObjectFromDTO(PharmacyAdministratorCreateDTO pharmacyAdministratorCreateDTO){
         Administrator administrator = new Administrator();
         administrator.setRoleEnum(RoleEnum.ADMINISTRATOR);
-        administrator.setPasswordReset(false);
+        administrator.setPasswordReset(true);
         administrator.setEnabled(true);
         administrator.setEmail(pharmacyAdministratorCreateDTO.getEmail());
-        administrator.setPassword(UUID.randomUUID().toString().substring(0, 15));
+        administrator.setPassword(passwordEncoder.encode(pharmacyAdministratorCreateDTO.getPassword()));
         administrator.setFirstName(pharmacyAdministratorCreateDTO.getFirstName());
         administrator.setLastName(pharmacyAdministratorCreateDTO.getLastName());
         administrator.setGender(pharmacyAdministratorCreateDTO.getGender());
@@ -113,5 +117,15 @@ public class PharmacyService implements IPharmacyService {
     @Override
     public Pharmacy update(Pharmacy pharmacy) {
         return pharmacyRepository.save(pharmacy);
+    }
+
+    @Override
+    public List<Pharmacy> getPharmaciesByMedicineAvailability(List<Long> medicineIds) {
+        return pharmacyRepository.getPharmaciesByMedicineAvailability(medicineIds,Long.valueOf(medicineIds.size()));
+    }
+
+    @Override
+    public Boolean canPharmacyOfferMedicineQuantity(Long pharmacyId, Long medicineId, int quantity) {
+        return pharmacyRepository.canPharmacyOfferMedicineQuantity(pharmacyId, medicineId, quantity);
     }
 }

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class EPrescription {
@@ -31,6 +32,10 @@ public class EPrescription {
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinColumn(name="eprescription_id", referencedColumnName="id", nullable = false)
    private List<PrescriptionItem> prescriptionItems;
+
+   @Enumerated(EnumType.STRING)
+   @NotNull
+   private PrescriptionStatus prescriptionStatus;
 
    public Long getId() {
       return id;
@@ -95,4 +100,15 @@ public class EPrescription {
          prescriptionItems.clear();
    }
 
+   public PrescriptionStatus getPrescriptionStatus() {
+      return prescriptionStatus;
+   }
+
+   public void setPrescriptionStatus(PrescriptionStatus prescriptionStatus) {
+      this.prescriptionStatus = prescriptionStatus;
+   }
+
+   public List<Long> getMedicineIds(){
+      return prescriptionItems.stream().map( (prescriptionItem -> prescriptionItem.getMedicine().getId())).collect(Collectors.toList());
+   }
 }

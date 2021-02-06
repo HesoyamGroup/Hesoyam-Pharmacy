@@ -1,5 +1,6 @@
 package com.hesoyam.pharmacy.pharmacy.service;
 
+import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.pharmacy.dto.PharmacyCreateDTO;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidPharmacyCreateRequest;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
@@ -13,4 +14,6 @@ public interface IPharmacyService {
     Pharmacy findOne(Long id);
     List<Pharmacy> findAllPharmaciesByMedicine(Long id);
     Pharmacy update(Pharmacy pharmacy);
+    List<Pharmacy> getPharmaciesByMedicineAvailability(List<Long> medicineIds);
+    Boolean canPharmacyOfferMedicineQuantity(Long pharmacyId, Long medicineId, int quantity);
 }
