@@ -18,6 +18,9 @@ public class PharmacyAdministratorCreateDTO {
     @Length(min=3, max = 100, message = "Last name length should be between 3 and 100 characters.")
     protected String lastName;
 
+    @NotNull(message="Initial password must be provided.")
+    protected String password;
+
     @PhoneNumberConstraint
     protected String telephone;
 
@@ -79,4 +82,11 @@ public class PharmacyAdministratorCreateDTO {
         this.address = address;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

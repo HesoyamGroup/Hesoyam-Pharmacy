@@ -6,9 +6,11 @@
 package com.hesoyam.pharmacy.pharmacy.model;
 
 import com.hesoyam.pharmacy.medicine.model.Medicine;
+import com.hesoyam.pharmacy.util.DateTimeRange;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -105,6 +107,20 @@ public class InventoryItem {
       for (Iterator<InventoryItemPrice> iter = newPrices.iterator(); iter.hasNext();)
          addPrices(iter.next());
    }
+
+   public double calculateTodayPriceForQuantity(int quantity){
+      return quantity * getTodayPrice();
+   }
+   public double getTodayPrice(){
+      for(InventoryItemPrice inventoryItemPrice : prices){
+         DateTimeRange dateTimeRange = inventoryItemPrice.getValidThrough();
+         if(dateTimeRange.includes(LocalDateTime.now())){
+            return inventoryItemPrice.getPrice();
+         }
+      }
+      return 0;
+   }
+
 
    public boolean addPrices(InventoryItemPrice newInventoryItemPrice) {
       if (newInventoryItemPrice == null)
