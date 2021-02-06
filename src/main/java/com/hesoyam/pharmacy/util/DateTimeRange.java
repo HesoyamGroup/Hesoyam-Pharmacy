@@ -42,7 +42,18 @@ public class DateTimeRange {
     }
 
     public DateTimeRange setFrom(LocalDateTime from) {
-        this.from = from;
+        if(this.to != null){
+            if(this.to.isAfter(from)){
+                this.from = from;
+            }
+            else{
+                this.from = this.to;
+                this.to = from;
+            }
+        }
+        else{
+            this.from = from;
+        }
         return this;
     }
 
@@ -51,7 +62,18 @@ public class DateTimeRange {
     }
 
     public DateTimeRange setTo(LocalDateTime to) {
-        this.to = to;
+        if(this.from != null){
+            if(this.from.isBefore(to)){
+                this.to = to;
+            }
+            else{
+                this.to = this.from;
+                this.from = to;
+            }
+        }
+        else{
+            this.to = to;
+        }
         return this;
     }
 

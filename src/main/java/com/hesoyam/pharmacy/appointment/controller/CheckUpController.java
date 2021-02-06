@@ -1,7 +1,9 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
+import com.hesoyam.pharmacy.appointment.DTO.FutureCheckupDTO;
 import com.hesoyam.pharmacy.appointment.dto.FreeCheckupDTO;
 import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.exceptions.CheckupCancellationPeriodExpiredException;
 import com.hesoyam.pharmacy.appointment.exceptions.CheckupNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
@@ -21,8 +23,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 
 @RestController
 @RequestMapping(value = "/checkup", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -102,4 +106,41 @@ public class CheckUpController {
         return ResponseEntity.status(HttpStatus.OK).body(freeCheckUps);
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
+    @GetMapping(value = "/future/patient")
+    ResponseEntity<List<FutureCheckupDTO>> getFutureCheckupsByPatient(@AuthenticationPrincipal User user){
+
+        List<CheckUp> checkUps = checkUpService.getUpcomingCheckupsByPatient(user.getId());
+        List<FutureCheckupDTO> futureCheckupDTO = new ArrayList<>();
+        checkUps.forEach(checkUp -> futureCheckupDTO.add(new FutureCheckupDTO(checkUp)));
+
+        return ResponseEntity.status(HttpStatus.OK).body(futureCheckupDTO);
+    }
+
+    @PreAuthorize("hasRole('PATIENT')")
+    @PostMapping(value = "/cancel/patient")
+    ResponseEntity<FutureCheckupDTO> cancelFutureCheckup(@RequestBody FutureCheckupDTO futureCheckupDTO){
+
+        try{
+            CheckUp checkUp = checkUpService.findById(futureCheckupDTO.getId());
+
+            if(checkUp.getDateTimeRange().getFrom().isBefore(LocalDateTime.now().plusDays(1)))
+                throw new CheckupCancellationPeriodExpiredException(checkUp.getId());
+
+            checkUp.setPatient(null);
+            checkUp.setAppointmentStatus(AppointmentStatus.FREE);
+
+            checkUp = checkUpService.update(checkUp);
+
+            return ResponseEntity.status(HttpStatus.OK).body(new FutureCheckupDTO(checkUp));
+
+        } catch (CheckupNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new FutureCheckupDTO());
+        } catch (CheckupCancellationPeriodExpiredException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FutureCheckupDTO());
+        }
+
+    }
 }

@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.medicine.controller;
 
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationCancellationDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationDTO;
+import com.hesoyam.pharmacy.medicine.dto.MedicineReservationPickupDTO;
 import com.hesoyam.pharmacy.medicine.events.OnMedicineReservationCompletedEvent;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationExpiredCancellationException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotCreatedException;
@@ -14,18 +15,26 @@ import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.Patient;
+import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPatientService;
 import com.hesoyam.pharmacy.user.service.IUserService;
+import com.hesoyam.pharmacy.util.notifications.EmailClient;
+import com.hesoyam.pharmacy.util.notifications.EmailObject;
+import com.sun.istack.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -52,24 +61,22 @@ public class MedicineReservationController {
     @Autowired
     ApplicationEventPublisher applicationEventPublisher;
 
+    @Autowired
+    EmailClient client;
+
     @GetMapping("/all")
     public ResponseEntity<List<MedicineReservation>> getAllMedicineReservations(){
         return ResponseEntity.ok(medicineReservationService.getAll());
     }
 
     @GetMapping("/get-reservations")
-    public ResponseEntity<List<MedicineReservation>> getAllMedicineReservationsByPatient(HttpServletRequest request){
+    public ResponseEntity<List<MedicineReservationDTO>> getAllMedicineReservationsByPatient(@AuthenticationPrincipal User user){
 
-        String token = tokenUtils.getToken(request);
-        String email = tokenUtils.getUsernameFromToken(token);
+            List<MedicineReservation> medicineReservationList = medicineReservationService.getByPatientId(user.getId());
+            List<MedicineReservationDTO> medicineReservationDTOList = new ArrayList<>();
+            medicineReservationList.forEach(medicineReservation -> medicineReservationDTOList.add(new MedicineReservationDTO(medicineReservation)));
 
-        try{
-            User user = userService.findByEmail(email);
-            return ResponseEntity.ok().body(medicineReservationService.getByPatientId(user.getId()));
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
-        }
+            return ResponseEntity.ok().body(medicineReservationDTOList);
     }
 
     @PostMapping("/create")
@@ -149,4 +156,72 @@ public class MedicineReservationController {
         }
         return new String(text);
     }
+
+    @GetMapping(value = "/pickup/{code}")
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<MedicineReservationPickupDTO> getMedicineReservationForCode(@PathVariable String code,
+                                                                                      @AuthenticationPrincipal Pharmacist user){
+        long pharmacyId = user.getPharmacy().getId();
+
+            MedicineReservation reservation = medicineReservationService.findByCodeAndPharmacy(code, pharmacyId);
+            if(reservation != null)
+                return new ResponseEntity<>(new MedicineReservationPickupDTO(reservation), HttpStatus.OK);
+            else
+                return new ResponseEntity<>(null, HttpStatus.OK);
+
+
+    }
+
+    @PostMapping(value = "/confirm-pickup")
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public boolean confirmPickup(@RequestBody @Valid String reservationCode, @AuthenticationPrincipal User user){
+        String extractCode = reservationCode.split(":")[1].substring(1, reservationCode.split(":")[1].length() -2);
+        String emailBody = "This email is confirmation that you have successfully picked up order #";
+        try {
+            MedicineReservation toUpdate =  medicineReservationService.getByMedicineReservationCode(extractCode);
+            if(!toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED) &&
+                    !(toUpdate.getPickUpDate().isBefore(LocalDateTime.now()) && toUpdate.getPickUpDate().isAfter(
+                            LocalDateTime.now().minus(24, ChronoUnit.HOURS)))) {
+
+                toUpdate.setMedicineReservationStatus(MedicineReservationStatus.COMPLETED);
+                medicineReservationService.update(toUpdate);
+
+                // TODO: Izmeniti email da bude klijentski
+                EmailObject email = new EmailObject("Medicine pickup confirmation!",
+//                        toUpdate.getPatient().getEmail(), emailBody + toUpdate.getCode() + "!");
+                        "krickovicluka@gmail.com", emailBody + toUpdate.getCode() + "!");
+                client.sendEmail(email);
+                return true;
+
+            }
+            return false;
+        } catch (MedicineReservationNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    @PostMapping(value = "/cancel-pickup")
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public boolean cancelPickup(@RequestBody @Valid String reservationCode){
+        MedicineReservation toUpdate = null;
+        String extractCode = reservationCode.split(":")[1].substring(1, reservationCode.split(":")[1].length() -2);
+        try {
+            toUpdate = medicineReservationService.getByMedicineReservationCode(extractCode);
+            if(toUpdate != null) {
+                if (toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED)) {
+                    toUpdate.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
+                    medicineReservationService.update(toUpdate);
+                    return true;
+                }
+            }
+            return false;
+        } catch (MedicineReservationNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
 }

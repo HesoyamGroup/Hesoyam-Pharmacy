@@ -1,29 +1,24 @@
-package com.hesoyam.pharmacy.user.dto;
+package com.hesoyam.pharmacy.user.DTO;
 
 import com.hesoyam.pharmacy.user.model.Gender;
 import com.hesoyam.pharmacy.user.model.User;
 
-public class UserBasicInfoDTO {
+public class UserProfileDTO {
+
     String firstName;
     String lastName;
     Gender gender;
+    String email;
     String telephone;
 
-    public UserBasicInfoDTO() {
-        //Empty ctor for JSON serializer
+    public UserProfileDTO() {
     }
 
-    public UserBasicInfoDTO(String firstName, String lastName, Gender gender, String telephone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.telephone = telephone;
-    }
-
-    public UserBasicInfoDTO(User user){
+    public UserProfileDTO(User user){
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.gender = user.getGender();
+        this.email = user.getEmail();
         this.telephone = user.getTelephone();
     }
 
@@ -51,11 +46,19 @@ public class UserBasicInfoDTO {
         this.gender = gender;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
+    public void setTelephone(String phone) {
+        this.telephone = phone;
     }
 }

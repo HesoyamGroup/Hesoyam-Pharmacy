@@ -434,11 +434,6 @@ VALUES
 INSERT INTO supplier (id) VALUES (18);
 INSERT INTO user_roles (user_id, role_id) VALUES (18, 7);
 
-insert into STORAGE (supplier_id) VALUES (18);
-INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (200,15, 1, 1);
-INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (150,30, 2, 1);
-INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (100,45, 3, 1);
-
 -- 19
 INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
@@ -447,24 +442,22 @@ VALUES
 INSERT INTO supplier (id) VALUES (19);
 INSERT INTO user_roles (user_id, role_id) VALUES (19, 7);
 
-insert into STORAGE (supplier_id) VALUES (19);
-INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (6,0, 2, 2);
 
 -----------------------
 -- Medicine Reservation
 -----------------------
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
-VALUES (1, 'sdadasdadadasasdasasdda', 'CREATED', '2021-02-01 23:59:59', 14);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
-VALUES (2, 'wqksdhajdhaushydhwqkjmsdkami', 'COMPLETED', '2021-02-19 23:59:59', 14);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
-VALUES (3, 'bcvobocjiwque878dusijksdfj', 'CREATED', '2021-03-01 23:59:59', 14);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
-VALUES (4, 'dfjiwdjas8idlak0ti9kdsmklc', 'CANCELLED', '2021-02-16 23:59:59', 14);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
-VALUES (5, 'sdfjiosdofsdipkdogjuhuas', 'COMPLETED', '2021-01-31 23:59:59', 14);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id)
-VALUES (6, 'jcjsiajdojiosd0weoklssmad', 'CREATED', '2021-05-12 23:59:59', 14);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
+VALUES (1, 'sdadasdadadasasdasasdda', 'CREATED', '2021-02-01 23:59:59', 14, 1);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
+VALUES (2, 'wqksdhajdhaushydhwqkjmsdkami', 'COMPLETED', '2021-02-19 23:59:59', 14, 1);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
+VALUES (3, 'bcvobocjiwque878dusijksdfj', 'CREATED', '2021-03-01 23:59:59', 14, 1);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
+VALUES (4, 'dfjiwdjas8idlak0ti9kdsmklc', 'CANCELLED', '2021-02-16 23:59:59', 14, 2);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
+VALUES (5, 'sdfjiosdofsdipkdogjuhuas', 'COMPLETED', '2021-01-31 23:59:59', 14, 2);
+INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
+VALUES (6, 'jcjsiajdojiosd0weoklssmad', 'CREATED', '2021-05-12 23:59:59', 14, 2);
 
 ---------------------------
 --Medicine Reservation Item
@@ -501,13 +494,17 @@ VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospod
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'FREE', '2021-02-04 21:00:00.189796', '2021-02-04 21:15:00.189796', 2500.0 , 'Gospodine...', null, 1, 10, null);
+VALUES ('CHECKUP', 'FREE', '2021-02-08 21:00:00.189796', '2021-02-08 21:15:00.189796', 2500.0 , null , null, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'FREE', '2021-02-04 21:30:00.189796', '2021-02-04 21:45:00.189796', 1500.0 , 'Gospodine...', null, 1, 10, null);
+VALUES ('CHECKUP', 'FREE', '2021-02-08 21:30:00.189796', '2021-02-08 21:45:00.189796', 1500.0 , null , null, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'FREE', '2021-02-04 21:45:00.189796', '2021-02-04 22:00:00.189796', 1750.0 , 'Gospodine...', null, 1, 10, null);
+VALUES ('CHECKUP', 'FREE', '2021-02-08 21:45:00.189796', '2021-02-08 22:00:00.189796', 1750.0 , null , null, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'FREE', '2021-02-04 22:00:00.189796', '2021-02-04 22:15:00.189796', 1250.0 , 'Gospodine...', null, 1, 10, null);
+VALUES ('CHECKUP', 'FREE', '2021-02-08 22:00:00.189796', '2021-02-08 22:15:00.189796', 1250.0 , null , null, 1, 10, null);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('CHECKUP', 'TAKEN', '2021-02-06 12:00:00.189796', '2021-02-06 12:15:00.189796', 1250.0 , null , 14, 2, 11, null);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('CHECKUP', 'TAKEN', '2021-02-08 23:15:00.189796', '2021-02-08 23:30:00.189796', 1250.0 , null , 14, 1, 10, null);
 
 --------------------
 -- Patient allergies
@@ -672,3 +669,31 @@ INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES
 -- (eprescription 3)
 INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 1,3);
 INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (2,4,3);
+------------------------
+-- SUBSCRIBED PATIENTS
+------------------------
+
+INSERT INTO subscription (pharmacy_id, patient_id) VALUES (3, 15);
+INSERT INTO subscription (pharmacy_id, patient_id) VALUES (3, 16);
+INSERT INTO subscription (pharmacy_id, patient_id) VALUES (3, 17);
+
+INSERT INTO subscription (pharmacy_id, patient_id) VALUES (2, 14);
+INSERT INTO subscription (pharmacy_id, patient_id) VALUES (2, 15);
+
+----------------
+-- PROMOTIONS
+----------------
+
+INSERT INTO promotion (from_date, to_date, description, title, administrator_id, pharmacy_id)
+VALUES('2021-02-08', '2021-02-15', 'Opis prve promocije', 'Prva promocija', 3, 2);
+INSERT INTO promotion (from_date, to_date, description, title, administrator_id, pharmacy_id)
+VALUES('2021-02-10', '2021-02-25', 'Opis druge promocije', 'Druga promocija', 4, 2);
+INSERT INTO promotion (from_date, to_date, description, title, administrator_id, pharmacy_id)
+VALUES('2021-02-13', '2021-03-01', 'Opis treće promocije', 'Treća promocija', 5, 3);
+
+----------------------
+-- VACATION REQUESTS
+----------------------
+
+INSERT INTO vacation_request (employee_id, from_date, to_date, status) VALUES (12, '2021-02-13', '2021-02-17', 'CREATED');
+INSERT INTO vacation_request (employee_id, from_date, to_date, status) VALUES (7, '2021-02-13', '2021-02-17', 'CREATED');

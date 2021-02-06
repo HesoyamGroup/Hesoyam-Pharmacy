@@ -5,6 +5,7 @@ import com.hesoyam.pharmacy.appointment.exceptions.CheckupNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
 import com.hesoyam.pharmacy.user.model.User;
+import org.hibernate.annotations.Check;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public interface ICheckUpService {
 
     List<CheckUp> getUpcomingFreeCheckupsByEmployeeAndPharmacy(Long dermatologistId, String pharmacyId);
     List<CheckUp> getUpcomingFreeCheckupsByPharmacy(Long pharmacyId);
+    List<CheckUp> getUpcomingCheckupsByPatient(Long id);
 
     CheckUp findById(Long id) throws CheckupNotFoundException;
     CheckUp update(CheckUp checkup) throws CheckupNotFoundException;

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 public class SubscribeService implements ISubscribeService {
@@ -50,6 +51,12 @@ public class SubscribeService implements ISubscribeService {
     @Override
     public boolean isSubscribed(Long pharmacyId, User user) {
         return patientService.isPatientSubscribedToPharmacy(user.getId(), pharmacyId);
+    }
+
+    @Override
+    public List<Patient> getSubscribedPatientsByPharmacy(Long pharmacyId) {
+        Pharmacy pharmacy = pharmacyService.findOne(pharmacyId);
+        return pharmacy.getSubscribedPatients();
     }
 
     private Patient getPatient(User user){
