@@ -84,7 +84,7 @@ public class CheckUpService implements ICheckUpService {
     @Override
     public CheckUp update(CheckUp checkupData) throws CheckupNotFoundException {
         CheckUp checkUp = checkUpRepository.getOne(checkupData.getId());
-        if(checkUp == null) throw new CheckupNotFoundException(checkUp.getId());
+        if(checkUp == null) throw new CheckupNotFoundException(checkupData.getId());
 
         checkUp.update(checkupData);
         checkUp = checkUpRepository.save(checkUp);
@@ -92,7 +92,7 @@ public class CheckUpService implements ICheckUpService {
         return checkUp;
     }
 
-    private List<CheckUp> getUpcomingCheckUps(List<CheckUp> checkUps) {
+    private List<CheckUp>getUpcomingCheckUps(List<CheckUp> checkUps) {
         return checkUps.stream().filter(Appointment::isUpcoming).collect(Collectors.toList());
     }
 }

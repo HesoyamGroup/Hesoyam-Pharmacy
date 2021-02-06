@@ -27,4 +27,16 @@ public class Counseling extends Appointment {
    public void setPharmacist(Pharmacist pharmacist) {
       this.pharmacist = pharmacist;
    }
+
+   public void update(Counseling counseling){
+      this.id = counseling.getId();
+      this.pharmacist = counseling.getPharmacist();
+      this.dateTimeRange = counseling.getDateTimeRange();
+      this.pharmacy = counseling.getPharmacy();
+      this.appointmentStatus = counseling.getAppointmentStatus();
+      this.patient = counseling.getPatient();
+      this.price = counseling.getPrice();
+      this.report = counseling.getReport();
+      this.therapy = counseling.getTherapy();
+   }
 }
