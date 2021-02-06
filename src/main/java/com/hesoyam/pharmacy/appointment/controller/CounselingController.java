@@ -3,6 +3,7 @@ package com.hesoyam.pharmacy.appointment.controller;
 
 import com.hesoyam.pharmacy.appointment.DTO.*;
 import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.exceptions.CounselingCancellationPeriodExpiredException;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
@@ -108,8 +109,34 @@ public class CounselingController {
     }
 
     @PreAuthorize("hasRole('PATIENT')")
+    @PostMapping(value = "/cancel/patient")
+    public ResponseEntity<FutureCounselingDTO> cancelFutureCounseling(@RequestBody FutureCounselingDTO futureCounselingDTO){
+
+        try{
+            Counseling counseling = counselingService.findById(futureCounselingDTO.getId());
+
+            if(counseling.getDateTimeRange().getFrom().isBefore(LocalDateTime.now().plusDays(1)))
+                throw new CounselingCancellationPeriodExpiredException(counseling.getId());
+
+            counseling.setPatient(null);
+            counseling.setAppointmentStatus(AppointmentStatus.FREE);
+
+            counseling = counselingService.update(counseling);
+
+            return ResponseEntity.ok().body(new FutureCounselingDTO(counseling));
+        } catch (CounselingNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new FutureCounselingDTO());
+        } catch (CounselingCancellationPeriodExpiredException e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new FutureCounselingDTO());
+        }
+    }
+
+
+    @PreAuthorize("hasRole('PATIENT')")
     @GetMapping(value = "/future/patient")
-    ResponseEntity<List<FutureCounselingDTO>> getFutureCounselingsByPatient(@AuthenticationPrincipal User user){
+    public ResponseEntity<List<FutureCounselingDTO>> getFutureCounselingsByPatient(@AuthenticationPrincipal User user){
 
         List<Counseling> counselings = counselingService.getUpcomingCounselingsByPatient(user.getId());
         List<FutureCounselingDTO> futureCounselingDTO = new ArrayList<>();
