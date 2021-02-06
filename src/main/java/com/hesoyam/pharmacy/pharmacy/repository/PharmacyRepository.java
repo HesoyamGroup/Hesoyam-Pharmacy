@@ -23,6 +23,6 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Long> {
     List<Pharmacy> getPharmaciesByMedicineAvailability(@Param("medicineIds")List<Long> medicineIds, @Param("listSize") Long size);
     @Query("SELECT ( count(pharmacy) > 0 ) " +
             "FROM Pharmacy pharmacy join pharmacy.inventory inventory join inventory.inventoryItems invItems " +
-            "WHERE pharmacy.id = :pharmacyId AND invItems.medicine.id = :medicineId AND invItems.available - invItems.reserved >= :quantity ")
+            "WHERE pharmacy.id = :pharmacyId AND invItems.medicine.id = :medicineId AND invItems.available >= :quantity ")
     Boolean canPharmacyOfferMedicineQuantity(@Param("pharmacyId") Long pharmacyId, @Param("medicineId") Long medicineId, @Param("quantity") int quantity);
 }
