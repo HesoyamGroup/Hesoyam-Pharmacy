@@ -15,4 +15,6 @@ public interface ILoyaltyAccountService {
     LoyaltyAccountMembership createLoyaltyAccountMembership(LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO) throws LoyaltyAccountMembershipInvalidUpdateException;
     double calculateDiscountedPrice(Patient patient, double currentPrice);
     LoyaltyAccount createDefaultLoyaltyAccount(Patient patient);
+    LoyaltyAccount getPatientLoyaltyAccount(Patient patient);
+    LoyaltyAccount update(LoyaltyAccount loyaltyAccount);
 }

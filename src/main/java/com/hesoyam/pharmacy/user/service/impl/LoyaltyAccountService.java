@@ -87,6 +87,16 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
         return loyaltyAccountRepository.save(loyaltyAccount);
     }
 
+    @Override
+    public LoyaltyAccount getPatientLoyaltyAccount(Patient patient) {
+        return loyaltyAccountRepository.getByPatientId(patient.getId());
+    }
+
+    @Override
+    public LoyaltyAccount update(LoyaltyAccount loyaltyAccount) {
+        return loyaltyAccountRepository.save(loyaltyAccount);
+    }
+
     private LoyaltyAccountMembership loadLoyaltyAccountMembershipWithDTOData(LoyaltyAccountMembership loyaltyAccountMembership, LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO){
         loyaltyAccountMembership.setLoyaltyProgramConfig(loyaltyAccountMembershipDTO.getLoyaltyProgramConfig());
         loyaltyAccountMembership.setDiscount(loyaltyAccountMembershipDTO.getDiscount());

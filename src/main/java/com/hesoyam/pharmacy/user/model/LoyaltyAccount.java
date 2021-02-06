@@ -74,6 +74,11 @@ public class LoyaltyAccount {
       return price - calculatePercentage(price, discount);
    }
 
+   public int addPoints(int points){
+      this.points += points;
+      return this.points;
+   }
+
    private double calculatePercentage(double value, double percentage){
       return (value * percentage)/100;
    }

@@ -19,6 +19,7 @@ import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import com.hesoyam.pharmacy.prescription.dto.CompletePrescriptionDTO;
 import com.hesoyam.pharmacy.prescription.dto.EPrescriptionQRData;
+import com.hesoyam.pharmacy.prescription.events.OnEPrescriptionCompletedEvent;
 import com.hesoyam.pharmacy.prescription.exception.InvalidCompleteEPrescriptionException;
 import com.hesoyam.pharmacy.prescription.exception.InvalidEPrescriptionFormat;
 import com.hesoyam.pharmacy.prescription.model.EPrescription;
@@ -26,6 +27,7 @@ import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 import com.hesoyam.pharmacy.prescription.model.PrescriptionStatus;
 import com.hesoyam.pharmacy.prescription.repository.EPrescriptionRepository;
 import com.hesoyam.pharmacy.prescription.service.IEPrescriptionService;
+import com.hesoyam.pharmacy.user.model.LoyaltyAccount;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.service.ILoyaltyAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +90,10 @@ public class EPrescriptionService implements IEPrescriptionService {
         Pharmacy pharmacy = pharmacyService.findOne(completePrescriptionDTO.getPharmacyId());
         boolean canFulfil = true;
         double price = 0;
+        int loyaltyPoints = 0;
+
+        LoyaltyAccount loyaltyAccount = loyaltyAccountService.getPatientLoyaltyAccount(patient);
+
         List<MedicineSale> medicineSales = new ArrayList<>();
         for(PrescriptionItem prescriptionItem : ePrescription.getPrescriptionItems()){
             Medicine medicine = prescriptionItem.getMedicine();
@@ -97,25 +103,27 @@ public class EPrescriptionService implements IEPrescriptionService {
             InventoryItem inventoryItem = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(pharmacy.getId(), medicine.getId());
             inventoryItem.setAvailable(inventoryItem.getAvailable() - prescriptionItem.getQuantity());
             inventoryItemService.update(inventoryItem);
+            loyaltyPoints += medicine.getLoyaltyPoints();
             double calculatedPrice = inventoryItem.calculateTodayPriceForQuantity(prescriptionItem.getQuantity());
-            System.out.println("Calculated price " + calculatedPrice);
-            calculatedPrice = loyaltyAccountService.calculateDiscountedPrice(patient, calculatedPrice);
-            System.out.println("Discoutned price " + calculatedPrice);
+            calculatedPrice = loyaltyAccount.getDiscountedPrice(calculatedPrice);
             price += calculatedPrice;
             medicineSales.add(new MedicineSale(LocalDateTime.now(), calculatedPrice, pharmacy, medicine));
         }
         ePrescription.setPrescriptionStatus(PrescriptionStatus.COMPLETED);
         ePrescriptionRepository.save(ePrescription);
 
+        loyaltyAccount.addPoints(loyaltyPoints);
+        loyaltyAccountService.update(loyaltyAccount);
+
         eventPublisher.publishEvent(new OnMedicineSaleEvent(medicineSales));
+        eventPublisher.publishEvent(new OnEPrescriptionCompletedEvent(ePrescription));
 
-
-        return null;
+        return ePrescription;
 
     }
 
-    private PharmacyWithPrescriptionPriceDTO mapPharmacyToPharmacyWithPrescriptionDataDTO(Pharmacy pharmacy, int price, Long eprescriptionId){
-        return new PharmacyWithPrescriptionPriceDTO(pharmacy.getId(), pharmacy.getName(), pharmacy.getAddress(), price, pharmacy.getRating(), eprescriptionId);
+    private PharmacyWithPrescriptionPriceDTO mapPharmacyToPharmacyWithPrescriptionDataDTO(Pharmacy pharmacy, double price, Long eprescriptionId, double discountedPrice){
+        return new PharmacyWithPrescriptionPriceDTO(pharmacy.getId(), pharmacy.getName(), pharmacy.getAddress(), price, pharmacy.getRating(), eprescriptionId, discountedPrice);
     }
 
     private List<PharmacyWithPrescriptionPriceDTO> getPharmaciesWhoCanFulfillPrescription(EPrescription ePrescription){
@@ -134,7 +142,7 @@ public class EPrescriptionService implements IEPrescriptionService {
                 finalPrice += inventoryItem.calculateTodayPriceForQuantity(prescriptionItem.getQuantity());
             }
             if (canFulfill) {
-                pharmacyInfo.add(mapPharmacyToPharmacyWithPrescriptionDataDTO(pharmacy, finalPrice, ePrescription.getId()));
+                pharmacyInfo.add(mapPharmacyToPharmacyWithPrescriptionDataDTO(pharmacy, finalPrice, ePrescription.getId(), loyaltyAccountService.calculateDiscountedPrice(ePrescription.getPatient(), finalPrice)));
             }
         }
         return pharmacyInfo;
