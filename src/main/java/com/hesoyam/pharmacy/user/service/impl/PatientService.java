@@ -60,4 +60,9 @@ public class PatientService implements IPatientService {
 
         return patient;
     }
+
+    @Override
+    public Patient getByEmail(String email) {
+        return patientRepository.findPatientByEmail(email);
+    }
 }

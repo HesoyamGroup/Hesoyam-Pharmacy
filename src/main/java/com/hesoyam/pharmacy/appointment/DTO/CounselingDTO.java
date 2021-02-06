@@ -1,5 +1,7 @@
 package com.hesoyam.pharmacy.appointment.dto;
 
+import com.hesoyam.pharmacy.appointment.model.Counseling;
+
 import java.time.LocalDateTime;
 
 public class CounselingDTO {
@@ -9,12 +11,21 @@ public class CounselingDTO {
     private LocalDateTime from;
     private LocalDateTime to;
 
+
     public CounselingDTO(String patientEmail, String patientFirstName, String patientLastName, LocalDateTime from, LocalDateTime to) {
         this.patientEmail = patientEmail;
         this.patientFirstName = patientFirstName;
         this.patientLastName = patientLastName;
         this.from = from;
         this.to = to;
+    }
+
+    public CounselingDTO(Counseling counseling){
+        this.patientEmail = counseling.getPatient().getEmail();
+        this.patientFirstName = counseling.getPatient().getFirstName();
+        this.patientLastName = counseling.getPatient().getLastName();
+        this.from = counseling.getDateTimeRange().getFrom();
+        this.to = counseling.getDateTimeRange().getTo();
     }
 
     public CounselingDTO() {
