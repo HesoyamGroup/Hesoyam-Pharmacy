@@ -23,12 +23,26 @@
 `EMAIL_PORT` - Email SMTP server port  
 `EMAIL_USERNAME` - Email username (most often full email address)  
 `EMAIL_PASSWORD` - Email password  
-`FRONTEND_HOST` - Frontend host (dev: http://localhost)  
-`FRONTEND_PORT` - Frontend port (dev: 8081/8082 often)
+`FRONTEND_HOST` - Frontend host (dev: `http://localhost`)  
+`FRONTEND_PORT` - Frontend port (dev: `8080`/`8081`/`8082`)
+
+## Frontend project
+
+Frontend project can be found at [https://github.com/HesoyamGroup/hesoyam-pharmacy-front](https://github.com/HesoyamGroup/hesoyam-pharmacy-front).
 
 ## Files
 
 Object-Oriented Model Made With PowerDesigner - [PDF](assets/model.pdf)
+
+## Technologies
+
+| Technology | Description |
+| :--------: | ----------- |
+| ![Spring logo](assets/pictures/spring.png) | The [Spring Framework](https://spring.io/projects/spring-framework) is an application framework and inversion of control container for the Java platform.
+| ![Maven logo](assets/pictures/maven.png) | [Maven](https://maven.apache.org/) is a build automation tool used primarily for Java projects.
+| ![PostgreSQL logo](assets/pictures/postgresql.png) | [PostgreSQL](https://www.postgresql.org/) also known as Postgres, is a free and open-source relational database management system (RDBMS) emphasizing extensibility and SQL compliance. |
+| ![TravisCI logo](assets/pictures/travis.png) | [Travis CI](https://travis-ci.com/) is a hosted continuous integration service used to build and test software projects hosted on GitHub and Bitbucket.|
+| ![Heroku logo](assets/pictures/heroku.png) | [Heroku](https://dashboard.heroku.com/) is a cloud platform as a service (PaaS) supporting several programming languages.|
 
 ## Commit Conventions
 `Format: <type>: <commit subject>`
