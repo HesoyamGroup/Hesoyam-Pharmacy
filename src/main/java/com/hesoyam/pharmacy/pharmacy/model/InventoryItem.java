@@ -37,6 +37,18 @@ public class InventoryItem {
    @JoinColumn(name = "inventory_item_id", referencedColumnName = "id", nullable = false)
    private List<InventoryItemPrice> prices;
 
+   public InventoryItem(){}
+
+   public InventoryItem(Medicine medicine, int available, int reserved){
+      this.medicine = medicine;
+      this.available = available;
+      this.reserved = reserved;
+   }
+
+   public InventoryItem(Medicine medicine){
+      this.medicine = medicine;
+   }
+
    public Long getId() {
       return id;
    }
@@ -173,4 +185,7 @@ public class InventoryItem {
       return this.getPrices().stream().anyMatch(itemPrice -> !itemPrice.equals(updatedItemPrice) && itemPrice.isConflictingWith(updatedItemPrice));
    }
 
+   public boolean containsMedicine(Medicine medicine) {
+      return getMedicine().equals(medicine);
+   }
 }

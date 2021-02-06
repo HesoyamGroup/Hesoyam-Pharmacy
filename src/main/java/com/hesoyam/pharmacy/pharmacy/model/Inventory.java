@@ -6,6 +6,7 @@
 package com.hesoyam.pharmacy.pharmacy.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.hesoyam.pharmacy.medicine.model.Medicine;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class Inventory {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinColumn(name = "inventory_id", referencedColumnName = "id", nullable = false)
    private List<InventoryItem> inventoryItems;
 
@@ -58,8 +59,7 @@ public class Inventory {
 
    public void setInventoryItems(List<InventoryItem> newInventoryItem) {
       removeAllInventoryItem();
-      for (Iterator<InventoryItem> iter = newInventoryItem.iterator(); iter.hasNext();)
-         addInventoryItem(iter.next());
+      for (InventoryItem inventoryItem : newInventoryItem) addInventoryItem(inventoryItem);
    }
 
    public void addInventoryItem(InventoryItem newInventoryItem) {
@@ -67,15 +67,14 @@ public class Inventory {
          return;
       if (this.inventoryItems == null)
          this.inventoryItems = new ArrayList<>();
-      if (!this.inventoryItems.contains(newInventoryItem))
-         this.inventoryItems.add(newInventoryItem);
+      this.inventoryItems.add(newInventoryItem);
    }
 
    public void removeInventoryItem(InventoryItem oldInventoryItem) {
       if (oldInventoryItem == null)
          return;
       if (this.inventoryItems != null && this.inventoryItems.contains(oldInventoryItem))
-            this.inventoryItems.remove(oldInventoryItem);
+         this.inventoryItems.remove(oldInventoryItem);
    }
 
    public void removeAllInventoryItem() {
@@ -83,4 +82,16 @@ public class Inventory {
          inventoryItems.clear();
    }
 
+    public void placeOrder(Order newOrder) {
+      for(OrderItem orderItem : newOrder.getOrderItems()){
+         if(!containsMedicine(orderItem.getMedicine())){
+            InventoryItem inventoryItem = new InventoryItem(orderItem.getMedicine());
+            addInventoryItem(inventoryItem);
+         }
+      }
+    }
+
+   private boolean containsMedicine(Medicine medicine) {
+      return getInventoryItems().stream().anyMatch(item -> item.containsMedicine(medicine));
+   }
 }
