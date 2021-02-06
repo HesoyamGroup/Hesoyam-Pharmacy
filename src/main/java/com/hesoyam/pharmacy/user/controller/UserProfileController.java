@@ -4,6 +4,7 @@ import com.hesoyam.pharmacy.location.model.Address;
 import com.hesoyam.pharmacy.location.service.ICityService;
 import com.hesoyam.pharmacy.location.service.ICountryService;
 import com.hesoyam.pharmacy.security.TokenUtils;
+import com.hesoyam.pharmacy.user.DTO.UserProfileDTO;
 import com.hesoyam.pharmacy.user.dto.AccountInformationDTO;
 import com.hesoyam.pharmacy.user.dto.AddressDTO;
 import com.hesoyam.pharmacy.user.dto.PasswordDTO;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,19 +43,15 @@ public class UserProfileController {
 
 
     @GetMapping("/user-information")
-    public ResponseEntity<User> getProfileInformation(HttpServletRequest request){
+    public ResponseEntity<UserProfileDTO> getProfileInformation(@AuthenticationPrincipal User user){
+        try {
+            user = userService.findByEmail(user.getEmail());
+            UserProfileDTO userProfileDTO = new UserProfileDTO(user);
 
-        String token = tokenUtils.getToken(request);
-        String username = tokenUtils.getUsernameFromToken(token);
-
-        try{
-            User userInformation = userService.findByEmail(username);
-            userInformation.setPassword("");
-            return ResponseEntity.ok().body(userInformation);
-        }
-        catch (UserNotFoundException e) {
+            return ResponseEntity.ok().body(userProfileDTO);
+        } catch (UserNotFoundException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new UserProfileDTO());
         }
     }
 
