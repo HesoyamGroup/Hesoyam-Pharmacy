@@ -518,9 +518,9 @@ VALUES ('COUNSELING', 'FREE', '2021-02-08 21:10:00.189796', '2021-02-08 21:15:00
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'FREE', '2021-02-08 21:00:00.189796', '2021-02-08 21:15:00.189796', 1250.0 , null , null, 1, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('COUNSELING', 'FREE', '2021-02-08 21:00:00.189796', '2021-02-08 21:15:00.189796', 1250.0 , null , null, 2, null, 6);
+VALUES ('COUNSELING', 'TAKEN', '2021-02-08 21:00:00.189796', '2021-02-08 21:15:00.189796', 1250.0 , null , 14, 2, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('COUNSELING', 'FREE', '2021-02-08 21:15:00.189796', '2021-02-08 21:30:00.189796', 1250.0 , null , null, 1, null, 8);
+VALUES ('COUNSELING', 'TAKEN', '2021-02-08 21:15:00.189796', '2021-02-08 21:30:00.189796', 1250.0 , null , 14, 1, null, 8);
 
 --------------------
 -- Patient allergies

@@ -16,10 +16,13 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.hesoyam.pharmacy.pharmacy.dto.PharmacySearchDTO;
 
+import javax.persistence.PreUpdate;
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -103,6 +106,18 @@ public class CounselingController {
         }
 
     }
+
+    @PreAuthorize("hasRole('PATIENT')")
+    @GetMapping(value = "/future/patient")
+    ResponseEntity<List<FutureCounselingDTO>> getFutureCounselingsByPatient(@AuthenticationPrincipal User user){
+
+        List<Counseling> counselings = counselingService.getUpcomingCounselingsByPatient(user.getId());
+        List<FutureCounselingDTO> futureCounselingDTO = new ArrayList<>();
+        counselings.forEach(counseling -> futureCounselingDTO.add(new FutureCounselingDTO(counseling)));
+
+        return ResponseEntity.status(HttpStatus.OK).body(futureCounselingDTO);
+    }
+
 
     private boolean checkIfInList(Long id, List<PharmacySearchDTO> list){
         for(PharmacySearchDTO c: list){
