@@ -18,4 +18,6 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
             "AND (:#{#filter.maxRating} IS NULL OR med.rating <= :#{#filter.maxRating}) " +
             "ORDER BY med.name ")
     List<Medicine> search(@Param("filter") MedicineSearchDTO medicineSearchDTO, Pageable pageable);
+
+    Medicine findByName(String medicineName);
 }

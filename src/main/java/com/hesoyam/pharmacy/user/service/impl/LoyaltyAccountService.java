@@ -103,6 +103,7 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
         return loyaltyAccountRepository.save(loyaltyAccount);
     }
 
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void deleteLoyaltyAccountMembership(Long loyaltyAccountMembershipId) {
@@ -120,6 +121,7 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
     public void refreshLoyaltyAccounts() {
         loyaltyAccountRepository.refreshLoyaltyAccounts();
     }
+
 
     private LoyaltyAccountMembership loadLoyaltyAccountMembershipWithDTOData(LoyaltyAccountMembership loyaltyAccountMembership, LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO){
         loyaltyAccountMembership.setLoyaltyProgramConfig(loyaltyAccountMembershipDTO.getLoyaltyProgramConfig());

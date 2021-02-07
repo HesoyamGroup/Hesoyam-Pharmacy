@@ -69,8 +69,11 @@ public class Patient extends User {
          allergies.clear();
    }
 
+   public int getPenaltyPoints() {
+      return penaltyPoints;
+   }
 
-
-
-
+   public void setPenaltyPoints(int penaltyPoints) {
+      this.penaltyPoints = penaltyPoints;
+   }
 }

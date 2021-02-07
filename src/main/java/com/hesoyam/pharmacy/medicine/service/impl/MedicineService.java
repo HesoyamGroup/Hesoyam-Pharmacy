@@ -8,6 +8,8 @@ import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineType;
 import com.hesoyam.pharmacy.medicine.repository.MedicineRepository;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
+import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
+import com.hesoyam.pharmacy.storage.service.IStorageItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ public class MedicineService implements IMedicineService {
     @Autowired
     MedicineRepository medicineRepository;
 
+    @Autowired
+    IInventoryItemService inventoryItemService;
 
     @Override
     public Medicine get(Long id) {
@@ -63,6 +67,16 @@ public class MedicineService implements IMedicineService {
     @Override
     public Medicine findById(Long id) throws MedicineNotFoundException {
         return medicineRepository.findById(id).orElseThrow(() -> new MedicineNotFoundException(id));
+    }
+
+    @Override
+    public boolean checkAvailability(String medicineName, int quantity, long pharmacyId) {
+        Medicine medicine = medicineRepository.findByName(medicineName);
+        int stock = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, medicine.getId()).getAvailable();
+        if(stock > quantity)
+            return true;
+        else
+            return false;
     }
 
 

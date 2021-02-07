@@ -3,6 +3,7 @@ package com.hesoyam.pharmacy.user.service.impl;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.repository.MedicineRepository;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
+import com.hesoyam.pharmacy.user.model.LoyaltyAccount;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.repository.PatientRepository;
 import com.hesoyam.pharmacy.user.service.IPatientService;
@@ -60,4 +61,16 @@ public class PatientService implements IPatientService {
 
         return patient;
     }
+
+    @Override
+    public Patient getByEmail(String email) {
+        return patientRepository.findPatientByEmail(email);
+    }
+
+    @Override
+    public Patient penalizeForMissingAppointment(Patient patient) {
+        patient.setPenaltyPoints(patient.getPenaltyPoints() + 1);
+        return patientRepository.save(patient);
+    }
+
 }
