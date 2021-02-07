@@ -2,7 +2,7 @@ package com.hesoyam.pharmacy.appointment.controller;
 
 import com.hesoyam.pharmacy.appointment.DTO.CancelledAppointmentDTO;
 import com.hesoyam.pharmacy.appointment.dto.CheckUpDTO;
-import com.hesoyam.pharmacy.appointment.dto.CounselingDTO;
+import com.hesoyam.pharmacy.appointment.DTO.CounselingDTO;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
@@ -81,7 +81,9 @@ public class AppointmentController {
     private List<CounselingDTO> convertToCounselingDTO(List<Counseling> counselingsForPharmacist) {
         List<CounselingDTO> converted = new ArrayList<>();
         for(Counseling counseling : counselingsForPharmacist){
-            converted.add(new CounselingDTO(counseling));
+            if(counseling.getPatient() != null) {
+                converted.add(new CounselingDTO(counseling));
+            }
         }
         return converted;
     }
@@ -142,7 +144,7 @@ public class AppointmentController {
             checkUpService.cancelCheckup(patient, cancelledAppointmentDTO.getFrom(), (Dermatologist) user);
         }
 
-        loyaltyAccountService.penalizeForMissingAppointment(patient);
+        patientService.penalizeForMissingAppointment(patient);
 
         return new ResponseEntity<>("Successfully cancelled appointment!", HttpStatus.OK);
     }

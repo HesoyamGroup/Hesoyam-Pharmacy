@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.appointment.dto;
+package com.hesoyam.pharmacy.appointment.DTO;
 
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 

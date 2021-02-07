@@ -495,7 +495,7 @@ INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, p
 VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
 
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('COUNSELING', 'TAKEN', '2021-02-06 23:05:00', '2021-02-06 23:25:00', 'Gospodine...', 17, 1, null, 6);
+VALUES ('COUNSELING', 'TAKEN', '2021-02-07 23:05:00', '2021-02-07 23:25:00', 'Gospodine...', 17, 1, null, 6);
 
 
 --Checkup

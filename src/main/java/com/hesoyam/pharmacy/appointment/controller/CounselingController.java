@@ -1,10 +1,12 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
 import com.hesoyam.pharmacy.appointment.DTO.CounselingReportDTO;
-import com.hesoyam.pharmacy.appointment.dto.CounselingDTO;
+import com.hesoyam.pharmacy.appointment.DTO.CounselingDTO;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
-import com.hesoyam.pharmacy.appointment.model.Counseling;
+import com.hesoyam.pharmacy.appointment.model.*;
 import com.hesoyam.pharmacy.appointment.service.ICounselingService;
+import com.hesoyam.pharmacy.appointment.service.ITherapyItemService;
+import com.hesoyam.pharmacy.appointment.service.ITherapyService;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.prescription.dto.PrescriptionItemDTO;
@@ -23,7 +25,6 @@ import com.hesoyam.pharmacy.appointment.DTO.*;
 import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingCancellationPeriodExpiredException;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
-import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.service.ICounselingService;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
@@ -74,6 +75,12 @@ public class CounselingController {
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
+    @Autowired
+    private ITherapyItemService therapyItemService;
+
+    @Autowired
+    private ITherapyService therapyService;
+
     @PostMapping(value = "/finish-counseling")
     @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<String> finishCounseling(@RequestBody @Valid CounselingReportDTO counselingReportDTO,
@@ -85,7 +92,10 @@ public class CounselingController {
             List<PrescriptionItem> converted = convertPrescriptionItems(counselingReportDTO.getPrescriptionItems());
             try {
                 prescriptionService.createPrescription(converted, patient, counseling.getPharmacy().getId());
-
+                List<TherapyItem> therapyItems = therapyItemService.createFromPrescriptionItems(
+                        counselingReportDTO.getPrescriptionItems());
+                therapyService.createFromItems(therapyItems);
+                therapyItemService.createFromList(therapyItems);
             } catch (PatientIsAllergicException e1) {
                 e1.printStackTrace();
                 return new ResponseEntity<>("Patient is allergic to medicine!", HttpStatus.OK);
@@ -111,12 +121,12 @@ public class CounselingController {
 
     @GetMapping(value = "get-all-counselings-for-patient/{patientEmail}")
     @PreAuthorize("hasRole('PHARMACIST')")
-    public ResponseEntity<List<com.hesoyam.pharmacy.appointment.dto.CounselingDTO>> getAllCounselings(
+    public ResponseEntity<List<CounselingDTO>> getAllCounselings(
             @PathVariable String patientEmail, @AuthenticationPrincipal Pharmacist user
     ){
         Patient patient = patientService.getByEmail(patientEmail);
         if(patient != null) {
-            List<com.hesoyam.pharmacy.appointment.dto.CounselingDTO> dtos = new ArrayList<>();
+            List<CounselingDTO> dtos = new ArrayList<>();
             List<Counseling> allCounselings = counselingService.getAllCounselingsForPatientAndPharmacist(patient, user);
             allCounselings.forEach(counseling -> dtos.add(new CounselingDTO(counseling)));
             return new ResponseEntity<>(dtos, HttpStatus.OK);

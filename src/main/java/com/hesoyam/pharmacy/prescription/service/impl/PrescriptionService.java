@@ -5,6 +5,7 @@ import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.prescription.exceptions.PatientIsAllergicException;
 import com.hesoyam.pharmacy.prescription.model.EPrescription;
 import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
+import com.hesoyam.pharmacy.prescription.model.PrescriptionStatus;
 import com.hesoyam.pharmacy.prescription.repository.PrescriptionRepository;
 import com.hesoyam.pharmacy.prescription.service.IPrescriptionService;
 import com.hesoyam.pharmacy.user.model.Patient;
@@ -33,6 +34,7 @@ public class PrescriptionService implements IPrescriptionService {
         prescription.setPrescriptionItems(prescriptionItems);
         prescription.setIssuingDate(LocalDateTime.now());
         prescription.setPatient(patient);
+        prescription.setPrescriptionStatus(PrescriptionStatus.ACTIVE);
         prescriptionRepository.save(prescription);
 
         inventoryItemService.removeItems(prescriptionItems, pharmacyId);

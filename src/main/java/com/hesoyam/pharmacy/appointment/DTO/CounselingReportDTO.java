@@ -13,6 +13,7 @@ public class CounselingReportDTO {
     private String patientEmail;
     private LocalDateTime from;
 
+
     public CounselingReportDTO(String report, List<PrescriptionItemDTO> prescriptionItems, String patientEmail, LocalDateTime from) {
         this.report = report;
         this.prescriptionItems = prescriptionItems;

@@ -17,5 +17,4 @@ public interface ILoyaltyAccountService {
     LoyaltyAccount createDefaultLoyaltyAccount(Patient patient);
     LoyaltyAccount getPatientLoyaltyAccount(Patient patient);
     LoyaltyAccount update(LoyaltyAccount loyaltyAccount);
-    int penalizeForMissingAppointment(Patient patient);
 }
