@@ -55,7 +55,10 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
         LoyaltyAccountMembership loyaltyAccountMembership = loyaltyAccountMembershipRepository.getOne(loyaltyAccountMembershipDTO.getId());
         loadLoyaltyAccountMembershipWithDTOData(loyaltyAccountMembership, loyaltyAccountMembershipDTO);
         try{
-            return loyaltyAccountMembershipRepository.save(loyaltyAccountMembership);
+            loyaltyAccountMembership = loyaltyAccountMembershipRepository.save(loyaltyAccountMembership);
+            refreshLoyaltyAccounts();
+            return loyaltyAccountMembership;
+
         }catch (DataIntegrityViolationException e){
             throw new LoyaltyAccountMembershipInvalidUpdateException("Loyalty membership name must be unique.");
         }
@@ -103,6 +106,7 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
         LoyaltyAccountMembership loyaltyAccountMembership = loyaltyAccountMembershipRepository.getOne(loyaltyAccountMembershipId);
         try{
             loyaltyAccountMembershipRepository.delete(loyaltyAccountMembership);
+            refreshLoyaltyAccounts();
         }catch (DataIntegrityViolationException e){
             throw new LoyaltyAccountMembershipInvalidDeleteRequest("There are people in that group!");
         }
