@@ -71,7 +71,9 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
         LoyaltyAccountMembership loyaltyAccountMembership = new LoyaltyAccountMembership();
         loadLoyaltyAccountMembershipWithDTOData(loyaltyAccountMembership, loyaltyAccountMembershipDTO);
         try{
-            return loyaltyAccountMembershipRepository.save(loyaltyAccountMembership);
+            loyaltyAccountMembership = loyaltyAccountMembershipRepository.save(loyaltyAccountMembership);
+            refreshLoyaltyAccounts();
+            return loyaltyAccountMembership;
         }catch (DataIntegrityViolationException e){
             throw new LoyaltyAccountMembershipInvalidUpdateException("Loyalty membership name must be unique.");
         }
@@ -102,9 +104,11 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void deleteLoyaltyAccountMembership(Long loyaltyAccountMembershipId) {
         LoyaltyAccountMembership loyaltyAccountMembership = loyaltyAccountMembershipRepository.getOne(loyaltyAccountMembershipId);
         try{
+            loyaltyAccountRepository.setMembershipToNullWhereMembership(loyaltyAccountMembership);
             loyaltyAccountMembershipRepository.delete(loyaltyAccountMembership);
             refreshLoyaltyAccounts();
         }catch (DataIntegrityViolationException e){
