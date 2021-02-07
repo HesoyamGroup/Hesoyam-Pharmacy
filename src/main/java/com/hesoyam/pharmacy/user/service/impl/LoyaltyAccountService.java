@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.user.service.impl;
 
 import com.hesoyam.pharmacy.user.dto.LoyaltyAccountMembershipDTO;
 import com.hesoyam.pharmacy.user.dto.LoyaltyProgramConfigUpdateDTO;
+import com.hesoyam.pharmacy.user.exceptions.LoyaltyAccountMembershipInvalidDeleteRequest;
 import com.hesoyam.pharmacy.user.exceptions.LoyaltyAccountMembershipInvalidUpdateException;
 import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.user.repository.LoyaltyAccountMembershipRepository;
@@ -95,6 +96,16 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
     @Override
     public LoyaltyAccount update(LoyaltyAccount loyaltyAccount) {
         return loyaltyAccountRepository.save(loyaltyAccount);
+    }
+
+    @Override
+    public void deleteLoyaltyAccountMembership(Long loyaltyAccountMembershipId) {
+        LoyaltyAccountMembership loyaltyAccountMembership = loyaltyAccountMembershipRepository.getOne(loyaltyAccountMembershipId);
+        try{
+            loyaltyAccountMembershipRepository.delete(loyaltyAccountMembership);
+        }catch (DataIntegrityViolationException e){
+            throw new LoyaltyAccountMembershipInvalidDeleteRequest("There are people in that group!");
+        }
     }
 
     private LoyaltyAccountMembership loadLoyaltyAccountMembershipWithDTOData(LoyaltyAccountMembership loyaltyAccountMembership, LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO){

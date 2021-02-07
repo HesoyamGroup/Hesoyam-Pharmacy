@@ -114,7 +114,6 @@ public class ComplaintService implements IComplaintService {
         if(numberOfPickedupReservations == 0 && numberOfCompletedAppointments == 0 && numberOfERecipes == 0)
             throw new InvalidComplaintRequestException("You must have at least one completed medicine reservation or at least one completed appointment.");
 
-
     }
 
     private Pharmacy getPharmacyFromPharmacyComplaintDTO(PharmacyComplaintCreateDTO pharmacyComplaintCreateDTO){

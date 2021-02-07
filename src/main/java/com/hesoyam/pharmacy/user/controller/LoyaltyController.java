@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.user.dto.LoyaltyAccountMembershipDTO;
 import com.hesoyam.pharmacy.user.dto.LoyaltyProgramConfigUpdateDTO;
+import com.hesoyam.pharmacy.user.exceptions.LoyaltyAccountMembershipInvalidDeleteRequest;
 import com.hesoyam.pharmacy.user.exceptions.LoyaltyAccountMembershipInvalidUpdateException;
 import com.hesoyam.pharmacy.user.model.LoyaltyAccountMembership;
 import com.hesoyam.pharmacy.user.model.LoyaltyProgramConfig;
@@ -66,6 +67,19 @@ public class LoyaltyController {
             return ResponseEntity.badRequest().build();
         } catch (EntityNotFoundException e){
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/membership/delete/{id}")
+    @Secured("ROLE_SYS_ADMIN")
+    public ResponseEntity delete(@PathVariable("id")Long id){
+        try{
+            loyaltyAccountService.deleteLoyaltyAccountMembership(id);
+            return ResponseEntity.ok().build();
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }catch (LoyaltyAccountMembershipInvalidDeleteRequest e){
+            return ResponseEntity.badRequest().build();
         }
     }
 
