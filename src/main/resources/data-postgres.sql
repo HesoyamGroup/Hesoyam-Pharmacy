@@ -677,20 +677,56 @@ INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (1
 --Veselin(id=14)
 INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 14, 'ACTIVE'); -- (id=1)
 INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 14, 'ACTIVE'); -- (id=2)
-
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 14, 'COMPLETED'); -- (id=3)
 -- (eprescription 1)
 INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 1 ,1);
 INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (1, 2, 1);
 
--- (eprescription 2) (only pharmacy 3 can fulfill)
+-- (eprescription 2)
 INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (8,3,2);
 
+-- (eprescription 3) (completed)
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (10, 1, 3);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 2, 3);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 4, 3);
 
 --Radovan(id=17)
-INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 17, 'ACTIVE'); -- (id=3);
--- (eprescription 3)
-INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 1,3);
-INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (2,4,3);
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 17, 'ACTIVE'); -- (id=4);
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 17, 'COMPLETED'); -- (id=5);
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 17, 'COMPLETED'); -- (id=6);
+
+-- (eprescription 4)
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 1,4);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (2,4,4);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (1,2,4);
+
+-- (eprescription 5)
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 1,5);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (1, 4,5);
+
+-- (eprescription 6)
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (10, 1,6);
+
+--Lidija(id=16) (Hypochondriac)
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 16, 'ACTIVE'); -- (id=7);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (20, 1,7);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (30, 2,7);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (40, 3,7);
+
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 16, 'ACTIVE'); -- (id=8);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (65, 4,8);
+
+
+--Svetlana(id=15)
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 15, 'COMPLETED'); -- (id=9);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (2, 4,9);
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 15, 'ACTIVE'); -- (id=10);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (2, 4,10);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 3,10);
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 15, 'ACTIVE'); -- (id=11);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (7, 4,11);
+
+
 ------------------------
 -- SUBSCRIBED PATIENTS
 ------------------------
