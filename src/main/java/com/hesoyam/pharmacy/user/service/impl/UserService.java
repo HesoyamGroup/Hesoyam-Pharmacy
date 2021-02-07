@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,8 +66,6 @@ public class UserService implements UserDetailsService, IUserService {
 
     @Override
     public User update(User userData) throws UserNotFoundException {
-        //TODO: Authorization needs to be done here. Do NOT forget.
-        //TODO: Test the method furthermore.
         User user = userRepository.getOne(userData.getId());
         if(user == null) throw new UserNotFoundException(userData.getId());
         user.update(userData);

@@ -230,8 +230,7 @@ public abstract class User implements UserDetails {
 
    @Override
    public boolean isEnabled() {
-      //TODO: REPLACE WITH this.enabled!!!
-      return true;
+      return this.enabled;
    }
 
    public void setEnabled(boolean enabled) {

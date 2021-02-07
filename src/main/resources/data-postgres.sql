@@ -430,17 +430,23 @@ INSERT INTO user_roles (user_id, role_id) VALUES (17, 2);
 INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Sandra', 'Filipović', 'FEMALE', 'Sarajevska 83', 3, 44.800638193104234, 20.451638118625414, '4444444444', 'hesoyampharmacy+sandra@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
+('Sandra', 'Filipovic', 'FEMALE', 'Sarajevska 83', 4, 44.800638193104234, 20.451638118625414, '4444444444', 'hesoyampharmacy+sandra@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
 INSERT INTO supplier (id) VALUES (18);
 INSERT INTO user_roles (user_id, role_id) VALUES (18, 7);
+insert into STORAGE (supplier_id) VALUES (18);
+INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (200,15, 1, 1);
+INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (150,30, 2, 1);
+INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (100,45, 3, 1);
 
 -- 19
 INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Marina', 'Marić', 'FEMALE', 'Novosadska 37', 3, 44.914103309371924, 20.267538944371907, '4444444444', 'hesoyampharmacy+marina@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
+('Marina', 'Maric', 'FEMALE', 'Novosadska 37', 3, 44.914103309371924, 20.267538944371907, '4444444444', 'hesoyampharmacy+marina@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
 INSERT INTO supplier (id) VALUES (19);
 INSERT INTO user_roles (user_id, role_id) VALUES (19, 7);
+insert into STORAGE (supplier_id) VALUES (19);
+INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (6,0, 2, 2);
 
 
 -----------------------
@@ -576,9 +582,9 @@ INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 14
 --15
 INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 15);
 --16 (Lidija)
-INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (30, 3, 16);
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (60, 3, 16);
 --17 (Radovan)
-INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (36, 4, 17);
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (180, 4, 17);
 
 -----------------------
 -- Orders
@@ -591,7 +597,7 @@ INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (30, 2, 1);
 INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (45, 3, 1);
 
 --2 Deadline : 18th April 2020, CREATED by Administrator 2 in Pharmacy 1
-INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-2-18 00:00:00-07' , 'CREATED', 2, 1);
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-2-20 00:00:00-07' , 'CREATED', 2, 1);
 INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (950, 1, 2);
 --3 Accepted : Administrator 2 Pharmacy 1
 INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-1-6 00:00:00-07' , 'ACCEPTED', 3, 2);
