@@ -15,6 +15,7 @@ public interface ICheckUpService {
     List<CheckUp> getUpcomingFreeCheckupsByEmployeeAndPharmacy(Long dermatologistId, String pharmacyId);
     List<CheckUp> getUpcomingFreeCheckupsByPharmacy(Long pharmacyId);
     List<CheckUp> getUpcomingCheckupsByPatient(Long id);
+    List<CheckUp> getAllCompletedCheckupsByPatient(Long id);
 
     CheckUp findById(Long id) throws CheckupNotFoundException;
     CheckUp update(CheckUp checkup) throws CheckupNotFoundException;
