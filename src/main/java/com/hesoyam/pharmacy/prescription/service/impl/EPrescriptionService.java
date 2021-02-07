@@ -122,6 +122,11 @@ public class EPrescriptionService implements IEPrescriptionService {
 
     }
 
+    @Override
+    public int countEPrescriptionsByPatient(Patient patient) {
+        return ePrescriptionRepository.countEPrescriptionsByPatient(patient);
+    }
+
     private PharmacyWithPrescriptionPriceDTO mapPharmacyToPharmacyWithPrescriptionDataDTO(Pharmacy pharmacy, double price, Long eprescriptionId, double discountedPrice){
         return new PharmacyWithPrescriptionPriceDTO(pharmacy.getId(), pharmacy.getName(), pharmacy.getAddress(), price, pharmacy.getRating(), eprescriptionId, discountedPrice);
     }

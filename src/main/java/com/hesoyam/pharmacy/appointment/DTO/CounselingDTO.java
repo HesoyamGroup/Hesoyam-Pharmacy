@@ -1,4 +1,6 @@
-package com.hesoyam.pharmacy.appointment.dto;
+package com.hesoyam.pharmacy.appointment.DTO;
+
+import com.hesoyam.pharmacy.appointment.model.Counseling;
 
 import java.time.LocalDateTime;
 
@@ -8,13 +10,35 @@ public class CounselingDTO {
     private String patientLastName;
     private LocalDateTime from;
     private LocalDateTime to;
+    private String appointmentStatus;
+    private long pharmacyId;
 
-    public CounselingDTO(String patientEmail, String patientFirstName, String patientLastName, LocalDateTime from, LocalDateTime to) {
+
+    public CounselingDTO(String patientEmail, String patientFirstName, String patientLastName, LocalDateTime from, LocalDateTime to, String appointmentStatus) {
         this.patientEmail = patientEmail;
         this.patientFirstName = patientFirstName;
         this.patientLastName = patientLastName;
         this.from = from;
         this.to = to;
+        this.appointmentStatus = appointmentStatus;
+    }
+
+    public CounselingDTO(Counseling counseling){
+        this.patientEmail = counseling.getPatient().getEmail();
+        this.patientFirstName = counseling.getPatient().getFirstName();
+        this.patientLastName = counseling.getPatient().getLastName();
+        this.from = counseling.getDateTimeRange().getFrom();
+        this.to = counseling.getDateTimeRange().getTo();
+        this.appointmentStatus = counseling.getAppointmentStatus().toString();
+        this.pharmacyId = counseling.getPharmacy().getId();
+    }
+
+    public String getAppointmentStatus() {
+        return appointmentStatus;
+    }
+
+    public void setAppointmentStatus(String appointmentStatus) {
+        this.appointmentStatus = appointmentStatus;
     }
 
     public CounselingDTO() {
@@ -58,5 +82,13 @@ public class CounselingDTO {
 
     public void setPatientLastName(String patientLastName) {
         this.patientLastName = patientLastName;
+    }
+
+    public long getPharmacyId() {
+        return pharmacyId;
+    }
+
+    public void setPharmacyId(long pharmacyId) {
+        this.pharmacyId = pharmacyId;
     }
 }

@@ -15,6 +15,7 @@ import com.hesoyam.pharmacy.feedback.service.IReplyService;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
+import com.hesoyam.pharmacy.prescription.service.IEPrescriptionService;
 import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.PharmacistNotFoundException;
 import com.hesoyam.pharmacy.user.model.*;
@@ -54,6 +55,9 @@ public class ComplaintService implements IComplaintService {
 
     @Autowired
     private IReplyService replyService;
+
+    @Autowired
+    private IEPrescriptionService prescriptionService;
 
     @Override
     public List<ComplaintDataDTO> getAllUnanswered() {
@@ -103,11 +107,12 @@ public class ComplaintService implements IComplaintService {
         Patient patient = pharmacyComplaint.getPatient();
         Pharmacy pharmacy = pharmacyComplaint.getPharmacy();
         if(pharmacy == null || patient == null) throw new InvalidComplaintRequestException("Both pharmacy and patient must be specified.");
-        int numberOfPickedupReservations = medicineReservationService.getPickedupReservationsCountForPatientId(patient.getId());
+        int numberOfPickedupReservations = medicineReservationService.getPickedupReservationsCountForPatientId(patient.getId(), pharmacy.getId());
         int numberOfCompletedAppointments = appointmentService.getCompletedAppointmentsCountInPharmacyByPatient(pharmacy, patient);
-        if(numberOfPickedupReservations == 0 && numberOfCompletedAppointments == 0)
-            throw new InvalidComplaintRequestException("You must have at least one completed medicine reservation or at least one completed appointment.");
+        int numberOfERecipes = prescriptionService.countEPrescriptionsByPatient(patient);
 
+        if(numberOfPickedupReservations == 0 && numberOfCompletedAppointments == 0 && numberOfERecipes == 0)
+            throw new InvalidComplaintRequestException("You must have at least one completed medicine reservation or at least one completed appointment.");
 
     }
 

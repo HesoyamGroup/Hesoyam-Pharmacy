@@ -3,6 +3,7 @@ package com.hesoyam.pharmacy.pharmacy.service;
 import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemPriceDTO;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
+import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 import com.hesoyam.pharmacy.user.model.User;
 
 import javax.persistence.EntityNotFoundException;
@@ -18,4 +19,6 @@ public interface IInventoryItemService {
 
     public InventoryItem update(InventoryItem inventoryItem) throws EntityNotFoundException;
     InventoryItem getInventoryItemByPharmacyIdAndMedicineId(Long pharmacyId, Long medicineId) throws EntityNotFoundException;
+
+    void removeItems(List<PrescriptionItem> prescriptionItems, long pharmacyId);
 }

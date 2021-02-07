@@ -6,6 +6,7 @@ import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
 import com.hesoyam.pharmacy.pharmacy.repository.InventoryItemPriceRepository;
 import com.hesoyam.pharmacy.pharmacy.repository.InventoryItemRepository;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
+import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 import com.hesoyam.pharmacy.user.model.Administrator;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
@@ -79,5 +80,19 @@ public class InventoryItemService implements IInventoryItemService {
     @Override
     public InventoryItem getInventoryItemByPharmacyIdAndMedicineId(Long pharmacyId, Long medicineId){
         return inventoryItemRepository.getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, medicineId);
+    }
+
+    @Override
+    public void removeItems(List<PrescriptionItem> prescriptionItems, long pharmacyId) {
+        prescriptionItems.forEach(item -> inventoryItemRepository.save(
+                inventoryItemRepository.getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, item.getMedicine().getId())
+        ));
+
+        for(PrescriptionItem item : prescriptionItems){
+            InventoryItem fromInventory = inventoryItemRepository.getInventoryItemByPharmacyIdAndMedicineId(
+                    pharmacyId, item.getMedicine().getId());
+            fromInventory.setAvailable(fromInventory.getAvailable() - item.getQuantity());
+            inventoryItemRepository.save(fromInventory);
+        }
     }
 }
