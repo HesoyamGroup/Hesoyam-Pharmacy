@@ -5,6 +5,8 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.location.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Length;
 
@@ -31,7 +33,7 @@ public class Country {
    private String countryName;
 
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "country")
-   @JsonManagedReference
+   @JsonBackReference
    private List<City> cities;
 
 
@@ -59,13 +61,13 @@ public class Country {
       this.countryName = countryName;
    }
 
-
    public List<City> getCities() {
       if (cities == null)
          cities = new ArrayList<>();
       return cities;
    }
 
+   @JsonIgnore
    public Iterator<City> getIteratorCity() {
       if (cities == null)
          cities = new ArrayList<>();
