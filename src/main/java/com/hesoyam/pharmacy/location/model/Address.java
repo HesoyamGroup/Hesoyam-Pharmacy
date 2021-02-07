@@ -32,6 +32,17 @@ public class Address {
    @JoinColumn(name="city_id")
    private City city;
 
+   public Address(){
+
+   }
+
+   public Address(String addressLine, Double latitude, Double longitude, City city) {
+      this.addressLine = addressLine;
+      this.latitude = latitude;
+      this.longitude = longitude;
+      this.city = city;
+   }
+
    public String getAddressLine() {
       return addressLine;
    }
