@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.pharmacy.repository;
 
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.user.model.Administrator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +26,5 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Long> {
             "FROM Pharmacy pharmacy join pharmacy.inventory inventory join inventory.inventoryItems invItems " +
             "WHERE pharmacy.id = :pharmacyId AND invItems.medicine.id = :medicineId AND invItems.available >= :quantity ")
     Boolean canPharmacyOfferMedicineQuantity(@Param("pharmacyId") Long pharmacyId, @Param("medicineId") Long medicineId, @Param("quantity") int quantity);
+
 }

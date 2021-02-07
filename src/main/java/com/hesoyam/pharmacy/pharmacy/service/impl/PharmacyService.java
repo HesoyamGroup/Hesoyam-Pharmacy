@@ -128,4 +128,5 @@ public class PharmacyService implements IPharmacyService {
     public Boolean canPharmacyOfferMedicineQuantity(Long pharmacyId, Long medicineId, int quantity) {
         return pharmacyRepository.canPharmacyOfferMedicineQuantity(pharmacyId, medicineId, quantity);
     }
+
 }

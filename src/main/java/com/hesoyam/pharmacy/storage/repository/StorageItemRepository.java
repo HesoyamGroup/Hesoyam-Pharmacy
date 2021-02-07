@@ -23,4 +23,7 @@ public interface StorageItemRepository extends JpaRepository<StorageItem, Long> 
             "WHERE medicine.id NOT IN (" +
             "SELECT storageitem.medicine.id from StorageItem storageitem WHERE storageitem.storage.supplier.id = :userId)")
     List<Medicine> getUnaddedMedicine(@Param("userId") Long userId, Pageable pageable);
+
+    List<StorageItem> getStorageItemByMedicine(Medicine medicine);
+
 }

@@ -500,19 +500,24 @@ VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospod
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
 
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('COUNSELING', 'TAKEN', '2021-02-07 23:05:00', '2021-02-07 23:25:00', 'Gospodine...', 17, 1, null, 6);
+
+
 --Checkup
+
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'FREE', '2021-02-08 21:00:00.189796', '2021-02-08 21:15:00.189796', 2500.0 , null , null, 1, 10, null);
+VALUES ('CHECKUP', 'FREE', '2021-02-08 21:00:00', '2021-02-08 21:15:00', 2500.0 , null , null, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'FREE', '2021-02-08 21:30:00.189796', '2021-02-08 21:45:00.189796', 1500.0 , null , null, 1, 10, null);
+VALUES ('CHECKUP', 'FREE', '2021-02-08 21:30:00', '2021-02-08 21:45:00', 1500.0 , null , null, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'FREE', '2021-02-08 21:45:00.189796', '2021-02-08 22:00:00.189796', 1750.0 , null , null, 1, 10, null);
+VALUES ('CHECKUP', 'FREE', '2021-02-08 21:45:00', '2021-02-08 22:00:00', 1750.0 , null , null, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'FREE', '2021-02-08 22:00:00.189796', '2021-02-08 22:15:00.189796', 1250.0 , null , null, 1, 10, null);
+VALUES ('CHECKUP', 'FREE', '2021-02-08 22:00:00', '2021-02-08 22:15:00', 1250.0 , null , null, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'TAKEN', '2021-02-06 12:00:00.189796', '2021-02-06 12:15:00.189796', 1250.0 , null , 14, 2, 11, null);
+VALUES ('CHECKUP', 'TAKEN', '2021-02-06 12:00:00', '2021-02-06 12:15:00', 1250.0 , null , 14, 2, 11, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'TAKEN', '2021-02-08 23:15:00.189796', '2021-02-08 23:30:00.189796', 1250.0 , null , 14, 1, 10, null);
+VALUES ('CHECKUP', 'TAKEN', '2021-02-08 23:15:00', '2021-02-08 23:30:00', 1250.0 , null , 14, 1, 10, null);
 
 -- Counseling
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
