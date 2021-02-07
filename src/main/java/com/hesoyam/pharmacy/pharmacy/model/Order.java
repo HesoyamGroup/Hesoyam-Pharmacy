@@ -10,6 +10,7 @@ import com.hesoyam.pharmacy.user.model.Administrator;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -93,6 +94,8 @@ public class Order {
    }
 
    public List<OrderItem> getOrderItems() {
+      if(orderItems == null)
+         return new ArrayList<>();
       return orderItems;
    }
 

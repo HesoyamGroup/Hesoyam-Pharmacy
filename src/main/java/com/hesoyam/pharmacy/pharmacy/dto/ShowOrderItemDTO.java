@@ -1,5 +1,7 @@
 package com.hesoyam.pharmacy.pharmacy.dto;
 
+import com.hesoyam.pharmacy.pharmacy.model.OrderItem;
+
 public class ShowOrderItemDTO {
     private Long id;
     private String medicineName;
@@ -7,7 +9,16 @@ public class ShowOrderItemDTO {
     private Long medicineId;
 
 
-    public ShowOrderItemDTO(){}
+    public ShowOrderItemDTO(){
+        //Empty ctor for JSON serializer
+    }
+
+    public ShowOrderItemDTO(OrderItem orderItem){
+        this.id = orderItem.getId();
+        this.quantity = orderItem.getQuantity();
+        this.medicineId = orderItem.getMedicine().getId();
+        this.medicineName = orderItem.getMedicine().getName();
+    }
 
     public ShowOrderItemDTO(Long id, String medicineName, Long medicineId, Integer quantity) {
         this.id = id;

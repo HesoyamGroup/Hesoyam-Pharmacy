@@ -14,4 +14,12 @@ public interface ICounselingService {
     List<Counseling> getAllCounselingsForPatientAndPharmacist(Patient patient, Pharmacist user);
 
     Counseling cancelCounseling(Patient patient, LocalDateTime from, Pharmacist pharmacist);
+
+    List<Counseling> getAllFreeCounselings();
+    List<Counseling> getFreeCounselingsByPharmacyId(Long id);
+    List<Counseling> getUpcomingCounselingsByPatient(Long id);
+
+    Counseling findById(Long id) throws CounselingNotFoundException;
+    Counseling update(Counseling counseling) throws  CounselingNotFoundException;
+
 }

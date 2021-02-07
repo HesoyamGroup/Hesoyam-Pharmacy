@@ -86,7 +86,7 @@ public class CheckUpService implements ICheckUpService {
     @Override
     public CheckUp update(CheckUp checkupData) throws CheckupNotFoundException {
         CheckUp checkUp = checkUpRepository.getOne(checkupData.getId());
-        if(checkUp == null) throw new CheckupNotFoundException(checkUp.getId());
+        if(checkUp == null) throw new CheckupNotFoundException(checkupData.getId());
 
         checkUp.update(checkupData);
         checkUp = checkUpRepository.save(checkUp);

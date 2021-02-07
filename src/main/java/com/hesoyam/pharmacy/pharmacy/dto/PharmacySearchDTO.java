@@ -1,5 +1,8 @@
 package com.hesoyam.pharmacy.pharmacy.dto;
 
+import com.hesoyam.pharmacy.appointment.model.Counseling;
+import com.hesoyam.pharmacy.pharmacy.dto.PharmacyLocationDTO;
+
 public class PharmacySearchDTO {
 
     Long id;
@@ -22,6 +25,16 @@ public class PharmacySearchDTO {
         this.addressLine = addressLine;
         this.pharmacyLocationDTO = new PharmacyLocationDTO(latitude, longitude);
 
+    }
+
+    public PharmacySearchDTO(Counseling counseling){
+        this.id = counseling.getPharmacy().getId();
+        this.name = counseling.getPharmacy().getName();
+        this.rating = counseling.getPharmacy().getRating();
+        this.description = counseling.getPharmacy().getDescription();
+        this.cityName = counseling.getPharmacy().getAddress().getCity().getCityName();
+        this.addressLine = counseling.getPharmacy().getAddress().getAddressLine();
+        this.pharmacyLocationDTO = new PharmacyLocationDTO(counseling.getPharmacy().getAddress().getLatitude(), counseling.getPharmacy().getAddress().getLongitude());
     }
 
     public Long getId() {

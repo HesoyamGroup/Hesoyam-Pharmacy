@@ -1,5 +1,6 @@
 package com.hesoyam.pharmacy.medicine.controller;
 
+import com.hesoyam.pharmacy.medicine.dto.MedicineBasicInfoDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchResultDTO;
 import com.hesoyam.pharmacy.medicine.events.MedicineRunningLowEvent;
@@ -15,6 +16,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,6 +30,15 @@ public class MedicineController {
 
     @Autowired
     IAdministratorService administratorService;
+
+    @GetMapping("")
+    public ResponseEntity<List<MedicineBasicInfoDTO>> getMedicines(){
+        List<Medicine> medicines = medicineService.getAll();
+        List<MedicineBasicInfoDTO> medicinesDTO = new ArrayList<>();
+        medicines.forEach(medicine -> medicinesDTO.add(new MedicineBasicInfoDTO(medicine)));
+        return ResponseEntity.ok(medicinesDTO);
+    }
+
 
     @GetMapping("/all")
     public ResponseEntity<List<Medicine>> getAllMedicines(){
