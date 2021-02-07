@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.pharmacy.dto;
+package com.hesoyam.pharmacy.prescription.dto;
 
 import com.hesoyam.pharmacy.location.model.Address;
 
