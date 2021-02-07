@@ -713,3 +713,75 @@ VALUES('2021-02-13', '2021-03-01', 'Opis treće promocije', 'Treća promocija', 
 
 INSERT INTO vacation_request (employee_id, from_date, to_date, status) VALUES (12, '2021-02-13', '2021-02-17', 'CREATED');
 INSERT INTO vacation_request (employee_id, from_date, to_date, status) VALUES (7, '2021-02-13', '2021-02-17', 'CREATED');
+
+------------------------------------------------------------------------------------
+-- SALES (DATA IS NOT CONSISTENT WITH PREVIOUS DATA eg Appointments and Medicines)
+------------------------------------------------------------------------------------
+
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-01', 540, 'CHECK_UP', 1, 1);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-10', 620, 'CHECK_UP', 1, 2);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-11', 1240, 'CHECK_UP', 1, 3);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-15', 371, 'CHECK_UP', 1, 4);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-20', 520, 'CHECK_UP', 1, 5);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-25', 366, 'COUNSELING', 1, 6);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-28', 888, 'COUNSELING', 1, 7);
+
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-01-05', 463, 'CHECK_UP', 1, 8);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-01-12', 787, 'CHECK_UP', 1, 9);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-01-23', 890, 'CHECK_UP', 1, 10);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-02-02', 678, 'CHECK_UP', 1, 11);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-02-05', 400, 'CHECK_UP', 1, 12);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-02-07', 250, 'CHECK_UP', 1, 13);
+
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-01-09', 250, 'COUNSELING', 1, 14);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-01-20', 125, 'COUNSELING', 1, 15);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-01-27', 300, 'COUNSELING', 1, 16);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-02-04', 180, 'COUNSELING', 1, 17);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-02-06', 197, 'COUNSELING', 1, 18);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-02-07', 240, 'COUNSELING', 1, 19);
+
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2020-12-02', 425, 1, 1);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2020-12-13', 600, 1, 2);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2020-12-21', 600, 1, 2);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2020-12-29', 600, 1, 2);
+
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-01-02', 425, 1, 3);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-01-14', 425, 1, 3);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-01-19', 425, 1, 3);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-01-29', 580, 1, 2);
+
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-02-01', 425, 1, 2);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-02-02', 360, 1, 1);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-02-05', 750, 1, 3);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-02-06', 665, 1, 4);
