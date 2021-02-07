@@ -9,6 +9,7 @@ import com.hesoyam.pharmacy.user.model.Administrator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,11 +111,11 @@ public class Order {
          }
       }
       LocalDateTime deliveryDate = offer.getDeliveryDate();
-      return deliveryDate.compareTo(deadLine) < 0 && deliveryDate.compareTo(LocalDateTime.now()) > 0 && orderStatus == OrderStatus.CREATED;
+      return deliveryDate.compareTo(deadLine) < 0 && deliveryDate.compareTo(LocalDate.now().atTime(0,0,0)) >= 0 && orderStatus == OrderStatus.CREATED;
    }
 
    public boolean isOfferEditable(Offer offer){
-      return LocalDateTime.now().compareTo(deadLine) < 0 && offer.getOfferStatus() == OfferStatus.CREATED;
+      return LocalDate.now().atTime(0, 0, 0).compareTo(deadLine) < 0 && offer.getOfferStatus() == OfferStatus.CREATED;
       //TODO: Check if today date is before date specified as the last day for canceling.
    }
 }
