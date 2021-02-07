@@ -32,10 +32,8 @@ public class OfferController {
         try {
             return ResponseEntity.ok(offerService.create(createOfferDTO, user));
         }catch (EntityNotFoundException e){
-            e.printStackTrace();
             return ResponseEntity.notFound().build();
         }catch (InvalidCreateOfferException e){
-            e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
     }

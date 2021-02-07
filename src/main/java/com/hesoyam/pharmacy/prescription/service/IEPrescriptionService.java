@@ -11,4 +11,5 @@ import java.util.List;
 public interface IEPrescriptionService {
     List<PharmacyWithPrescriptionPriceDTO> get(File qrCodeImage, Patient patient);
     EPrescription complete(CompletePrescriptionDTO completePrescriptionDTO, Patient patient);
+    int countEPrescriptionsByPatient(Patient patient);
 }
