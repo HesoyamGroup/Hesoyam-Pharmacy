@@ -1,7 +1,7 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
 import com.hesoyam.pharmacy.appointment.DTO.CancelledAppointmentDTO;
-import com.hesoyam.pharmacy.appointment.dto.CheckUpDTO;
+import com.hesoyam.pharmacy.appointment.DTO.CheckUpDTO;
 import com.hesoyam.pharmacy.appointment.DTO.CounselingDTO;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
@@ -114,7 +114,9 @@ public class AppointmentController {
     private List<CheckUpDTO> convertToCheckUpDTO(List<CheckUp> checkUpsForDermatologist) {
         List<CheckUpDTO> converted = new ArrayList<>();
         for(CheckUp checkUp : checkUpsForDermatologist){
-            converted.add(new CheckUpDTO(checkUp));
+            if(checkUp.getPatient() != null) {
+                converted.add(new CheckUpDTO(checkUp));
+            }
         }
         return converted;
     }

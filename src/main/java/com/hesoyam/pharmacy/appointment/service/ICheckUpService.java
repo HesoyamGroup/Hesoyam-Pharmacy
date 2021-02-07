@@ -23,4 +23,6 @@ public interface ICheckUpService {
     CheckUp update(CheckUp checkup) throws CheckupNotFoundException;
 
     CheckUp cancelCheckup(Patient patient, LocalDateTime from, Dermatologist user);
+    CheckUp updateCheckupAfterAppointment(Patient patient, LocalDateTime from, String report, Dermatologist dermatologist) throws CheckupNotFoundException;
+    List<CheckUp> getAllCheckUpsForPatientAndDermatologist(Patient patient, Dermatologist user);
 }
