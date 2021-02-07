@@ -83,5 +83,11 @@ public class LoyaltyController {
         }
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity refresh(){
+        loyaltyAccountService.refreshLoyaltyAccounts();
+        return ResponseEntity.ok().build();
+    }
+
 
 }

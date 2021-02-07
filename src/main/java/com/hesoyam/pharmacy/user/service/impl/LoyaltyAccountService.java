@@ -108,6 +108,11 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
         }
     }
 
+    @Override
+    public void refreshLoyaltyAccounts() {
+        loyaltyAccountRepository.refreshLoyaltyAccounts();
+    }
+
     private LoyaltyAccountMembership loadLoyaltyAccountMembershipWithDTOData(LoyaltyAccountMembership loyaltyAccountMembership, LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO){
         loyaltyAccountMembership.setLoyaltyProgramConfig(loyaltyAccountMembershipDTO.getLoyaltyProgramConfig());
         loyaltyAccountMembership.setDiscount(loyaltyAccountMembershipDTO.getDiscount());
