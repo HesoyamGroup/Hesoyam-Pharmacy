@@ -6,6 +6,7 @@
 package com.hesoyam.pharmacy.pharmacy.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hesoyam.pharmacy.util.DateTimeRange;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -70,4 +71,8 @@ public abstract class Sale {
    public void setPharmacy(Pharmacy pharmacy) {
       this.pharmacy = pharmacy;
    }
+
+    public boolean isInRange(DateTimeRange dateTimeRange){
+      return dateTimeRange.includes(dateOfSale);
+    }
 }
