@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,7 +51,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<ShowOrdersDTO> getActiveForSupplier(Integer page, User user) {
-        List<Order> activeOrders = orderRepository.getUserPendingActionOrders(user.getId(), PageRequest.of(page-1, 6));
+        List<Order> activeOrders = orderRepository.getUserPendingActionOrders(user.getId(), LocalDateTime.now(), PageRequest.of(page-1, 6));
         return activeOrders.stream().map(OrderMapper::mapOrderToShowOrderDTO).collect(Collectors.toList());
     }
 
