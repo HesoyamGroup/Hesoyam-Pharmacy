@@ -1,21 +1,18 @@
 package com.hesoyam.pharmacy.prescription.controller;
 
-import com.hesoyam.pharmacy.pharmacy.dto.PharmacyDTO;
-import com.hesoyam.pharmacy.pharmacy.dto.PharmacyWithPrescriptionPriceDTO;
-import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.prescription.dto.EPrescriptionUploadResponse;
+import com.hesoyam.pharmacy.prescription.dto.PharmacyWithPrescriptionPriceDTO;
 import com.hesoyam.pharmacy.prescription.dto.CompletePrescriptionDTO;
 import com.hesoyam.pharmacy.prescription.exception.InvalidCompleteEPrescriptionException;
 import com.hesoyam.pharmacy.prescription.exception.InvalidEPrescriptionFormat;
 import com.hesoyam.pharmacy.prescription.model.EPrescription;
 import com.hesoyam.pharmacy.prescription.service.IEPrescriptionService;
 import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +31,7 @@ public class EPrescriptionController {
 
     @PostMapping("/upload")
     @Secured("ROLE_PATIENT")
-    public ResponseEntity<List<PharmacyWithPrescriptionPriceDTO>> getEPrescription(@RequestParam(required = true, name = "file") MultipartFile multipartFile, @AuthenticationPrincipal Patient patient){
+    public ResponseEntity<EPrescriptionUploadResponse> getEPrescription(@RequestParam(required = true, name = "file") MultipartFile multipartFile, @AuthenticationPrincipal Patient patient){
         File file;
         try {
             file = new File(System.getProperty("java.io.tmpdir") + randomizeFileName(multipartFile));
