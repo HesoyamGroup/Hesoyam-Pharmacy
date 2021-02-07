@@ -1,6 +1,8 @@
 package com.hesoyam.pharmacy.pharmacy.service.impl;
 
+import com.hesoyam.pharmacy.pharmacy.model.MedicineSale;
 import com.hesoyam.pharmacy.pharmacy.model.ServiceSale;
+import com.hesoyam.pharmacy.pharmacy.repository.MedicineSaleRepository;
 import com.hesoyam.pharmacy.pharmacy.repository.ServiceSaleRepository;
 import com.hesoyam.pharmacy.pharmacy.service.ISaleService;
 import com.hesoyam.pharmacy.user.model.Administrator;
@@ -20,6 +22,9 @@ public class SaleService implements ISaleService {
     private ServiceSaleRepository serviceSaleRepository;
 
     @Autowired
+    private MedicineSaleRepository medicineSaleRepository;
+
+    @Autowired
     private AdministratorRepository administratorRepository;
 
     @Override
@@ -28,22 +33,17 @@ public class SaleService implements ISaleService {
 
         List<ServiceSale> sales = serviceSaleRepository.getAllByPharmacy_Id(administrator.getPharmacy().getId());
 
-        SalesCalculator<?, ServiceSale> calculator = getServiceSaleCalculator(type);
+        SalesCalculator<?, ServiceSale> calculator = new SalesCalculatorFactory<ServiceSale>().getSalesCalculator(type);
         return calculator.getReportResult(sales);
     }
 
-    private SalesCalculator<?, ServiceSale> getServiceSaleCalculator(ReportType type){
-        switch (type){
-            case MONTHLY:
-                return new MonthlySalesCalculator<>();
-            case QUARTERLY:
-                return new QuarterlySalesCalculator<>();
-            case YEARLY:
-                return new YearlySalesCalculator<>();
-            case REVENUE:
-                return new RevenueCalculator<>();
-            default:
-                throw new IllegalArgumentException();
-        }
+    @Override
+    public ReportResult getMedicineSalesReportByAdministrator(User user, ReportType type) {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+
+        List<MedicineSale> sales = medicineSaleRepository.getAllByPharmacy_Id(administrator.getPharmacy().getId());
+
+        SalesCalculator<?, MedicineSale> calculator = new SalesCalculatorFactory<MedicineSale>().getSalesCalculator(type);
+        return calculator.getReportResult(sales);
     }
 }

@@ -6,4 +6,6 @@ import com.hesoyam.pharmacy.util.report.ReportType;
 
 public interface ISaleService {
     ReportResult getAppointmentSalesReportByAdministrator(User user, ReportType type);
+
+    ReportResult getMedicineSalesReportByAdministrator(User user, ReportType type);
 }

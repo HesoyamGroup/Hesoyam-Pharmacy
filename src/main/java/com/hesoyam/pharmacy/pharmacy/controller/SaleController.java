@@ -36,6 +36,13 @@ public class SaleController {
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     @GetMapping("/medicine")
     public ResponseEntity<SalesDTO> getMedicineSalesReportByAdministrator(@AuthenticationPrincipal User user, @RequestParam ReportType type){
-        return ResponseEntity.ok().build();
+        try{
+            ReportResult reportResult = saleService.getMedicineSalesReportByAdministrator(user, type);
+            return ResponseEntity.ok().body(new SalesDTO(reportResult));
+        } catch(EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        } catch(IllegalArgumentException e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
