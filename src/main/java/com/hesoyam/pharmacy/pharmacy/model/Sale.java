@@ -31,10 +31,10 @@ public abstract class Sale {
    @JsonManagedReference
    protected Pharmacy pharmacy;
 
-   public Sale() {
+   protected Sale() {
    }
 
-   public Sale(LocalDateTime dateOfSale, double price, Pharmacy pharmacy) {
+   protected Sale(LocalDateTime dateOfSale, double price, Pharmacy pharmacy) {
       this.dateOfSale = dateOfSale;
       this.price = price;
       this.pharmacy = pharmacy;
