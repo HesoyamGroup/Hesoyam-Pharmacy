@@ -94,4 +94,15 @@ public class Inventory {
    private boolean containsMedicine(Medicine medicine) {
       return getInventoryItems().stream().anyMatch(item -> item.containsMedicine(medicine));
    }
+
+   public void placeOffer(Offer acceptingOffer) {
+      this.placeOrder(acceptingOffer.getOrder());
+      updateBalance(acceptingOffer.getOrder().getOrderItems());
+   }
+
+   private void updateBalance(List<OrderItem> orderItems) {
+      for(OrderItem item : orderItems){
+         getInventoryItems().stream().filter(i -> i.containsMedicine(item.getMedicine())).findFirst().ifPresent(inventoryItem -> inventoryItem.updateBalance(item));
+      }
+   }
 }

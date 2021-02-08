@@ -13,4 +13,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT ord FROM Order ord LEFT JOIN FETCH ord.orderItems WHERE (SELECT COUNT(offer) FROM ord.offers offer WHERE offer.supplier.id=:userId AND offer.offerStatus ='CREATED') = 0 " +
             "AND ord.orderStatus = 'CREATED'AND ord.deadLine >= :todayDate")
     List<Order> getUserPendingActionOrders(@Param("userId")Long id, @Param("todayDate") LocalDateTime localDateTime, Pageable pageable);
+
+    List<Order> getAllByPharmacy_Id(Long pharmacyId);
 }

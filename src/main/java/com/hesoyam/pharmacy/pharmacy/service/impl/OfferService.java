@@ -3,20 +3,26 @@ package com.hesoyam.pharmacy.pharmacy.service.impl;
 import com.hesoyam.pharmacy.pharmacy.dto.CreateOfferDTO;
 import com.hesoyam.pharmacy.pharmacy.dto.OfferDTO;
 import com.hesoyam.pharmacy.pharmacy.dto.OfferFilterCriteria;
+import com.hesoyam.pharmacy.pharmacy.events.OnOfferAcceptedEvent;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidCreateOfferException;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidEditOfferException;
 import com.hesoyam.pharmacy.pharmacy.mapper.OfferMapper;
+import com.hesoyam.pharmacy.pharmacy.model.Inventory;
 import com.hesoyam.pharmacy.pharmacy.model.Offer;
 import com.hesoyam.pharmacy.pharmacy.model.OfferStatus;
 import com.hesoyam.pharmacy.pharmacy.model.Order;
+import com.hesoyam.pharmacy.pharmacy.repository.InventoryRepository;
 import com.hesoyam.pharmacy.pharmacy.repository.OfferRepository;
 import com.hesoyam.pharmacy.pharmacy.service.IOfferService;
 import com.hesoyam.pharmacy.pharmacy.service.IOrderService;
 import com.hesoyam.pharmacy.storage.model.Storage;
 import com.hesoyam.pharmacy.storage.service.IStorageService;
+import com.hesoyam.pharmacy.user.model.Administrator;
 import com.hesoyam.pharmacy.user.model.Supplier;
 import com.hesoyam.pharmacy.user.model.User;
+import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -40,6 +46,14 @@ public class OfferService implements IOfferService {
     @Autowired
     private IStorageService storageService;
 
+    @Autowired
+    private AdministratorRepository administratorRepository;
+
+    @Autowired
+    private InventoryRepository inventoryRepository;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -72,7 +86,7 @@ public class OfferService implements IOfferService {
     @Override
     public List<OfferDTO> getUserOffers(OfferFilterCriteria offerFilterCriteria, User user) {
         List<Offer> offers = offerRepository.getSupplierOffersFiltered(offerFilterCriteria, user.getId(), PageRequest.of(offerFilterCriteria.getPage()-1, 8));
-        return offers.stream().map((offer) -> OfferMapper.mapOfferToOfferDTO(offer)).collect(Collectors.toList());
+        return offers.stream().map(OfferMapper::mapOfferToOfferDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -92,5 +106,29 @@ public class OfferService implements IOfferService {
         storageService.update(storage);
 
         return OfferMapper.mapOfferToOfferDTO(offerRepository.save(offer));
+    }
+
+    @Override
+    public List<Offer> accept(User user, Long id) throws IllegalAccessException {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+        Offer acceptingOffer = offerRepository.getOne(id);
+        Order order = acceptingOffer.getOrder();
+
+        if(!order.getPharmacy().equals(administrator.getPharmacy()))
+            throw new IllegalAccessException();
+
+        if(!acceptingOffer.accept())
+            throw new IllegalArgumentException();
+
+        Order updatedOrder = orderService.update(order);
+
+        Inventory inventory = inventoryRepository.getOne(administrator.getPharmacy().getInventory().getId());
+        inventory.placeOffer(acceptingOffer);
+
+        inventoryRepository.save(inventory);
+
+        //Send email
+        applicationEventPublisher.publishEvent(new OnOfferAcceptedEvent(updatedOrder.getOffers()));
+        return updatedOrder.getOffers();
     }
 }
