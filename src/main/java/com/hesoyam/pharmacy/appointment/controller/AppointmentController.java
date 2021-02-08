@@ -1,7 +1,8 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
 import com.hesoyam.pharmacy.appointment.DTO.AppointmentBookingDTO;
-
+import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
 import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.dto.CancelledAppointmentDTO;
 import com.hesoyam.pharmacy.appointment.dto.CheckUpDTO;
@@ -14,12 +15,12 @@ import com.hesoyam.pharmacy.appointment.service.ICounselingService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.*;
-import com.hesoyam.pharmacy.user.service.ILoyaltyAccountService;
 import com.hesoyam.pharmacy.user.service.IPatientService;
 import com.hesoyam.pharmacy.user.service.impl.UserService;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.util.search.UserSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -56,7 +57,7 @@ public class AppointmentController {
     private IPatientService patientService;
 
     @Autowired
-    private ILoyaltyAccountService loyaltyAccountService;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @GetMapping(value = "/appointments-for-pharmacist/{dateTimeRange}")
     @Secured("ROLE_PHARMACIST")
@@ -179,6 +180,7 @@ public class AppointmentController {
                             appointmentBookingDTO.getTo()), appointmentBookingDTO.getPrice());
 
             if (appointment != null) {
+                sendConfirmationEmail(user, patient);
                 return new ResponseEntity<>("Successfully created appointment!", HttpStatus.OK);
             }
         }
@@ -186,8 +188,14 @@ public class AppointmentController {
         return new ResponseEntity<>("Failed to create appointment!", HttpStatus.OK);
     }
 
+    private void sendConfirmationEmail(User user, Patient patient) {
+        if(user.getRoleEnum().equals(RoleEnum.PHARMACIST))
+            applicationEventPublisher.publishEvent(new OnCounselingReservationCompletedEvent(patient));
+        else
+            applicationEventPublisher.publishEvent(new OnCheckupReservationCompletedEvent(patient));
+    }
+
     private boolean isRangeValid(LocalDateTime from, LocalDateTime to) {
         return from.isBefore(to);
     }
-
 }

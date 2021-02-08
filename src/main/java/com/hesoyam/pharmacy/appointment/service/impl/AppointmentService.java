@@ -1,6 +1,5 @@
 package com.hesoyam.pharmacy.appointment.service.impl;
 
-import com.hesoyam.pharmacy.appointment.DTO.AppointmentBookingDTO;
 import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
@@ -14,11 +13,9 @@ import com.hesoyam.pharmacy.employee_management.model.Shift;
 import com.hesoyam.pharmacy.employee_management.model.ShiftType;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.repository.PharmacyRepository;
-import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
+
 import com.hesoyam.pharmacy.user.dto.PatientDTO;
 import com.hesoyam.pharmacy.user.model.*;
-import com.hesoyam.pharmacy.user.repository.DermatologistRepository;
-import com.hesoyam.pharmacy.user.repository.PharmacistRepository;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.util.search.QueryMatchResult;
 import com.hesoyam.pharmacy.util.search.UserSearchResult;
@@ -100,8 +97,8 @@ public class AppointmentService implements IAppointmentService {
         List<Shift> shifts = user.getShifts();
         for(Shift shift : shifts){
             if(shift.getType().equals(ShiftType.WORK) && shift.getDateTimeRange().getFrom().isBefore(range)
-            && shift.getDateTimeRange().getTo().isAfter(range)){
-                 return true;
+                    && shift.getDateTimeRange().getTo().isAfter(range)){
+                return true;
             }
         }
         return false;
@@ -307,7 +304,7 @@ public class AppointmentService implements IAppointmentService {
 
         if(!singleEntry.isBlank()) {
             if(Normalizer.normalize(patient.getFirstName(), Normalizer.Form.NFD).equalsIgnoreCase(singleEntry.toLowerCase())
-            || Normalizer.normalize(patient.getLastName(), Normalizer.Form.NFD).equalsIgnoreCase(singleEntry.toLowerCase()))
+                    || Normalizer.normalize(patient.getLastName(), Normalizer.Form.NFD).equalsIgnoreCase(singleEntry.toLowerCase()))
                 return new QueryMatchResult(true, MATCHES_FULLY);
             else if(Normalizer.normalize(patient.getFirstName(), Normalizer.Form.NFD)
                     .toLowerCase().startsWith(singleEntry.toLowerCase())

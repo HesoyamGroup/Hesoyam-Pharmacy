@@ -9,10 +9,11 @@ import com.hesoyam.pharmacy.util.DateTimeRange;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     int countAppointmentsByPatientAndAppointmentStatusAndPharmacy(Patient patient, AppointmentStatus appointmentStatus, Pharmacy pharmacy);
 
-    Integer countAppointmentsByPatientAndDateTimeRange_From(Patient patient, LocalDateTime range);
+    int countAppointmentsByPatientAndDateTimeRange_From(Patient patient, LocalDateTime range);
+
+
 }
