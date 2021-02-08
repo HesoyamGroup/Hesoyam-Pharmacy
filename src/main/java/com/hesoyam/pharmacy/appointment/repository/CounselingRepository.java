@@ -20,4 +20,5 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long> {
     List<Counseling> getAllByPatient_Id(Long id);
 
 
+    int countCounselingsByPharmacistAndDateTimeRange_From(Pharmacist user, LocalDateTime range);
 }

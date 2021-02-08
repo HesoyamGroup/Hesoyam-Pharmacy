@@ -23,4 +23,6 @@ public interface CheckUpRepository extends JpaRepository<CheckUp, Long> {
     CheckUp findCheckUpByPatient_IdAndDermatologist_IdAndDateTimeRange_From(long patientId, long dermatologistId, LocalDateTime from);
 
     List<CheckUp> findAllByPatientAndDermatologist(Patient patient, Dermatologist user);
+
+    int countCheckUpsByDermatologistAndDateTimeRange_From(Dermatologist user, LocalDateTime range);
 }
