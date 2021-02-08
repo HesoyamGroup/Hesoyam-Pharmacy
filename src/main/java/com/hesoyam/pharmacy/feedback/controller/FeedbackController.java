@@ -70,11 +70,11 @@ public class FeedbackController {
 
     //@Secured("ROLE_PATIENT")
     @PostMapping(value = "/dermatologist")
-    public ResponseEntity<Integer> dermatologistFeedback(@RequestBody DermatologistFeedbackDTO dermatologistFeedbackDTO) {
+    public ResponseEntity<Double> dermatologistFeedback(@RequestBody DermatologistFeedbackDTO dermatologistFeedbackDTO, @AuthenticationPrincipal User user) {
 
         List<EmployeeFeedback> employeeFeedbacks = employeeFeedbackService.findByEmployeeId(dermatologistFeedbackDTO.getDermatologistId());
 
-        EmployeeFeedback employeeFeedback = findByPatientId(Long.parseLong("14"), employeeFeedbacks);
+        EmployeeFeedback employeeFeedback = findByPatientId(user.getId(), employeeFeedbacks);
         if(employeeFeedback != null){
             employeeFeedback.setRating(dermatologistFeedbackDTO.getYourRating());
             employeeFeedback.setComment(dermatologistFeedbackDTO.getYourComment());
@@ -87,23 +87,23 @@ public class FeedbackController {
                 employeeFeedback.setComment(dermatologistFeedbackDTO.getYourComment());
                 employeeFeedback.setRating(dermatologistFeedbackDTO.getYourRating());
                 employeeFeedback.setEmployee(employeeService.getOne(dermatologistFeedbackDTO.getDermatologistId()));
-                employeeFeedback.setPatient(patientService.getById(Long.parseLong("14")));
+                employeeFeedback.setPatient(patientService.getById(user.getId()));
 
                 employeeFeedback = employeeFeedbackService.create(employeeFeedback);
             }catch (PatientNotFoundException e){
                 e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-2);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-2.0);
             }
         }
-
+        double newRating = employeeFeedbackService.calculateEmployeeRating(dermatologistFeedbackDTO.getDermatologistId());
         try{
-            employeeService.updateRating(dermatologistFeedbackDTO.getDermatologistId(), employeeFeedbackService.calculateEmployeeRating(dermatologistFeedbackDTO.getDermatologistId()));
+            employeeService.updateRating(dermatologistFeedbackDTO.getDermatologistId(), newRating);
         }catch (EmployeeNotFoundException e){
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-1);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-1.0);
         }
 
-        return ResponseEntity.ok().body(employeeFeedbacks.size());
+        return ResponseEntity.ok().body(newRating);
     }
 
     private EmployeeFeedback findByPatientId(Long id, List<EmployeeFeedback> employeeFeedbacks){

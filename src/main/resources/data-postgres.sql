@@ -559,10 +559,6 @@ VALUES ('PharmacyComplaint', 'Ovo je drugi PHARMACY complaint, ODGOVOREN complai
 -- Employee Feedback
 --------------------
 
---INSERT INTO feedback(dtype, comment, rating, patient_id, employee_id, medicine_id, pharmacy_id)
---VALUES ('EmployeeFeedback', 'Sju druze', 4, 14, 10, null, null);
-INSERT INTO feedback(dtype, comment, rating, patient_id, employee_id, medicine_id, pharmacy_id)
-VALUES ('EmployeeFeedback', 'Sju druze', 4, 15, 10, null, null);
 
 -----------------------
 -- Loyalty system
