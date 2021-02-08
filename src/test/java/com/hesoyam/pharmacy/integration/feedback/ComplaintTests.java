@@ -5,8 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.hesoyam.pharmacy.feedback.dto.EmployeeComplaintCreateDTO;
+import com.hesoyam.pharmacy.feedback.dto.PharmacyComplaintCreateDTO;
 import com.hesoyam.pharmacy.user.model.User;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,8 +36,19 @@ class ComplaintTests {
 
     @Autowired
     private WebApplicationContext context;
+
     @Autowired
     private  MockMvc mvc;
+
+    private static ObjectMapper objectMapper;
+    private static ObjectWriter objectWriter;
+
+    @BeforeAll
+    public static void initAll(){
+        objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        objectWriter = objectMapper.writer().withDefaultPrettyPrinter();
+    }
 
     @BeforeEach
     public void init(){
@@ -49,18 +59,32 @@ class ComplaintTests {
     @WithUserDetails (value = "hesoyampharmacy+veselin@gmail.com")
     void placeInvalidEmployeeComplaintTest() throws Exception {
         //Invalid because he doesn't have any completed appointment with specified employee.
-        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext (). getAuthentication ();
-        User userDetails = (User) authentication.getPrincipal ();
-        mvc.perform(post("/complaint/create-employee-complaint").contentType(MediaType.APPLICATION_JSON_VALUE).content(getInvalidEmployeeComplaintRequestJSON()).with(user(userDetails))).andExpect(status().is(400));
+        mvc.perform(post("/complaint/create-employee-complaint").contentType(MediaType.APPLICATION_JSON_VALUE).content(getInvalidEmployeeComplaintRequestJSON()).with(user(getUserDetails()))).andExpect(status().is(400));
     }
 
+    @Test
+    @WithUserDetails (value = "hesoyampharmacy+veselin@gmail.com")
+    void placeInvalidPharmacyComplaintTest() throws Exception{
+        //Invalid, no reserved medicine/recipe and other constraints
+        mvc.perform(post("/complaint/create-pharmacy-complaint").contentType(MediaType.APPLICATION_JSON_VALUE).content(getInvalidPharmacyComplaintRequestJSON()).with(user(getUserDetails()))).andExpect(status().is(400));
+    }
+    
+    private User getUserDetails(){
+        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext (). getAuthentication ();
+        return (User) authentication.getPrincipal ();
+    }
+
+    private String getInvalidPharmacyComplaintRequestJSON() throws JsonProcessingException{
+        PharmacyComplaintCreateDTO pharmacyComplaintCreateDTO = new PharmacyComplaintCreateDTO();
+        pharmacyComplaintCreateDTO.setBody("Test pharmacy complaint body");
+        pharmacyComplaintCreateDTO.setPharmacyId(1l);
+        return objectWriter.writeValueAsString(pharmacyComplaintCreateDTO);
+
+    }
     private String getInvalidEmployeeComplaintRequestJSON() throws JsonProcessingException {
         EmployeeComplaintCreateDTO employeeComplaint = new EmployeeComplaintCreateDTO();
         employeeComplaint.setBody("Test complaint body");
         employeeComplaint.setEmployeeId(1l);
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter objectWriter = objectMapper.writer().withDefaultPrettyPrinter();
         return objectWriter.writeValueAsString(employeeComplaint);
     }
 }
