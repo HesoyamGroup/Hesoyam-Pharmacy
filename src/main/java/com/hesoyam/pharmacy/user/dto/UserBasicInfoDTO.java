@@ -4,10 +4,11 @@ import com.hesoyam.pharmacy.user.model.Gender;
 import com.hesoyam.pharmacy.user.model.User;
 
 public class UserBasicInfoDTO {
-    String firstName;
-    String lastName;
-    Gender gender;
-    String telephone;
+    protected Long id;
+    protected String firstName;
+    protected String lastName;
+    protected Gender gender;
+    protected String telephone;
 
     public UserBasicInfoDTO() {
         //Empty ctor for JSON serializer
@@ -21,10 +22,19 @@ public class UserBasicInfoDTO {
     }
 
     public UserBasicInfoDTO(User user){
+        this.id = user.getId();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.gender = user.getGender();
         this.telephone = user.getTelephone();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
