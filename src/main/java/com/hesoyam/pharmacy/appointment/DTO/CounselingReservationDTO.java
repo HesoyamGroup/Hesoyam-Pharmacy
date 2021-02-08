@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 
@@ -11,6 +11,7 @@ public class CounselingReservationDTO {
     Double rating;
 
     public CounselingReservationDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public CounselingReservationDTO(Counseling counseling){

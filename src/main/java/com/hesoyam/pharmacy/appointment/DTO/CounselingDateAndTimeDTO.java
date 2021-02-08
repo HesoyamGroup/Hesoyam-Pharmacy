@@ -1,16 +1,11 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.hesoyam.pharmacy.appointment.model.Counseling;
-import org.apache.tomcat.jni.Local;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class CounselingDateAndTimeDTO {
@@ -22,6 +17,7 @@ public class CounselingDateAndTimeDTO {
 
 
     public CounselingDateAndTimeDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public CounselingDateAndTimeDTO(LocalDateTime dateAndTime) {

@@ -12,6 +12,7 @@ public class MedicineSearchDTO {
     private int page;
 
     public MedicineSearchDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public MedicineSearchDTO(String name, MedicineType medicineType, Double minRating, Double maxRating, int page) {

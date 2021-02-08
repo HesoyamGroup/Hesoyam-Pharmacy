@@ -3,7 +3,10 @@ package com.hesoyam.pharmacy.user.service;
 import com.hesoyam.pharmacy.user.dto.LoyaltyAccountMembershipDTO;
 import com.hesoyam.pharmacy.user.dto.LoyaltyProgramConfigUpdateDTO;
 import com.hesoyam.pharmacy.user.exceptions.LoyaltyAccountMembershipInvalidUpdateException;
-import com.hesoyam.pharmacy.user.model.*;
+import com.hesoyam.pharmacy.user.model.LoyaltyAccount;
+import com.hesoyam.pharmacy.user.model.LoyaltyAccountMembership;
+import com.hesoyam.pharmacy.user.model.LoyaltyProgramConfig;
+import com.hesoyam.pharmacy.user.model.Patient;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 import com.hesoyam.pharmacy.prescription.dto.PrescriptionItemDTO;
 
@@ -20,6 +20,7 @@ public class CheckupReportDTO {
     }
 
     public CheckupReportDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public LocalDateTime getFrom() {

@@ -7,7 +7,6 @@ import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
-import org.hibernate.annotations.Check;
 
 import java.time.LocalDateTime;
 import java.util.List;

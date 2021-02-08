@@ -10,7 +10,6 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
-import com.hesoyam.pharmacy.pharmacy.dto.PharmacyWithPrescriptionPriceDTO;
 import com.hesoyam.pharmacy.pharmacy.events.OnMedicineSaleEvent;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.model.MedicineSale;
@@ -19,6 +18,8 @@ import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import com.hesoyam.pharmacy.prescription.dto.CompletePrescriptionDTO;
 import com.hesoyam.pharmacy.prescription.dto.EPrescriptionQRData;
+import com.hesoyam.pharmacy.prescription.dto.EPrescriptionUploadResponse;
+import com.hesoyam.pharmacy.prescription.dto.PharmacyWithPrescriptionPriceDTO;
 import com.hesoyam.pharmacy.prescription.events.OnEPrescriptionCompletedEvent;
 import com.hesoyam.pharmacy.prescription.exception.InvalidCompleteEPrescriptionException;
 import com.hesoyam.pharmacy.prescription.exception.InvalidEPrescriptionFormat;
@@ -41,7 +42,9 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EPrescriptionService implements IEPrescriptionService {
@@ -62,7 +65,7 @@ public class EPrescriptionService implements IEPrescriptionService {
     private ApplicationEventPublisher eventPublisher;
 
     @Override
-    public List<PharmacyWithPrescriptionPriceDTO> get(File qrCodeImage, Patient patient) {
+    public EPrescriptionUploadResponse get(File qrCodeImage, Patient patient) {
         if(!isImage(qrCodeImage)) throw new InvalidEPrescriptionFormat("Uploaded file is not an image.");
 
         try {
@@ -131,9 +134,14 @@ public class EPrescriptionService implements IEPrescriptionService {
         return new PharmacyWithPrescriptionPriceDTO(pharmacy.getId(), pharmacy.getName(), pharmacy.getAddress(), price, pharmacy.getRating(), eprescriptionId, discountedPrice);
     }
 
-    private List<PharmacyWithPrescriptionPriceDTO> getPharmaciesWhoCanFulfillPrescription(EPrescription ePrescription){
+    private EPrescriptionUploadResponse getPharmaciesWhoCanFulfillPrescription(EPrescription ePrescription){
         List<Pharmacy> hasMedicineList = pharmacyService.getPharmaciesByMedicineAvailability(ePrescription.getMedicineIds());
         List<PharmacyWithPrescriptionPriceDTO> pharmacyInfo = new ArrayList<>();
+        Map<String, Integer> medicineData = new HashMap<>();
+        for(PrescriptionItem prescriptionItem : ePrescription.getPrescriptionItems()){
+            medicineData.put(prescriptionItem.getMedicine().getName(), prescriptionItem.getQuantity());
+        }
+
         for(Pharmacy pharmacy : hasMedicineList) {
             int finalPrice = 0;
             boolean canFulfill = true;
@@ -150,7 +158,7 @@ public class EPrescriptionService implements IEPrescriptionService {
                 pharmacyInfo.add(mapPharmacyToPharmacyWithPrescriptionDataDTO(pharmacy, finalPrice, ePrescription.getId(), loyaltyAccountService.calculateDiscountedPrice(ePrescription.getPatient(), finalPrice)));
             }
         }
-        return pharmacyInfo;
+        return new EPrescriptionUploadResponse(medicineData, pharmacyInfo);
     }
 
     private EPrescriptionQRData extractEPrescriptionDataFromDecodedQRCode(Result result) throws JsonProcessingException {

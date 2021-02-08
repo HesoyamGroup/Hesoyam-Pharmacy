@@ -12,6 +12,7 @@ public class MedicineSpecificationFindResultDTO {
     private List<String> replacementMedicines;
 
     public MedicineSpecificationFindResultDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public MedicineSpecificationFindResultDTO(Long id, List<String> contraindications, List<String> compositionItems, Dosage dosage, List<String> replacementMedicines) {

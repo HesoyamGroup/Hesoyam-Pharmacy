@@ -1,39 +1,28 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
-import com.hesoyam.pharmacy.appointment.DTO.CounselingReportDTO;
-import com.hesoyam.pharmacy.appointment.DTO.CounselingDTO;
+import com.hesoyam.pharmacy.appointment.dto.*;
+import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.exceptions.CounselingCancellationPeriodExpiredException;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
-import com.hesoyam.pharmacy.appointment.model.*;
+import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
+import com.hesoyam.pharmacy.appointment.model.Counseling;
+import com.hesoyam.pharmacy.appointment.model.TherapyItem;
 import com.hesoyam.pharmacy.appointment.service.ICounselingService;
 import com.hesoyam.pharmacy.appointment.service.ITherapyItemService;
 import com.hesoyam.pharmacy.appointment.service.ITherapyService;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
-import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
+import com.hesoyam.pharmacy.pharmacy.dto.PharmacySearchDTO;
 import com.hesoyam.pharmacy.prescription.dto.PrescriptionItemDTO;
 import com.hesoyam.pharmacy.prescription.exceptions.PatientIsAllergicException;
 import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 import com.hesoyam.pharmacy.prescription.service.IPrescriptionService;
-import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.user.model.Pharmacist;
-import com.hesoyam.pharmacy.user.service.IPatientService;
-import com.hesoyam.pharmacy.user.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-
-
-
-import com.hesoyam.pharmacy.appointment.DTO.*;
-import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
-import com.hesoyam.pharmacy.appointment.exceptions.CounselingCancellationPeriodExpiredException;
-import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
-import com.hesoyam.pharmacy.appointment.model.Counseling;
-import com.hesoyam.pharmacy.appointment.service.ICounselingService;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
 import com.hesoyam.pharmacy.user.model.Patient;
+import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,18 +30,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import com.hesoyam.pharmacy.pharmacy.dto.PharmacySearchDTO;
-
-import javax.persistence.PreUpdate;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import java.util.ArrayList;
 import java.util.List;
 

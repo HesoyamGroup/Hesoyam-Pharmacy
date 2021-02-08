@@ -2,7 +2,6 @@ package com.hesoyam.pharmacy.medicine.repository;
 
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
-import com.hesoyam.pharmacy.user.model.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

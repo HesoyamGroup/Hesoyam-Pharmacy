@@ -19,7 +19,6 @@ public class SubscribeController {
     private ISubscribeService subscribeService;
 
 
-
     @PutMapping(value = "/sub/{id}")
     @Secured("ROLE_PATIENT")
     public ResponseEntity<String> subscribe(@PathVariable("id")Long pharmacyId, @AuthenticationPrincipal User user){
@@ -47,6 +46,7 @@ public class SubscribeController {
     }
 
     @GetMapping(value="is-subbed/{pharmacy_id}")
+    @Secured("ROLE_PATIENT")
     public ResponseEntity<Boolean> isSubscribed(@PathVariable("pharmacy_id") Long id,@AuthenticationPrincipal User user){
         return ResponseEntity.ok(subscribeService.isSubscribed(id, user));
     }

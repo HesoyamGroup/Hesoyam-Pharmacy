@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -17,6 +17,7 @@ public class CounselingDateAndPharmacyDTO {
     Long id;
 
     public CounselingDateAndPharmacyDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public CounselingDateAndPharmacyDTO(LocalDateTime dateAndTime, Long id) {

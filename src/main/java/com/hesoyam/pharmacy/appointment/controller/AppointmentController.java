@@ -1,10 +1,11 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
 import com.hesoyam.pharmacy.appointment.DTO.AppointmentBookingDTO;
-import com.hesoyam.pharmacy.appointment.DTO.CancelledAppointmentDTO;
-import com.hesoyam.pharmacy.appointment.DTO.CheckUpDTO;
-import com.hesoyam.pharmacy.appointment.DTO.CounselingDTO;
+
 import com.hesoyam.pharmacy.appointment.model.Appointment;
+import com.hesoyam.pharmacy.appointment.dto.CancelledAppointmentDTO;
+import com.hesoyam.pharmacy.appointment.dto.CheckUpDTO;
+import com.hesoyam.pharmacy.appointment.dto.CounselingDTO;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
@@ -28,7 +29,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

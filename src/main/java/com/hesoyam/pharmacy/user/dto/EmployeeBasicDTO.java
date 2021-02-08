@@ -10,7 +10,9 @@ public class EmployeeBasicDTO {
     protected RoleEnum role;
     protected double rating;
 
-    public EmployeeBasicDTO(){}
+    public EmployeeBasicDTO(){
+        //Empty ctor for JSON serializer
+    }
 
     public EmployeeBasicDTO(Employee employee) {
         this.id = employee.getId();

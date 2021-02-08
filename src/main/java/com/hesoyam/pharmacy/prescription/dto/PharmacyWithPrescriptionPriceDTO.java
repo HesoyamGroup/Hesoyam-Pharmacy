@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.pharmacy.dto;
+package com.hesoyam.pharmacy.prescription.dto;
 
 import com.hesoyam.pharmacy.location.model.Address;
 
@@ -12,6 +12,7 @@ public class PharmacyWithPrescriptionPriceDTO {
     private Long eprescriptionId;
 
     public PharmacyWithPrescriptionPriceDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public PharmacyWithPrescriptionPriceDTO(Long id, String name, Address address, double price, double pharmacyRating, Long eprescriptionId, double discountedPrice) {

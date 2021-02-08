@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.user.DTO;
+package com.hesoyam.pharmacy.user.dto;
 
 import com.hesoyam.pharmacy.user.model.Gender;
 import com.hesoyam.pharmacy.user.model.User;
@@ -12,6 +12,7 @@ public class UserProfileDTO {
     String telephone;
 
     public UserProfileDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public UserProfileDTO(User user){

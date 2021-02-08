@@ -21,6 +21,7 @@ public class MedicineReservationDTO {
     MedicineReservationStatus medicineReservationStatus;
 
     public MedicineReservationDTO(){
+        //Empty ctor for JSON serializer
     }
 
     public MedicineReservationDTO(MedicineReservation medicineReservation) {

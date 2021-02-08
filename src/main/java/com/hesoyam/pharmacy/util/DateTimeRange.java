@@ -8,8 +8,9 @@ package com.hesoyam.pharmacy.util;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalTime;
 
 @Embeddable
 public class DateTimeRange {
@@ -32,7 +33,10 @@ public class DateTimeRange {
             this.from = to;
             this.to = from;
         }
+    }
 
+    public DateTimeRange(LocalDate from, LocalDate to){
+        this(LocalDateTime.of(from, LocalTime.MIDNIGHT), LocalDateTime.of(to, LocalTime.MIDNIGHT));
     }
 
 

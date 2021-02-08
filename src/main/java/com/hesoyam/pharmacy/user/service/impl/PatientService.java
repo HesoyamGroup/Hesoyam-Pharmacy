@@ -3,7 +3,6 @@ package com.hesoyam.pharmacy.user.service.impl;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.repository.MedicineRepository;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
-import com.hesoyam.pharmacy.user.model.LoyaltyAccount;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.repository.PatientRepository;
 import com.hesoyam.pharmacy.user.service.IPatientService;
