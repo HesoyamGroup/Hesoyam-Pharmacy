@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.pharmacy.dto;
 
 import com.hesoyam.pharmacy.util.report.ReportResult;
+
 import java.util.List;
 
 public class SalesDTO {

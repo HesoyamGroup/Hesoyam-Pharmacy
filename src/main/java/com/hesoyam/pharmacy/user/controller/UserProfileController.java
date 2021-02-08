@@ -4,7 +4,6 @@ import com.hesoyam.pharmacy.location.model.Address;
 import com.hesoyam.pharmacy.location.service.ICityService;
 import com.hesoyam.pharmacy.location.service.ICountryService;
 import com.hesoyam.pharmacy.security.TokenUtils;
-import com.hesoyam.pharmacy.user.dto.UserProfileDTO;
 import com.hesoyam.pharmacy.user.dto.*;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.User;

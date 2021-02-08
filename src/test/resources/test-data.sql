@@ -13,6 +13,7 @@ INSERT INTO city (city_name, country_id) VALUES ('Novi Sad', 1);
 INSERT INTO pharmacy (name, description, address_line, latitude, longitude, city_id, rating) VALUES
 ('Apoteka Janković', 'Poverenje, sigurnost i dostupnost su, već skoro 30 godina, glavna obeležja Apotekarske ustanove Janković', 'Bulevar oslobođenja 135', 45.24147051535973, 19.84340829263456, 1, 0);
 
+-- ID 1
 INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
@@ -22,7 +23,7 @@ INSERT INTO employee
 INSERT INTO pharmacist (id, pharmacy_id) VALUES (1, 1);
 INSERT INTO user_roles (user_id, role_id) VALUES (1, 3);
 
-
+-- ID 2
 INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
@@ -30,6 +31,42 @@ VALUES
 INSERT INTO administrator (id, pharmacy_id) VALUES (2, 1);
 INSERT INTO user_roles (user_id, role_id) VALUES (2, 5);
 
+-- ID 3
+--Patient whos account is not confirmed by email.
+INSERT INTO users
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
+VALUES
+('Aleksa', 'Tomić', 'MALE', 'Miseluk', 1, 45.265666787857164, 19.81474531978888, '55553333', 'hesoyampharmacy+leksa@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), false, 'PATIENT', false);
+INSERT INTO patient (id, penalty_points) VALUES (3, 0);
+INSERT INTO user_roles (user_id, role_id) VALUES (3, 2);
+
+
+-- ID 4
+INSERT INTO users
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
+VALUES
+('Veselin', 'Tomić', 'MALE', 'Rumenačka 147', 1, 45.265666787857164, 19.81474531978888, '4444444444', 'hesoyampharmacy+veselin@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'PATIENT', false);
+INSERT INTO patient (id, penalty_points) VALUES (4, 0);
+INSERT INTO user_roles (user_id, role_id) VALUES (4, 2);
+
+--SYS ADMIN
+--ID 5
+INSERT INTO users
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
+VALUES
+('Pera', 'Perić', 'MALE', 'Bulevar cara Lazara 88', 1, 45.24136867255004, 19.829921403835918, '4444444444', 'hesoyampharmacy+admin@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('14-01-2021', 'DD-MM-YYYY'), true, 'SYS_ADMIN', false);
+INSERT INTO sys_admin (id) VALUES (5);
+INSERT INTO user_roles (user_id, role_id) VALUES (5, 6);
+
+--SUPPLIER
+-- ID 6
+INSERT INTO users
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
+VALUES
+('Sandra', 'Filipovic', 'FEMALE', 'Sarajevska 83', 1, 44.800638193104234, 20.451638118625414, '4444444444', 'hesoyampharmacy+sandra@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
+INSERT INTO supplier (id) VALUES (6);
+INSERT INTO user_roles (user_id, role_id) VALUES (6, 7);
+insert into STORAGE (supplier_id) VALUES (6);
 
 
 ------------------------------------------------------------------------------------
@@ -103,3 +140,17 @@ INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id)
 VALUES('MedicineSale', '2021-02-05', 750, 1);
 INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id)
 VALUES('MedicineSale', '2021-02-06', 665, 1);
+
+
+
+-----------------------
+-- Complaints
+-----------------------
+
+--1
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('EmployeeComplaint', 'Ovo je prvi complaint', 'OPENED', 3, null, 1, null);
+--2
+INSERT INTO reply (text, sys_admin_id) VALUES ('Ovo je odgovor na drugi complaint od strane sys admin 1', 5);
+INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
+VALUES ('EmployeeComplaint', 'Ovo je drugi complaint', 'CLOSED', 3, 1, 1, null);
