@@ -188,4 +188,8 @@ public class InventoryItem {
    public boolean containsMedicine(Medicine medicine) {
       return getMedicine().equals(medicine);
    }
+
+    public void updateBalance(OrderItem item) {
+      this.available += item.getQuantity();
+   }
 }

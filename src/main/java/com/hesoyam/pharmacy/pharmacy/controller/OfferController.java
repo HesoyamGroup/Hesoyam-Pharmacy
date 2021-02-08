@@ -5,17 +5,21 @@ import com.hesoyam.pharmacy.pharmacy.dto.OfferDTO;
 import com.hesoyam.pharmacy.pharmacy.dto.OfferFilterCriteria;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidCreateOfferException;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidEditOfferException;
+import com.hesoyam.pharmacy.pharmacy.model.Offer;
 import com.hesoyam.pharmacy.pharmacy.service.IOfferService;
 import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -55,6 +59,21 @@ public class OfferController {
             return ResponseEntity.badRequest().build();
         }catch (EntityNotFoundException e){
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/accept/{id}")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<List<OfferDTO>> acceptOffer(@AuthenticationPrincipal User user, @PathVariable Long id){
+        try{
+            List<Offer> orderOffers = offerService.accept(user, id);
+            List<OfferDTO> offersDTO = new ArrayList<>();
+            orderOffers.forEach(offer -> offersDTO.add(new OfferDTO(offer)));
+            return ResponseEntity.ok().body(offersDTO);
+        } catch (IllegalAccessException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().build();
         }
     }
 

@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 
 @Entity
@@ -106,5 +107,25 @@ public class Offer {
 
    public void setOrder(Order order) {
       this.order = order;
+   }
+
+   public boolean accept() {
+      if(this.offerStatus == OfferStatus.CREATED){
+         return getOrder().accept(this);
+      }else
+         return false;
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof Offer)) return false;
+      Offer offer = (Offer) o;
+      return Objects.equals(getId(), offer.getId());
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(getId());
    }
 }

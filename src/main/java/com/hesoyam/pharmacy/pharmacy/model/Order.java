@@ -38,7 +38,7 @@ public class Order {
 
 //   @OneToMany(fetch=FetchType.LAZY)
 //   @JoinColumn(name="order_id", referencedColumnName = "id", nullable = false)
-   @OneToMany(fetch = FetchType.LAZY, mappedBy="order")
+   @OneToMany(fetch = FetchType.LAZY, mappedBy="order", cascade = CascadeType.ALL)
    private List<Offer> offers;
 
    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
@@ -130,5 +130,21 @@ public class Order {
          setDeadLine(deadline);
       else
          throw new IllegalStateException();
+   }
+
+   public boolean accept(Offer offer) {
+      if(orderStatus == OrderStatus.CREATED && deadLine.isBefore(LocalDateTime.now())){
+         setOrderStatus(OrderStatus.ACCEPTED);
+         getOffers().forEach(off -> setOfferStatus(off, offer));
+         return true;
+      } else
+         return false;
+   }
+
+   private void setOfferStatus(Offer offer, Offer acceptedOffer){
+      if(offer.equals(acceptedOffer))
+         offer.setOfferStatus(OfferStatus.ACCEPTED);
+      else
+         offer.setOfferStatus(OfferStatus.REJECTED);
    }
 }
