@@ -11,7 +11,9 @@ public class ComplaintDataDTO {
     private String entityName;
     private Gender gender;
 
-    public ComplaintDataDTO(){}
+    public ComplaintDataDTO(){
+        //Empty ctor for JSON serializer
+    }
 
     public ComplaintDataDTO(Long id, String patientFirstName, String patientLastName, String patientEmail, String complaintBody, String entityName, Gender gender) {
         this.id = id;

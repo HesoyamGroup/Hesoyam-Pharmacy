@@ -18,6 +18,7 @@ public class PatientDTO {
     }
 
     public PatientDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public PatientDTO(Appointment appointment) {

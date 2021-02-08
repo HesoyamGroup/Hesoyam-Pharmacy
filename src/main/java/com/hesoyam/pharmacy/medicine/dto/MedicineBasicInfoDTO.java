@@ -10,7 +10,7 @@ public class MedicineBasicInfoDTO {
     private String manufacturerName;
 
     public MedicineBasicInfoDTO(){
-        //Empty ctor JSON serializer
+        //Empty ctor for JSON serializer
     }
 
     public MedicineBasicInfoDTO(Medicine medicine){

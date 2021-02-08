@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 
@@ -42,6 +42,7 @@ public class CounselingDTO {
     }
 
     public CounselingDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public LocalDateTime getFrom() {

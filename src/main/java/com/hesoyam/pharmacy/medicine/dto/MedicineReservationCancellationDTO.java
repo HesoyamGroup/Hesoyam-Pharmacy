@@ -8,6 +8,7 @@ public class MedicineReservationCancellationDTO {
     }
 
     public MedicineReservationCancellationDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public Long getId() {

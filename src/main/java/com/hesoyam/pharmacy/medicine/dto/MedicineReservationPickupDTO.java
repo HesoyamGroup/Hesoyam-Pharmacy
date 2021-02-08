@@ -4,7 +4,6 @@ import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
 
 public class MedicineReservationPickupDTO {
     private String patientFirstName;
@@ -23,6 +22,10 @@ public class MedicineReservationPickupDTO {
         this.code = reservation.getCode();
         this.medicineReservationStatus = reservation.getMedicineReservationStatus().toString();
         checkValidity();
+    }
+
+    public MedicineReservationPickupDTO(){
+        //Empty ctor for JSON serializer
     }
 
     private void checkValidity() {

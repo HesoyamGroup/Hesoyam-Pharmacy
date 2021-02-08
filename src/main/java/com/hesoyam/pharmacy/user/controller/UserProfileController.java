@@ -1,14 +1,12 @@
 package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.location.model.Address;
-import com.hesoyam.pharmacy.location.model.City;
 import com.hesoyam.pharmacy.location.service.ICityService;
 import com.hesoyam.pharmacy.location.service.ICountryService;
 import com.hesoyam.pharmacy.security.TokenUtils;
-import com.hesoyam.pharmacy.user.DTO.UserProfileDTO;
+import com.hesoyam.pharmacy.user.dto.UserProfileDTO;
 import com.hesoyam.pharmacy.user.dto.*;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
-import com.hesoyam.pharmacy.user.model.Gender;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.zip.Inflater;
 
 @RestController
 @RequestMapping(value="/profile", produces = MediaType.APPLICATION_JSON_VALUE)

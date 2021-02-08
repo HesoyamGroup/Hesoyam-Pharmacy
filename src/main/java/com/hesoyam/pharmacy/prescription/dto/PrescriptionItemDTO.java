@@ -14,6 +14,7 @@ public class PrescriptionItemDTO {
     }
 
     public PrescriptionItemDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public PrescriptionItemDTO(PrescriptionItem prescriptionItem) {

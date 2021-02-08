@@ -6,6 +6,7 @@ public class PasswordDTO {
     String oldPassword;
 
     public PasswordDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public PasswordDTO(String password, String confirmPassword, String oldPassword) {

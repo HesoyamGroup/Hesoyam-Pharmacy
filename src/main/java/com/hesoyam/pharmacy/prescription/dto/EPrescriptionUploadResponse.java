@@ -7,7 +7,9 @@ public class EPrescriptionUploadResponse {
     Map<String, Integer> requestedMedicine;
     List<PharmacyWithPrescriptionPriceDTO> pharmacies;
 
-    public EPrescriptionUploadResponse(){}
+    public EPrescriptionUploadResponse(){
+        //Empty ctor for JSON serializer
+    }
 
     public EPrescriptionUploadResponse(Map<String, Integer> requestedMedicine, List<PharmacyWithPrescriptionPriceDTO> pharmacies) {
         this.requestedMedicine = requestedMedicine;

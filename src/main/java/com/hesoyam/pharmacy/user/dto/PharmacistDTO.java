@@ -5,7 +5,9 @@ public class PharmacistDTO {
     private String lastName;
     private String pharmacyName;
 
-    public PharmacistDTO(){}
+    public PharmacistDTO(){
+        //Empty ctor for JSON serializer
+    }
 
     public PharmacistDTO(String firstName, String lastName, String pharmacyName){
         this.firstName = firstName;

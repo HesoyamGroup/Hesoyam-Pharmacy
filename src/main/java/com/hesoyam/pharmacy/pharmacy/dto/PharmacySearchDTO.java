@@ -1,7 +1,6 @@
 package com.hesoyam.pharmacy.pharmacy.dto;
 
 import com.hesoyam.pharmacy.appointment.model.Counseling;
-import com.hesoyam.pharmacy.pharmacy.dto.PharmacyLocationDTO;
 
 public class PharmacySearchDTO {
 
@@ -14,6 +13,7 @@ public class PharmacySearchDTO {
     PharmacyLocationDTO pharmacyLocationDTO;
 
     public PharmacySearchDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public PharmacySearchDTO(Long id, String name, double rating, String description, String cityName, String addressLine, Double latitude, Double longitude) {
