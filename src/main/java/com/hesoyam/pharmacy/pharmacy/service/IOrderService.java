@@ -19,4 +19,6 @@ public interface IOrderService {
     Order create(ShowOrdersDTO order, Administrator administrator);
 
     List<Order> getAllByAdministratorPharmacy(User user);
+
+    void delete(User user, Long id) throws IllegalAccessException;
 }

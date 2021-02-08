@@ -53,6 +53,19 @@ public class OrderController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<Void> deleteOrder(@AuthenticationPrincipal User user, @PathVariable Long id){
+        try{
+            orderService.delete(user, id);
+            return ResponseEntity.ok().build();
+        }catch (IllegalAccessException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping("/active")
     @Secured("ROLE_SUPPLIER")
     public ResponseEntity<List<ShowOrdersDTO>> getAllActive(@RequestParam(required = false)Integer page, @AuthenticationPrincipal User user){

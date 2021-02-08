@@ -118,6 +118,20 @@ public class OrderService implements IOrderService {
         return orderRepository.getAllByPharmacy_Id(administrator.getPharmacy().getId());
     }
 
+    @Override
+    public void delete(User user, Long id) throws IllegalAccessException {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+        Order orderForDelete = orderRepository.getOne(id);
+
+        if(!orderForDelete.getPharmacy().equals(administrator.getPharmacy()))
+            throw new IllegalAccessException();
+
+        if(orderForDelete.hasOffers())
+            throw new IllegalArgumentException();
+
+        orderRepository.delete(orderForDelete);
+    }
+
     private List<OrderItem> getOrderItems(List<ShowOrderItemDTO> showOrderItemDTOS) {
         List<OrderItem> orderItems = new ArrayList<>();
         for(ShowOrderItemDTO orderItem : showOrderItemDTOS){
