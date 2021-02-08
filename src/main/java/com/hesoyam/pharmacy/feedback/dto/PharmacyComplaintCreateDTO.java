@@ -15,8 +15,6 @@ public class PharmacyComplaintCreateDTO {
     @NotNull(message = "Pharmacy ID must be specified.")
     private Long pharmacyId;
 
-    public PharmacyComplaintCreateDTO(){}
-
     public String getBody() {
         return body;
     }

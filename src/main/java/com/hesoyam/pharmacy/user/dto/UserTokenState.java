@@ -9,6 +9,7 @@ public class UserTokenState {
     private Role role;
 
     public UserTokenState(){
+        //Empty ctor for JSON serializer
     }
 
     public UserTokenState(String token, long expiresIn, Role role){

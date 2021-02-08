@@ -6,7 +6,9 @@ public class EPrescriptionQRData {
     private Long id;
     private LocalDateTime issuingDate;
 
-    public EPrescriptionQRData(){}
+    public EPrescriptionQRData(){
+        //Empty ctor for JSON serializer
+    }
 
     public EPrescriptionQRData(Long id, LocalDateTime issuingDate) {
         this.id = id;

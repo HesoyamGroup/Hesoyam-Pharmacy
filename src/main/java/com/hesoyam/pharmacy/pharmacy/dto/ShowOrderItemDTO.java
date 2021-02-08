@@ -8,7 +8,6 @@ public class ShowOrderItemDTO {
     private Integer quantity;
     private Long medicineId;
 
-
     public ShowOrderItemDTO(){
         //Empty ctor for JSON serializer
     }

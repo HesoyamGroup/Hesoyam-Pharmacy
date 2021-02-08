@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 public class CounselingIDDTO {
 
@@ -9,6 +9,7 @@ public class CounselingIDDTO {
     }
 
     public CounselingIDDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public Long getId() {

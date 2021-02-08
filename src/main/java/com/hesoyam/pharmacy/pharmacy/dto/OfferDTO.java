@@ -10,7 +10,10 @@ public class OfferDTO {
     private LocalDateTime deliveryDate;
     private OfferStatus offerStatus;
     private Long orderId;
-    public OfferDTO(){}
+
+    public OfferDTO(){
+        //Empty ctor for JSON serializer
+    }
 
     public OfferDTO(Long id, double totalPrice, LocalDateTime deliveryDate, OfferStatus offerStatus, Long orderId) {
         this.id = id;

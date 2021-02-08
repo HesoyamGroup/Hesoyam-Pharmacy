@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.util.DateTimeRange;
@@ -11,6 +11,7 @@ public class FutureCheckupDTO {
     Double price;
 
     public FutureCheckupDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public FutureCheckupDTO(CheckUp checkUp) {

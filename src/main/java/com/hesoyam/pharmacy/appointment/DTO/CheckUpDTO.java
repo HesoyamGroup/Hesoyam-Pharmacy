@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
@@ -38,6 +38,7 @@ public class CheckUpDTO {
     }
 
     public CheckUpDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public String getAppointmentStatus() {
