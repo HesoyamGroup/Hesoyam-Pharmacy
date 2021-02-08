@@ -2,7 +2,6 @@ package com.hesoyam.pharmacy.unit.user;
 
 import com.hesoyam.pharmacy.user.model.LoyaltyAccount;
 import com.hesoyam.pharmacy.user.model.LoyaltyAccountMembership;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

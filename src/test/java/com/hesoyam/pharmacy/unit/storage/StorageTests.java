@@ -5,12 +5,10 @@ import com.hesoyam.pharmacy.pharmacy.model.Order;
 import com.hesoyam.pharmacy.pharmacy.model.OrderItem;
 import com.hesoyam.pharmacy.storage.model.Storage;
 import com.hesoyam.pharmacy.storage.model.StorageItem;
-import org.aspectj.weaver.ast.Or;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 

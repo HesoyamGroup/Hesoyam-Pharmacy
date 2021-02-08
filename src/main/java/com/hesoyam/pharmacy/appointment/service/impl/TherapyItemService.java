@@ -6,7 +6,6 @@ import com.hesoyam.pharmacy.appointment.service.ITherapyItemService;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
 import com.hesoyam.pharmacy.prescription.dto.PrescriptionItemDTO;
-import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
