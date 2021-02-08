@@ -39,6 +39,14 @@ VALUES
 INSERT INTO patient (id, penalty_points) VALUES (3, 0);
 INSERT INTO user_roles (user_id, role_id) VALUES (3, 2);
 
+INSERT INTO users
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
+VALUES
+('Veselin', 'Tomić', 'MALE', 'Rumenačka 147', 1, 45.265666787857164, 19.81474531978888, '4444444444', 'hesoyampharmacy+veselin@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'PATIENT', false);
+INSERT INTO patient (id, penalty_points) VALUES (4, 0);
+INSERT INTO user_roles (user_id, role_id) VALUES (4, 2);
+
+
 ------------------------------------------------------------------------------------
 -- SALES (DATA IS NOT CONSISTENT WITH PREVIOUS DATA eg Appointments and Medicines)
 ------------------------------------------------------------------------------------
