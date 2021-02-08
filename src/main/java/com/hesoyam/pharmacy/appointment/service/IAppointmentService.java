@@ -1,16 +1,15 @@
 package com.hesoyam.pharmacy.appointment.service;
 
+import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.user.dto.PatientDTO;
-import com.hesoyam.pharmacy.user.model.Dermatologist;
-import com.hesoyam.pharmacy.user.model.Employee;
-import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.user.model.Pharmacist;
+import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.util.search.UserSearchResult;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IAppointmentService {
@@ -22,4 +21,6 @@ public interface IAppointmentService {
     List<PatientDTO> extractPatientsFromCounselings(Pharmacist pharmacist);
     int getCompletedAppointmentsCountInPharmacyByPatient(Pharmacy pharmacy, Patient patient);
     List<UserSearchResult> searchUsers(Employee user, String query);
+    boolean checkNewAppointment(User user, Patient patient, LocalDateTime range);
+    Appointment createNewAppointment(Patient patient, User employee, long pharmacyId, DateTimeRange range, double price);
 }
