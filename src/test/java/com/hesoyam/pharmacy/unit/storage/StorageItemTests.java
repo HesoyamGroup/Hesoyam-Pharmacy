@@ -3,32 +3,37 @@ package com.hesoyam.pharmacy.unit.storage;
 import com.hesoyam.pharmacy.pharmacy.model.OrderItem;
 import com.hesoyam.pharmacy.storage.model.StorageItem;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class StorageItemTests {
+class StorageItemTests {
 
     @Test
-    public void setInvalidReservedValueTest(){
+    void setInvalidReservedValueTest(){
 
         StorageItem storageItem = new StorageItem();
         storageItem.setStock(20);
 
-        Assert.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             storageItem.setReserved(21);
         });
     }
 
     @Test
-    public void setValidReservedValueTest(){
+    void setValidReservedValueTest(){
         StorageItem storageItem1 = new StorageItem();
         storageItem1.setStock(10);
 
         StorageItem storageItem2 = new StorageItem();
         storageItem2.setStock(15);
+
+        //Assert values are set and no exceptions were found.
+        Assertions.assertEquals(10, storageItem1.getStock());
+        Assertions.assertEquals(15, storageItem2.getStock());
     }
 
     @Test
-    public void canFulfillOrderItem(){
+    void canFulfillOrderItem(){
         StorageItem storageItem = new StorageItem();
         storageItem.setStock(10);
         OrderItem orderItem = getOrderItem(9);
@@ -38,7 +43,7 @@ public class StorageItemTests {
     }
 
     @Test
-    public void cannotFulfilOrderItem(){
+    void cannotFulfilOrderItem(){
         StorageItem storageItem = new StorageItem();
         storageItem.setStock(10);
         OrderItem orderItem = getOrderItem(11);

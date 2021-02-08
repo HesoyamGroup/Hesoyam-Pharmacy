@@ -7,15 +7,16 @@ import com.hesoyam.pharmacy.storage.model.Storage;
 import com.hesoyam.pharmacy.storage.model.StorageItem;
 import org.aspectj.weaver.ast.Or;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StorageTests {
+class StorageTests {
     @Test
-    public void performResourceReservationTest(){
+    void performResourceReservationTest(){
         Storage storage = getStorage();
         Order canBeFulfilledOrder = getOrderWhoCanFulfill();
         Order cannotBeFulfilledOrder = getOrderWhoCannotFulfill();
@@ -25,7 +26,7 @@ public class StorageTests {
     }
 
     @Test
-    public void storageStatusUpdatedAfterReservationTest(){
+    void storageStatusUpdatedAfterReservationTest(){
         Storage storage = getStorage();
         Order canBeFulfilledOrder = getOrderWhoCanFulfill();
         OrderItem firstOrderItem = canBeFulfilledOrder.getOrderItems().get(0);
@@ -35,11 +36,11 @@ public class StorageTests {
 
         storage.performResourceReservation(canBeFulfilledOrder);
 
-        Assert.assertTrue(firstStorageItem.getReserved() == supposedNewValue);
+        Assertions.assertEquals(firstStorageItem.getReserved(), supposedNewValue);
     }
 
     @Test
-    public void releaseReservationStatus(){
+    void releaseReservationStatus(){
         Storage storage = getStorage();
         Order order = getReleasingOrder();
         OrderItem orderItem = order.getOrderItems().get(0);
@@ -48,10 +49,10 @@ public class StorageTests {
         int newReservedValue = oldReservedValue - orderItem.getQuantity();
         storage.releaseResourceReservation(order);
         //Assert that the reserved value was updated properly after using cancelling an offer.
-        Assert.assertTrue(firstStorageItem.getReserved() == newReservedValue);
+        Assertions.assertEquals(firstStorageItem.getReserved(), newReservedValue);
     }
 
-    private Order getReleasingOrder(){
+    Order getReleasingOrder(){
         Order order = new Order();
         OrderItem orderItem = new OrderItem();
         Medicine medicine = getMedicineList().get(1);
@@ -63,7 +64,7 @@ public class StorageTests {
         return order;
     }
 
-    private Storage getStorage(){
+    Storage getStorage(){
         Storage storage = new Storage();
         List<Medicine> medicineList = getMedicineList();
         StorageItem storageItem = new StorageItem();

@@ -4,19 +4,20 @@ import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.prescription.model.EPrescription;
 import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EPrescriptionTests {
+class EPrescriptionTests {
 
     @Test
-    public void testGetMedicineIdsTest(){
+    void testGetMedicineIdsTest(){
         EPrescription ePrescription = new EPrescription();
         ePrescription.setPrescriptionItems(getMockedPrescriptionItems());
-        Assert.assertArrayEquals(ePrescription.getMedicineIds().toArray(), (getMockedMedicines().stream().map(med -> med.getId()).collect(Collectors.toList())).toArray());
+        Assertions.assertArrayEquals(ePrescription.getMedicineIds().toArray(), (getMockedMedicines().stream().map(med -> med.getId()).collect(Collectors.toList())).toArray());
     }
 
     private List<PrescriptionItem> getMockedPrescriptionItems(){

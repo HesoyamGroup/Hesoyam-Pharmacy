@@ -3,12 +3,13 @@ package com.hesoyam.pharmacy.unit.user;
 import com.hesoyam.pharmacy.user.model.LoyaltyAccount;
 import com.hesoyam.pharmacy.user.model.LoyaltyAccountMembership;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class LoyaltyAccountTests {
+class LoyaltyAccountTests {
 
     @Test
-    public void calculateLoyaltyAccountDiscountTest(){
+    void calculateLoyaltyAccountDiscountTest(){
         LoyaltyAccount loyaltyAccountWithoutMembership = new LoyaltyAccount();
         LoyaltyAccount loyaltyAccountWithBasicMembership = new LoyaltyAccount();
         LoyaltyAccount loyaltyAccountWithDiscountMembership = new LoyaltyAccount();
@@ -31,10 +32,10 @@ public class LoyaltyAccountTests {
         double expectedPriceForDiscountLoyaltyAccount = 900;
         double expectedPriceForSignificantDiscountLoyaltyAccount = 500;
 
-        Assert.assertTrue(loyaltyAccountWithoutMembership.getDiscountedPrice(price) == expectedPriceForNoMembershipAccount);
-        Assert.assertTrue(loyaltyAccountWithBasicMembership.getDiscountedPrice(price) == expectedPriceForBasicLoyaltyAccount);
-        Assert.assertTrue(loyaltyAccountWithDiscountMembership.getDiscountedPrice(price) == expectedPriceForDiscountLoyaltyAccount);
-        Assert.assertTrue(loyaltyAccountWithSignificantDiscountMembership.getDiscountedPrice(price) == expectedPriceForSignificantDiscountLoyaltyAccount);
+        Assertions.assertEquals(loyaltyAccountWithoutMembership.getDiscountedPrice(price), expectedPriceForNoMembershipAccount);
+        Assertions.assertEquals(loyaltyAccountWithBasicMembership.getDiscountedPrice(price), expectedPriceForBasicLoyaltyAccount);
+        Assertions.assertEquals(loyaltyAccountWithDiscountMembership.getDiscountedPrice(price), expectedPriceForDiscountLoyaltyAccount);
+        Assertions.assertEquals(loyaltyAccountWithSignificantDiscountMembership.getDiscountedPrice(price), expectedPriceForSignificantDiscountLoyaltyAccount);
 
     }
 }
