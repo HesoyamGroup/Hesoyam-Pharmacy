@@ -3,6 +3,7 @@ package com.hesoyam.pharmacy.pharmacy.service.impl;
 import com.hesoyam.pharmacy.pharmacy.dto.CreateOfferDTO;
 import com.hesoyam.pharmacy.pharmacy.dto.OfferDTO;
 import com.hesoyam.pharmacy.pharmacy.dto.OfferFilterCriteria;
+import com.hesoyam.pharmacy.pharmacy.events.OnOfferAcceptedEvent;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidCreateOfferException;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidEditOfferException;
 import com.hesoyam.pharmacy.pharmacy.mapper.OfferMapper;
@@ -21,6 +22,7 @@ import com.hesoyam.pharmacy.user.model.Supplier;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -49,6 +51,9 @@ public class OfferService implements IOfferService {
 
     @Autowired
     private InventoryRepository inventoryRepository;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -121,6 +126,9 @@ public class OfferService implements IOfferService {
         inventory.placeOffer(acceptingOffer);
 
         inventoryRepository.save(inventory);
+
+        //Send email
+        applicationEventPublisher.publishEvent(new OnOfferAcceptedEvent(updatedOrder.getOffers()));
         return updatedOrder.getOffers();
     }
 }

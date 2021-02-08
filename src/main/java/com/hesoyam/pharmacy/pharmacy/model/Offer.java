@@ -128,4 +128,12 @@ public class Offer {
    public int hashCode() {
       return Objects.hash(getId());
    }
+
+   public boolean isAccepted() {
+      return offerStatus == OfferStatus.ACCEPTED;
+   }
+
+   public boolean isRejected(){
+      return offerStatus == OfferStatus.REJECTED;
+   }
 }
