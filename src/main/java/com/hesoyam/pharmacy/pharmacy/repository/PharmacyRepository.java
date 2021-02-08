@@ -27,4 +27,6 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Long> {
             "WHERE pharmacy.id = :pharmacyId AND invItems.medicine.id = :medicineId AND invItems.available >= :quantity ")
     Boolean canPharmacyOfferMedicineQuantity(@Param("pharmacyId") Long pharmacyId, @Param("medicineId") Long medicineId, @Param("quantity") int quantity);
 
+    Pharmacy findById(long pharmacyId);
+
 }

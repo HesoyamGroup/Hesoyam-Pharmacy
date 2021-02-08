@@ -1,5 +1,7 @@
 package com.hesoyam.pharmacy.appointment.service.impl;
 
+import com.hesoyam.pharmacy.appointment.DTO.AppointmentBookingDTO;
+import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
@@ -8,9 +10,15 @@ import com.hesoyam.pharmacy.appointment.repository.CheckUpRepository;
 import com.hesoyam.pharmacy.appointment.repository.CounselingRepository;
 import com.hesoyam.pharmacy.appointment.repository.TherapyRepository;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
+import com.hesoyam.pharmacy.employee_management.model.Shift;
+import com.hesoyam.pharmacy.employee_management.model.ShiftType;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.pharmacy.repository.PharmacyRepository;
+import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import com.hesoyam.pharmacy.user.dto.PatientDTO;
 import com.hesoyam.pharmacy.user.model.*;
+import com.hesoyam.pharmacy.user.repository.DermatologistRepository;
+import com.hesoyam.pharmacy.user.repository.PharmacistRepository;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.util.search.QueryMatchResult;
 import com.hesoyam.pharmacy.util.search.UserSearchResult;
@@ -18,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +44,10 @@ public class AppointmentService implements IAppointmentService {
 
     @Autowired
     private CounselingRepository counselingRepository;
+
+    @Autowired
+    private PharmacyRepository pharmacyRepository;
+
 
     private static final double MATCHES_FULLY = 1;
     private static final double MATCHES_PARTIALLY = 0.5;
@@ -60,6 +73,80 @@ public class AppointmentService implements IAppointmentService {
     public List<CheckUp> getCheckUpsForDermatologist(DateTimeRange dateTimeRange, Dermatologist dermatologist) {
         List<CheckUp> allCheckups = checkUpRepository.findCheckUpsByDermatologist(dermatologist);
         return filterCheckupsByDateRange(allCheckups, dateTimeRange);
+    }
+
+    @Override
+    public boolean checkNewAppointment(User user, Patient patient, LocalDateTime range){
+        int count = 0;
+
+        if(user.getRoleEnum().equals(RoleEnum.PHARMACIST)) {
+            count = counselingRepository.countCounselingsByPharmacistAndDateTimeRange_From((Pharmacist) user,
+                    range);
+        }
+        else
+            count = checkUpRepository.countCheckUpsByDermatologistAndDateTimeRange_From((Dermatologist) user,
+                    range);
+
+        count += appointmentRepository.countAppointmentsByPatientAndDateTimeRange_From(patient, range);
+
+        if(count > 0 && isInShift((Employee) user, range)){
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isInShift(Employee user, LocalDateTime range) {
+        List<Shift> shifts = user.getShifts();
+        for(Shift shift : shifts){
+            if(shift.getType().equals(ShiftType.WORK) && shift.getDateTimeRange().getFrom().isBefore(range)
+            && shift.getDateTimeRange().getTo().isAfter(range)){
+                 return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Appointment createNewAppointment(Patient patient, User employee, long pharmacyId, DateTimeRange range, double price){
+        if(checkNewAppointment(employee, patient, range.getFrom())){
+            return createAppointmentBasedOnEmployeeType(patient, employee, pharmacyId, range, price);
+        }
+
+        return null;
+    }
+
+    private Appointment createAppointmentBasedOnEmployeeType(Patient patient, User employee, long pharmacyId, DateTimeRange range, Double price) {
+        if(employee.getRoleEnum().equals(RoleEnum.PHARMACIST)){
+            return createCounseling(patient, (Pharmacist) employee, pharmacyId, range, price);
+        }
+
+        return createCheckUp(patient, (Dermatologist) employee, pharmacyId, range, price);
+
+    }
+
+    private CheckUp createCheckUp(Patient patient, Dermatologist employee, long pharmacyId, DateTimeRange range, Double price) {
+        CheckUp appointment = new CheckUp();
+        appointment.setAppointmentStatus(AppointmentStatus.TAKEN);
+        appointment.setDateTimeRange(range);
+        appointment.setReport("");
+        appointment.setDermatologist(employee);
+        appointment.setPatient(patient);
+        appointment.setPharmacy(pharmacyRepository.findById(pharmacyId));
+        appointment.setPrice(price);
+        return checkUpRepository.save(appointment);
+    }
+
+    private Counseling createCounseling(Patient patient, Pharmacist employee, long pharmacyId, DateTimeRange range, Double price) {
+        Counseling appointment = new Counseling();
+        appointment.setAppointmentStatus(AppointmentStatus.TAKEN);
+        appointment.setDateTimeRange(range);
+        appointment.setReport("");
+        appointment.setPharmacist(employee);
+        appointment.setPatient(patient);
+        appointment.setPharmacy(pharmacyRepository.findById(pharmacyId));
+        appointment.setPrice(price);
+        return counselingRepository.save(appointment);
     }
 
 

@@ -1,8 +1,10 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
+import com.hesoyam.pharmacy.appointment.DTO.AppointmentBookingDTO;
 import com.hesoyam.pharmacy.appointment.DTO.CancelledAppointmentDTO;
 import com.hesoyam.pharmacy.appointment.DTO.CheckUpDTO;
 import com.hesoyam.pharmacy.appointment.DTO.CounselingDTO;
+import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -149,6 +152,42 @@ public class AppointmentController {
         patientService.penalizeForMissingAppointment(patient);
 
         return new ResponseEntity<>("Successfully cancelled appointment!", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/check-new-appointment/{emailTime}")
+    @PreAuthorize("hasAnyRole('PHARMACIST', 'DERMATOLOGIST')")
+    public ResponseEntity<Boolean> checkNewAppointment(@AuthenticationPrincipal User user, @PathVariable String emailTime){
+        String[] parts = emailTime.split("&&");
+        LocalDateTime from = LocalDateTime.parse(parts[1]);
+        LocalDateTime to = LocalDateTime.parse(parts[2]);
+        if(isRangeValid(from, to)) {
+            Patient patient = patientService.getByEmail(parts[0]);
+            boolean isFree = appointmentService.checkNewAppointment(user, patient, from);
+            return new ResponseEntity<>(isFree, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/book-new-appointment")
+    @PreAuthorize("hasAnyRole('PHARMACIST', 'DERMATOLOGIST')")
+    public ResponseEntity<String> bookNewAppointment(@RequestBody @Valid AppointmentBookingDTO appointmentBookingDTO,
+                                                     @AuthenticationPrincipal User user){
+        if(isRangeValid(appointmentBookingDTO.getFrom(), appointmentBookingDTO.getTo())) {
+            Patient patient = patientService.getByEmail(appointmentBookingDTO.getPatientEmail());
+            Appointment appointment = appointmentService.createNewAppointment(patient, user,
+                    appointmentBookingDTO.getPharmacyId(), new DateTimeRange(appointmentBookingDTO.getFrom(),
+                            appointmentBookingDTO.getTo()), appointmentBookingDTO.getPrice());
+
+            if (appointment != null) {
+                return new ResponseEntity<>("Successfully created appointment!", HttpStatus.OK);
+            }
+        }
+
+        return new ResponseEntity<>("Failed to create appointment!", HttpStatus.OK);
+    }
+
+    private boolean isRangeValid(LocalDateTime from, LocalDateTime to) {
+        return from.isBefore(to);
     }
 
 }

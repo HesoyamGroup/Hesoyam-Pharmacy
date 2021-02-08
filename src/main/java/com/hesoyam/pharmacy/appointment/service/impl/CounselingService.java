@@ -9,6 +9,7 @@ import com.hesoyam.pharmacy.appointment.service.ICounselingService;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.service.ILoyaltyAccountService;
+import com.hesoyam.pharmacy.util.DateTimeRange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

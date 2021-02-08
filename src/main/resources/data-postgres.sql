@@ -517,7 +517,7 @@ VALUES ('CHECKUP', 'FREE', '2021-02-08 22:00:00', '2021-02-08 22:15:00', 1250.0 
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'TAKEN', '2021-02-06 12:00:00', '2021-02-06 12:15:00', 1250.0 , null , 14, 2, 11, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'TAKEN', '2021-02-08 23:15:00', '2021-02-08 23:30:00', 1250.0 , null , 14, 1, 10, null);
+VALUES ('CHECKUP', 'TAKEN', '2021-02-09 23:15:00', '2021-02-09 23:30:00', 1250.0 , null , 14, 1, 10, null);
 
 -- Counseling
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
@@ -529,9 +529,9 @@ VALUES ('COUNSELING', 'FREE', '2021-02-08 21:10:00.189796', '2021-02-08 21:15:00
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'FREE', '2021-02-08 21:00:00.189796', '2021-02-08 21:15:00.189796', 1250.0 , null , null, 1, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('COUNSELING', 'TAKEN', '2021-02-06 21:00:00.189796', '2021-02-06 21:15:00.189796', 1250.0 , null , 14, 2, null, 6);
+VALUES ('COUNSELING', 'TAKEN', '2021-02-08 21:00:00', '2021-02-08 21:15:00', 1250.0 , null , 14, 2, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('COUNSELING', 'TAKEN', '2021-02-08 21:15:00.189796', '2021-02-08 21:30:00.189796', 1250.0 , null , 14, 1, null, 8);
+VALUES ('COUNSELING', 'TAKEN', '2021-02-08 21:15:00', '2021-02-08 21:30:00', 1250.0 , null , 14, 1, null, 8);
 
 --------------------
 -- Patient allergies
