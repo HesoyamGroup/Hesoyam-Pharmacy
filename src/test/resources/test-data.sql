@@ -31,6 +31,13 @@ INSERT INTO administrator (id, pharmacy_id) VALUES (2, 1);
 INSERT INTO user_roles (user_id, role_id) VALUES (2, 5);
 
 
+--Patient whos account is not confirmed by email.
+INSERT INTO users
+(first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
+VALUES
+('Aleksa', 'Tomić', 'MALE', 'Miseluk', 1, 45.265666787857164, 19.81474531978888, '55553333', 'hesoyampharmacy+leksa@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), false, 'PATIENT', false);
+INSERT INTO patient (id, penalty_points) VALUES (3, 0);
+INSERT INTO user_roles (user_id, role_id) VALUES (3, 2);
 
 ------------------------------------------------------------------------------------
 -- SALES (DATA IS NOT CONSISTENT WITH PREVIOUS DATA eg Appointments and Medicines)
