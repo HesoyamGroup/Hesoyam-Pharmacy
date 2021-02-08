@@ -1,14 +1,14 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
-import com.hesoyam.pharmacy.appointment.DTO.*;
+import com.hesoyam.pharmacy.appointment.dto.CheckUpDTO;
+import com.hesoyam.pharmacy.appointment.dto.CheckupReportDTO;
 import com.hesoyam.pharmacy.appointment.dto.FreeCheckupDTO;
+import com.hesoyam.pharmacy.appointment.dto.FutureCheckupDTO;
 import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
 import com.hesoyam.pharmacy.appointment.exceptions.CheckupCancellationPeriodExpiredException;
 import com.hesoyam.pharmacy.appointment.exceptions.CheckupNotFoundException;
-import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
-import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.model.TherapyItem;
 import com.hesoyam.pharmacy.appointment.service.ICheckUpService;
 import com.hesoyam.pharmacy.appointment.service.ITherapyItemService;
@@ -22,10 +22,8 @@ import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPatientService;
-import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -35,12 +33,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Future;
 
 @RestController
 @RequestMapping(value = "/checkup", produces = MediaType.APPLICATION_JSON_VALUE)

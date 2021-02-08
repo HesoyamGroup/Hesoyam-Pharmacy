@@ -5,7 +5,7 @@ import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
 import com.hesoyam.pharmacy.security.TokenUtils;
-import com.hesoyam.pharmacy.user.DTO.AllergiesDTO;
+import com.hesoyam.pharmacy.user.dto.AllergiesDTO;
 import com.hesoyam.pharmacy.user.exceptions.PatientAllergyNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.PatientAlreadyAllergicException;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
