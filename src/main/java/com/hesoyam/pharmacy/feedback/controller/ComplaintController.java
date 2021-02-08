@@ -31,12 +31,14 @@ public class ComplaintController {
     private IReplyService replyService;
 
     @GetMapping("/unanswered")
+    @Secured("SYS_ADMIN")
     public ResponseEntity<List<ComplaintDataDTO>> getAllUnanswered(){
         return ResponseEntity.ok(complaintService.getAllUnanswered());
     }
 
 
     @PostMapping("/reply")
+    @Secured("SYS_ADMIN")
     public ResponseEntity<Reply> reply(@RequestBody @Valid ReplyDTO replyDTO){
         SysAdmin sysAdmin = getSysAdmin();
         if(sysAdmin == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
