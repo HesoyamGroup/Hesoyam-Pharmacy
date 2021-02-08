@@ -1,13 +1,9 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
-
-
-
 import com.hesoyam.pharmacy.appointment.DTO.AppointmentBookingDTO;
 import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
 import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
 import com.hesoyam.pharmacy.appointment.model.Appointment;
-
 import com.hesoyam.pharmacy.appointment.dto.CancelledAppointmentDTO;
 import com.hesoyam.pharmacy.appointment.dto.CheckUpDTO;
 import com.hesoyam.pharmacy.appointment.dto.CounselingDTO;
@@ -202,6 +198,4 @@ public class AppointmentController {
     private boolean isRangeValid(LocalDateTime from, LocalDateTime to) {
         return from.isBefore(to);
     }
-
-
 }
