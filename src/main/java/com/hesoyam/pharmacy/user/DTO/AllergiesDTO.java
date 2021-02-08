@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.user.DTO;
+package com.hesoyam.pharmacy.user.dto;
 
 public class AllergiesDTO {
 
@@ -7,6 +7,7 @@ public class AllergiesDTO {
     String manufacturerName;
 
     public AllergiesDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public AllergiesDTO(Long id, String medicineName, String manufacturerName) {

@@ -11,6 +11,7 @@ public class InventoryItemReservationDTO {
     private Long medicineId;
 
     public InventoryItemReservationDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public InventoryItemReservationDTO(@NotNull(message = "Pharmacy ID must be provided") Long pharmacyId, @NotNull(message = "Medicine ID must be provided") Long medicineId) {

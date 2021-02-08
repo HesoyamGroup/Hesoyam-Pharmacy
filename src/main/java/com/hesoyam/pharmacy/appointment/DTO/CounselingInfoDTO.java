@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.util.DateTimeRange;
@@ -11,6 +11,7 @@ public class CounselingInfoDTO {
     Double price;
 
     public CounselingInfoDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public CounselingInfoDTO(Counseling counseling){

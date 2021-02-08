@@ -9,6 +9,10 @@ public class PharmacyLocationDTO {
         this.lng = lng;
     }
 
+    public PharmacyLocationDTO(){
+        //Empty ctor for JSON serializer
+    }
+
     public Double getLat() {
         return lat;
     }

@@ -1,9 +1,7 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 import com.hesoyam.pharmacy.prescription.dto.PrescriptionItemDTO;
-import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +20,7 @@ public class CounselingReportDTO {
     }
 
     public CounselingReportDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public LocalDateTime getFrom() {

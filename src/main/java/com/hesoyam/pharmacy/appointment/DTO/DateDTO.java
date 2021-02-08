@@ -10,6 +10,7 @@ public class DateDTO {
     }
 
     public DateDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public String getFrom() {

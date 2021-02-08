@@ -1,4 +1,4 @@
-package com.hesoyam.pharmacy.appointment.DTO;
+package com.hesoyam.pharmacy.appointment.dto;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +12,7 @@ public class CancelledAppointmentDTO {
     }
 
     public CancelledAppointmentDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public String getPatientEmail() {

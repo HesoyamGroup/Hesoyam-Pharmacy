@@ -7,6 +7,7 @@ public class AddressDTO {
     City city;
 
     public AddressDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public AddressDTO(String addressLine, City city) {

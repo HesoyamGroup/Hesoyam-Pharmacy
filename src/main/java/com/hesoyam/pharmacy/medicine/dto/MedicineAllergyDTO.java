@@ -5,6 +5,7 @@ public class MedicineAllergyDTO {
     Long id;
 
     public MedicineAllergyDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public MedicineAllergyDTO(Long id) {

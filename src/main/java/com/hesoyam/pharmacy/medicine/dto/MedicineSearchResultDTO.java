@@ -14,7 +14,7 @@ public class MedicineSearchResultDTO {
     private String notes;
 
     public MedicineSearchResultDTO(){
-
+        //Empty ctor for JSON serializer
     }
 
     public MedicineSearchResultDTO(Long id, String name, String manufacturerName, MedicineType medicineType, PrescriptionMode prescriptionMode, double rating, Long medicineSpecificationId, String notes) {

@@ -12,6 +12,10 @@ public class SalesDTO {
         results = reportResult.getData();
     }
 
+    public SalesDTO(){
+        //Empty ctor for JSON serializer
+    }
+
     public List<String> getLabels() {
         return labels;
     }

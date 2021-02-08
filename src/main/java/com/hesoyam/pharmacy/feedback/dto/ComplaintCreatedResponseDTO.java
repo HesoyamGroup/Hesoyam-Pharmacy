@@ -5,7 +5,9 @@ public class ComplaintCreatedResponseDTO {
     private String entityName;
     private String body;
 
-    public ComplaintCreatedResponseDTO(){}
+    public ComplaintCreatedResponseDTO(){
+        //Empty ctor for JSON serializer
+    }
 
     public ComplaintCreatedResponseDTO(Long id, String entityName, String body) {
         this.id = id;
