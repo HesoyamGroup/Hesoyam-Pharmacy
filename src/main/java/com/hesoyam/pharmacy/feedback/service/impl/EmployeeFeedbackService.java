@@ -46,6 +46,8 @@ public class EmployeeFeedbackService implements IEmployeeFeedbackService {
         for(EmployeeFeedback ef: employeeFeedbacks){
             ratingSum += ef.getRating();
         }
-        return ratingSum/employeeFeedbacks.size();
+        double averageRating = ratingSum/employeeFeedbacks.size();
+
+        return Math.round(averageRating * 100.0) / 100.0;
     }
 }

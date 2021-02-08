@@ -1,10 +1,11 @@
 package com.hesoyam.pharmacy.feedback.controller;
 
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
+import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.service.ICheckUpService;
-import com.hesoyam.pharmacy.feedback.dto.DermatologistFeedbackDTO;
+import com.hesoyam.pharmacy.appointment.service.ICounselingService;
+import com.hesoyam.pharmacy.feedback.dto.EmployeeFeedbackDTO;
 import com.hesoyam.pharmacy.feedback.model.EmployeeFeedback;
-import com.hesoyam.pharmacy.feedback.model.Feedback;
 import com.hesoyam.pharmacy.feedback.service.IEmployeeFeedbackService;
 import com.hesoyam.pharmacy.feedback.service.IFeedbackService;
 import com.hesoyam.pharmacy.user.exceptions.EmployeeNotFoundException;
@@ -31,62 +32,84 @@ public class FeedbackController {
     private ICheckUpService checkUpService;
 
     @Autowired
-    IEmployeeFeedbackService employeeFeedbackService;
+    private ICounselingService counselingService;
 
     @Autowired
-    IFeedbackService feedbackService;
+    private IEmployeeFeedbackService employeeFeedbackService;
 
     @Autowired
-    IEmployeeService employeeService;
+    private IFeedbackService feedbackService;
 
     @Autowired
-    IPatientService patientService;
+    private IEmployeeService employeeService;
+
+    @Autowired
+    private IPatientService patientService;
 
     @Secured("ROLE_PATIENT")
     @GetMapping(value = "/checkups")
-    public ResponseEntity<List<DermatologistFeedbackDTO>> getPastCheckups(@AuthenticationPrincipal User user){
+    public ResponseEntity<List<EmployeeFeedbackDTO>> getPastCheckups(@AuthenticationPrincipal User user){
 
         List<CheckUp> pastCheckups = checkUpService.getAllCompletedCheckupsByPatient(user.getId());
 
-        List<DermatologistFeedbackDTO> dermatologistFeedbackDTOList = new ArrayList<>();
+        List<EmployeeFeedbackDTO> employeeFeedbackDTOList = new ArrayList<>();
         if(!pastCheckups.isEmpty()){
             for(CheckUp c: pastCheckups){
-                if(!isDermatologistInList(c.getDermatologist().getId(), dermatologistFeedbackDTOList)){
-                    dermatologistFeedbackDTOList.add(new DermatologistFeedbackDTO(c));
+                if(!isEmployeeInList(c.getDermatologist().getId(), employeeFeedbackDTOList)){
+                    employeeFeedbackDTOList.add(new EmployeeFeedbackDTO(c));
                 }
             }
         }
 
-        return ResponseEntity.ok().body(dermatologistFeedbackDTOList);
+        return ResponseEntity.ok().body(employeeFeedbackDTOList);
     }
 
-    private boolean isDermatologistInList(Long id, List<DermatologistFeedbackDTO> dermatologistFeedbackDTOList){
-        for(DermatologistFeedbackDTO d: dermatologistFeedbackDTOList){
-            if(d.getDermatologistId() == id)
+    @Secured("ROLE_PATIENT")
+    @GetMapping(value = "/counselings")
+    public ResponseEntity<List<EmployeeFeedbackDTO>> getPastCounselings(@AuthenticationPrincipal User user){
+
+        List<Counseling> pastCounselings = counselingService.getAllCompletedCounselingsByPatient(user.getId());
+
+        List<EmployeeFeedbackDTO> employeeFeedbackDTOList = new ArrayList<>();
+        if(!pastCounselings.isEmpty()){
+            for(Counseling c: pastCounselings){
+                if(!isEmployeeInList(c.getPharmacist().getId(), employeeFeedbackDTOList)){
+                    employeeFeedbackDTOList.add(new EmployeeFeedbackDTO(c));
+                }
+            }
+        }
+
+        return ResponseEntity.ok().body(employeeFeedbackDTOList);
+
+    }
+
+    private boolean isEmployeeInList(Long id, List<EmployeeFeedbackDTO> employeeFeedbackDTOList){
+        for(EmployeeFeedbackDTO d: employeeFeedbackDTOList){
+            if(d.getEmployeeId() == id)
                 return true;
         }
         return false;
     }
 
-    //@Secured("ROLE_PATIENT")
-    @PostMapping(value = "/dermatologist")
-    public ResponseEntity<Double> dermatologistFeedback(@RequestBody DermatologistFeedbackDTO dermatologistFeedbackDTO, @AuthenticationPrincipal User user) {
+    @Secured("ROLE_PATIENT")
+    @PostMapping(value = "/employee")
+    public ResponseEntity<Double> dermatologistFeedback(@RequestBody EmployeeFeedbackDTO employeeFeedbackDTO, @AuthenticationPrincipal User user) {
 
-        List<EmployeeFeedback> employeeFeedbacks = employeeFeedbackService.findByEmployeeId(dermatologistFeedbackDTO.getDermatologistId());
+        List<EmployeeFeedback> employeeFeedbacks = employeeFeedbackService.findByEmployeeId(employeeFeedbackDTO.getEmployeeId());
 
         EmployeeFeedback employeeFeedback = findByPatientId(user.getId(), employeeFeedbacks);
         if(employeeFeedback != null){
-            employeeFeedback.setRating(dermatologistFeedbackDTO.getYourRating());
-            employeeFeedback.setComment(dermatologistFeedbackDTO.getYourComment());
+            employeeFeedback.setRating(employeeFeedbackDTO.getYourRating());
+            employeeFeedback.setComment(employeeFeedbackDTO.getYourComment());
 
             employeeFeedbackService.update(employeeFeedback);
         }
         else{
             try {
                 employeeFeedback = new EmployeeFeedback();
-                employeeFeedback.setComment(dermatologistFeedbackDTO.getYourComment());
-                employeeFeedback.setRating(dermatologistFeedbackDTO.getYourRating());
-                employeeFeedback.setEmployee(employeeService.getOne(dermatologistFeedbackDTO.getDermatologistId()));
+                employeeFeedback.setComment(employeeFeedbackDTO.getYourComment());
+                employeeFeedback.setRating(employeeFeedbackDTO.getYourRating());
+                employeeFeedback.setEmployee(employeeService.getOne(employeeFeedbackDTO.getEmployeeId()));
                 employeeFeedback.setPatient(patientService.getById(user.getId()));
 
                 employeeFeedback = employeeFeedbackService.create(employeeFeedback);
@@ -95,9 +118,9 @@ public class FeedbackController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-2.0);
             }
         }
-        double newRating = employeeFeedbackService.calculateEmployeeRating(dermatologistFeedbackDTO.getDermatologistId());
+        double newRating = employeeFeedbackService.calculateEmployeeRating(employeeFeedbackDTO.getEmployeeId());
         try{
-            employeeService.updateRating(dermatologistFeedbackDTO.getDermatologistId(), newRating);
+            employeeService.updateRating(employeeFeedbackDTO.getEmployeeId(), newRating);
         }catch (EmployeeNotFoundException e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-1.0);

@@ -40,6 +40,13 @@ public class CounselingService implements ICounselingService {
     }
 
     @Override
+    public List<Counseling> getAllCompletedCounselingsByPatient(Long id) {
+        List<Counseling> counselings = counselingRepository.getAllByPatient_IdAndAppointmentStatus(id, AppointmentStatus.COMPLETED);
+
+        return counselings;
+    }
+
+    @Override
     public Counseling findById(Long id) throws CounselingNotFoundException {
         return counselingRepository.findById(id).orElseThrow(() ->new CounselingNotFoundException(id));
     }

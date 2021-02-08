@@ -10,6 +10,7 @@ public interface ICounselingService {
     List<Counseling> getAllFreeCounselings();
     List<Counseling> getFreeCounselingsByPharmacyId(Long id);
     List<Counseling> getUpcomingCounselingsByPatient(Long id);
+    List<Counseling> getAllCompletedCounselingsByPatient(Long id);
 
     Counseling findById(Long id) throws CounselingNotFoundException;
     Counseling update(Counseling counseling) throws  CounselingNotFoundException;
