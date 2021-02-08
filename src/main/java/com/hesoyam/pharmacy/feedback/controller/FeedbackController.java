@@ -3,15 +3,22 @@ package com.hesoyam.pharmacy.feedback.controller;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.service.ICheckUpService;
 import com.hesoyam.pharmacy.feedback.dto.DermatologistFeedbackDTO;
+import com.hesoyam.pharmacy.feedback.model.EmployeeFeedback;
+import com.hesoyam.pharmacy.feedback.model.Feedback;
+import com.hesoyam.pharmacy.feedback.service.IEmployeeFeedbackService;
+import com.hesoyam.pharmacy.feedback.service.IFeedbackService;
+import com.hesoyam.pharmacy.user.exceptions.EmployeeNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
 import com.hesoyam.pharmacy.user.model.User;
+import com.hesoyam.pharmacy.user.service.IEmployeeService;
+import com.hesoyam.pharmacy.user.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +29,18 @@ public class FeedbackController {
 
     @Autowired
     private ICheckUpService checkUpService;
+
+    @Autowired
+    IEmployeeFeedbackService employeeFeedbackService;
+
+    @Autowired
+    IFeedbackService feedbackService;
+
+    @Autowired
+    IEmployeeService employeeService;
+
+    @Autowired
+    IPatientService patientService;
 
     @Secured("ROLE_PATIENT")
     @GetMapping(value = "/checkups")
@@ -47,6 +66,53 @@ public class FeedbackController {
                 return true;
         }
         return false;
+    }
+
+    //@Secured("ROLE_PATIENT")
+    @PostMapping(value = "/dermatologist")
+    public ResponseEntity<Integer> dermatologistFeedback(@RequestBody DermatologistFeedbackDTO dermatologistFeedbackDTO) {
+
+        List<EmployeeFeedback> employeeFeedbacks = employeeFeedbackService.findByEmployeeId(dermatologistFeedbackDTO.getDermatologistId());
+
+        EmployeeFeedback employeeFeedback = findByPatientId(Long.parseLong("14"), employeeFeedbacks);
+        if(employeeFeedback != null){
+            employeeFeedback.setRating(dermatologistFeedbackDTO.getYourRating());
+            employeeFeedback.setComment(dermatologistFeedbackDTO.getYourComment());
+
+            employeeFeedbackService.update(employeeFeedback);
+        }
+        else{
+            try {
+                employeeFeedback = new EmployeeFeedback();
+                employeeFeedback.setComment(dermatologistFeedbackDTO.getYourComment());
+                employeeFeedback.setRating(dermatologistFeedbackDTO.getYourRating());
+                employeeFeedback.setEmployee(employeeService.getOne(dermatologistFeedbackDTO.getDermatologistId()));
+                employeeFeedback.setPatient(patientService.getById(Long.parseLong("14")));
+
+                employeeFeedback = employeeFeedbackService.create(employeeFeedback);
+            }catch (PatientNotFoundException e){
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-2);
+            }
+        }
+
+        try{
+            employeeService.updateRating(dermatologistFeedbackDTO.getDermatologistId(), employeeFeedbackService.calculateEmployeeRating(dermatologistFeedbackDTO.getDermatologistId()));
+        }catch (EmployeeNotFoundException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-1);
+        }
+
+        return ResponseEntity.ok().body(employeeFeedbacks.size());
+    }
+
+    private EmployeeFeedback findByPatientId(Long id, List<EmployeeFeedback> employeeFeedbacks){
+        for(EmployeeFeedback ef: employeeFeedbacks){
+            if(ef.getPatient().getId() == id)
+                return ef;
+        }
+
+        return null;
     }
 
 }

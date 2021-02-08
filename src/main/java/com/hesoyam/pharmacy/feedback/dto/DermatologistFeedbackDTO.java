@@ -7,7 +7,8 @@ public class DermatologistFeedbackDTO {
     Long dermatologistId;
     String dermatologistFullName;
     Double averageRating;
-    Double yourRating;
+    Integer yourRating;
+    String yourComment;
 
     public DermatologistFeedbackDTO() {
     }
@@ -16,11 +17,19 @@ public class DermatologistFeedbackDTO {
         this.dermatologistId = checkUp.getDermatologist().getId();
         this.dermatologistFullName = checkUp.getDermatologist().getFirstName()+" "+checkUp.getDermatologist().getLastName();
         this.averageRating = checkUp.getDermatologist().getRating();
-        this.yourRating = 0.0;
+        this.yourRating = 0;
     }
 
     public Long getDermatologistId() {
         return dermatologistId;
+    }
+
+    public String getYourComment() {
+        return yourComment;
+    }
+
+    public void setYourComment(String yourComment) {
+        this.yourComment = yourComment;
     }
 
     public void setDermatologistId(Long dermatologistId) {
@@ -43,11 +52,11 @@ public class DermatologistFeedbackDTO {
         this.averageRating = averageRating;
     }
 
-    public Double getYourRating() {
+    public Integer getYourRating() {
         return yourRating;
     }
 
-    public void setYourRating(Double yourRating) {
+    public void setYourRating(Integer yourRating) {
         this.yourRating = yourRating;
     }
 }

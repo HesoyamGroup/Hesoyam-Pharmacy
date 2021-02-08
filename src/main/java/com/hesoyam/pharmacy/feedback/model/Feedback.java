@@ -27,4 +27,35 @@ public abstract class Feedback {
    @JoinColumn(name = "patient_id", nullable = false)
    protected Patient patient;
 
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public String getComment() {
+      return comment;
+   }
+
+   public void setComment(String comment) {
+      this.comment = comment;
+   }
+
+   public int getRating() {
+      return rating;
+   }
+
+   public void setRating(int rating) {
+      this.rating = rating;
+   }
+
+   public Patient getPatient() {
+      return patient;
+   }
+
+   public void setPatient(Patient patient) {
+      this.patient = patient;
+   }
 }

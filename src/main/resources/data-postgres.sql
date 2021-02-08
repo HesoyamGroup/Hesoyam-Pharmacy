@@ -555,6 +555,14 @@ VALUES ('PharmacyComplaint', 'Ovo je prvi PHARMACY complaint, neodgovoren compla
 INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
 VALUES ('PharmacyComplaint', 'Ovo je drugi PHARMACY complaint, ODGOVOREN complaint', 'CLOSED', 16, null, null, 1);
 
+--------------------
+-- Employee Feedback
+--------------------
+
+--INSERT INTO feedback(dtype, comment, rating, patient_id, employee_id, medicine_id, pharmacy_id)
+--VALUES ('EmployeeFeedback', 'Sju druze', 4, 14, 10, null, null);
+INSERT INTO feedback(dtype, comment, rating, patient_id, employee_id, medicine_id, pharmacy_id)
+VALUES ('EmployeeFeedback', 'Sju druze', 4, 15, 10, null, null);
 
 -----------------------
 -- Loyalty system
