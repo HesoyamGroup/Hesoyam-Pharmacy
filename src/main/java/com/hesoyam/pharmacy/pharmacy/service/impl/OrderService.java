@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.pharmacy.service.impl;
 
 import com.hesoyam.pharmacy.medicine.repository.MedicineRepository;
+import com.hesoyam.pharmacy.pharmacy.dto.OrderDTO;
 import com.hesoyam.pharmacy.pharmacy.dto.ShowOrderItemDTO;
 import com.hesoyam.pharmacy.pharmacy.dto.ShowOrdersDTO;
 import com.hesoyam.pharmacy.pharmacy.mapper.OrderMapper;
@@ -16,6 +17,7 @@ import com.hesoyam.pharmacy.user.model.Administrator;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -71,6 +73,21 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    public Order updateDeadline(User user, OrderDTO orderDTO) throws IllegalAccessException {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+        Order orderForUpdate = orderRepository.getOne(orderDTO.getId());
+
+        if(!orderForUpdate.getPharmacy().equals(administrator.getPharmacy()))
+            throw new IllegalAccessException();
+
+        if(orderForUpdate.hasOffers())
+            throw new IllegalArgumentException();
+
+        orderForUpdate.updateDeadline(orderDTO.getDeadline());
+        return orderRepository.save(orderForUpdate);
+    }
+
+    @Override
     public ShowOrdersDTO getBasicOrderInfo(Long id) {
         return OrderMapper.mapOrderToShowOrderDTO(orderRepository.getOne(id));
     }
@@ -92,6 +109,13 @@ public class OrderService implements IOrderService {
 
         inventoryRepository.save(pharmacyInventory);
         return orderRepository.save(newOrder);
+    }
+
+    @Override
+    public List<Order> getAllByAdministratorPharmacy(User user) {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+
+        return orderRepository.getAllByPharmacy_Id(administrator.getPharmacy().getId());
     }
 
     private List<OrderItem> getOrderItems(List<ShowOrderItemDTO> showOrderItemDTOS) {

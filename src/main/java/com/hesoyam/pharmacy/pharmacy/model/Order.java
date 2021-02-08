@@ -87,6 +87,8 @@ public class Order {
    }
 
    public List<Offer> getOffers() {
+      if(offers == null)
+         return new ArrayList<>();
       return offers;
    }
 
@@ -117,5 +119,16 @@ public class Order {
    public boolean isOfferEditable(Offer offer){
       return LocalDate.now().atTime(0, 0, 0).compareTo(deadLine) < 0 && offer.getOfferStatus() == OfferStatus.CREATED;
       //TODO: Check if today date is before date specified as the last day for canceling.
+   }
+
+   public boolean hasOffers() {
+      return !getOffers().isEmpty();
+   }
+
+   public void updateDeadline(LocalDateTime deadline) {
+      if(deadLine.isAfter(LocalDateTime.now()) && orderStatus == OrderStatus.CREATED)
+         setDeadLine(deadline);
+      else
+         throw new IllegalStateException();
    }
 }
