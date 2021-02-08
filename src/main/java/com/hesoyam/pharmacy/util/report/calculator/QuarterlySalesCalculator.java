@@ -6,7 +6,7 @@ import com.hesoyam.pharmacy.util.report.label.QuarterlyReportLabel;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.*;
+import java.util.EnumMap;
 
 public class QuarterlySalesCalculator<V extends Sale> extends SalesCalculator<QuarterlyReportLabel, V> {
     private static final EnumMap<Month, Integer> QUARTERS = new EnumMap<>(Month.class);

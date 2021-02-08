@@ -21,7 +21,6 @@ import com.hesoyam.pharmacy.user.service.IPatientService;
 import com.hesoyam.pharmacy.user.service.IUserService;
 import com.hesoyam.pharmacy.util.notifications.EmailClient;
 import com.hesoyam.pharmacy.util.notifications.EmailObject;
-import com.sun.istack.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;

@@ -1,8 +1,7 @@
 package com.hesoyam.pharmacy.prescription.controller;
 
-import com.hesoyam.pharmacy.prescription.dto.EPrescriptionUploadResponse;
-import com.hesoyam.pharmacy.prescription.dto.PharmacyWithPrescriptionPriceDTO;
 import com.hesoyam.pharmacy.prescription.dto.CompletePrescriptionDTO;
+import com.hesoyam.pharmacy.prescription.dto.EPrescriptionUploadResponse;
 import com.hesoyam.pharmacy.prescription.exception.InvalidCompleteEPrescriptionException;
 import com.hesoyam.pharmacy.prescription.exception.InvalidEPrescriptionFormat;
 import com.hesoyam.pharmacy.prescription.model.EPrescription;
@@ -19,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 @RestController

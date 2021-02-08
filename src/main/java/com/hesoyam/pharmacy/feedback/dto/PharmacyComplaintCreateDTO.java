@@ -34,4 +34,8 @@ public class PharmacyComplaintCreateDTO {
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
 }

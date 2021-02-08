@@ -13,7 +13,8 @@ import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.util.report.ReportResult;
 import com.hesoyam.pharmacy.util.report.ReportType;
-import com.hesoyam.pharmacy.util.report.calculator.*;
+import com.hesoyam.pharmacy.util.report.calculator.SalesCalculator;
+import com.hesoyam.pharmacy.util.report.calculator.SalesCalculatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
