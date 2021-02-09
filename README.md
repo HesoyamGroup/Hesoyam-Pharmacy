@@ -14,6 +14,7 @@
 
 ## Environment variables
 
+`PORT` - Server port (eg. `55555`)  
 `POSTGRES_HOST` - In Local Development `localhost`  
 `POSTGRES_PORT` - Port Number (default is `5432`)  
 `POSTGRES_DB` - Name of the Database Schema  
@@ -42,7 +43,27 @@ Object-Oriented Model Made With PowerDesigner - [PDF](assets/model.pdf)
 | ![Maven logo](assets/pictures/maven.png) | [Maven](https://maven.apache.org/) is a build automation tool used primarily for Java projects.
 | ![PostgreSQL logo](assets/pictures/postgresql.png) | [PostgreSQL](https://www.postgresql.org/) also known as Postgres, is a free and open-source relational database management system (RDBMS) emphasizing extensibility and SQL compliance. |
 | ![TravisCI logo](assets/pictures/travis.png) | [Travis CI](https://travis-ci.com/) is a hosted continuous integration service used to build and test software projects hosted on GitHub and Bitbucket.|
+| ![SonarCLoud logo](assets/pictures/sonarcloud.png) | [SonarCloud](https://sonarcloud.io) is a cloud-based code quality and security service and it is the leading online service to catch Bugs and Security Vulnerabilities in Pull Requests and throughout code repositories.
 | ![Heroku logo](assets/pictures/heroku.png) | [Heroku](https://dashboard.heroku.com/) is a cloud platform as a service (PaaS) supporting several programming languages.|
+
+## DevOps micro-flow
+
+Git is used as a version control system along with Github as a hosting service. In the development process we complied with the Gitflow workflow, meaning the **develop** branch is protected while we push new code to feature branches. Every feature branch must be merged with the develop branch over a **pull request** where the CI check takes place.
+
+We also used Github's [issue](https://github.com/HesoyamGroup/Hesoyam-Pharmacy/issues) feature with a semi-automated Github [project](https://github.com/orgs/HesoyamGroup/projects/1) combined with linked pull requests. 
+
+### Backend CI/CD
+
+A new pull request triggers the **Travis CI** build [pipeline](https://travis-ci.com/github/HesoyamGroup/Hesoyam-Pharmacy) which builds the code and runs **SonarCloud** for code [analysis](https://sonarcloud.io/dashboard?id=22434905a961c51b1d244289381f364488e90bcf). Build check is enabled on merging pull requests in order to ensure that the code on the develop branch doesn't contain build errors.
+
+A pull request merge automatically triggers deployment to the Heroku platform and deploys the application to [**https://hesoyam-pharmacy.herokuapp.com/**](https://hesoyam-pharmacy.herokuapp.com/)
+
+### Frontend CI/CD
+
+A new pull request merge on the frontend repository triggers an Azure DevOps [CI pipeline](https://dev.azure.com/hesoyam-pharmacy/hesoyam-pharmacy/_build?definitionId=1) which creates a multi-stage built Docker image: the first stage builds the application using a Node image, while the second stage sets-up an Nginx image loaded with the build result and server configuration files. The resulting [image](https://hub.docker.com/r/gregvader/hesoyam-pharmacy-front) is pushed to DockerHub.
+
+A new image push to DockerHub creates a new release on the [CD pipeline](https://dev.azure.com/hesoyam-pharmacy/hesoyam-pharmacy/_release) which deploys the application to [**https://hesoyam-pharmacy-front.herokuapp.com/**](https://hesoyam-pharmacy-front.herokuapp.com/)
+
 
 ## Commit Conventions
 `Format: <type>: <commit subject>`
