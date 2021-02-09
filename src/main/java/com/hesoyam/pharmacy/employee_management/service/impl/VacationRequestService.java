@@ -84,4 +84,9 @@ public class VacationRequestService implements IVacationRequestService {
 
         return vacationRequestRepository.save(acceptingVacationRequest);
     }
+
+    @Override
+    public VacationRequest create(VacationRequest vacationRequest) {
+        return vacationRequestRepository.save(vacationRequest);
+    }
 }
