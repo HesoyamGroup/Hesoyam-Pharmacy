@@ -19,4 +19,26 @@ public class EmployeeFeedback extends Feedback {
    @JoinColumn(name = "employee_id")
    private Employee employee;
 
+
+   public EmployeeFeedback() {
+   }
+
+   public EmployeeFeedback(Employee employee) {
+      this.employee = employee;
+   }
+
+   public Employee getEmployee() {
+      return employee;
+   }
+
+   public void setEmployee(Employee employee) {
+      this.employee = employee;
+   }
+
+   public void update(EmployeeFeedback employeeFeedback){
+      this.employee = employeeFeedback.getEmployee();
+      this.comment = employeeFeedback.getComment();
+      this.patient = employeeFeedback.getPatient();
+      this.rating = employeeFeedback.getRating();
+   }
 }

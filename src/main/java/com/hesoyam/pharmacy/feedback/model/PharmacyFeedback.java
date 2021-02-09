@@ -18,4 +18,26 @@ public class PharmacyFeedback extends Feedback {
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "pharmacy_id")
    private Pharmacy pharmacy;
+
+   public void update(PharmacyFeedback pharmacyFeedback){
+      this.pharmacy = pharmacyFeedback.getPharmacy();
+      this.comment = pharmacyFeedback.getComment();
+      this.patient = pharmacyFeedback.getPatient();
+      this.rating = pharmacyFeedback.getRating();
+   }
+
+   public PharmacyFeedback() {
+   }
+
+   public PharmacyFeedback(Pharmacy pharmacy) {
+      this.pharmacy = pharmacy;
+   }
+
+   public Pharmacy getPharmacy() {
+      return pharmacy;
+   }
+
+   public void setPharmacy(Pharmacy pharmacy) {
+      this.pharmacy = pharmacy;
+   }
 }
