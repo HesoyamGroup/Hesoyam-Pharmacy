@@ -32,7 +32,7 @@ public class EPrescriptionController {
     public ResponseEntity<EPrescriptionUploadResponse> getEPrescription(@RequestParam(required = true, name = "file") MultipartFile multipartFile, @AuthenticationPrincipal Patient patient){
         File file;
         try {
-            file = new File(System.getProperty("java.io.tmpdir") + randomizeFileName(multipartFile));
+            file = new File(System.getProperty("java.io.tmpdir") + File.separator + randomizeFileName(multipartFile));
             multipartFile.transferTo(file);
             return ResponseEntity.ok(prescriptionService.get(file, patient));
         } catch (IOException e) {
