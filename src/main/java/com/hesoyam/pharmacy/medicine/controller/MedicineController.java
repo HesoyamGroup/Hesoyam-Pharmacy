@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.medicine.controller;
 
 import com.hesoyam.pharmacy.medicine.dto.MedicineBasicInfoDTO;
+import com.hesoyam.pharmacy.medicine.dto.MedicineDiscountInfoDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchResultDTO;
 import com.hesoyam.pharmacy.medicine.events.MedicineRunningLowEvent;
@@ -8,12 +9,15 @@ import com.hesoyam.pharmacy.medicine.exceptions.InvalidDeleteMedicineRequestExce
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineType;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
+import com.hesoyam.pharmacy.user.model.Patient;
+import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IAdministratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -87,6 +91,15 @@ public class MedicineController {
             return ResponseEntity.notFound().build();
         }catch (InvalidDeleteMedicineRequestException e){
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/price/{pharmacy_id}/{medicine_id}")
+    public ResponseEntity<MedicineDiscountInfoDTO> getMedicinePriceForPharmacy(@PathVariable("pharmacy_id")Long pharmacyId, @PathVariable("medicine_id")Long medicineId, @AuthenticationPrincipal Patient patient){
+        try{
+            return ResponseEntity.ok(medicineService.getMedicinePriceByPharmacy(pharmacyId, medicineId, patient));
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
         }
     }
 }
