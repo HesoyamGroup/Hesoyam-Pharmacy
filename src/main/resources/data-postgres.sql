@@ -430,17 +430,23 @@ INSERT INTO user_roles (user_id, role_id) VALUES (17, 2);
 INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Sandra', 'Filipović', 'FEMALE', 'Sarajevska 83', 3, 44.800638193104234, 20.451638118625414, '4444444444', 'hesoyampharmacy+sandra@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
+('Sandra', 'Filipovic', 'FEMALE', 'Sarajevska 83', 4, 44.800638193104234, 20.451638118625414, '4444444444', 'hesoyampharmacy+sandra@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
 INSERT INTO supplier (id) VALUES (18);
 INSERT INTO user_roles (user_id, role_id) VALUES (18, 7);
+insert into STORAGE (supplier_id) VALUES (18);
+INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (200,15, 1, 1);
+INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (150,30, 2, 1);
+INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (100,45, 3, 1);
 
 -- 19
 INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Marina', 'Marić', 'FEMALE', 'Novosadska 37', 3, 44.914103309371924, 20.267538944371907, '4444444444', 'hesoyampharmacy+marina@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
+('Marina', 'Maric', 'FEMALE', 'Novosadska 37', 3, 44.914103309371924, 20.267538944371907, '4444444444', 'hesoyampharmacy+marina@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'SUPPLIER', false);
 INSERT INTO supplier (id) VALUES (19);
 INSERT INTO user_roles (user_id, role_id) VALUES (19, 7);
+insert into STORAGE (supplier_id) VALUES (19);
+INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (6,0, 2, 2);
 
 
 -----------------------
@@ -506,19 +512,24 @@ VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospod
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 16, 1, null, 7);
 
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('COUNSELING', 'TAKEN', '2021-02-07 23:05:00', '2021-02-07 23:25:00', 'Gospodine...', 17, 1, null, 6);
+
+
 --Checkup
+
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'FREE', '2021-02-08 21:00:00.189796', '2021-02-08 21:15:00.189796', 2500.0 , null , null, 1, 10, null);
+VALUES ('CHECKUP', 'FREE', '2021-02-08 21:00:00', '2021-02-08 21:15:00', 2500.0 , null , null, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'FREE', '2021-02-08 21:30:00.189796', '2021-02-08 21:45:00.189796', 1500.0 , null , null, 1, 10, null);
+VALUES ('CHECKUP', 'FREE', '2021-02-08 21:30:00', '2021-02-08 21:45:00', 1500.0 , null , null, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'FREE', '2021-02-08 21:45:00.189796', '2021-02-08 22:00:00.189796', 1750.0 , null , null, 1, 10, null);
+VALUES ('CHECKUP', 'FREE', '2021-02-08 21:45:00', '2021-02-08 22:00:00', 1750.0 , null , null, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'FREE', '2021-02-08 22:00:00.189796', '2021-02-08 22:15:00.189796', 1250.0 , null , null, 1, 10, null);
+VALUES ('CHECKUP', 'FREE', '2021-02-08 22:00:00', '2021-02-08 22:15:00', 1250.0 , null , null, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'TAKEN', '2021-02-06 12:00:00.189796', '2021-02-06 12:15:00.189796', 1250.0 , null , 14, 2, 11, null);
+VALUES ('CHECKUP', 'TAKEN', '2021-02-06 12:00:00', '2021-02-06 12:15:00', 1250.0 , null , 14, 2, 11, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'TAKEN', '2021-02-08 23:15:00.189796', '2021-02-08 23:30:00.189796', 1250.0 , null , 14, 1, 10, null);
+VALUES ('CHECKUP', 'TAKEN', '2021-02-09 23:15:00', '2021-02-09 23:30:00', 1250.0 , null , 14, 1, 10, null);
 
 -- Counseling
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
@@ -530,9 +541,9 @@ VALUES ('COUNSELING', 'FREE', '2021-02-08 21:10:00.189796', '2021-02-08 21:15:00
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'FREE', '2021-02-08 21:00:00.189796', '2021-02-08 21:15:00.189796', 1250.0 , null , null, 1, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('COUNSELING', 'TAKEN', '2021-02-06 21:00:00.189796', '2021-02-06 21:15:00.189796', 1250.0 , null , 14, 2, null, 6);
+VALUES ('COUNSELING', 'TAKEN', '2021-02-08 21:00:00', '2021-02-08 21:15:00', 1250.0 , null , 14, 2, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, price, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('COUNSELING', 'TAKEN', '2021-02-08 21:15:00.189796', '2021-02-08 21:30:00.189796', 1250.0 , null , 14, 1, null, 8);
+VALUES ('COUNSELING', 'TAKEN', '2021-02-08 21:15:00', '2021-02-08 21:30:00', 1250.0 , null , 14, 1, null, 8);
 
 --------------------
 -- Patient allergies
@@ -587,9 +598,9 @@ INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 14
 --15
 INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (0, 1, 15);
 --16 (Lidija)
-INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (30, 3, 16);
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (60, 3, 16);
 --17 (Radovan)
-INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (36, 4, 17);
+INSERT INTO loyalty_account (points, membership_id, patient_id) VALUES (180, 4, 17);
 
 -----------------------
 -- Orders
@@ -602,10 +613,10 @@ INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (30, 2, 1);
 INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (45, 3, 1);
 
 --2 Deadline : 18th April 2020, CREATED by Administrator 2 in Pharmacy 1
-INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-2-18 00:00:00-07' , 'CREATED', 2, 1);
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-2-20 00:00:00-07' , 'CREATED', 2, 1);
 INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (950, 1, 2);
---3 Accepted : Administrator 2 Pharmacy 1
-INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-1-6 00:00:00-07' , 'ACCEPTED', 3, 2);
+--3 Accepted : Administrator 3 Pharmacy 2
+INSERT INTO orders (dead_line, order_status, administrator_id, pharmacy_id) VALUES ('2021-1-6 00:00:00-07' , 'CREATED', 3, 2);
 INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (55, 1, 3);
 INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (150, 4, 3);
 
@@ -621,13 +632,13 @@ INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (5, 1, 5);
 INSERT INTO order_item (quantity, medicine_id, order_id) VALUES (3, 2, 5);
 
 --1 Offer by Sandra(18) for order 3 which is accepted
-INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-1-2 00:00:00-07', 'ACCEPTED', '666', 18, 3);
+INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-1-2 00:00:00-07', 'CREATED', '666', 18, 3);
 --2 Offer by Marina(19) for order 3 which is rejected
-INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-1-3 00:00:00-07', 'REJECTED', '755', 19, 3);
+INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-1-3 00:00:00-07', 'CREATED', '755', 19, 3);
 --3 Offer by Sandra(18) for order 1 which is created
 INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-2-18 00:00:00-07', 'CREATED', '2500', 18, 1);
---4 Offer by Marina(19) for order 1 which is CREATED
--- INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-2-1 00:00:00-07', 'CREATED', '755', 19, 2);
+--4 Offer by Marina(19) for order 2 which is CREATED
+INSERT INTO offer (delivery_date, offer_status, total_price, supplier_id, order_id) VALUES ('2021-2-1 00:00:00-07', 'CREATED', '755', 19, 2);
 
 
 
@@ -687,20 +698,56 @@ INSERT INTO shift (employee_id, pharmacy_id, from_date, to_date, type) VALUES (1
 --Veselin(id=14)
 INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 14, 'ACTIVE'); -- (id=1)
 INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 14, 'ACTIVE'); -- (id=2)
-
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 14, 'COMPLETED'); -- (id=3)
 -- (eprescription 1)
 INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 1 ,1);
 INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (1, 2, 1);
 
--- (eprescription 2) (only pharmacy 3 can fulfill)
+-- (eprescription 2)
 INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (8,3,2);
 
+-- (eprescription 3) (completed)
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (10, 1, 3);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 2, 3);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 4, 3);
 
 --Radovan(id=17)
-INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 17, 'ACTIVE'); -- (id=3);
--- (eprescription 3)
-INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 1,3);
-INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (2,4,3);
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 17, 'ACTIVE'); -- (id=4);
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 17, 'COMPLETED'); -- (id=5);
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 17, 'COMPLETED'); -- (id=6);
+
+-- (eprescription 4)
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 1,4);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (2,4,4);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (1,2,4);
+
+-- (eprescription 5)
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 1,5);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (1, 4,5);
+
+-- (eprescription 6)
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (10, 1,6);
+
+--Lidija(id=16) (Hypochondriac)
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 16, 'ACTIVE'); -- (id=7);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (20, 1,7);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (30, 2,7);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (40, 3,7);
+
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 16, 'ACTIVE'); -- (id=8);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (65, 4,8);
+
+
+--Svetlana(id=15)
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 15, 'COMPLETED'); -- (id=9);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (2, 4,9);
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 15, 'ACTIVE'); -- (id=10);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (2, 4,10);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (3, 3,10);
+INSERT INTO eprescription (issuing_date, patient_id, prescription_status) VALUES (CURRENT_TIMESTAMP, 15, 'ACTIVE'); -- (id=11);
+INSERT INTO prescription_item (quantity, medicine_id, eprescription_id) VALUES (7, 4,11);
+
+
 ------------------------
 -- SUBSCRIBED PATIENTS
 ------------------------
@@ -729,3 +776,75 @@ VALUES('2021-02-13', '2021-03-01', 'Opis treće promocije', 'Treća promocija', 
 
 INSERT INTO vacation_request (employee_id, from_date, to_date, status) VALUES (12, '2021-02-13', '2021-02-17', 'CREATED');
 INSERT INTO vacation_request (employee_id, from_date, to_date, status) VALUES (7, '2021-02-13', '2021-02-17', 'CREATED');
+
+------------------------------------------------------------------------------------
+-- SALES (DATA IS NOT CONSISTENT WITH PREVIOUS DATA eg Appointments and Medicines)
+------------------------------------------------------------------------------------
+
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-01', 540, 'CHECK_UP', 1, 1);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-10', 620, 'CHECK_UP', 1, 2);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-11', 1240, 'CHECK_UP', 1, 3);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-15', 371, 'CHECK_UP', 1, 4);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-20', 520, 'CHECK_UP', 1, 5);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-25', 366, 'COUNSELING', 1, 6);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2020-12-28', 888, 'COUNSELING', 1, 7);
+
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-01-05', 463, 'CHECK_UP', 1, 8);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-01-12', 787, 'CHECK_UP', 1, 9);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-01-23', 890, 'CHECK_UP', 1, 10);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-02-02', 678, 'CHECK_UP', 1, 11);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-02-05', 400, 'CHECK_UP', 1, 12);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-02-07', 250, 'CHECK_UP', 1, 13);
+
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-01-09', 250, 'COUNSELING', 1, 14);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-01-20', 125, 'COUNSELING', 1, 15);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-01-27', 300, 'COUNSELING', 1, 16);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-02-04', 180, 'COUNSELING', 1, 17);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-02-06', 197, 'COUNSELING', 1, 18);
+INSERT INTO sale (dtype, date_of_sale, price, service_type, pharmacy_id, appointment_id)
+VALUES ('ServiceSale', '2021-02-07', 240, 'COUNSELING', 1, 19);
+
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2020-12-02', 425, 1, 1);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2020-12-13', 600, 1, 2);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2020-12-21', 600, 1, 2);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2020-12-29', 600, 1, 2);
+
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-01-02', 425, 1, 3);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-01-14', 425, 1, 3);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-01-19', 425, 1, 3);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-01-29', 580, 1, 2);
+
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-02-01', 425, 1, 2);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-02-02', 360, 1, 1);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-02-05', 750, 1, 3);
+INSERT INTO sale (dtype, date_of_sale, price, pharmacy_id, medicine_id)
+VALUES('MedicineSale', '2021-02-06', 665, 1, 4);

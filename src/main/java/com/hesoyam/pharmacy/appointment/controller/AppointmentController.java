@@ -1,31 +1,35 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
+import com.hesoyam.pharmacy.appointment.DTO.AppointmentBookingDTO;
+import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.model.Appointment;
+import com.hesoyam.pharmacy.appointment.dto.CancelledAppointmentDTO;
 import com.hesoyam.pharmacy.appointment.dto.CheckUpDTO;
 import com.hesoyam.pharmacy.appointment.dto.CounselingDTO;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
+import com.hesoyam.pharmacy.appointment.service.ICheckUpService;
+import com.hesoyam.pharmacy.appointment.service.ICounselingService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
-import com.hesoyam.pharmacy.user.model.Dermatologist;
-import com.hesoyam.pharmacy.user.model.Employee;
-import com.hesoyam.pharmacy.user.model.Pharmacist;
-import com.hesoyam.pharmacy.user.model.User;
+import com.hesoyam.pharmacy.user.model.*;
+import com.hesoyam.pharmacy.user.service.IPatientService;
 import com.hesoyam.pharmacy.user.service.impl.UserService;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.util.search.UserSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +46,18 @@ public class AppointmentController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ICounselingService counselingService;
+
+    @Autowired
+    private ICheckUpService checkUpService;
+
+    @Autowired
+    private IPatientService patientService;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @GetMapping(value = "/appointments-for-pharmacist/{dateTimeRange}")
     @Secured("ROLE_PHARMACIST")
@@ -69,9 +85,9 @@ public class AppointmentController {
     private List<CounselingDTO> convertToCounselingDTO(List<Counseling> counselingsForPharmacist) {
         List<CounselingDTO> converted = new ArrayList<>();
         for(Counseling counseling : counselingsForPharmacist){
-            converted.add(new CounselingDTO(counseling.getPatient().getEmail(), counseling.getPatient().getFirstName(),
-                    counseling.getPatient().getLastName(), counseling.getDateTimeRange().getFrom(),
-                    counseling.getDateTimeRange().getTo()));
+            if(counseling.getPatient() != null) {
+                converted.add(new CounselingDTO(counseling));
+            }
         }
         return converted;
     }
@@ -102,9 +118,9 @@ public class AppointmentController {
     private List<CheckUpDTO> convertToCheckUpDTO(List<CheckUp> checkUpsForDermatologist) {
         List<CheckUpDTO> converted = new ArrayList<>();
         for(CheckUp checkUp : checkUpsForDermatologist){
-            converted.add(new CheckUpDTO(checkUp.getPatient().getFirstName(), checkUp.getPatient().getLastName(),
-                    checkUp.getPatient().getEmail(), checkUp.getPharmacy().getName(),
-                    checkUp.getDateTimeRange().getFrom(), checkUp.getDateTimeRange().getTo()));
+            if(checkUp.getPatient() != null) {
+                converted.add(new CheckUpDTO(checkUp));
+            }
         }
         return converted;
     }
@@ -121,4 +137,65 @@ public class AppointmentController {
         return new ResponseEntity<>(appointmentService.searchUsers((Employee) user, query), HttpStatus.OK);
     }
 
+    @PostMapping(value = "/patient-didnt-show")
+    @PreAuthorize("hasAnyRole('PHARMACIST', 'DERMATOLOGIST')")
+    public ResponseEntity<String> patientDidntShow(@AuthenticationPrincipal User user, @RequestBody @Valid
+                                                   CancelledAppointmentDTO cancelledAppointmentDTO){
+        Patient patient = patientService.getByEmail(cancelledAppointmentDTO.getPatientEmail());
+
+        if(user.getRoleEnum().equals(RoleEnum.PHARMACIST)){
+            counselingService.cancelCounseling(patient, cancelledAppointmentDTO.getFrom(),
+                    (Pharmacist) user);
+        } else {
+            checkUpService.cancelCheckup(patient, cancelledAppointmentDTO.getFrom(), (Dermatologist) user);
+        }
+
+        patientService.penalizeForMissingAppointment(patient);
+
+        return new ResponseEntity<>("Successfully cancelled appointment!", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/check-new-appointment/{emailTime}")
+    @PreAuthorize("hasAnyRole('PHARMACIST', 'DERMATOLOGIST')")
+    public ResponseEntity<Boolean> checkNewAppointment(@AuthenticationPrincipal User user, @PathVariable String emailTime){
+        String[] parts = emailTime.split("&&");
+        LocalDateTime from = LocalDateTime.parse(parts[1]);
+        LocalDateTime to = LocalDateTime.parse(parts[2]);
+        if(isRangeValid(from, to)) {
+            Patient patient = patientService.getByEmail(parts[0]);
+            boolean isFree = appointmentService.checkNewAppointment(user, patient, from);
+            return new ResponseEntity<>(isFree, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/book-new-appointment")
+    @PreAuthorize("hasAnyRole('PHARMACIST', 'DERMATOLOGIST')")
+    public ResponseEntity<String> bookNewAppointment(@RequestBody @Valid AppointmentBookingDTO appointmentBookingDTO,
+                                                     @AuthenticationPrincipal User user){
+        if(isRangeValid(appointmentBookingDTO.getFrom(), appointmentBookingDTO.getTo())) {
+            Patient patient = patientService.getByEmail(appointmentBookingDTO.getPatientEmail());
+            Appointment appointment = appointmentService.createNewAppointment(patient, user,
+                    appointmentBookingDTO.getPharmacyId(), new DateTimeRange(appointmentBookingDTO.getFrom(),
+                            appointmentBookingDTO.getTo()), appointmentBookingDTO.getPrice());
+
+            if (appointment != null) {
+                sendConfirmationEmail(user, patient);
+                return new ResponseEntity<>("Successfully created appointment!", HttpStatus.OK);
+            }
+        }
+
+        return new ResponseEntity<>("Failed to create appointment!", HttpStatus.OK);
+    }
+
+    private void sendConfirmationEmail(User user, Patient patient) {
+        if(user.getRoleEnum().equals(RoleEnum.PHARMACIST))
+            applicationEventPublisher.publishEvent(new OnCounselingReservationCompletedEvent(patient));
+        else
+            applicationEventPublisher.publishEvent(new OnCheckupReservationCompletedEvent(patient));
+    }
+
+    private boolean isRangeValid(LocalDateTime from, LocalDateTime to) {
+        return from.isBefore(to);
+    }
 }

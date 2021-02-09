@@ -65,8 +65,6 @@ public class UserService implements UserDetailsService, IUserService {
 
     @Override
     public User update(User userData) throws UserNotFoundException {
-        //TODO: Authorization needs to be done here. Do NOT forget.
-        //TODO: Test the method furthermore.
         User user = userRepository.getOne(userData.getId());
         if(user == null) throw new UserNotFoundException(userData.getId());
         user.update(userData);

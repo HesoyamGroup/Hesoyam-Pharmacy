@@ -77,4 +77,13 @@ public class StorageItemService implements IStorageItemService {
         return storageItemRepository.getUnaddedMedicine(loggedUser.getId(), PageRequest.of(page-1, 8));
     }
 
+    @Override
+    public int getMedicineQuantity(Medicine medicine){
+        int quantity = 0;
+        for(StorageItem item : storageItemRepository.getStorageItemByMedicine(medicine)){
+            quantity += item.getStock();
+        }
+        return quantity;
+    }
+
 }

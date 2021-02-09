@@ -1,5 +1,8 @@
 package com.hesoyam.pharmacy.appointment.dto;
 
+import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
+import com.hesoyam.pharmacy.appointment.model.CheckUp;
+
 import java.time.LocalDateTime;
 
 public class CheckUpDTO {
@@ -9,18 +12,49 @@ public class CheckUpDTO {
     private String pharmacyName;
     private LocalDateTime from;
     private LocalDateTime to;
+    private String appointmentStatus;
+    private long pharmacyId;
 
     public CheckUpDTO(String patientFirstName, String patientLastName, String patientEmail, String pharmacyName,
-                      LocalDateTime from, LocalDateTime to) {
+                      LocalDateTime from, LocalDateTime to, AppointmentStatus appointmentStatus) {
         this.patientFirstName = patientFirstName;
         this.patientLastName = patientLastName;
         this.patientEmail = patientEmail;
         this.pharmacyName = pharmacyName;
         this.from = from;
         this.to = to;
+        this.appointmentStatus = appointmentStatus.toString();
+    }
+
+    public CheckUpDTO(CheckUp checkUp) {
+        this.patientFirstName = checkUp.getPatient().getFirstName();
+        this.patientLastName = checkUp.getPatient().getLastName();
+        this.patientEmail = checkUp.getPatient().getEmail();
+        this.pharmacyName = checkUp.getPharmacy().getName();
+        this.from = checkUp.getDateTimeRange().getFrom();
+        this.to = checkUp.getDateTimeRange().getTo();
+        this.appointmentStatus = checkUp.getAppointmentStatus().toString();
+        this.pharmacyId = checkUp.getPharmacy().getId();
     }
 
     public CheckUpDTO() {
+        //Empty ctor for JSON serializer
+    }
+
+    public String getAppointmentStatus() {
+        return appointmentStatus;
+    }
+
+    public void setAppointmentStatus(String appointmentStatus) {
+        this.appointmentStatus = appointmentStatus;
+    }
+
+    public long getPharmacyId() {
+        return pharmacyId;
+    }
+
+    public void setPharmacyId(long pharmacyId) {
+        this.pharmacyId = pharmacyId;
     }
 
     public String getPatientFirstName() {

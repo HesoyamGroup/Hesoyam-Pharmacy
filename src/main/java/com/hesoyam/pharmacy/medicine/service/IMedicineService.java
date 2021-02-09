@@ -17,4 +17,6 @@ public interface IMedicineService {
     List<MedicineSearchResultDTO> search(MedicineSearchDTO medicineSearchDTO);
     Medicine findById(Long id) throws MedicineNotFoundException;
     void updateRating(Long id, double rating) throws MedicineNotFoundException;
+
+    boolean checkAvailability(String medicineName, int quantity, long pharmacyId);
 }

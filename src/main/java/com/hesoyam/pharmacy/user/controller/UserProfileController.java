@@ -4,11 +4,7 @@ import com.hesoyam.pharmacy.location.model.Address;
 import com.hesoyam.pharmacy.location.service.ICityService;
 import com.hesoyam.pharmacy.location.service.ICountryService;
 import com.hesoyam.pharmacy.security.TokenUtils;
-import com.hesoyam.pharmacy.user.DTO.UserProfileDTO;
-import com.hesoyam.pharmacy.user.dto.AccountInformationDTO;
-import com.hesoyam.pharmacy.user.dto.AddressDTO;
-import com.hesoyam.pharmacy.user.dto.PasswordDTO;
-import com.hesoyam.pharmacy.user.dto.UserBasicInfoDTO;
+import com.hesoyam.pharmacy.user.dto.*;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IUserService;
@@ -81,13 +77,7 @@ public class UserProfileController {
 
         try{
             User user = userService.findByEmail(username);
-            Address address = new Address();
-            address.setCity(newAddress.getCity());
-            address.setAddressLine(newAddress.getAddressLine());
-            address.setLatitude(user.getAddress().getLatitude());
-            address.setLongitude(user.getAddress().getLongitude());
-
-            user.setAddress(address);
+            setNewAddressInfo(newAddress, user);
             userService.update(user);
 
             return ResponseEntity.ok().body("ok");
@@ -98,6 +88,37 @@ public class UserProfileController {
         }
     }
 
+    private void setNewAddressInfo(AddressDTO newAddress, User user) {
+        Address address = new Address();
+        address.setCity(newAddress.getCity());
+        address.setAddressLine(newAddress.getAddressLine());
+        address.setLatitude(user.getAddress().getLatitude());
+        address.setLongitude(user.getAddress().getLongitude());
+
+        user.setAddress(address);
+    }
+
+    @PostMapping("/change-info")
+    public ResponseEntity<String> changeInfo(@RequestBody ChangeUserInfoDTO changeUserInfoDTO,  @AuthenticationPrincipal User user){
+        try{
+            setNewInfo(changeUserInfoDTO, user);
+            userService.update(user);
+            return ResponseEntity.ok().body("ok");
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("bad");
+        }
+    }
+
+    private void setNewInfo(ChangeUserInfoDTO changeUserInfoDTO, User user){
+        user.setFirstName(changeUserInfoDTO.getFirstName());
+        user.setLastName(changeUserInfoDTO.getLastName());
+        user.setGender(changeUserInfoDTO.getGender());
+        user.setTelephone(changeUserInfoDTO.getTelephone());
+        Address userAddress = user.getAddress();
+        user.setAddress(new Address(changeUserInfoDTO.getAddressLine(), userAddress.getLatitude(), userAddress.getLongitude(), changeUserInfoDTO.getCity()));
+    }
+
     @PostMapping("/change-user-basic-info")
     public ResponseEntity<String> chanceBasicInfo(@RequestBody UserBasicInfoDTO newInfo, HttpServletRequest request){
 
@@ -106,11 +127,7 @@ public class UserProfileController {
 
         try{
             User user = userService.findByEmail(username);
-            user.setFirstName(newInfo.getFirstName());
-            user.setLastName(newInfo.getLastName());
-            user.setGender(newInfo.getGender());
-            user.setTelephone(newInfo.getTelephone());
-
+            setNewUserInfo(newInfo, user);
             userService.update(user);
 
             return ResponseEntity.ok().body("ok");
@@ -118,6 +135,13 @@ public class UserProfileController {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("bad");
         }
+    }
+
+    private void setNewUserInfo(UserBasicInfoDTO newInfo, User user) {
+        user.setFirstName(newInfo.getFirstName());
+        user.setLastName(newInfo.getLastName());
+        user.setGender(newInfo.getGender());
+        user.setTelephone(newInfo.getTelephone());
     }
 
     @PostMapping("/test-password")

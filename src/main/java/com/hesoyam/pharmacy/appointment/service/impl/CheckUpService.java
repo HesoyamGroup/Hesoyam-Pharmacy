@@ -11,11 +11,14 @@ import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
+import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IDermatologistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +33,7 @@ public class CheckUpService implements ICheckUpService {
 
     @Autowired
     private IPharmacyService pharmacyService;
+
 
     @Override
     public CheckUp createFreeCheckUp(User administrator, FreeCheckupDTO freeCheckupDTO, Long dermatologistId) throws DermatologistNotFoundException, IllegalAccessException {
@@ -99,7 +103,53 @@ public class CheckUpService implements ICheckUpService {
         return checkUp;
     }
 
-    private List<CheckUp>getUpcomingCheckUps(List<CheckUp> checkUps) {
+    @Override
+    public CheckUp cancelCheckup(Patient patient, LocalDateTime from, Dermatologist user) {
+        CheckUp checkup = checkUpRepository.findCheckUpByPatientAndDermatologistAndDateTimeRange_From(patient, user, from);
+        checkup.setAppointmentStatus(AppointmentStatus.ABSENT);
+        checkUpRepository.save(checkup);
+        return checkup;
+    }
+
+    private List<CheckUp> getUpcomingCheckUps(List<CheckUp> checkUps) {
         return checkUps.stream().filter(Appointment::isUpcoming).collect(Collectors.toList());
+    }
+
+    @Override
+    public CheckUp updateCheckupAfterAppointment(Patient patient, LocalDateTime from, String report, Dermatologist dermatologist)
+            throws CheckupNotFoundException{
+//        CheckUp checkup = checkUpRepository
+//                .findCheckUpByPatient_IdAndDermatologist_IdAndDateTimeRange_From(patientId, dermatologist.getId(), from);
+
+
+        CheckUp checkup = checkUpRepository.findCheckUpByPatientAndDermatologist_EmailAndDateTimeRange_From(patient,
+                dermatologist.getEmail(), from);
+        if(checkup != null) {
+            checkup.setReport(report);
+            checkup.setAppointmentStatus(AppointmentStatus.COMPLETED);
+            checkUpRepository.save(checkup);
+        }
+        else {
+            throw new CheckupNotFoundException(patient.getId());
+        }
+
+        return checkup;
+    }
+
+    @Override
+    public List<CheckUp> getAllCheckUpsForPatientAndDermatologist(Patient patient, Dermatologist user) {
+        List<CheckUp> allCheckUps = checkUpRepository.findAllByPatientAndDermatologist(patient, user);
+        allCheckUps = filterByDate(allCheckUps);
+        return allCheckUps;
+    }
+
+    private List<CheckUp> filterByDate(List<CheckUp> allCheckUps) {
+        List<CheckUp> filtered = new ArrayList<>();
+        for (CheckUp checkUp : allCheckUps) {
+            if (checkUp.getDateTimeRange().getFrom().isAfter(LocalDateTime.now())) {
+                filtered.add(checkUp);
+            }
+        }
+        return filtered;
     }
 }

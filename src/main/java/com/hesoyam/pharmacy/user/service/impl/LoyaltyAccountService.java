@@ -2,8 +2,12 @@ package com.hesoyam.pharmacy.user.service.impl;
 
 import com.hesoyam.pharmacy.user.dto.LoyaltyAccountMembershipDTO;
 import com.hesoyam.pharmacy.user.dto.LoyaltyProgramConfigUpdateDTO;
+import com.hesoyam.pharmacy.user.exceptions.LoyaltyAccountMembershipInvalidDeleteRequest;
 import com.hesoyam.pharmacy.user.exceptions.LoyaltyAccountMembershipInvalidUpdateException;
-import com.hesoyam.pharmacy.user.model.*;
+import com.hesoyam.pharmacy.user.model.LoyaltyAccount;
+import com.hesoyam.pharmacy.user.model.LoyaltyAccountMembership;
+import com.hesoyam.pharmacy.user.model.LoyaltyProgramConfig;
+import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.repository.LoyaltyAccountMembershipRepository;
 import com.hesoyam.pharmacy.user.repository.LoyaltyAccountRepository;
 import com.hesoyam.pharmacy.user.repository.LoyaltyProgramConfigRepository;
@@ -54,7 +58,10 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
         LoyaltyAccountMembership loyaltyAccountMembership = loyaltyAccountMembershipRepository.getOne(loyaltyAccountMembershipDTO.getId());
         loadLoyaltyAccountMembershipWithDTOData(loyaltyAccountMembership, loyaltyAccountMembershipDTO);
         try{
-            return loyaltyAccountMembershipRepository.save(loyaltyAccountMembership);
+            loyaltyAccountMembership = loyaltyAccountMembershipRepository.save(loyaltyAccountMembership);
+            refreshLoyaltyAccounts();
+            return loyaltyAccountMembership;
+
         }catch (DataIntegrityViolationException e){
             throw new LoyaltyAccountMembershipInvalidUpdateException("Loyalty membership name must be unique.");
         }
@@ -67,7 +74,9 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
         LoyaltyAccountMembership loyaltyAccountMembership = new LoyaltyAccountMembership();
         loadLoyaltyAccountMembershipWithDTOData(loyaltyAccountMembership, loyaltyAccountMembershipDTO);
         try{
-            return loyaltyAccountMembershipRepository.save(loyaltyAccountMembership);
+            loyaltyAccountMembership = loyaltyAccountMembershipRepository.save(loyaltyAccountMembership);
+            refreshLoyaltyAccounts();
+            return loyaltyAccountMembership;
         }catch (DataIntegrityViolationException e){
             throw new LoyaltyAccountMembershipInvalidUpdateException("Loyalty membership name must be unique.");
         }
@@ -96,6 +105,26 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
     public LoyaltyAccount update(LoyaltyAccount loyaltyAccount) {
         return loyaltyAccountRepository.save(loyaltyAccount);
     }
+
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void deleteLoyaltyAccountMembership(Long loyaltyAccountMembershipId) {
+        LoyaltyAccountMembership loyaltyAccountMembership = loyaltyAccountMembershipRepository.getOne(loyaltyAccountMembershipId);
+        try{
+            loyaltyAccountRepository.setMembershipToNullWhereMembership(loyaltyAccountMembership);
+            loyaltyAccountMembershipRepository.delete(loyaltyAccountMembership);
+            refreshLoyaltyAccounts();
+        }catch (DataIntegrityViolationException e){
+            throw new LoyaltyAccountMembershipInvalidDeleteRequest("There are people in that group!");
+        }
+    }
+
+    @Override
+    public void refreshLoyaltyAccounts() {
+        loyaltyAccountRepository.refreshLoyaltyAccounts();
+    }
+
 
     private LoyaltyAccountMembership loadLoyaltyAccountMembershipWithDTOData(LoyaltyAccountMembership loyaltyAccountMembership, LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO){
         loyaltyAccountMembership.setLoyaltyProgramConfig(loyaltyAccountMembershipDTO.getLoyaltyProgramConfig());

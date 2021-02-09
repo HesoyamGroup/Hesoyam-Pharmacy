@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.pharmacy.service.impl;
 
 import com.hesoyam.pharmacy.medicine.repository.MedicineRepository;
+import com.hesoyam.pharmacy.pharmacy.dto.OrderDTO;
 import com.hesoyam.pharmacy.pharmacy.dto.ShowOrderItemDTO;
 import com.hesoyam.pharmacy.pharmacy.dto.ShowOrdersDTO;
 import com.hesoyam.pharmacy.pharmacy.mapper.OrderMapper;
@@ -16,11 +17,13 @@ import com.hesoyam.pharmacy.user.model.Administrator;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,7 +53,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<ShowOrdersDTO> getActiveForSupplier(Integer page, User user) {
-        List<Order> activeOrders = orderRepository.getUserPendingActionOrders(user.getId(), PageRequest.of(page-1, 6));
+        List<Order> activeOrders = orderRepository.getUserPendingActionOrders(user.getId(), LocalDateTime.now(), PageRequest.of(page-1, 6));
         return activeOrders.stream().map(OrderMapper::mapOrderToShowOrderDTO).collect(Collectors.toList());
     }
 
@@ -67,6 +70,21 @@ public class OrderService implements IOrderService {
         }
         return orderRepository.save(order);
 
+    }
+
+    @Override
+    public Order updateDeadline(User user, OrderDTO orderDTO) throws IllegalAccessException {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+        Order orderForUpdate = orderRepository.getOne(orderDTO.getId());
+
+        if(!orderForUpdate.getPharmacy().equals(administrator.getPharmacy()))
+            throw new IllegalAccessException();
+
+        if(orderForUpdate.hasOffers())
+            throw new IllegalArgumentException();
+
+        orderForUpdate.updateDeadline(orderDTO.getDeadline());
+        return orderRepository.save(orderForUpdate);
     }
 
     @Override
@@ -91,6 +109,27 @@ public class OrderService implements IOrderService {
 
         inventoryRepository.save(pharmacyInventory);
         return orderRepository.save(newOrder);
+    }
+
+    @Override
+    public List<Order> getAllByAdministratorPharmacy(User user) {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+
+        return orderRepository.getAllByPharmacy_Id(administrator.getPharmacy().getId());
+    }
+
+    @Override
+    public void delete(User user, Long id) throws IllegalAccessException {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+        Order orderForDelete = orderRepository.getOne(id);
+
+        if(!orderForDelete.getPharmacy().equals(administrator.getPharmacy()))
+            throw new IllegalAccessException();
+
+        if(orderForDelete.hasOffers())
+            throw new IllegalArgumentException();
+
+        orderRepository.delete(orderForDelete);
     }
 
     private List<OrderItem> getOrderItems(List<ShowOrderItemDTO> showOrderItemDTOS) {

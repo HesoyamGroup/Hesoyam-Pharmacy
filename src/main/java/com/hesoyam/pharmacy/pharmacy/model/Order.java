@@ -9,6 +9,7 @@ import com.hesoyam.pharmacy.user.model.Administrator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class Order {
 
 //   @OneToMany(fetch=FetchType.LAZY)
 //   @JoinColumn(name="order_id", referencedColumnName = "id", nullable = false)
-   @OneToMany(fetch = FetchType.LAZY, mappedBy="order")
+   @OneToMany(fetch = FetchType.LAZY, mappedBy="order", cascade = CascadeType.ALL)
    private List<Offer> offers;
 
    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
@@ -86,6 +87,8 @@ public class Order {
    }
 
    public List<Offer> getOffers() {
+      if(offers == null)
+         return new ArrayList<>();
       return offers;
    }
 
@@ -110,11 +113,38 @@ public class Order {
          }
       }
       LocalDateTime deliveryDate = offer.getDeliveryDate();
-      return deliveryDate.compareTo(deadLine) < 0 && deliveryDate.compareTo(LocalDateTime.now()) > 0 && orderStatus == OrderStatus.CREATED;
+      return deliveryDate.compareTo(deadLine) < 0 && deliveryDate.compareTo(LocalDate.now().atTime(0,0,0)) >= 0 && orderStatus == OrderStatus.CREATED;
    }
 
    public boolean isOfferEditable(Offer offer){
-      return LocalDateTime.now().compareTo(deadLine) < 0 && offer.getOfferStatus() == OfferStatus.CREATED;
+      return LocalDate.now().atTime(0, 0, 0).compareTo(deadLine) < 0 && offer.getOfferStatus() == OfferStatus.CREATED;
       //TODO: Check if today date is before date specified as the last day for canceling.
+   }
+
+   public boolean hasOffers() {
+      return !getOffers().isEmpty();
+   }
+
+   public void updateDeadline(LocalDateTime deadline) {
+      if(deadLine.isAfter(LocalDateTime.now()) && orderStatus == OrderStatus.CREATED)
+         setDeadLine(deadline);
+      else
+         throw new IllegalStateException();
+   }
+
+   public boolean accept(Offer offer) {
+      if(orderStatus == OrderStatus.CREATED && deadLine.isBefore(LocalDateTime.now())){
+         setOrderStatus(OrderStatus.ACCEPTED);
+         getOffers().forEach(off -> setOfferStatus(off, offer));
+         return true;
+      } else
+         return false;
+   }
+
+   private void setOfferStatus(Offer offer, Offer acceptedOffer){
+      if(offer.equals(acceptedOffer))
+         offer.setOfferStatus(OfferStatus.ACCEPTED);
+      else
+         offer.setOfferStatus(OfferStatus.REJECTED);
    }
 }

@@ -3,7 +3,6 @@ package com.hesoyam.pharmacy.pharmacy.events;
 import com.hesoyam.pharmacy.pharmacy.model.MedicineSale;
 import org.springframework.context.ApplicationEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OnMedicineSaleEvent extends ApplicationEvent {

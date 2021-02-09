@@ -5,7 +5,6 @@
  ***********************************************************************/
 package com.hesoyam.pharmacy.location.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -24,7 +23,6 @@ public class City {
 
    @ManyToOne(fetch = FetchType.EAGER, optional = false)
    @JoinColumn(name="country_id", referencedColumnName = "id")
-   @JsonBackReference
    private Country country;
 
    public Long getId() {

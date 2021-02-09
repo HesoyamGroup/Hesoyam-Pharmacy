@@ -7,12 +7,14 @@ public class AccountInformationDTO {
     private String oldPassword;
 
     public AccountInformationDTO() {
+        //Empty ctor for JSON serializer
     }
 
     public AccountInformationDTO(String email, String password, String confirmPassword, String oldPassword) {
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.oldPassword = oldPassword;
+        this.email = email;
     }
 
     public String getPassword() {
@@ -40,4 +42,8 @@ public class AccountInformationDTO {
     }
 
     public String getEmail() { return email; }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

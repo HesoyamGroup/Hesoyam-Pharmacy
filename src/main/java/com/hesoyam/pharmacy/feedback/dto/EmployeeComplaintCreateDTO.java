@@ -29,4 +29,12 @@ public class EmployeeComplaintCreateDTO {
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
 }

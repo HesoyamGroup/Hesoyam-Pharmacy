@@ -3,45 +3,18 @@ package com.hesoyam.pharmacy.user.dto;
 import com.hesoyam.pharmacy.user.model.Employee;
 import com.hesoyam.pharmacy.user.model.RoleEnum;
 
-public class EmployeeBasicDTO {
-    protected Long id;
-    protected String firstName;
-    protected String lastName;
+public class EmployeeBasicDTO extends UserBasicInfoDTO {
     protected RoleEnum role;
     protected double rating;
 
-    public EmployeeBasicDTO(){}
+    public EmployeeBasicDTO(){
+        super();
+    }
 
     public EmployeeBasicDTO(Employee employee) {
-        this.id = employee.getId();
-        this.firstName = employee.getFirstName();
-        this.lastName = employee.getLastName();
+        super(employee);
         this.rating = employee.getRating();
         this.role = employee.getRoleEnum();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public double getRating() {

@@ -60,4 +60,16 @@ public class PatientService implements IPatientService {
 
         return patient;
     }
+
+    @Override
+    public Patient getByEmail(String email) {
+        return patientRepository.findPatientByEmail(email);
+    }
+
+    @Override
+    public Patient penalizeForMissingAppointment(Patient patient) {
+        patient.setPenaltyPoints(patient.getPenaltyPoints() + 1);
+        return patientRepository.save(patient);
+    }
+
 }

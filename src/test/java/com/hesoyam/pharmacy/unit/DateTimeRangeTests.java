@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.unit;
 
 import com.hesoyam.pharmacy.util.DateTimeRange;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -16,13 +17,19 @@ class DateTimeRangeTests {
      * https://stackoverflow.com/a/5601502
      */
 
+    LocalDateTime testFrom;
+    LocalDateTime testTo;
+    DateTimeRange testing;
+
+    @BeforeEach
+    void prepareDates(){
+        testFrom = LocalDateTime.of(2021, Month.JANUARY, 10, 0, 0);
+        testTo = LocalDateTime.of(2021, Month.JANUARY, 15, 0, 0);
+        testing = new DateTimeRange(testFrom, testTo);
+    }
+
     @Test
     void testDateTimeRangesOverlap(){
-        LocalDateTime testFrom = LocalDateTime.of(2021, Month.JANUARY, 10, 0, 0);
-        LocalDateTime testTo = LocalDateTime.of(2021, Month.JANUARY, 15, 0, 0);
-
-        DateTimeRange testing = new DateTimeRange(testFrom, testTo);
-
         DateTimeRange startInside = new DateTimeRange(testFrom.minusDays(2), testFrom.plusDays(1));
         DateTimeRange insideStartTouching = new DateTimeRange(testFrom, testTo.plusDays(2));
         DateTimeRange enclosingStartTouching = new DateTimeRange(testFrom, testTo.minusDays(2));
@@ -56,11 +63,6 @@ class DateTimeRangeTests {
 
     @Test
     void testDateTimeRangesDontOverlap(){
-        LocalDateTime testFrom = LocalDateTime.of(2021, 1, 10, 0, 0);
-        LocalDateTime testTo = LocalDateTime.of(2021, 1, 15, 0, 0);
-
-        DateTimeRange testing = new DateTimeRange(testFrom, testTo);
-
         DateTimeRange after = new DateTimeRange(testFrom.minusDays(5), testFrom.minusDays(2));
         DateTimeRange startTouching = new DateTimeRange(testFrom.minusDays(2), testFrom);
         DateTimeRange endTouching = new DateTimeRange(testTo, testTo.plusDays(2));
@@ -79,11 +81,6 @@ class DateTimeRangeTests {
 
     @Test
     void testDateTimeRangesInclude(){
-        LocalDateTime testFrom = LocalDateTime.of(2021, Month.JANUARY, 10, 0, 0);
-        LocalDateTime testTo = LocalDateTime.of(2021, Month.JANUARY, 15, 0, 0);
-
-        DateTimeRange testing = new DateTimeRange(testFrom, testTo);
-
         DateTimeRange enclosingStartTouching = new DateTimeRange(testFrom, testTo.minusDays(2));
         DateTimeRange enclosing = new DateTimeRange(testFrom.plusDays(1), testTo.minusDays(1));
         DateTimeRange enclosingEndTouching = new DateTimeRange(testFrom.plusDays(2), testTo);
@@ -102,11 +99,6 @@ class DateTimeRangeTests {
 
     @Test
     void testDateTimeRangesDontInclude(){
-        LocalDateTime testFrom = LocalDateTime.of(2021, Month.JANUARY, 10, 0, 0);
-        LocalDateTime testTo = LocalDateTime.of(2021, Month.JANUARY, 15, 0, 0);
-
-        DateTimeRange testing = new DateTimeRange(testFrom, testTo);
-
         DateTimeRange startInside = new DateTimeRange(testFrom.minusDays(2), testFrom.plusDays(1));
         DateTimeRange insideStartTouching = new DateTimeRange(testFrom, testTo.plusDays(2));
         DateTimeRange inside = new DateTimeRange(testFrom.minusDays(2), testTo.plusDays(2));

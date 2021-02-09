@@ -12,4 +12,7 @@ public interface IPatientService {
     List<Medicine> getAllergiesByPatientId(Long id) throws PatientNotFoundException;
     List<Medicine> getMedicineNotAllergicToByPatientId(Long id) throws PatientNotFoundException;
     Patient update(Patient patient) throws PatientNotFoundException;
+    Patient getByEmail(String email);
+    Patient penalizeForMissingAppointment(Patient patient);
+
 }

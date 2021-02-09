@@ -18,4 +18,8 @@ public class ServiceSale extends Sale {
    @OneToOne(fetch= FetchType.EAGER)
    @JoinColumn(name="appointment_id")
    private Appointment appointment;
+
+   public ServiceType getServiceType() {
+      return serviceType;
+   }
 }
