@@ -65,5 +65,13 @@ public class MedicineService implements IMedicineService {
         return medicineRepository.findById(id).orElseThrow(() -> new MedicineNotFoundException(id));
     }
 
+    @Override
+    public void updateRating(Long id, double rating) throws MedicineNotFoundException {
+        Medicine medicine = medicineRepository.findById(id).orElseThrow(() -> new MedicineNotFoundException(id));
+        medicine.setRating(rating);
+
+        medicineRepository.save(medicine);
+    }
+
 
 }

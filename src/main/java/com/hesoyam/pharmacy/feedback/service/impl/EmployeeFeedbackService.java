@@ -20,8 +20,8 @@ public class EmployeeFeedbackService implements IEmployeeFeedbackService {
     }
 
     @Override
-    public List<EmployeeFeedback> findByEmployeeId(Long employeeId) {
-        return employeeFeedbackRepository.findAllByEmployee_Id(employeeId);
+    public EmployeeFeedback getByEmployeeIdAndPatientId(Long employeeId, Long patientId) {
+        return employeeFeedbackRepository.findAllByEmployee_IdAndPatient_Id(employeeId, patientId);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class EmployeeFeedbackService implements IEmployeeFeedbackService {
     public void update(EmployeeFeedback employeeFeedbackData) {
         EmployeeFeedback employeeFeedback = employeeFeedbackRepository.getOne(employeeFeedbackData.getId());
 
-        employeeFeedback.update(employeeFeedback);
+        employeeFeedback.update(employeeFeedbackData);
 
         employeeFeedbackRepository.save(employeeFeedback);
     }

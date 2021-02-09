@@ -18,4 +18,26 @@ public class MedicineFeedback extends Feedback {
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "medicine_id")
    private Medicine medicine;
+
+   public void update(MedicineFeedback medicineFeedback){
+      this.medicine = medicineFeedback.getMedicine();
+      this.comment = medicineFeedback.getComment();
+      this.patient = medicineFeedback.getPatient();
+      this.rating = medicineFeedback.getRating();
+   }
+
+   public MedicineFeedback(Medicine medicine) {
+      this.medicine = medicine;
+   }
+
+   public MedicineFeedback() {
+   }
+
+   public Medicine getMedicine() {
+      return medicine;
+   }
+
+   public void setMedicine(Medicine medicine) {
+      this.medicine = medicine;
+   }
 }

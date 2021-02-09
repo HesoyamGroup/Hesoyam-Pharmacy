@@ -11,4 +11,6 @@ public interface EmployeeFeedbackRepository extends JpaRepository<EmployeeFeedba
 
     List<EmployeeFeedback> findAllByEmployee_Id(Long id);
 
+    EmployeeFeedback findAllByEmployee_IdAndPatient_Id(Long employeeId, Long patientId);
+
 }

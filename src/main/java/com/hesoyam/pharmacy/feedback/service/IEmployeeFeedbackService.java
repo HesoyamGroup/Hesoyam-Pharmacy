@@ -7,8 +7,9 @@ import java.util.List;
 public interface IEmployeeFeedbackService {
 
     EmployeeFeedback create(EmployeeFeedback employeeFeedback);
-    List<EmployeeFeedback> findByEmployeeId(Long employeeId);
+    EmployeeFeedback getByEmployeeIdAndPatientId(Long employeeId, Long patientId);
     List<EmployeeFeedback> getAll();
     void update(EmployeeFeedback employeeFeedback);
     double calculateEmployeeRating(Long id);
+
 }
