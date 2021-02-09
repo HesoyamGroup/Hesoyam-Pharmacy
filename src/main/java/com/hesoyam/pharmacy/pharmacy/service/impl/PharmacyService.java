@@ -14,6 +14,7 @@ import com.hesoyam.pharmacy.user.model.Role;
 import com.hesoyam.pharmacy.user.model.RoleEnum;
 import com.hesoyam.pharmacy.user.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ public class PharmacyService implements IPharmacyService {
     @Autowired
     private IRoleService roleService;
 
+    @Lazy
     @Autowired
     private PasswordEncoder passwordEncoder;
 
