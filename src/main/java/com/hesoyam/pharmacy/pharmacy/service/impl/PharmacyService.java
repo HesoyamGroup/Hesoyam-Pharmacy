@@ -3,6 +3,7 @@ package com.hesoyam.pharmacy.pharmacy.service.impl;
 import com.hesoyam.pharmacy.pharmacy.dto.PharmacyAdministratorCreateDTO;
 import com.hesoyam.pharmacy.pharmacy.dto.PharmacyCreateDTO;
 import com.hesoyam.pharmacy.pharmacy.exceptions.InvalidPharmacyCreateRequest;
+import com.hesoyam.pharmacy.pharmacy.exceptions.PharmacyNotFoundException;
 import com.hesoyam.pharmacy.pharmacy.model.Inventory;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.repository.PharmacyRepository;
@@ -128,4 +129,11 @@ public class PharmacyService implements IPharmacyService {
         return pharmacyRepository.canPharmacyOfferMedicineQuantity(pharmacyId, medicineId, quantity);
     }
 
+    @Override
+    public void updateRating(Long pharmacyId, double rating) throws PharmacyNotFoundException {
+        Pharmacy pharmacy = pharmacyRepository.findById(pharmacyId).orElseThrow(() -> new PharmacyNotFoundException(pharmacyId));
+        pharmacy.setRating(rating);
+
+        pharmacyRepository.save(pharmacy);
+    }
 }

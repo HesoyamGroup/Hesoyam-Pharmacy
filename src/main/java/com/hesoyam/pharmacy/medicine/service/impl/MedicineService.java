@@ -69,6 +69,13 @@ public class MedicineService implements IMedicineService {
     }
 
     @Override
+    public void updateRating(Long id, double rating) throws MedicineNotFoundException {
+        Medicine medicine = medicineRepository.findById(id).orElseThrow(() -> new MedicineNotFoundException(id));
+        medicine.setRating(rating);
+
+        medicineRepository.save(medicine);
+    }
+
     public boolean checkAvailability(String medicineName, int quantity, long pharmacyId) {
         Medicine medicine = medicineRepository.findByName(medicineName);
         int stock = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, medicine.getId()).getAvailable();
