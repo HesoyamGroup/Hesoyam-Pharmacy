@@ -1,6 +1,6 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
-import com.hesoyam.pharmacy.appointment.DTO.AppointmentBookingDTO;
+import com.hesoyam.pharmacy.appointment.dto.AppointmentBookingDTO;
 import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
 import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
 import com.hesoyam.pharmacy.appointment.model.Appointment;
