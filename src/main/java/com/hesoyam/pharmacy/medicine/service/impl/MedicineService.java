@@ -74,7 +74,8 @@ public class MedicineService implements IMedicineService {
         medicine.setRating(rating);
 
         medicineRepository.save(medicine);
-        
+    }
+
     public boolean checkAvailability(String medicineName, int quantity, long pharmacyId) {
         Medicine medicine = medicineRepository.findByName(medicineName);
         int stock = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, medicine.getId()).getAvailable();
