@@ -453,17 +453,17 @@ INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (6,0, 2
 -- Medicine Reservation
 -----------------------
 INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (1, 'sdadasdadadasasdasasdda', 'CREATED', '2021-02-01 23:59:59', 14, 1);
+VALUES (1, 'sdadasdadadasasdasasdda', 'COMPLETED', '2021-02-01 23:59:59', 14, 1);
 INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
 VALUES (2, 'wqksdhajdhaushydhwqkjmsdkami', 'COMPLETED', '2021-02-19 23:59:59', 14, 1);
 INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
 VALUES (3, 'bcvobocjiwque878dusijksdfj', 'CREATED', '2021-03-01 23:59:59', 14, 1);
 INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (4, 'dfjiwdjas8idlak0ti9kdsmklc', 'CANCELLED', '2021-02-16 23:59:59', 14, 2);
+VALUES (4, 'dfjiwdjas8idlak0ti9kdsmklc', 'COMPLETED', '2021-02-16 23:59:59', 15, 2);
 INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
 VALUES (5, 'sdfjiosdofsdipkdogjuhuas', 'COMPLETED', '2021-01-31 23:59:59', 14, 2);
 INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (6, 'jcjsiajdojiosd0weoklssmad', 'CREATED', '2021-05-12 23:59:59', 14, 2);
+VALUES (6, 'jcjsiajdojiosd0weoklssmad', 'COMPLETED', '2021-05-12 23:59:59', 15, 2);
 
 ---------------------------
 --Medicine Reservation Item
@@ -488,17 +488,29 @@ VALUES (6, 1, 4, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 1, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 15, 3, 10, null);
+VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 3, 11, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 16, 1, 10, null);
+VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 1, 12, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 2, 10, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('CHECKUP', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, 11, null);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 2, null, 6);
+VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 2, null, 6);
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
-VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 17, 1, null, 6);
+VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 1, null, 7);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 14, 2, null, 8);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 15, 1, null, 6);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 15, 2, null, 7);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 15, 1, null, 8);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 16, 2, null, 6);
+INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
+VALUES ('COUNSELING', 'COMPLETED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Gospodine...', 16, 1, null, 7);
 
 INSERT INTO appointment(dtype, appointment_status, from_date, to_date, report, patient_id, pharmacy_id, dermatologist_id, pharmacist_id)
 VALUES ('COUNSELING', 'TAKEN', '2021-02-07 23:05:00', '2021-02-07 23:25:00', 'Gospodine...', 17, 1, null, 6);
@@ -565,6 +577,10 @@ VALUES ('PharmacyComplaint', 'Ovo je prvi PHARMACY complaint, neodgovoren compla
 --5
 INSERT INTO complaint (dtype, body, complaint_status, patient_id, reply_id, employee_id, pharmacy_id)
 VALUES ('PharmacyComplaint', 'Ovo je drugi PHARMACY complaint, ODGOVOREN complaint', 'CLOSED', 16, null, null, 1);
+
+--------------------
+-- Employee Feedback
+--------------------
 
 
 -----------------------

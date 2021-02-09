@@ -12,6 +12,7 @@ import com.hesoyam.pharmacy.user.repository.VerificationTokensRepository;
 import com.hesoyam.pharmacy.user.service.ILoyaltyAccountService;
 import com.hesoyam.pharmacy.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,6 +46,7 @@ public class UserService implements UserDetailsService, IUserService {
     @Autowired
     private VerificationTokensRepository verificationTokensRepository;
 
+    @Lazy
     @Autowired
     private PasswordEncoder passwordEncoder;
 
