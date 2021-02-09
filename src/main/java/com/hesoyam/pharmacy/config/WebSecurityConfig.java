@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
-    public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
+    public BCryptPasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
     //Service used for reading data about users.
     @Autowired
