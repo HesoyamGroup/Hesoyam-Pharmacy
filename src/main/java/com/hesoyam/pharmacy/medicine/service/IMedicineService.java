@@ -20,6 +20,7 @@ public interface IMedicineService {
     Medicine findById(Long id) throws MedicineNotFoundException;
     MedicineDiscountInfoDTO getMedicinePriceByPharmacy(Long pharmacyId, Long medicineId, Patient patient);
     void delete(Long medicineId);
+    void updateRating(Long id, double rating) throws MedicineNotFoundException;
 
     boolean checkAvailability(String medicineName, int quantity, long pharmacyId);
 }

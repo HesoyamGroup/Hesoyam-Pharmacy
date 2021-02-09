@@ -81,6 +81,13 @@ public class CheckUpService implements ICheckUpService {
     }
 
     @Override
+    public List<CheckUp> getAllCompletedCheckupsByPatient(Long id) {
+        List<CheckUp> checkUps = checkUpRepository.getAllByPatient_IdAndAppointmentStatus(id, AppointmentStatus.COMPLETED);
+
+        return checkUps;
+    }
+
+    @Override
     public CheckUp findById(Long id) throws CheckupNotFoundException {
         return checkUpRepository.findById(id).orElseThrow(() -> new CheckupNotFoundException(id));
     }
