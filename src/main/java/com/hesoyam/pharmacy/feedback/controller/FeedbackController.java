@@ -6,17 +6,23 @@ import com.hesoyam.pharmacy.appointment.service.ICheckUpService;
 import com.hesoyam.pharmacy.appointment.service.ICounselingService;
 import com.hesoyam.pharmacy.feedback.dto.EmployeeFeedbackDTO;
 import com.hesoyam.pharmacy.feedback.dto.MedicineFeedbackDTO;
+import com.hesoyam.pharmacy.feedback.dto.PharmacyFeedbackDTO;
 import com.hesoyam.pharmacy.feedback.model.EmployeeFeedback;
 import com.hesoyam.pharmacy.feedback.model.MedicineFeedback;
+import com.hesoyam.pharmacy.feedback.model.PharmacyFeedback;
 import com.hesoyam.pharmacy.feedback.service.IEmployeeFeedbackService;
 import com.hesoyam.pharmacy.feedback.service.IFeedbackService;
 import com.hesoyam.pharmacy.feedback.service.IMedicineFeedbackService;
+import com.hesoyam.pharmacy.feedback.service.IPharmacyFeedbackService;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationItemService;
+import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
+import com.hesoyam.pharmacy.pharmacy.exceptions.PharmacyNotFoundException;
+import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import com.hesoyam.pharmacy.user.exceptions.EmployeeNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
 import com.hesoyam.pharmacy.user.model.User;
@@ -30,6 +36,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.DataOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +54,7 @@ public class FeedbackController {
     private IEmployeeFeedbackService employeeFeedbackService;
 
     @Autowired
-    private IFeedbackService feedbackService;
+    private IMedicineReservationService medicineReservationService;
 
     @Autowired
     private IMedicineService medicineService;
@@ -63,6 +70,12 @@ public class FeedbackController {
 
     @Autowired
     private IMedicineFeedbackService medicineFeedbackService;
+
+    @Autowired
+    private IPharmacyFeedbackService pharmacyFeedbackService;
+
+    @Autowired
+    private IPharmacyService pharmacyService;
 
     @Secured("ROLE_PATIENT")
     @GetMapping(value = "/checkups")
@@ -115,6 +128,40 @@ public class FeedbackController {
         }
 
         return ResponseEntity.ok().body(pastMedicineList);
+    }
+
+    @Secured("ROLE_PATIENT")
+    @GetMapping(value = "/pharmacies")
+    public ResponseEntity<List<PharmacyFeedbackDTO>> getInteractedPharmacies(@AuthenticationPrincipal User user){
+        List<MedicineReservation> medicineReservation = medicineReservationService.getByPatientId(user.getId());
+        List<Counseling> counseling = counselingService.getAllCompletedCounselingsByPatient(user.getId());
+        List<CheckUp> checkUps = checkUpService.getAllCompletedCheckupsByPatient(user.getId());
+
+        List<PharmacyFeedbackDTO> pastPharmacies = new ArrayList<>();
+
+        if(!medicineReservation.isEmpty()){
+            for(MedicineReservation mri: medicineReservation){
+                if(!isInPharmacyList(mri.getPharmacy().getId(), pastPharmacies))
+                    pastPharmacies.add(new PharmacyFeedbackDTO(mri));
+            }
+        }
+
+        if(!counseling.isEmpty()){
+            for(Counseling c: counseling){
+                if(!isInPharmacyList(c.getPharmacy().getId(), pastPharmacies))
+                    pastPharmacies.add(new PharmacyFeedbackDTO(c));
+            }
+        }
+
+        if(!checkUps.isEmpty()){
+            for(CheckUp ch: checkUps){
+                if(!isInPharmacyList(ch.getPharmacy().getId(), pastPharmacies))
+                    pastPharmacies.add(new PharmacyFeedbackDTO(ch));
+            }
+        }
+
+        return ResponseEntity.ok().body(pastPharmacies);
+
     }
 
     @Secured("ROLE_PATIENT")
@@ -190,6 +237,43 @@ public class FeedbackController {
         return ResponseEntity.ok().body(newRating);
     }
 
+    @Secured("ROLE_PATIENT")
+    @PostMapping(value = "/pharmacies")
+    public ResponseEntity<Double> pharmacyFeedback(@RequestBody PharmacyFeedbackDTO pharmacyFeedbackDTO, @AuthenticationPrincipal User user){
+        PharmacyFeedback pharmacyFeedback = pharmacyFeedbackService.findByPharmacyIdAndPatientId(pharmacyFeedbackDTO.getPharmacyId(), user.getId());
+
+        if(pharmacyFeedback == null){
+            try{
+                pharmacyFeedback = new PharmacyFeedback();
+                pharmacyFeedback.setPatient(patientService.getById(user.getId()));
+                pharmacyFeedback.setPharmacy(pharmacyService.findOne(pharmacyFeedbackDTO.getPharmacyId()));
+                pharmacyFeedback.setComment(pharmacyFeedbackDTO.getComment());
+                pharmacyFeedback.setRating(pharmacyFeedbackDTO.getYourRating());
+
+                pharmacyFeedback = pharmacyFeedbackService.create(pharmacyFeedback);
+            } catch (PatientNotFoundException e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-2.0);
+            }
+        }
+        else{
+            pharmacyFeedback.setRating(pharmacyFeedbackDTO.getYourRating());
+            pharmacyFeedback.setComment(pharmacyFeedbackDTO.getComment());
+
+            pharmacyFeedbackService.update(pharmacyFeedback);
+        }
+
+        double newRating = pharmacyFeedbackService.calculatePharmacyRating(pharmacyFeedbackDTO.getPharmacyId());
+        try{
+            pharmacyService.updateRating(pharmacyFeedbackDTO.getPharmacyId(), newRating);
+        } catch (PharmacyNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-1.0);
+        }
+
+        return ResponseEntity.ok().body(newRating);
+    }
+
 
     private boolean isMedicineInList(Long id, List<MedicineFeedbackDTO> medicineFeedbackDTOList){
         for(MedicineFeedbackDTO m: medicineFeedbackDTOList) {
@@ -202,6 +286,14 @@ public class FeedbackController {
     private boolean isEmployeeInList(Long id, List<EmployeeFeedbackDTO> employeeFeedbackDTOList){
         for(EmployeeFeedbackDTO d: employeeFeedbackDTOList){
             if(d.getEmployeeId() == id)
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isInPharmacyList(Long id, List<PharmacyFeedbackDTO> pharmacyFeedbackDTOList){
+        for(PharmacyFeedbackDTO p: pharmacyFeedbackDTOList){
+            if(p.getPharmacyId() == id)
                 return true;
         }
         return false;
