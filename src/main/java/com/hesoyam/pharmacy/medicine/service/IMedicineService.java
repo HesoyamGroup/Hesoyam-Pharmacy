@@ -16,6 +16,7 @@ public interface IMedicineService {
     List<Medicine> findByMedicineName(String name);
     List<MedicineSearchResultDTO> search(MedicineSearchDTO medicineSearchDTO);
     Medicine findById(Long id) throws MedicineNotFoundException;
+    void delete(Long medicineId);
 
     boolean checkAvailability(String medicineName, int quantity, long pharmacyId);
 }

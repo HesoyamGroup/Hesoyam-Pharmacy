@@ -4,6 +4,7 @@ import com.hesoyam.pharmacy.medicine.dto.MedicineBasicInfoDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchResultDTO;
 import com.hesoyam.pharmacy.medicine.events.MedicineRunningLowEvent;
+import com.hesoyam.pharmacy.medicine.exceptions.InvalidDeleteMedicineRequestException;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineType;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,5 +75,18 @@ public class MedicineController {
                     administratorService.getAdministratorsForPharmacyId(Long.parseLong(parts[2]))));
         }
         return new ResponseEntity<>(isAvailable, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @Secured("ROLE_SYS_ADMIN")
+    public ResponseEntity<String> delete(@PathVariable("id") Long medicineId){
+        try{
+            medicineService.delete(medicineId);
+            return ResponseEntity.ok().build();
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }catch (InvalidDeleteMedicineRequestException e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

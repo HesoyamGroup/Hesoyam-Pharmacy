@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.medicine.service.impl;
 
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchResultDTO;
+import com.hesoyam.pharmacy.medicine.exceptions.InvalidDeleteMedicineRequestException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
 import com.hesoyam.pharmacy.medicine.mapper.MedicineMapper;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
@@ -10,6 +11,7 @@ import com.hesoyam.pharmacy.medicine.repository.MedicineRepository;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +68,16 @@ public class MedicineService implements IMedicineService {
     @Override
     public Medicine findById(Long id) throws MedicineNotFoundException {
         return medicineRepository.findById(id).orElseThrow(() -> new MedicineNotFoundException(id));
+    }
+
+    @Override
+    public void delete(Long medicineId) {
+        try{
+            Medicine medicine = medicineRepository.getOne(medicineId);
+            medicineRepository.delete(medicine);
+        }catch (DataIntegrityViolationException e){
+            throw new InvalidDeleteMedicineRequestException("Medicine is used, so you can't delete it.");
+        }
     }
 
     @Override
