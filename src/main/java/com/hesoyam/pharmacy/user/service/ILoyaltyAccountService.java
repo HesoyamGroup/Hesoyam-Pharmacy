@@ -22,4 +22,5 @@ public interface ILoyaltyAccountService {
     LoyaltyAccount update(LoyaltyAccount loyaltyAccount);
     void deleteLoyaltyAccountMembership(Long loyaltyAccountMembershipId);
     void refreshLoyaltyAccounts();
+    LoyaltyAccount getPatientLoyaltyAccountByPatientId(Long id);
 }
