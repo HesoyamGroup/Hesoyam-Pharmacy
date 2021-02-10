@@ -2,8 +2,12 @@ package com.hesoyam.pharmacy.employee_management.controller;
 
 import com.hesoyam.pharmacy.employee_management.dto.VacationRequestDTO;
 import com.hesoyam.pharmacy.employee_management.model.VacationRequest;
+import com.hesoyam.pharmacy.employee_management.model.VacationRequestStatus;
 import com.hesoyam.pharmacy.employee_management.service.IVacationRequestService;
+import com.hesoyam.pharmacy.user.model.Employee;
 import com.hesoyam.pharmacy.user.model.User;
+import com.hesoyam.pharmacy.user.service.IEmployeeService;
+import com.hesoyam.pharmacy.util.DateTimeRange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,6 +26,9 @@ public class VacationRequestController {
 
     @Autowired
     private IVacationRequestService vacationRequestService;
+
+    @Autowired
+    private IEmployeeService employeeService;
 
     @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'SYS_ADMIN')")
     @GetMapping(value = "/created")
@@ -63,5 +70,21 @@ public class VacationRequestController {
         } catch (IllegalAccessException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+    }
+
+    @PreAuthorize("hasAnyRole('PHARMACIST', 'DERMATOLOGIST')")
+    @PostMapping(value="/create-request")
+    public ResponseEntity<String> create(@AuthenticationPrincipal User user, @RequestBody DateTimeRange dateTimeRange){
+        VacationRequest vacationRequest = new VacationRequest();
+        if(dateTimeRange.getFrom().isBefore(dateTimeRange.getTo())) {
+            vacationRequest.setEmployee(employeeService.getOne(user.getId()));
+            vacationRequest.setDateTimeRange(dateTimeRange);
+            vacationRequest.setStatus(VacationRequestStatus.CREATED);
+            VacationRequest newRequest = vacationRequestService.create(vacationRequest);
+            if (newRequest != null) {
+                return new ResponseEntity<>("Successfully created request!", HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>("Failed to create request!", HttpStatus.OK);
     }
 }

@@ -299,7 +299,7 @@ INSERT INTO user_roles (user_id, role_id) VALUES (5, 5);
 INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Mila', 'Milanović', 'FEMALE', 'Šabačka 41', 3, 44.80115575659176, 20.49294129684957, '4444444444', 'hesoyampharmacy+mila@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'PHARMACIST', false);
+('Mila', 'Milanović', 'FEMALE', 'Šabačka 41', 3, 44.80115575659176, 20.49294129684957, '4444444444', 'hesoyampharmacy+mila@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'PHARMACIST', true);
 INSERT INTO employee
 (id, rating) VALUES (6, 0);
 INSERT INTO pharmacist (id, pharmacy_id) VALUES (6, 1);
@@ -343,7 +343,7 @@ INSERT INTO user_roles (user_id, role_id) VALUES (9, 3);
 INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
-('Ivana', 'Ivanović', 'FEMALE', 'Ćirpanova 4', 1, 45.25299175875651, 19.835303400426874, '4444444444', 'hesoyampharmacy+ivana@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'DERMATOLOGIST', false);
+('Ivana', 'Ivanović', 'FEMALE', 'Ćirpanova 4', 1, 45.25299175875651, 19.835303400426874, '4444444444', 'hesoyampharmacy+ivana@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('24-01-2021', 'DD-MM-YYYY'), true, 'DERMATOLOGIST', true);
 INSERT INTO employee
 (id, rating) VALUES (10, 0);
 INSERT INTO dermatologist (id) VALUES (10);

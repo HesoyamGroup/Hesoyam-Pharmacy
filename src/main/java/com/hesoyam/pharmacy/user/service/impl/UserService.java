@@ -183,6 +183,7 @@ public class UserService implements UserDetailsService, IUserService {
         dermatologist.setRoleEnum(RoleEnum.DERMATOLOGIST);
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_DERMATOLOGIST");
         dermatologist.setAuthorities(roles);
+        dermatologist.setPasswordReset(true);
         return dermatologist;
     }
 
@@ -192,6 +193,7 @@ public class UserService implements UserDetailsService, IUserService {
         pharmacist.setRoleEnum(RoleEnum.PHARMACIST);
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_PHARMACIST");
         pharmacist.setAuthorities(roles);
+        pharmacist.setPasswordReset(true);
         return pharmacist;
     }
 
