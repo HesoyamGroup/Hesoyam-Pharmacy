@@ -22,5 +22,5 @@ public interface IAppointmentService {
     int getCompletedAppointmentsCountInPharmacyByPatient(Pharmacy pharmacy, Patient patient);
     List<UserSearchResult> searchUsers(Employee user, String query);
     boolean checkNewAppointment(User user, Patient patient, LocalDateTime range);
-    Appointment createNewAppointment(Patient patient, User employee, long pharmacyId, DateTimeRange range, double price);
+    Appointment createNewAppointment(Patient patient, Employee employee, long pharmacyId, DateTimeRange range, double price);
 }

@@ -95,17 +95,20 @@ public class AppointmentService implements IAppointmentService {
 
     private boolean isInShift(Employee user, LocalDateTime range) {
         List<Shift> shifts = user.getShifts();
-        for(Shift shift : shifts){
-            if(shift.getType().equals(ShiftType.WORK) && shift.getDateTimeRange().getFrom().isBefore(range)
-                    && shift.getDateTimeRange().getTo().isAfter(range)){
-                return true;
+        if(shifts != null) {
+            for (Shift shift : shifts) {
+                if (shift.getType().equals(ShiftType.WORK) && shift.getDateTimeRange().getFrom().isBefore(range)
+                        && shift.getDateTimeRange().getTo().isAfter(range)) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override
-    public Appointment createNewAppointment(Patient patient, User employee, long pharmacyId, DateTimeRange range, double price){
+    public Appointment createNewAppointment(Patient patient, Employee employee, long pharmacyId, DateTimeRange range, double price){
         if(checkNewAppointment(employee, patient, range.getFrom())){
             return createAppointmentBasedOnEmployeeType(patient, employee, pharmacyId, range, price);
         }
