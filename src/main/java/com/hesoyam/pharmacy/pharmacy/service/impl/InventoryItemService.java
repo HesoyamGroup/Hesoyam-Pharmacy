@@ -1,5 +1,7 @@
 package com.hesoyam.pharmacy.pharmacy.service.impl;
 
+import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemPriceDTO;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
@@ -12,6 +14,9 @@ import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -83,6 +88,7 @@ public class InventoryItemService implements IInventoryItemService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
     public void removeItems(List<PrescriptionItem> prescriptionItems, long pharmacyId) {
         prescriptionItems.forEach(item -> inventoryItemRepository.save(
                 inventoryItemRepository.getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, item.getMedicine().getId())
@@ -93,6 +99,24 @@ public class InventoryItemService implements IInventoryItemService {
                     pharmacyId, item.getMedicine().getId());
             fromInventory.setAvailable(fromInventory.getAvailable() - item.getQuantity());
             inventoryItemRepository.save(fromInventory);
+        }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
+    public void medicineReservationCancelled(MedicineReservation toUpdate) {
+        for(MedicineReservationItem item : toUpdate.getMedicineReservationItems()){
+            long pharmacyId = toUpdate.getPharmacy().getId();
+            long medicineId = item.getMedicine().getId();
+            InventoryItem inventoryItem = getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, medicineId);
+            inventoryItem.setAvailable(inventoryItem.getAvailable() + item.getQuantity());
+            if(inventoryItem.getReserved() - item.getQuantity() >= 0){
+                inventoryItem.setReserved(inventoryItem.getReserved() - item.getQuantity());
+            } else {
+                inventoryItem.setReserved(0);
+            }
+
+            update(inventoryItem);
         }
     }
 }

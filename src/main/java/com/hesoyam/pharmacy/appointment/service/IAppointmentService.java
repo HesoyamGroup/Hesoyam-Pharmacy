@@ -21,6 +21,6 @@ public interface IAppointmentService {
     List<PatientDTO> extractPatientsFromCounselings(Pharmacist pharmacist);
     int getCompletedAppointmentsCountInPharmacyByPatient(Pharmacy pharmacy, Patient patient);
     List<UserSearchResult> searchUsers(Employee user, String query);
-    boolean checkNewAppointment(User user, Patient patient, LocalDateTime range);
+    boolean checkNewAppointment(User user, Patient patient, DateTimeRange range);
     Appointment createNewAppointment(Patient patient, Employee employee, long pharmacyId, DateTimeRange range, double price);
 }

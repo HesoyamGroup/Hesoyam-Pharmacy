@@ -14,4 +14,5 @@ public interface IMedicineReservationService {
     MedicineReservation getByMedicineReservationCode(String code) throws MedicineReservationNotFoundException;
     int getPickedupReservationsCountForPatientId(Long patientId, Long pharmacyId);
     MedicineReservation findByCodeAndPharmacy(String code, long id);
+    boolean cancelPickup(MedicineReservation toUpdate) throws MedicineReservationNotFoundException;
 }

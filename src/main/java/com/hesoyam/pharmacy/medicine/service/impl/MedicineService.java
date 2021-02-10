@@ -5,8 +5,11 @@ import com.hesoyam.pharmacy.medicine.dto.MedicineSearchDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineSearchResultDTO;
 import com.hesoyam.pharmacy.medicine.exceptions.InvalidDeleteMedicineRequestException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
+import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotFoundException;
 import com.hesoyam.pharmacy.medicine.mapper.MedicineMapper;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
 import com.hesoyam.pharmacy.medicine.model.MedicineType;
 import com.hesoyam.pharmacy.medicine.repository.MedicineRepository;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
@@ -121,6 +124,8 @@ public class MedicineService implements IMedicineService {
         else
             return false;
     }
+
+
 
 
 }

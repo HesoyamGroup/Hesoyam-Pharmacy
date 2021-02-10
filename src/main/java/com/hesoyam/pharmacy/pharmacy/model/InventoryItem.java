@@ -37,6 +37,10 @@ public class InventoryItem {
    @JoinColumn(name = "inventory_item_id", referencedColumnName = "id", nullable = false)
    private List<InventoryItemPrice> prices;
 
+   @Version
+   @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+   private Long version = 0l;
+
    public InventoryItem(){}
 
    public InventoryItem(Medicine medicine, int available, int reserved){
@@ -47,6 +51,14 @@ public class InventoryItem {
 
    public InventoryItem(Medicine medicine){
       this.medicine = medicine;
+   }
+
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
    }
 
    public Long getId() {

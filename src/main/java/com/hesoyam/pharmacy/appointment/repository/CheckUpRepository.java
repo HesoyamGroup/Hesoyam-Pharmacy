@@ -1,5 +1,6 @@
 package com.hesoyam.pharmacy.appointment.repository;
 
+import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
@@ -27,4 +28,6 @@ public interface CheckUpRepository extends JpaRepository<CheckUp, Long> {
     List<CheckUp> findAllByPatientAndDermatologist(Patient patient, Dermatologist user);
 
     int countCheckUpsByDermatologistAndDateTimeRange_From(Dermatologist user, LocalDateTime range);
+
+    List<Appointment> getAllByDermatologist(Dermatologist user);
 }

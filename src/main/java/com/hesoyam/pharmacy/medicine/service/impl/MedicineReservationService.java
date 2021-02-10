@@ -5,8 +5,12 @@ import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
 import com.hesoyam.pharmacy.medicine.repository.MedicineReservationRepository;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
+import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +19,9 @@ public class MedicineReservationService implements IMedicineReservationService {
 
     @Autowired
     MedicineReservationRepository medicineReservationRepository;
+
+    @Autowired
+    IInventoryItemService inventoryItemService;
 
     @Override
     public MedicineReservation getById(Long id) throws MedicineReservationNotFoundException {
@@ -60,5 +67,19 @@ public class MedicineReservationService implements IMedicineReservationService {
     @Override
     public MedicineReservation findByCodeAndPharmacy(String code, long id) {
         return medicineReservationRepository.findByCodeAndPharmacy_Id(code, id);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    public boolean cancelPickup(MedicineReservation toUpdate) throws MedicineReservationNotFoundException {
+        if(toUpdate != null) {
+            if (!toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED)) {
+                toUpdate.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
+                update(toUpdate);
+                inventoryItemService.medicineReservationCancelled(toUpdate);
+                return true;
+            }
+        }
+        return false;
     }
 }

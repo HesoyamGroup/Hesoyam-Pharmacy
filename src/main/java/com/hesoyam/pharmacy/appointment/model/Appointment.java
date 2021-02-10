@@ -50,6 +50,18 @@ public abstract class Appointment {
 
    protected Double price;
 
+   @Version
+   @Column
+   protected Long version = 0l;
+
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
+   }
+
    public Double getPrice() {
       return price;
    }

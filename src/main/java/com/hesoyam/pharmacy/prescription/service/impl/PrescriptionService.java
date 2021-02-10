@@ -11,6 +11,9 @@ import com.hesoyam.pharmacy.prescription.service.IPrescriptionService;
 import com.hesoyam.pharmacy.user.model.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +28,7 @@ public class PrescriptionService implements IPrescriptionService {
     private IInventoryItemService inventoryItemService;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
     public EPrescription createPrescription(List<PrescriptionItem> prescriptionItems, Patient patient, long pharmacyId) throws PatientIsAllergicException {
         List<Medicine> allergies = patient.getAllergies();
 

@@ -208,13 +208,7 @@ public class MedicineReservationController {
         String extractCode = reservationCode.split(":")[1].substring(1, reservationCode.split(":")[1].length() -2);
         try {
             toUpdate = medicineReservationService.getByMedicineReservationCode(extractCode);
-            if(toUpdate != null) {
-                if (toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED)) {
-                    toUpdate.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
-                    medicineReservationService.update(toUpdate);
-                    return true;
-                }
-            }
+            if (medicineReservationService.cancelPickup(toUpdate)) return true;
             return false;
         } catch (MedicineReservationNotFoundException e) {
             e.printStackTrace();
@@ -222,5 +216,7 @@ public class MedicineReservationController {
         }
 
     }
+
+
 
 }

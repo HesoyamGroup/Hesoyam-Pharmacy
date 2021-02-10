@@ -37,6 +37,10 @@ public class EPrescription {
    @NotNull
    private PrescriptionStatus prescriptionStatus;
 
+   @Version
+   @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+   private Long version = 0l;
+
    public Long getId() {
       return id;
    }
@@ -65,6 +69,14 @@ public class EPrescription {
       if (prescriptionItems == null)
          prescriptionItems = new ArrayList<>();
       return prescriptionItems;
+   }
+
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
    }
 
    public Iterator<PrescriptionItem> getIteratorPrescriptionItem() {
