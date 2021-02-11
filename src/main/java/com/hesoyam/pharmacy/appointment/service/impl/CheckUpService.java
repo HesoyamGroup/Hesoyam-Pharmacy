@@ -174,7 +174,6 @@ public class CheckUpService implements ICheckUpService {
 
         checkup.setAppointmentStatus(AppointmentStatus.TAKEN);
         checkup.setPatient(patient);
-
         checkup.update(checkup);
 
         update(checkup);

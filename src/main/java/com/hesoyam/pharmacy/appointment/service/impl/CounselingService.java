@@ -105,6 +105,7 @@ public class CounselingService implements ICounselingService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Counseling findById(Long id) throws CounselingNotFoundException {
         return counselingRepository.findById(id).orElseThrow(() ->new CounselingNotFoundException(id));
     }
@@ -138,7 +139,6 @@ public class CounselingService implements ICounselingService {
 
         counseling.setAppointmentStatus(AppointmentStatus.TAKEN);
         counseling.setPatient(patient);
-
         counseling.update(counseling);
 
         update(counseling);

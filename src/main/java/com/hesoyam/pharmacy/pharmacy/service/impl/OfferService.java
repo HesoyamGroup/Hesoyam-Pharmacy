@@ -97,8 +97,6 @@ public class OfferService implements IOfferService {
         if(offer == null) throw new EntityNotFoundException();
         Order order = offer.getOrder();
         if(!order.isOfferEditable(offer)){
-            //TODO: Check if offer can be cancelled. (after order part is done)
-            //TODO: For now, we will check if it's before deadline and status is created.
             throw new InvalidEditOfferException("Offer is not editable at the moment.");
         }
         offer.setOfferStatus(OfferStatus.CANCELLED);

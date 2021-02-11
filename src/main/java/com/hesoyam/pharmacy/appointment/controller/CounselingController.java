@@ -181,7 +181,7 @@ public class CounselingController {
 
     @PreAuthorize("hasRole('PATIENT')")
     @PostMapping(value = "/cancel/patient")
-    public ResponseEntity<com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO> cancelFutureCounseling(@RequestBody com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO futureCounselingDTO){
+    public ResponseEntity<FutureCounselingDTO> cancelFutureCounseling(@RequestBody com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO futureCounselingDTO){
 
         try{
             Counseling counseling = counselingService.findById(futureCounselingDTO.getId());
@@ -194,13 +194,13 @@ public class CounselingController {
 
             counseling = counselingService.update(counseling);
 
-            return ResponseEntity.ok().body(new com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO(counseling));
+            return ResponseEntity.ok().body(new FutureCounselingDTO(counseling));
         } catch (CounselingNotFoundException e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(new com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO());
+            return ResponseEntity.badRequest().body(new FutureCounselingDTO());
         } catch (CounselingCancellationPeriodExpiredException e){
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(new com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO());
+            return ResponseEntity.badRequest().body(new FutureCounselingDTO());
         }
     }
 
