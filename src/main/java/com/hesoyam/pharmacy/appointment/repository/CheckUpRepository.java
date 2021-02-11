@@ -13,8 +13,13 @@ import org.springframework.data.jpa.repository.Lock;
 import javax.persistence.LockModeType;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface CheckUpRepository extends JpaRepository<CheckUp, Long> {
+    @Override
+    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+    Optional<CheckUp> findById(Long id);
+
     Integer countChecksUpByPatientAndAppointmentStatusAndDermatologist(Patient patient, AppointmentStatus appointmentStatus, Dermatologist dermatologist);
 
     List<CheckUp> getAllByDermatologist_IdAndPharmacy_Id(Long dermatologistId, Long pharmacyId);

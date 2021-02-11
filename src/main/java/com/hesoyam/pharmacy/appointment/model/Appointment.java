@@ -23,6 +23,10 @@ public abstract class Appointment {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    protected Long id;
 
+   @Version
+   @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+   private Integer version;
+
    @Column(length = 500)
    @Length(max=500, message = "Report length should not exceed 500 characters.")
    protected String report;
@@ -49,18 +53,6 @@ public abstract class Appointment {
    protected Patient patient;
 
    protected Double price;
-
-   @Version
-   @Column
-   protected Long version = 0l;
-
-   public Long getVersion() {
-      return version;
-   }
-
-   public void setVersion(Long version) {
-      this.version = version;
-   }
 
    public Double getPrice() {
       return price;
@@ -127,6 +119,10 @@ public abstract class Appointment {
       {
          this.pharmacy = newPharmacy;
       }
+   }
+
+   public void setVersion(Integer version) {
+      this.version = version;
    }
 
    public boolean isConflictingWith(DateTimeRange range){
