@@ -1,18 +1,30 @@
 package com.hesoyam.pharmacy.medicine.service.impl;
 
+import com.hesoyam.pharmacy.medicine.dto.MedicineReservationDTO;
+import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotFoundException;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
 import com.hesoyam.pharmacy.medicine.repository.MedicineReservationRepository;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
+import com.hesoyam.pharmacy.medicine.service.IMedicineService;
+import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
+import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
+import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
+import com.hesoyam.pharmacy.user.model.User;
+import com.hesoyam.pharmacy.user.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class MedicineReservationService implements IMedicineReservationService {
@@ -22,6 +34,15 @@ public class MedicineReservationService implements IMedicineReservationService {
 
     @Autowired
     IInventoryItemService inventoryItemService;
+
+    @Autowired
+    IPharmacyService pharmacyService;
+
+    @Autowired
+    IPatientService patientService;
+
+    @Autowired
+    IMedicineService medicineService;
 
     @Override
     public MedicineReservation getById(Long id) throws MedicineReservationNotFoundException {
@@ -85,6 +106,41 @@ public class MedicineReservationService implements IMedicineReservationService {
 
     public List<MedicineReservation> getByCreatedStatus() {
         return medicineReservationRepository.findByMedicineReservationStatus(MedicineReservationStatus.CREATED);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void createMedicineReservation(MedicineReservationDTO medicineReservationDTO, User user) throws PatientNotFoundException, MedicineNotFoundException {
+        MedicineReservation medicineReservation = new MedicineReservation();
+
+        medicineReservation.setPharmacy(pharmacyService.findOne(medicineReservationDTO.getPharmacyId()));
+        medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CREATED);
+        medicineReservation.setCode(generateString());
+        medicineReservation.setPickUpDate(medicineReservationDTO.getPickUpDate());
+        medicineReservation.setPatient(patientService.getById(user.getId()));
+        List<MedicineReservationItem> medicineReservationItemList = new ArrayList<>();
+        medicineReservationItemList.add(new MedicineReservationItem(1, medicineService.findById(medicineReservationDTO.getMedicineId())));
+        medicineReservation.setMedicineReservationItems(medicineReservationItemList);
+
+        create(medicineReservation);
+
+        InventoryItem inventoryItem = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(medicineReservationDTO.getPharmacyId(), medicineReservationDTO.getMedicineId());
+
+        if(inventoryItem.reserve(1))
+            inventoryItemService.update(inventoryItem);
+        else
+            throw new IllegalArgumentException("Reservation item quantity can not be greater than available quantity!");
+    }
+
+    private String generateString() {
+        String SOURCES ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        Random random = new Random();
+        int length = 50;
+        char[] text = new char[length];
+        for (int i = 0; i < length; i++) {
+            text[i] = SOURCES.charAt(random.nextInt(SOURCES.length()));
+        }
+        return new String(text);
     }
 
 

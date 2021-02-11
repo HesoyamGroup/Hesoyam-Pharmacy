@@ -44,6 +44,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(value="/medicine-reservation", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -92,34 +93,19 @@ public class MedicineReservationController {
     public ResponseEntity create(@RequestBody MedicineReservationDTO medicineReservationDTO, @AuthenticationPrincipal User user){
 
         try {
-            MedicineReservation medicineReservation = new MedicineReservation();
 
-            medicineReservation.setPharmacy(pharmacyService.findOne(medicineReservationDTO.getPharmacyId()));
-            medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CREATED);
-            medicineReservation.setCode(generateString());
-            medicineReservation.setPickUpDate(medicineReservationDTO.getPickUpDate());
-            medicineReservation.setPatient(patientService.getById(user.getId()));
-            List<MedicineReservationItem> medicineReservationItemList = new ArrayList<>();
-            medicineReservationItemList.add(new MedicineReservationItem(1, medicineService.findById(medicineReservationDTO.getMedicineId())));
-            medicineReservation.setMedicineReservationItems(medicineReservationItemList);
-
-            medicineReservation = medicineReservationService.create(medicineReservation);
-
-            InventoryItem inventoryItem = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(medicineReservationDTO.getPharmacyId(), medicineReservationDTO.getMedicineId());
-
-            inventoryItem.setAvailable(inventoryItem.getAvailable()-1);
-            inventoryItem.setReserved(inventoryItem.getReserved()+1);
-
-            inventoryItemService.update(inventoryItem);
-
-
+            medicineReservationService.createMedicineReservation(medicineReservationDTO, user);
             return ResponseEntity.ok().body(null);
         } catch (PatientNotFoundException | MedicineNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch(IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
 
     }
+
+
 
     @PostMapping("/cancel-reservation")
     public ResponseEntity cancelMedicineReservation(@RequestBody MedicineReservationCancellationDTO medicineReservationCancellationDTO, @AuthenticationPrincipal User user){
@@ -150,16 +136,7 @@ public class MedicineReservationController {
 
     }
 
-    private String generateString() {
-        String SOURCES ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-        Random random = new Random();
-        int length = 50;
-        char[] text = new char[length];
-        for (int i = 0; i < length; i++) {
-            text[i] = SOURCES.charAt(random.nextInt(SOURCES.length()));
-        }
-        return new String(text);
-    }
+
 
     @GetMapping(value = "/pickup/{code}")
     @PreAuthorize("hasRole('PHARMACIST')")

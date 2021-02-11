@@ -101,6 +101,16 @@ public class InventoryItem {
          this.reserved = reserved;
    }
 
+   public boolean reserve(int quantity){
+      if(this.available - quantity >= 0){
+         available -= quantity;
+         reserved += quantity;
+         return true;
+      } else {
+         return false;
+      }
+   }
+
    public Medicine getMedicine() {
       return medicine;
    }

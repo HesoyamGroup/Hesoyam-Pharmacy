@@ -89,6 +89,7 @@ public class InventoryItemService implements IInventoryItemService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public InventoryItem getInventoryItemByPharmacyIdAndMedicineId(Long pharmacyId, Long medicineId){
         return inventoryItemRepository.getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, medicineId);
     }
