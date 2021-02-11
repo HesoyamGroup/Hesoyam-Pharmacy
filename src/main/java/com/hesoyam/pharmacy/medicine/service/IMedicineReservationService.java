@@ -1,7 +1,9 @@
 package com.hesoyam.pharmacy.medicine.service;
 
+import com.hesoyam.pharmacy.medicine.dto.MedicineReservationCancellationDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationDTO;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
+import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationExpiredCancellationException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotFoundException;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
@@ -21,4 +23,5 @@ public interface IMedicineReservationService {
     boolean cancelPickup(MedicineReservation toUpdate) throws MedicineReservationNotFoundException;
     List<MedicineReservation> getByCreatedStatus();
     void createMedicineReservation(MedicineReservationDTO medicineReservationDTO, User user) throws PatientNotFoundException, MedicineNotFoundException;
+    MedicineReservation cancelMedicineReservation(MedicineReservationCancellationDTO medicineReservationCancellationDTO, User user) throws MedicineReservationExpiredCancellationException, MedicineReservationNotFoundException;
 }

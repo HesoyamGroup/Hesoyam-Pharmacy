@@ -184,4 +184,9 @@ public class MedicineReservation {
    public void setPharmacy(Pharmacy pharmacy) {
       this.pharmacy = pharmacy;
    }
+
+
+   public boolean isCancellable(){
+      return medicineReservationStatus != MedicineReservationStatus.CANCELLED;
+   }
 }

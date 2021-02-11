@@ -94,46 +94,33 @@ public class MedicineReservationController {
 
     @PreAuthorize("hasRole('PATIENT')")
     @PostMapping("/create")
-    public ResponseEntity create(@RequestBody MedicineReservationDTO medicineReservationDTO, @AuthenticationPrincipal User user){
+    public ResponseEntity<MedicineReservation> create(@RequestBody MedicineReservationDTO medicineReservationDTO, @AuthenticationPrincipal User user){
 
         try {
             medicineReservationService.createMedicineReservation(medicineReservationDTO, user);
-            return ResponseEntity.ok().body(null);
+            return ResponseEntity.ok().build();
         } catch (PatientNotFoundException | MedicineNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch(IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (UserPenalizedException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
     @PreAuthorize("hasRole('PATIENT')")
     @PostMapping("/cancel-reservation")
-    public ResponseEntity cancelMedicineReservation(@RequestBody MedicineReservationCancellationDTO medicineReservationCancellationDTO, @AuthenticationPrincipal User user){
+    public ResponseEntity<MedicineReservation> cancelMedicineReservation(@RequestBody MedicineReservationCancellationDTO medicineReservationCancellationDTO, @AuthenticationPrincipal User user){
 
             try {
-                MedicineReservation medicineReservation = medicineReservationService.getByMedicineReservationCode(medicineReservationCancellationDTO.getReservationCode());
-                if(medicineReservation.getPickUpDate().isBefore(LocalDateTime.now().plusDays(1)))
-                {
-                    throw new MedicineReservationExpiredCancellationException(medicineReservation.getId());
-                }
-
-                medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
-                medicineReservationService.update(medicineReservation);
-
-                InventoryItem inventoryItem = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(medicineReservationCancellationDTO.getPharmacyId(), medicineReservationCancellationDTO.getMedicineId());
-
-                inventoryItem.setAvailable(inventoryItem.getAvailable()+1);
-                inventoryItem.setReserved(inventoryItem.getReserved()-1);
-
-                inventoryItemService.update(inventoryItem);
-
-                return ResponseEntity.ok().body(null);
+                medicineReservationService.cancelMedicineReservation(medicineReservationCancellationDTO, user);
+                return ResponseEntity.ok().build();
             } catch (MedicineReservationNotFoundException e) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             } catch (MedicineReservationExpiredCancellationException e){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }catch (ObjectOptimisticLockingFailureException e){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
 
     }

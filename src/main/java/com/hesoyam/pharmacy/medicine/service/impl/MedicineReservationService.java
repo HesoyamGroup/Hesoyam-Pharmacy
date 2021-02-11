@@ -1,7 +1,9 @@
 package com.hesoyam.pharmacy.medicine.service.impl;
 
+import com.hesoyam.pharmacy.medicine.dto.MedicineReservationCancellationDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationDTO;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
+import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationExpiredCancellationException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotFoundException;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -142,6 +145,26 @@ public class MedicineReservationService implements IMedicineReservationService {
             inventoryItemService.update(inventoryItem);
         else
             throw new IllegalArgumentException("Reservation item quantity can not be greater than available quantity!");
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public MedicineReservation cancelMedicineReservation(MedicineReservationCancellationDTO medicineReservationCancellationDTO, User user) throws MedicineReservationExpiredCancellationException, MedicineReservationNotFoundException {
+        MedicineReservation medicineReservation = getByMedicineReservationCode(medicineReservationCancellationDTO.getReservationCode());
+        if(medicineReservation.getPickUpDate().isBefore(LocalDateTime.now().plusDays(1)) || !medicineReservation.isCancellable())
+        {
+            throw new MedicineReservationExpiredCancellationException(medicineReservation.getId());
+        }
+
+        medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
+        update(medicineReservation);
+
+        InventoryItem inventoryItem = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(medicineReservationCancellationDTO.getPharmacyId(), medicineReservationCancellationDTO.getMedicineId());
+
+        inventoryItem.setAvailable(inventoryItem.getAvailable()+1);
+        inventoryItem.setReserved(inventoryItem.getReserved()-1);
+        inventoryItemService.update(inventoryItem);
+        return medicineReservation;
     }
 
     private String generateString() {
