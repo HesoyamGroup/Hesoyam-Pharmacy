@@ -6,6 +6,8 @@
 package com.hesoyam.pharmacy.appointment.model;
 
 import com.hesoyam.pharmacy.medicine.model.Medicine;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -43,7 +45,8 @@ public class TherapyItem {
    }
 
    public void setQuantity(int quantity) {
-      this.quantity = quantity;
+      if(quantity > 0)
+         this.quantity = quantity;
    }
 
    public int getNumberOfDays() {
@@ -51,7 +54,8 @@ public class TherapyItem {
    }
 
    public void setNumberOfDays(int numberOfDays) {
-      this.numberOfDays = numberOfDays;
+      if(numberOfDays > 0)
+         this.numberOfDays = numberOfDays;
    }
 
    public Medicine getMedicine() {
@@ -60,5 +64,10 @@ public class TherapyItem {
 
    public void setMedicine(Medicine medicine) {
       this.medicine = medicine;
+   }
+
+   public void setFromMedicineReservation(MedicineReservationItem medicineReservationItem){
+      this.medicine = medicineReservationItem.getMedicine();
+      this.quantity = medicineReservationItem.getQuantity();
    }
 }
