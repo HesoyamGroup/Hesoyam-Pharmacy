@@ -21,4 +21,6 @@ public interface IInventoryItemService {
     InventoryItem getInventoryItemByPharmacyIdAndMedicineId(Long pharmacyId, Long medicineId) throws EntityNotFoundException;
 
     void removeItems(List<PrescriptionItem> prescriptionItems, long pharmacyId);
+
+    void delete(User user, Long id) throws IllegalAccessException;
 }
