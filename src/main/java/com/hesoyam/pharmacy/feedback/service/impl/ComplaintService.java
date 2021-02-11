@@ -24,6 +24,8 @@ import com.hesoyam.pharmacy.user.service.IPatientService;
 import com.hesoyam.pharmacy.user.service.IPharmacistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -94,6 +96,7 @@ public class ComplaintService implements IComplaintService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Complaint findComplaintByIdAndComplaintStatus(Long id, ComplaintStatus complaintStatus) {
         return complaintRepository.findComplaintByIdAndComplaintStatus(id, complaintStatus);
     }

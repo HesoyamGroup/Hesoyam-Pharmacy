@@ -14,6 +14,7 @@ import com.hesoyam.pharmacy.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,8 @@ public class ComplaintController {
         try {
             return ResponseEntity.ok(replyService.reply(replyDTO));
         } catch (InvalidReplyRequest invalidReplyRequest) {
+            return ResponseEntity.badRequest().build();
+        }catch (ObjectOptimisticLockingFailureException e){
             return ResponseEntity.badRequest().build();
         }
     }

@@ -12,9 +12,13 @@ import com.hesoyam.pharmacy.feedback.service.IReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ReplyService implements IReplyService {
@@ -38,7 +42,7 @@ public class ReplyService implements IReplyService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ) //We don't want to allow multiple admins accessing the same complaint at the same time.
+    @Transactional(propagation = Propagation.REQUIRED)
     public Reply reply(ReplyDTO replyDTO) throws InvalidReplyRequest {
         Reply reply = createReplyFromDTO(replyDTO);
         Complaint complaint = complaintService.findComplaintByIdAndComplaintStatus(replyDTO.getComplaintId(), ComplaintStatus.OPENED);
@@ -52,6 +56,7 @@ public class ReplyService implements IReplyService {
         }catch (DataIntegrityViolationException dataIntegrityViolationException){
             throw new InvalidReplyRequest("Data integrity violation.");
         }
+
         return reply;
     }
 

@@ -18,6 +18,10 @@ public class Reply {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
+   @Version
+   @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+   private Integer version;
+
    @Column(length = 400, nullable = false)
    @NotNull(message = "Reply text must be provided.")
    @Length(min=5, max=400, message = "Reply length should be between 5 and 400 characters.")
@@ -57,5 +61,13 @@ public class Reply {
 
    public void setSysAdmin(SysAdmin sysAdmin) {
       this.sysAdmin = sysAdmin;
+   }
+
+   public Integer getVersion() {
+      return version;
+   }
+
+   public void setVersion(Integer version) {
+      this.version = version;
    }
 }
