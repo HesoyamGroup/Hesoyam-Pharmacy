@@ -6,6 +6,7 @@
 package com.hesoyam.pharmacy.pharmacy.model;
 
 import com.hesoyam.pharmacy.medicine.model.Medicine;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 
 import javax.persistence.*;
@@ -87,7 +88,8 @@ public class InventoryItem {
    }
 
    public void setAvailable(int available) {
-      this.available = available;
+      if(available > 0)
+         this.available = available;
    }
 
    public int getReserved() {
@@ -95,7 +97,8 @@ public class InventoryItem {
    }
 
    public void setReserved(int reserved) {
-      this.reserved = reserved;
+      if(reserved > 0)
+         this.reserved = reserved;
    }
 
    public Medicine getMedicine() {
@@ -207,5 +210,12 @@ public class InventoryItem {
 
    public boolean canBeRemoved() {
       return this.reserved == 0;
+   }
+
+   public void reservationCancelled(MedicineReservationItem item){
+      if(item.getMedicine().getId().equals(this.medicine.getId())){
+         this.setReserved(reserved - item.getQuantity());
+         this.setAvailable(available + item.getQuantity());
+      }
    }
 }
