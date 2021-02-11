@@ -28,6 +28,17 @@ public class Inventory {
    @JsonBackReference
    private Pharmacy pharmacy;
 
+   @Version
+   @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+   private Long version = 0l;
+
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
    public Long getId() {
       return id;

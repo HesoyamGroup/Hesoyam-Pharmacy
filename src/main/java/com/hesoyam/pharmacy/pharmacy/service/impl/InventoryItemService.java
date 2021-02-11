@@ -79,6 +79,7 @@ public class InventoryItemService implements IInventoryItemService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public InventoryItem update(InventoryItem inventoryItemData) throws EntityNotFoundException {
         InventoryItem inventoryItem = inventoryItemRepository.getOne(inventoryItemData.getId());
         if(inventoryItem == null) throw new EntityNotFoundException();
@@ -95,7 +96,7 @@ public class InventoryItemService implements IInventoryItemService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void removeItems(List<PrescriptionItem> prescriptionItems, long pharmacyId) {
         prescriptionItems.forEach(item -> inventoryItemRepository.save(
                 inventoryItemRepository.getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, item.getMedicine().getId())
@@ -110,17 +111,19 @@ public class InventoryItemService implements IInventoryItemService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void medicineReservationCancelled(MedicineReservation toUpdate) {
         for(MedicineReservationItem item : toUpdate.getMedicineReservationItems()){
             long pharmacyId = toUpdate.getPharmacy().getId();
             long medicineId = item.getMedicine().getId();
             InventoryItem inventoryItem = getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, medicineId);
-            inventoryItem.setAvailable(inventoryItem.getAvailable() + item.getQuantity());
+
+
             if(inventoryItem.getReserved() - item.getQuantity() >= 0){
                 inventoryItem.setReserved(inventoryItem.getReserved() - item.getQuantity());
+                inventoryItem.setAvailable(inventoryItem.getAvailable() + item.getQuantity());
             } else {
-                inventoryItem.setReserved(0);
+                throw new IllegalArgumentException("Reservated quantity has to be greater than item quantity");
             }
 
             update(inventoryItem);

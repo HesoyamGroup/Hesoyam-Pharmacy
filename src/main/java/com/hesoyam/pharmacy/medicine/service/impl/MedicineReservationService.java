@@ -76,6 +76,7 @@ public class MedicineReservationService implements IMedicineReservationService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public MedicineReservation getByMedicineReservationCode(String code) {
         return medicineReservationRepository.findByCode(code);
     }
@@ -91,14 +92,19 @@ public class MedicineReservationService implements IMedicineReservationService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public boolean cancelPickup(MedicineReservation toUpdate) throws MedicineReservationNotFoundException {
         if(toUpdate != null) {
-            if (!toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED)) {
+            if (!toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED) &&
+                    !toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.CANCELLED)) {
                 toUpdate.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
                 update(toUpdate);
-                inventoryItemService.medicineReservationCancelled(toUpdate);
-                return true;
+                try {
+                    inventoryItemService.medicineReservationCancelled(toUpdate);
+                    return true;
+                }catch (IllegalArgumentException e){
+                    return false;
+                }
             }
         }
         return false;

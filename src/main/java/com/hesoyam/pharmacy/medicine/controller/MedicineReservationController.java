@@ -33,10 +33,12 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.OptimisticLockException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -189,11 +191,13 @@ public class MedicineReservationController {
         MedicineReservation toUpdate = null;
         String extractCode = reservationCode.split(":")[1].substring(1, reservationCode.split(":")[1].length() -2);
         try {
+
             toUpdate = medicineReservationService.getByMedicineReservationCode(extractCode);
             if (medicineReservationService.cancelPickup(toUpdate)) return true;
             return false;
         } catch (MedicineReservationNotFoundException e) {
-            e.printStackTrace();
+            return false;
+        } catch (ObjectOptimisticLockingFailureException e){
             return false;
         }
 

@@ -76,6 +76,7 @@ public class AppointmentService implements IAppointmentService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public boolean checkNewAppointment(User user, Patient patient, DateTimeRange range){
         int count = 0;
 
@@ -124,7 +125,7 @@ public class AppointmentService implements IAppointmentService {
         return true;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public Appointment createNewAppointment(Patient patient, Employee employee, long pharmacyId, DateTimeRange range, double price){
         if(checkNewAppointment(employee, patient, range)){

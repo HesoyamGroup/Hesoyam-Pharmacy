@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -109,6 +110,7 @@ public class OfferService implements IOfferService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<Offer> accept(User user, Long id) throws IllegalAccessException {
         Administrator administrator = administratorRepository.getOne(user.getId());
         Offer acceptingOffer = offerRepository.getOne(id);
@@ -120,11 +122,12 @@ public class OfferService implements IOfferService {
         if(!acceptingOffer.accept())
             throw new IllegalArgumentException();
 
-        Order updatedOrder = orderService.update(order);
 
         Inventory inventory = inventoryRepository.getOne(administrator.getPharmacy().getInventory().getId());
         inventory.placeOffer(acceptingOffer);
 
+
+        Order updatedOrder = orderService.update(order);
         inventoryRepository.save(inventory);
 
         //Send email
