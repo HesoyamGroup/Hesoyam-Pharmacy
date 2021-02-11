@@ -21,6 +21,7 @@ import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
@@ -95,6 +96,12 @@ public class MedicineReservationController {
         try {
             MedicineReservation medicineReservation = new MedicineReservation();
 
+            Patient patient = patientService.getById(user.getId());
+
+            if(patient.getPenaltyPoints() >= 3){
+                throw new UserPenalizedException(patient.getId());
+            }
+
             medicineReservation.setPharmacy(pharmacyService.findOne(medicineReservationDTO.getPharmacyId()));
             medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CREATED);
             medicineReservation.setCode(generateString());
@@ -117,6 +124,8 @@ public class MedicineReservationController {
             return ResponseEntity.ok().body(null);
         } catch (PatientNotFoundException | MedicineNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (UserPenalizedException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
 
