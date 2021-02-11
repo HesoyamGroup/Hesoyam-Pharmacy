@@ -171,7 +171,7 @@ INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
 VALUES (666, '2021-02-26', '2021-03-10', 2);
 -- Diclofenac Duo
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
-VALUES (7, 0, 3, 1);
+VALUES (7, 1, 3, 1);
 INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
 VALUES (999, '2021-01-29', '2021-03-28', 3);
 -- Panklav

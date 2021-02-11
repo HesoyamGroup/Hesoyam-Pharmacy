@@ -22,6 +22,7 @@ public class MedicineReservationDTO {
     MedicineReservationStatus medicineReservationStatus;
     Long medicineId;
     Long pharmacyId;
+    String reservationCode;
 
     public MedicineReservationDTO(){
         //Empty ctor for JSON serializer
@@ -31,6 +32,8 @@ public class MedicineReservationDTO {
         this.pickUpDate = medicineReservation.getPickUpDate();
         this.medicineReservationItemList = medicineReservation.getMedicineReservationItems();
         this.medicineReservationStatus = medicineReservation.getMedicineReservationStatus();
+        this.pharmacyId = medicineReservation.getPharmacy().getId();
+        this.reservationCode = medicineReservation.getCode();
     }
 
 
@@ -80,5 +83,13 @@ public class MedicineReservationDTO {
 
     public void setPharmacyId(Long pharmacyId) {
         this.pharmacyId = pharmacyId;
+    }
+
+    public String getReservationCode() {
+        return reservationCode;
+    }
+
+    public void setReservationCode(String reservationCode) {
+        this.reservationCode = reservationCode;
     }
 }

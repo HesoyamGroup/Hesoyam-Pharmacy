@@ -80,7 +80,9 @@ public class MedicineReservationController {
 
             List<MedicineReservation> medicineReservationList = medicineReservationService.getByPatientId(user.getId());
             List<MedicineReservationDTO> medicineReservationDTOList = new ArrayList<>();
-            medicineReservationList.forEach(medicineReservation -> medicineReservationDTOList.add(new MedicineReservationDTO(medicineReservation)));
+            medicineReservationList.forEach(medicineReservation -> {
+                medicineReservationDTOList.add(new MedicineReservationDTO(medicineReservation));
+            });
 
             return ResponseEntity.ok().body(medicineReservationDTOList);
     }
@@ -120,31 +122,32 @@ public class MedicineReservationController {
     }
 
     @PostMapping("/cancel-reservation")
-    public ResponseEntity<Long> cancelMedicineReservation(@RequestBody MedicineReservationCancellationDTO medicineReservationCancellationDTO){
+    public ResponseEntity cancelMedicineReservation(@RequestBody MedicineReservationCancellationDTO medicineReservationCancellationDTO, @AuthenticationPrincipal User user){
 
-        try{
-            MedicineReservation medicineReservation = medicineReservationService.getById(medicineReservationCancellationDTO.getId());
+            try {
+                MedicineReservation medicineReservation = medicineReservationService.getByMedicineReservationCode(medicineReservationCancellationDTO.getReservationCode());
+                if(medicineReservation.getPickUpDate().isBefore(LocalDateTime.now().plusDays(1)))
+                {
+                    throw new MedicineReservationExpiredCancellationException(medicineReservation.getId());
+                }
 
-            if(medicineReservation.getPickUpDate().isBefore(LocalDateTime.now().plusDays(1)))
-                throw new MedicineReservationExpiredCancellationException(medicineReservation.getId());
-            if(medicineReservation.getMedicineReservationStatus() != MedicineReservationStatus.CREATED)
-                throw new MedicineReservationNotCreatedException(medicineReservation.getId());
+                medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
+                medicineReservationService.update(medicineReservation);
 
-            medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
-            medicineReservationService.update(medicineReservation);
+                InventoryItem inventoryItem = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(medicineReservationCancellationDTO.getPharmacyId(), medicineReservationCancellationDTO.getMedicineId());
 
-            return ResponseEntity.ok().body(medicineReservation.getId());
-        } catch (MedicineReservationNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Long.parseLong("-2"));
-        } catch (MedicineReservationExpiredCancellationException e) {
-            e.printStackTrace();
-            ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE);
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Long.parseLong("-3"));
-        } catch(MedicineReservationNotCreatedException e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Long.parseLong("-4"));
-        }
+                inventoryItem.setAvailable(inventoryItem.getAvailable()+1);
+                inventoryItem.setReserved(inventoryItem.getReserved()-1);
+
+                inventoryItemService.update(inventoryItem);
+
+                return ResponseEntity.ok().body(null);
+            } catch (MedicineReservationNotFoundException e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            } catch (MedicineReservationExpiredCancellationException e){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+
     }
 
     private String generateString() {
