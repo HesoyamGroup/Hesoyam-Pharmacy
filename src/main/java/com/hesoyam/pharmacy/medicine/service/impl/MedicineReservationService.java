@@ -13,6 +13,8 @@ import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
+import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +120,10 @@ public class MedicineReservationService implements IMedicineReservationService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void createMedicineReservation(MedicineReservationDTO medicineReservationDTO, User user) throws PatientNotFoundException, MedicineNotFoundException {
         MedicineReservation medicineReservation = new MedicineReservation();
+        Patient patient = patientService.getById(user.getId());
+        if(patient.getPenaltyPoints() >= 3){
+            throw new UserPenalizedException(patient.getId());
+        }
 
         medicineReservation.setPharmacy(pharmacyService.findOne(medicineReservationDTO.getPharmacyId()));
         medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CREATED);
