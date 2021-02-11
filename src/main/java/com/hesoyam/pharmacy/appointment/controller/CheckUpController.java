@@ -18,6 +18,7 @@ import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 import com.hesoyam.pharmacy.prescription.service.IPrescriptionService;
 import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
@@ -78,6 +79,7 @@ public class CheckUpController {
         }
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
     @GetMapping(value = "/free/dermatologist/{dermatologistId}")
     public ResponseEntity<List<FreeCheckupDTO>> getUpcomingFreeCheckupsByEmployee(@PathVariable Long dermatologistId, @RequestParam String pharmacy) {
 
@@ -91,10 +93,13 @@ public class CheckUpController {
     @PreAuthorize("hasRole('PATIENT')")
     @PostMapping(value = "/reserve")
     public ResponseEntity<FreeCheckupDTO> reserveFreeCheckup(@AuthenticationPrincipal User user, @RequestBody FreeCheckupDTO freeCheckupDTO){
-
         try{
             CheckUp checkup = checkUpService.findById(freeCheckupDTO.getId());
             Patient patient = patientService.getById(user.getId());
+
+            if(patient.getPenaltyPoints() >= 3){
+                throw new UserPenalizedException(patient.getId());
+            }
 
             checkup.setAppointmentStatus(AppointmentStatus.TAKEN);
             checkup.setPatient(patient);
@@ -113,8 +118,11 @@ public class CheckUpController {
         } catch (PatientNotFoundException e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new FreeCheckupDTO());
+        } catch (UserPenalizedException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new FreeCheckupDTO());
         }
     }
+
 
     @GetMapping(value = "/free/pharmacy/{id}")
     public ResponseEntity<List<FreeCheckupDTO>> getFreeCheckupsByPharmacy(@PathVariable Long id){

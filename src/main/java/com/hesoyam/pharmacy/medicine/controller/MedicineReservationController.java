@@ -21,6 +21,7 @@ import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
@@ -78,6 +79,7 @@ public class MedicineReservationController {
         return ResponseEntity.ok(medicineReservationService.getAll());
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
     @GetMapping("/get-reservations")
     public ResponseEntity<List<MedicineReservationDTO>> getAllMedicineReservationsByPatient(@AuthenticationPrincipal User user){
 
@@ -95,20 +97,18 @@ public class MedicineReservationController {
     public ResponseEntity create(@RequestBody MedicineReservationDTO medicineReservationDTO, @AuthenticationPrincipal User user){
 
         try {
-
             medicineReservationService.createMedicineReservation(medicineReservationDTO, user);
             return ResponseEntity.ok().body(null);
         } catch (PatientNotFoundException | MedicineNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch(IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (UserPenalizedException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-
-
     }
 
-
-
+    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping("/cancel-reservation")
     public ResponseEntity cancelMedicineReservation(@RequestBody MedicineReservationCancellationDTO medicineReservationCancellationDTO, @AuthenticationPrincipal User user){
 

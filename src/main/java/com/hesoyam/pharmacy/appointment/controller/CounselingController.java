@@ -17,6 +17,7 @@ import com.hesoyam.pharmacy.prescription.exceptions.PatientIsAllergicException;
 import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 import com.hesoyam.pharmacy.prescription.service.IPrescriptionService;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
@@ -114,7 +115,7 @@ public class CounselingController {
     }
 
 
-
+    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping(value = "/free-pharmacies/patient")
     public ResponseEntity<List<PharmacySearchDTO>> getAllPharmaciesWithFreeCounseling(@RequestBody com.hesoyam.pharmacy.appointment.dto.CounselingDateAndTimeDTO counselingDateAndTimeDTO){
         List<Counseling> counselings = counselingService.getAllFreeCounselings();
@@ -139,6 +140,7 @@ public class CounselingController {
         return ResponseEntity.ok().body(new ArrayList<>());
     }
 
+
     @PostMapping(value = "/free-pharmacists/patient")
     public ResponseEntity<List<com.hesoyam.pharmacy.appointment.dto.CounselingInfoDTO>> getAvailablePharmacistsByTimeAndPharmacy(@RequestBody com.hesoyam.pharmacy.appointment.dto.CounselingDateAndPharmacyDTO counselingDateAndPharmacyDTO){
         List<Counseling> counselings = counselingService.getFreeCounselingsByPharmacyId(counselingDateAndPharmacyDTO.getId());
@@ -157,12 +159,17 @@ public class CounselingController {
         return ResponseEntity.ok().body(counselingInfoDTOList);
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping(value = "/reserve")
     public ResponseEntity<com.hesoyam.pharmacy.appointment.dto.CounselingIDDTO> reserveCounseling(@AuthenticationPrincipal User user, @RequestBody com.hesoyam.pharmacy.appointment.dto.CounselingIDDTO counselingIDDTO){
 
         try{
             Counseling counseling = counselingService.findById(counselingIDDTO.getId());
             Patient patient = patientService.getById(user.getId());
+
+            if(patient.getPenaltyPoints() >= 3){
+                throw new UserPenalizedException(patient.getId());
+            }
 
             counseling.setAppointmentStatus(AppointmentStatus.TAKEN);
             counseling.setPatient(patient);
@@ -176,7 +183,10 @@ public class CounselingController {
             return ResponseEntity.ok().body(counselingIDDTO);
         } catch (CounselingNotFoundException | PatientNotFoundException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new com.hesoyam.pharmacy.appointment.dto.CounselingIDDTO());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CounselingIDDTO());
+        } catch (UserPenalizedException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CounselingIDDTO());
         }
 
     }
