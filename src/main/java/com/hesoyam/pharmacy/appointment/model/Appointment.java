@@ -133,4 +133,8 @@ public abstract class Appointment {
    public boolean isUpcoming(){
       return this.dateTimeRange.getFrom().isAfter(LocalDateTime.now());
    }
+
+   public boolean isTakeable(){
+      return appointmentStatus == AppointmentStatus.FREE;
+   }
 }

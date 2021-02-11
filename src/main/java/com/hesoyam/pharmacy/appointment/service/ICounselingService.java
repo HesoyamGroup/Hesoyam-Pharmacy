@@ -1,9 +1,12 @@
 package com.hesoyam.pharmacy.appointment.service;
 
+import com.hesoyam.pharmacy.appointment.dto.CounselingIDDTO;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
+import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
+import com.hesoyam.pharmacy.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,5 +25,6 @@ public interface ICounselingService {
 
     Counseling findById(Long id) throws CounselingNotFoundException;
     Counseling update(Counseling counseling) throws  CounselingNotFoundException;
+    CounselingIDDTO reserve(CounselingIDDTO counselingIDDTO, User user) throws CounselingNotFoundException, PatientNotFoundException;
 
 }

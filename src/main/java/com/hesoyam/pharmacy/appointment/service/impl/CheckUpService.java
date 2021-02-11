@@ -108,6 +108,7 @@ public class CheckUpService implements ICheckUpService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public CheckUp update(CheckUp checkupData) throws CheckupNotFoundException {
         CheckUp checkUp = checkUpRepository.getOne(checkupData.getId());
         if(checkUp == null) throw new CheckupNotFoundException(checkupData.getId());
@@ -163,15 +164,11 @@ public class CheckUpService implements ICheckUpService {
     public FreeCheckupDTO reserve(FreeCheckupDTO freeCheckupDTO, User user) throws CheckupNotFoundException, PatientNotFoundException {
         CheckUp checkup = findById(freeCheckupDTO.getId());
         Patient patient = patientService.getById(user.getId());
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException ie) {
-            Thread.currentThread().interrupt();
-        }
+
         if(patient.getPenaltyPoints() >= 3){
             throw new UserPenalizedException(patient.getId());
         }
-        if(checkup.getAppointmentStatus() == AppointmentStatus.TAKEN){
+        if(!checkup.isTakeable()){
             throw new IllegalArgumentException();
         }
 

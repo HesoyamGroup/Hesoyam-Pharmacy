@@ -27,6 +27,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -101,14 +102,14 @@ public class CounselingController {
 
     @GetMapping(value = "get-all-counselings-for-patient/{patientEmail}")
     @PreAuthorize("hasRole('PHARMACIST')")
-    public ResponseEntity<List<com.hesoyam.pharmacy.appointment.dto.CounselingDTO>> getAllCounselings(
+    public ResponseEntity<List<CounselingDTO>> getAllCounselings(
             @PathVariable String patientEmail, @AuthenticationPrincipal Pharmacist user
     ){
         Patient patient = patientService.getByEmail(patientEmail);
         if(patient != null) {
-            List<com.hesoyam.pharmacy.appointment.dto.CounselingDTO> dtos = new ArrayList<>();
+            List<CounselingDTO> dtos = new ArrayList<>();
             List<Counseling> allCounselings = counselingService.getAllCounselingsForPatientAndPharmacist(patient, user);
-            allCounselings.forEach(counseling -> dtos.add(new com.hesoyam.pharmacy.appointment.dto.CounselingDTO(counseling)));
+            allCounselings.forEach(counseling -> dtos.add(new CounselingDTO(counseling)));
             return new ResponseEntity<>(dtos, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
@@ -161,32 +162,19 @@ public class CounselingController {
 
     @PreAuthorize("hasRole('PATIENT')")
     @PostMapping(value = "/reserve")
-    public ResponseEntity<com.hesoyam.pharmacy.appointment.dto.CounselingIDDTO> reserveCounseling(@AuthenticationPrincipal User user, @RequestBody com.hesoyam.pharmacy.appointment.dto.CounselingIDDTO counselingIDDTO){
+    public ResponseEntity<CounselingIDDTO> reserveCounseling(@AuthenticationPrincipal User user, @RequestBody CounselingIDDTO counselingIDDTO){
 
         try{
-            Counseling counseling = counselingService.findById(counselingIDDTO.getId());
-            Patient patient = patientService.getById(user.getId());
-
-            if(patient.getPenaltyPoints() >= 3){
-                throw new UserPenalizedException(patient.getId());
-            }
-
-            counseling.setAppointmentStatus(AppointmentStatus.TAKEN);
-            counseling.setPatient(patient);
-
-            counseling.update(counseling);
-
-            counseling = counselingService.update(counseling);
-
-            applicationEventPublisher.publishEvent(new OnCounselingReservationCompletedEvent(user));
-
+            counselingService.reserve(counselingIDDTO, user);
             return ResponseEntity.ok().body(counselingIDDTO);
         } catch (CounselingNotFoundException | PatientNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CounselingIDDTO());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (UserPenalizedException e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CounselingIDDTO());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }catch (ObjectOptimisticLockingFailureException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
     }
