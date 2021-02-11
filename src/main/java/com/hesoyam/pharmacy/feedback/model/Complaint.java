@@ -18,6 +18,10 @@ public abstract class Complaint {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    protected Long id;
 
+   @Version
+   @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+   private Integer version;
+
    @Column(length = 400, nullable = false)
    @NotNull
    @Length(min=10, max=400, message = "Complaint content length must be between 10 and 400 characters.")
@@ -32,7 +36,7 @@ public abstract class Complaint {
    @NotNull(message = "Complaint status must be set.")
    protected ComplaintStatus complaintStatus;
 
-   @OneToOne(fetch = FetchType.LAZY, optional = true)
+   @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = true)
    protected Reply reply;
 
    protected Complaint(){}
@@ -84,6 +88,14 @@ public abstract class Complaint {
       if(this.reply != null){
          setComplaintStatus(ComplaintStatus.CLOSED);
       }
+   }
+
+   public Integer getVersion() {
+      return version;
+   }
+
+   public void setVersion(Integer version) {
+      this.version = version;
    }
 
    public String getEntityName(){

@@ -1,17 +1,25 @@
 package com.hesoyam.pharmacy.appointment.service.impl;
 
+import com.hesoyam.pharmacy.appointment.dto.CounselingIDDTO;
+import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.repository.CounselingRepository;
 import com.hesoyam.pharmacy.appointment.service.ICounselingService;
+import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
+import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.ILoyaltyAccountService;
-import com.hesoyam.pharmacy.util.DateTimeRange;
+import com.hesoyam.pharmacy.user.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,7 +33,13 @@ public class CounselingService implements ICounselingService {
     private CounselingRepository counselingRepository;
 
     @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
+    @Autowired
     private ILoyaltyAccountService loyaltyAccountService;
+
+    @Autowired
+    private IPatientService patientService;
 
     @Override
     public Counseling updateCounselingAfterAppointment(long patientId, LocalDateTime from, String report, Pharmacist pharmacist)
@@ -89,11 +103,13 @@ public class CounselingService implements ICounselingService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Counseling findById(Long id) throws CounselingNotFoundException {
         return counselingRepository.findById(id).orElseThrow(() ->new CounselingNotFoundException(id));
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Counseling update(Counseling counselingData) throws CounselingNotFoundException {
         Counseling counseling = counselingRepository.getOne(counselingData.getId());
         if(counseling == null) throw new CounselingNotFoundException(counselingData.getId());
@@ -103,6 +119,31 @@ public class CounselingService implements ICounselingService {
 
 
         return counseling;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CounselingIDDTO reserve(CounselingIDDTO counselingIDDTO, User user) throws CounselingNotFoundException, PatientNotFoundException {
+        Counseling counseling = findById(counselingIDDTO.getId());
+        Patient patient = patientService.getById(user.getId());
+
+        if(patient.getPenaltyPoints() >= 3){
+            throw new UserPenalizedException(patient.getId());
+        }
+
+        if(!counseling.isTakeable()){
+            throw new IllegalArgumentException();
+        }
+
+        counseling.setAppointmentStatus(AppointmentStatus.TAKEN);
+        counseling.setPatient(patient);
+        counseling.update(counseling);
+
+        update(counseling);
+
+        applicationEventPublisher.publishEvent(new OnCounselingReservationCompletedEvent(user));
+
+        return counselingIDDTO;
     }
 
 

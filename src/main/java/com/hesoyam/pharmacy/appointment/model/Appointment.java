@@ -23,6 +23,10 @@ public abstract class Appointment {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    protected Long id;
 
+   @Version
+   @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+   private Integer version;
+
    @Column(length = 500)
    @Length(max=500, message = "Report length should not exceed 500 characters.")
    protected String report;
@@ -117,6 +121,10 @@ public abstract class Appointment {
       }
    }
 
+   public void setVersion(Integer version) {
+      this.version = version;
+   }
+
    public boolean isConflictingWith(DateTimeRange range){
       return this.dateTimeRange.overlaps(range);
    }
@@ -124,5 +132,9 @@ public abstract class Appointment {
 
    public boolean isUpcoming(){
       return this.dateTimeRange.getFrom().isAfter(LocalDateTime.now());
+   }
+
+   public boolean isTakeable(){
+      return appointmentStatus == AppointmentStatus.FREE;
    }
 }

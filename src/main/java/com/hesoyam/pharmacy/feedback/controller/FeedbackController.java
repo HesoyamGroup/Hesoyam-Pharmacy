@@ -11,11 +11,9 @@ import com.hesoyam.pharmacy.feedback.model.EmployeeFeedback;
 import com.hesoyam.pharmacy.feedback.model.MedicineFeedback;
 import com.hesoyam.pharmacy.feedback.model.PharmacyFeedback;
 import com.hesoyam.pharmacy.feedback.service.IEmployeeFeedbackService;
-import com.hesoyam.pharmacy.feedback.service.IFeedbackService;
 import com.hesoyam.pharmacy.feedback.service.IMedicineFeedbackService;
 import com.hesoyam.pharmacy.feedback.service.IPharmacyFeedbackService;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
-import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationItemService;
@@ -36,7 +34,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.DataOutput;
 import java.util.ArrayList;
 import java.util.List;
 

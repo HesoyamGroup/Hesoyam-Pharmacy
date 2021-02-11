@@ -4,6 +4,7 @@ import com.hesoyam.pharmacy.appointment.dto.FreeCheckupDTO;
 import com.hesoyam.pharmacy.appointment.exceptions.CheckupNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
@@ -21,8 +22,8 @@ public interface ICheckUpService {
 
     CheckUp findById(Long id) throws CheckupNotFoundException;
     CheckUp update(CheckUp checkup) throws CheckupNotFoundException;
-
     CheckUp cancelCheckup(Patient patient, LocalDateTime from, Dermatologist user);
     CheckUp updateCheckupAfterAppointment(Patient patient, LocalDateTime from, String report, Dermatologist dermatologist) throws CheckupNotFoundException;
     List<CheckUp> getAllCheckUpsForPatientAndDermatologist(Patient patient, Dermatologist user);
+    FreeCheckupDTO reserve(FreeCheckupDTO freeCheckupDTO, User user) throws CheckupNotFoundException, PatientNotFoundException;
 }

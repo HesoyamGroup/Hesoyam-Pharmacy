@@ -6,7 +6,6 @@ import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemPriceDTO;
 import com.hesoyam.pharmacy.pharmacy.model.Inventory;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
-import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.repository.InventoryItemPriceRepository;
 import com.hesoyam.pharmacy.pharmacy.repository.InventoryItemRepository;
 import com.hesoyam.pharmacy.pharmacy.repository.InventoryRepository;
@@ -17,6 +16,8 @@ import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -76,6 +77,7 @@ public class InventoryItemService implements IInventoryItemService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public InventoryItem update(InventoryItem inventoryItemData) throws EntityNotFoundException {
         InventoryItem inventoryItem = inventoryItemRepository.getOne(inventoryItemData.getId());
         if(inventoryItem == null) throw new EntityNotFoundException();
@@ -86,11 +88,13 @@ public class InventoryItemService implements IInventoryItemService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public InventoryItem getInventoryItemByPharmacyIdAndMedicineId(Long pharmacyId, Long medicineId){
         return inventoryItemRepository.getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, medicineId);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void removeItems(List<PrescriptionItem> prescriptionItems, long pharmacyId) {
         prescriptionItems.forEach(item -> inventoryItemRepository.save(
                 inventoryItemRepository.getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, item.getMedicine().getId())
@@ -105,6 +109,25 @@ public class InventoryItemService implements IInventoryItemService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void medicineReservationCancelled(MedicineReservation toUpdate) {
+        for(MedicineReservationItem item : toUpdate.getMedicineReservationItems()){
+            long pharmacyId = toUpdate.getPharmacy().getId();
+            long medicineId = item.getMedicine().getId();
+            InventoryItem inventoryItem = getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, medicineId);
+
+
+            if(inventoryItem.getReserved() - item.getQuantity() >= 0){
+                inventoryItem.setReserved(inventoryItem.getReserved() - item.getQuantity());
+                inventoryItem.setAvailable(inventoryItem.getAvailable() + item.getQuantity());
+            } else {
+                throw new IllegalArgumentException("Reservated quantity has to be greater than item quantity");
+            }
+
+            update(inventoryItem);
+        }
+    }
+
     public void cancelReservation(MedicineReservation medicineReservation) {
         for(MedicineReservationItem m: medicineReservation.getMedicineReservationItems()){
             InventoryItem inventoryItem = findByMedicineIdAndInventoryId(m.getMedicine().getId(), medicineReservation.getPharmacy().getInventory().getId());
@@ -134,4 +157,5 @@ public class InventoryItemService implements IInventoryItemService {
         else
             throw new IllegalArgumentException();
     }
+
 }

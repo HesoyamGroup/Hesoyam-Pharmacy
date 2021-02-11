@@ -1,7 +1,6 @@
 package com.hesoyam.pharmacy.user.DTO;
 
 import com.hesoyam.pharmacy.user.model.LoyaltyAccount;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class PatientLoyaltyProgramDTO {
 

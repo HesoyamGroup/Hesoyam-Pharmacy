@@ -1,6 +1,7 @@
 package com.hesoyam.pharmacy.appointment.service.impl;
 
 import com.hesoyam.pharmacy.appointment.dto.FreeCheckupDTO;
+import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
 import com.hesoyam.pharmacy.appointment.exceptions.CheckupNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
@@ -10,12 +11,18 @@ import com.hesoyam.pharmacy.appointment.service.ICheckUpService;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IDermatologistService;
+import com.hesoyam.pharmacy.user.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,6 +40,12 @@ public class CheckUpService implements ICheckUpService {
 
     @Autowired
     private IPharmacyService pharmacyService;
+
+    @Autowired
+    ApplicationEventPublisher applicationEventPublisher;
+
+    @Autowired
+    private IPatientService patientService;
 
 
     @Override
@@ -88,11 +101,13 @@ public class CheckUpService implements ICheckUpService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public CheckUp findById(Long id) throws CheckupNotFoundException {
         return checkUpRepository.findById(id).orElseThrow(() -> new CheckupNotFoundException(id));
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public CheckUp update(CheckUp checkupData) throws CheckupNotFoundException {
         CheckUp checkUp = checkUpRepository.getOne(checkupData.getId());
         if(checkUp == null) throw new CheckupNotFoundException(checkupData.getId());
@@ -141,6 +156,29 @@ public class CheckUpService implements ICheckUpService {
         List<CheckUp> allCheckUps = checkUpRepository.findAllByPatientAndDermatologist(patient, user);
         allCheckUps = filterByDate(allCheckUps);
         return allCheckUps;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public FreeCheckupDTO reserve(FreeCheckupDTO freeCheckupDTO, User user) throws CheckupNotFoundException, PatientNotFoundException {
+        CheckUp checkup = findById(freeCheckupDTO.getId());
+        Patient patient = patientService.getById(user.getId());
+
+        if(patient.getPenaltyPoints() >= 3){
+            throw new UserPenalizedException(patient.getId());
+        }
+        if(!checkup.isTakeable()){
+            throw new IllegalArgumentException();
+        }
+
+        checkup.setAppointmentStatus(AppointmentStatus.TAKEN);
+        checkup.setPatient(patient);
+        checkup.update(checkup);
+
+        update(checkup);
+
+        applicationEventPublisher.publishEvent(new OnCheckupReservationCompletedEvent(user));
+        return freeCheckupDTO;
     }
 
     private List<CheckUp> filterByDate(List<CheckUp> allCheckUps) {

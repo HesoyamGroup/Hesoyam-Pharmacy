@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
@@ -113,6 +115,7 @@ public class MedicineService implements IMedicineService {
         medicineRepository.save(medicine);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public boolean checkAvailability(String medicineName, int quantity, long pharmacyId) {
         Medicine medicine = medicineRepository.findByName(medicineName);
         int stock = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(pharmacyId, medicine.getId()).getAvailable();
@@ -121,6 +124,8 @@ public class MedicineService implements IMedicineService {
         else
             return false;
     }
+
+
 
 
 }

@@ -1,12 +1,13 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
-import com.hesoyam.pharmacy.appointment.dto.*;
-import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.dto.CheckUpDTO;
+import com.hesoyam.pharmacy.appointment.dto.CheckupReportDTO;
+import com.hesoyam.pharmacy.appointment.dto.FreeCheckupDTO;
+import com.hesoyam.pharmacy.appointment.dto.FutureCheckupDTO;
 import com.hesoyam.pharmacy.appointment.exceptions.CheckupCancellationPeriodExpiredException;
 import com.hesoyam.pharmacy.appointment.exceptions.CheckupNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
-import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.model.TherapyItem;
 import com.hesoyam.pharmacy.appointment.service.ICheckUpService;
 import com.hesoyam.pharmacy.appointment.service.ITherapyItemService;
@@ -28,6 +29,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -94,24 +96,8 @@ public class CheckUpController {
     @PostMapping(value = "/reserve")
     public ResponseEntity<FreeCheckupDTO> reserveFreeCheckup(@AuthenticationPrincipal User user, @RequestBody FreeCheckupDTO freeCheckupDTO){
         try{
-            CheckUp checkup = checkUpService.findById(freeCheckupDTO.getId());
-            Patient patient = patientService.getById(user.getId());
-
-            if(patient.getPenaltyPoints() >= 3){
-                throw new UserPenalizedException(patient.getId());
-            }
-
-            checkup.setAppointmentStatus(AppointmentStatus.TAKEN);
-            checkup.setPatient(patient);
-
-            checkup.update(checkup);
-
-            checkup = checkUpService.update(checkup);
-
-            applicationEventPublisher.publishEvent(new OnCheckupReservationCompletedEvent(user));
-
+            freeCheckupDTO = checkUpService.reserve(freeCheckupDTO, user);
             return ResponseEntity.ok().body(freeCheckupDTO);
-
         } catch (CheckupNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new FreeCheckupDTO());
@@ -120,6 +106,10 @@ public class CheckUpController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new FreeCheckupDTO());
         } catch (UserPenalizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new FreeCheckupDTO());
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }catch (ObjectOptimisticLockingFailureException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 

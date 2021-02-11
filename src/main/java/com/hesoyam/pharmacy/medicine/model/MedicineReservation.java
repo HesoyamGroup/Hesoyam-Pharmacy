@@ -51,10 +51,22 @@ public class MedicineReservation {
    @Enumerated(EnumType.STRING)
    private MedicineReservationStatus medicineReservationStatus;
 
-   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @ManyToOne(fetch = FetchType.EAGER, optional = false)
    @JoinColumn(name = "pharmacy_id", nullable = false)
    private Pharmacy pharmacy;
 
+   @Version
+   @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+   private Long version = 0l;
+
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
    /*public MedicineReservation(Long id, @NotNull(message = "Pick up date must be specified.") LocalDateTime pickUpDate, @NotNull(message = "Medicine reservation code must be provided.") @Length(min = 1, max = 50, message = "Medicine reservation code length should be between 1 and 50.") String code, List<MedicineReservationItem> medicineReservationItems, Patient patient, MedicineReservationStatus medicineReservationStatus) {
       this.id = id;
@@ -171,5 +183,10 @@ public class MedicineReservation {
 
    public void setPharmacy(Pharmacy pharmacy) {
       this.pharmacy = pharmacy;
+   }
+
+
+   public boolean isCancellable(){
+      return medicineReservationStatus != MedicineReservationStatus.CANCELLED;
    }
 }

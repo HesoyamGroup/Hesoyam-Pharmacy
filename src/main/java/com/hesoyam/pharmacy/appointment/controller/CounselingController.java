@@ -1,7 +1,8 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
-import com.hesoyam.pharmacy.appointment.dto.*;
-import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.dto.CounselingDTO;
+import com.hesoyam.pharmacy.appointment.dto.CounselingIDDTO;
+import com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingCancellationPeriodExpiredException;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
@@ -27,6 +28,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +65,7 @@ public class CounselingController {
 
     @PostMapping(value = "/finish-counseling")
     @PreAuthorize("hasRole('PHARMACIST')")
-    public ResponseEntity<String> finishCounseling(@RequestBody @Valid CounselingReportDTO counselingReportDTO,
+    public ResponseEntity<String> finishCounseling(@RequestBody @Valid com.hesoyam.pharmacy.appointment.dto.CounselingReportDTO counselingReportDTO,
                                                    @AuthenticationPrincipal Pharmacist user){
         Patient patient = patientService.getByEmail(counselingReportDTO.getPatientEmail());
         try {
@@ -117,7 +119,7 @@ public class CounselingController {
 
     @PreAuthorize("hasRole('PATIENT')")
     @PostMapping(value = "/free-pharmacies/patient")
-    public ResponseEntity<List<PharmacySearchDTO>> getAllPharmaciesWithFreeCounseling(@RequestBody CounselingDateAndTimeDTO counselingDateAndTimeDTO){
+    public ResponseEntity<List<PharmacySearchDTO>> getAllPharmaciesWithFreeCounseling(@RequestBody com.hesoyam.pharmacy.appointment.dto.CounselingDateAndTimeDTO counselingDateAndTimeDTO){
         List<Counseling> counselings = counselingService.getAllFreeCounselings();
         List<Counseling> possibleCounselings = new ArrayList<>();
 
@@ -142,7 +144,7 @@ public class CounselingController {
 
 
     @PostMapping(value = "/free-pharmacists/patient")
-    public ResponseEntity<List<CounselingInfoDTO>> getAvailablePharmacistsByTimeAndPharmacy(@RequestBody CounselingDateAndPharmacyDTO counselingDateAndPharmacyDTO){
+    public ResponseEntity<List<com.hesoyam.pharmacy.appointment.dto.CounselingInfoDTO>> getAvailablePharmacistsByTimeAndPharmacy(@RequestBody com.hesoyam.pharmacy.appointment.dto.CounselingDateAndPharmacyDTO counselingDateAndPharmacyDTO){
         List<Counseling> counselings = counselingService.getFreeCounselingsByPharmacyId(counselingDateAndPharmacyDTO.getId());
         List<Counseling> possibleCounselings = new ArrayList<>();
 
@@ -152,9 +154,9 @@ public class CounselingController {
         }
 
 
-        List<CounselingInfoDTO> counselingInfoDTOList = new ArrayList<>();
+        List<com.hesoyam.pharmacy.appointment.dto.CounselingInfoDTO> counselingInfoDTOList = new ArrayList<>();
 
-        possibleCounselings.forEach(counseling -> counselingInfoDTOList.add(new CounselingInfoDTO(counseling)));
+        possibleCounselings.forEach(counseling -> counselingInfoDTOList.add(new com.hesoyam.pharmacy.appointment.dto.CounselingInfoDTO(counseling)));
 
         return ResponseEntity.ok().body(counselingInfoDTOList);
     }
@@ -164,36 +166,23 @@ public class CounselingController {
     public ResponseEntity<CounselingIDDTO> reserveCounseling(@AuthenticationPrincipal User user, @RequestBody CounselingIDDTO counselingIDDTO){
 
         try{
-            Counseling counseling = counselingService.findById(counselingIDDTO.getId());
-            Patient patient = patientService.getById(user.getId());
-
-            if(patient.getPenaltyPoints() >= 3){
-                throw new UserPenalizedException(patient.getId());
-            }
-
-            counseling.setAppointmentStatus(AppointmentStatus.TAKEN);
-            counseling.setPatient(patient);
-
-            counseling.update(counseling);
-
-            counseling = counselingService.update(counseling);
-
-            applicationEventPublisher.publishEvent(new OnCounselingReservationCompletedEvent(user));
-
+            counselingService.reserve(counselingIDDTO, user);
             return ResponseEntity.ok().body(counselingIDDTO);
         } catch (CounselingNotFoundException | PatientNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CounselingIDDTO());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (UserPenalizedException e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CounselingIDDTO());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }catch (ObjectOptimisticLockingFailureException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
     }
 
     @PreAuthorize("hasRole('PATIENT')")
     @PostMapping(value = "/cancel/patient")
-    public ResponseEntity<FutureCounselingDTO> cancelFutureCounseling(@RequestBody FutureCounselingDTO futureCounselingDTO){
+    public ResponseEntity<FutureCounselingDTO> cancelFutureCounseling(@RequestBody com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO futureCounselingDTO){
 
         try{
             Counseling counseling = counselingService.findById(futureCounselingDTO.getId());
@@ -219,22 +208,22 @@ public class CounselingController {
 
     @PreAuthorize("hasRole('PATIENT')")
     @GetMapping(value = "/future/patient")
-    public ResponseEntity<List<FutureCounselingDTO>> getFutureCounselingsByPatient(@AuthenticationPrincipal User user){
+    public ResponseEntity<List<com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO>> getFutureCounselingsByPatient(@AuthenticationPrincipal User user){
 
         List<Counseling> counselings = counselingService.getUpcomingCounselingsByPatient(user.getId());
-        List<FutureCounselingDTO> futureCounselingDTO = new ArrayList<>();
-        counselings.forEach(counseling -> futureCounselingDTO.add(new FutureCounselingDTO(counseling)));
+        List<com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO> futureCounselingDTO = new ArrayList<>();
+        counselings.forEach(counseling -> futureCounselingDTO.add(new com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO(counseling)));
 
         return ResponseEntity.status(HttpStatus.OK).body(futureCounselingDTO);
     }
 
     @PreAuthorize("hasRole('PATIENT')")
     @GetMapping(value = "/past/patient")
-    public ResponseEntity<List<FutureCounselingDTO>> getPastCounselingsByPatient(@AuthenticationPrincipal User user){
+    public ResponseEntity<List<com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO>> getPastCounselingsByPatient(@AuthenticationPrincipal User user){
 
         List<Counseling> counselings = counselingService.getAllCompletedCounselingsByPatient(user.getId());
-        List<FutureCounselingDTO> pastCounselingDTO = new ArrayList<>();
-        counselings.forEach(counseling -> pastCounselingDTO.add(new FutureCounselingDTO(counseling)));
+        List<com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO> pastCounselingDTO = new ArrayList<>();
+        counselings.forEach(counseling -> pastCounselingDTO.add(new com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO(counseling)));
 
         return ResponseEntity.status(HttpStatus.OK).body(pastCounselingDTO);
     }

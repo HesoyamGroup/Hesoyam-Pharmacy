@@ -6,6 +6,7 @@
 package com.hesoyam.pharmacy.pharmacy.model;
 
 import com.hesoyam.pharmacy.medicine.model.Medicine;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 
 import javax.persistence.*;
@@ -37,6 +38,10 @@ public class InventoryItem {
    @JoinColumn(name = "inventory_item_id", referencedColumnName = "id", nullable = false)
    private List<InventoryItemPrice> prices;
 
+   @Version
+   @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+   private Long version = 0l;
+
    public InventoryItem(){}
 
    public InventoryItem(Medicine medicine, int available, int reserved){
@@ -47,6 +52,14 @@ public class InventoryItem {
 
    public InventoryItem(Medicine medicine){
       this.medicine = medicine;
+   }
+
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
    }
 
    public Long getId() {
@@ -75,7 +88,8 @@ public class InventoryItem {
    }
 
    public void setAvailable(int available) {
-      this.available = available;
+      if(available > 0)
+         this.available = available;
    }
 
    public int getReserved() {
@@ -83,7 +97,18 @@ public class InventoryItem {
    }
 
    public void setReserved(int reserved) {
-      this.reserved = reserved;
+      if(reserved > 0)
+         this.reserved = reserved;
+   }
+
+   public boolean reserve(int quantity){
+      if(this.available - quantity >= 0){
+         available -= quantity;
+         reserved += quantity;
+         return true;
+      } else {
+         return false;
+      }
    }
 
    public Medicine getMedicine() {
@@ -195,5 +220,12 @@ public class InventoryItem {
 
    public boolean canBeRemoved() {
       return this.reserved == 0;
+   }
+
+   public void reservationCancelled(MedicineReservationItem item){
+      if(item.getMedicine().getId().equals(this.medicine.getId())){
+         this.setReserved(reserved - item.getQuantity());
+         this.setAvailable(available + item.getQuantity());
+      }
    }
 }

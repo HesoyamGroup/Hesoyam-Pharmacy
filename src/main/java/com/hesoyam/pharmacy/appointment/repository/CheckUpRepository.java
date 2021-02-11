@@ -1,17 +1,23 @@
 package com.hesoyam.pharmacy.appointment.repository;
 
+import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.user.model.Pharmacist;
-import com.hesoyam.pharmacy.util.DateTimeRange;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 
+import javax.persistence.LockModeType;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface CheckUpRepository extends JpaRepository<CheckUp, Long> {
+    @Override
+    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+    Optional<CheckUp> findById(Long id);
+
     Integer countChecksUpByPatientAndAppointmentStatusAndDermatologist(Patient patient, AppointmentStatus appointmentStatus, Dermatologist dermatologist);
 
     List<CheckUp> getAllByDermatologist_IdAndPharmacy_Id(Long dermatologistId, Long pharmacyId);
@@ -26,5 +32,9 @@ public interface CheckUpRepository extends JpaRepository<CheckUp, Long> {
 
     List<CheckUp> findAllByPatientAndDermatologist(Patient patient, Dermatologist user);
 
+    @Lock(LockModeType.PESSIMISTIC_READ)
     int countCheckUpsByDermatologistAndDateTimeRange_From(Dermatologist user, LocalDateTime range);
+
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    List<Appointment> getAllByDermatologist(Dermatologist user);
 }

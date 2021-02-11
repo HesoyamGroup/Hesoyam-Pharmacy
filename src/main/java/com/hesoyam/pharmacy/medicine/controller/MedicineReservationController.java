@@ -3,30 +3,20 @@ package com.hesoyam.pharmacy.medicine.controller;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationCancellationDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationPickupDTO;
-import com.hesoyam.pharmacy.medicine.events.OnMedicineReservationCompletedEvent;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationExpiredCancellationException;
-import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotCreatedException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotFoundException;
-import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
-import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
-import com.hesoyam.pharmacy.medicine.service.IMedicineReservationItemService;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
-import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
-import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
-import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
-import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPatientService;
-import com.hesoyam.pharmacy.user.service.IUserService;
 import com.hesoyam.pharmacy.util.notifications.EmailClient;
 import com.hesoyam.pharmacy.util.notifications.EmailObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +24,16 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @RestController
 @RequestMapping(value="/medicine-reservation", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -91,86 +80,38 @@ public class MedicineReservationController {
 
     @PreAuthorize("hasRole('PATIENT')")
     @PostMapping("/create")
-    public ResponseEntity create(@RequestBody MedicineReservationDTO medicineReservationDTO, @AuthenticationPrincipal User user){
+    public ResponseEntity<MedicineReservation> create(@RequestBody MedicineReservationDTO medicineReservationDTO, @AuthenticationPrincipal User user){
 
         try {
-            MedicineReservation medicineReservation = new MedicineReservation();
-
-            Patient patient = patientService.getById(user.getId());
-
-            if(patient.getPenaltyPoints() >= 3){
-                throw new UserPenalizedException(patient.getId());
-            }
-
-            medicineReservation.setPharmacy(pharmacyService.findOne(medicineReservationDTO.getPharmacyId()));
-            medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CREATED);
-            medicineReservation.setCode(generateString());
-            medicineReservation.setPickUpDate(medicineReservationDTO.getPickUpDate());
-            medicineReservation.setPatient(patientService.getById(user.getId()));
-            List<MedicineReservationItem> medicineReservationItemList = new ArrayList<>();
-            medicineReservationItemList.add(new MedicineReservationItem(1, medicineService.findById(medicineReservationDTO.getMedicineId())));
-            medicineReservation.setMedicineReservationItems(medicineReservationItemList);
-
-            medicineReservation = medicineReservationService.create(medicineReservation);
-
-            InventoryItem inventoryItem = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(medicineReservationDTO.getPharmacyId(), medicineReservationDTO.getMedicineId());
-
-            inventoryItem.setAvailable(inventoryItem.getAvailable()-1);
-            inventoryItem.setReserved(inventoryItem.getReserved()+1);
-
-            inventoryItemService.update(inventoryItem);
-
-
-            return ResponseEntity.ok().body(null);
+            medicineReservationService.createMedicineReservation(medicineReservationDTO, user);
+            return ResponseEntity.ok().build();
         } catch (PatientNotFoundException | MedicineNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch(IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (UserPenalizedException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
-
     }
 
     @PreAuthorize("hasRole('PATIENT')")
     @PostMapping("/cancel-reservation")
-    public ResponseEntity cancelMedicineReservation(@RequestBody MedicineReservationCancellationDTO medicineReservationCancellationDTO, @AuthenticationPrincipal User user){
+    public ResponseEntity<MedicineReservation> cancelMedicineReservation(@RequestBody MedicineReservationCancellationDTO medicineReservationCancellationDTO, @AuthenticationPrincipal User user){
 
             try {
-                MedicineReservation medicineReservation = medicineReservationService.getByMedicineReservationCode(medicineReservationCancellationDTO.getReservationCode());
-                if(medicineReservation.getPickUpDate().isBefore(LocalDateTime.now().plusDays(1)))
-                {
-                    throw new MedicineReservationExpiredCancellationException(medicineReservation.getId());
-                }
-
-                medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
-                medicineReservationService.update(medicineReservation);
-
-                InventoryItem inventoryItem = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(medicineReservationCancellationDTO.getPharmacyId(), medicineReservationCancellationDTO.getMedicineId());
-
-                inventoryItem.setAvailable(inventoryItem.getAvailable()+1);
-                inventoryItem.setReserved(inventoryItem.getReserved()-1);
-
-                inventoryItemService.update(inventoryItem);
-
-                return ResponseEntity.ok().body(null);
+                medicineReservationService.cancelMedicineReservation(medicineReservationCancellationDTO, user);
+                return ResponseEntity.ok().build();
             } catch (MedicineReservationNotFoundException e) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             } catch (MedicineReservationExpiredCancellationException e){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }catch (ObjectOptimisticLockingFailureException e){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
 
     }
 
-    private String generateString() {
-        String SOURCES ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-        Random random = new Random();
-        int length = 50;
-        char[] text = new char[length];
-        for (int i = 0; i < length; i++) {
-            text[i] = SOURCES.charAt(random.nextInt(SOURCES.length()));
-        }
-        return new String(text);
-    }
+
 
     @GetMapping(value = "/pickup/{code}")
     @PreAuthorize("hasRole('PHARMACIST')")
@@ -223,20 +164,18 @@ public class MedicineReservationController {
         MedicineReservation toUpdate = null;
         String extractCode = reservationCode.split(":")[1].substring(1, reservationCode.split(":")[1].length() -2);
         try {
+
             toUpdate = medicineReservationService.getByMedicineReservationCode(extractCode);
-            if(toUpdate != null) {
-                if (toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED)) {
-                    toUpdate.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
-                    medicineReservationService.update(toUpdate);
-                    return true;
-                }
-            }
+            if (medicineReservationService.cancelPickup(toUpdate)) return true;
             return false;
         } catch (MedicineReservationNotFoundException e) {
-            e.printStackTrace();
+            return false;
+        } catch (ObjectOptimisticLockingFailureException e){
             return false;
         }
 
     }
+
+
 
 }

@@ -5,11 +5,13 @@ import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
-import com.hesoyam.pharmacy.util.DateTimeRange;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 
+import javax.persistence.LockModeType;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface CounselingRepository extends JpaRepository<Counseling, Long> {
     Integer countCounselingsByPatientAndAppointmentStatusAndPharmacist(Patient patient, AppointmentStatus appointmentStatus, Pharmacist pharmacist);
@@ -22,5 +24,13 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long> {
     List<Counseling> getAllByPatient_Id(Long id);
     List<Counseling> getAllByPatient_IdAndAppointmentStatus(Long id, AppointmentStatus appointmentStatus);
 
+    @Lock(LockModeType.PESSIMISTIC_READ)
     int countCounselingsByPharmacistAndDateTimeRange_From(Pharmacist user, LocalDateTime range);
+
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    List<Appointment> getAllByPharmacist(Pharmacist user);
+
+    @Override
+    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+    Optional<Counseling> findById(Long id);
 }

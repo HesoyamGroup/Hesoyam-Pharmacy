@@ -96,8 +96,6 @@ public class OfferService implements IOfferService {
         if(offer == null) throw new EntityNotFoundException();
         Order order = offer.getOrder();
         if(!order.isOfferEditable(offer)){
-            //TODO: Check if offer can be cancelled. (after order part is done)
-            //TODO: For now, we will check if it's before deadline and status is created.
             throw new InvalidEditOfferException("Offer is not editable at the moment.");
         }
         offer.setOfferStatus(OfferStatus.CANCELLED);
@@ -109,6 +107,7 @@ public class OfferService implements IOfferService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<Offer> accept(User user, Long id) throws IllegalAccessException {
         Administrator administrator = administratorRepository.getOne(user.getId());
         Offer acceptingOffer = offerRepository.getOne(id);
@@ -120,11 +119,12 @@ public class OfferService implements IOfferService {
         if(!acceptingOffer.accept())
             throw new IllegalArgumentException();
 
-        Order updatedOrder = orderService.update(order);
 
         Inventory inventory = inventoryRepository.getOne(administrator.getPharmacy().getInventory().getId());
         inventory.placeOffer(acceptingOffer);
 
+
+        Order updatedOrder = orderService.update(order);
         inventoryRepository.save(inventory);
 
         //Send email

@@ -34,6 +34,8 @@ import com.hesoyam.pharmacy.user.service.ILoyaltyAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
@@ -86,13 +88,11 @@ public class EPrescriptionService implements IEPrescriptionService {
     }
 
     @Override
-    //TODO: Transactional. (!!!!!!)
+    @Transactional(propagation = Propagation.REQUIRED)
     public EPrescription complete(CompletePrescriptionDTO completePrescriptionDTO, Patient patient) {
         EPrescription ePrescription = ePrescriptionRepository.getEPrescriptionByIdAndPatient_IdAndPrescriptionStatus(completePrescriptionDTO.getPrescriptionId(), patient.getId(), PrescriptionStatus.ACTIVE);
         if(ePrescription == null) throw new EntityNotFoundException();
         Pharmacy pharmacy = pharmacyService.findOne(completePrescriptionDTO.getPharmacyId());
-        boolean canFulfil = true;
-        double price = 0;
         int loyaltyPoints = 0;
 
         LoyaltyAccount loyaltyAccount = loyaltyAccountService.getPatientLoyaltyAccount(patient);
@@ -109,7 +109,6 @@ public class EPrescriptionService implements IEPrescriptionService {
             loyaltyPoints += medicine.getLoyaltyPoints();
             double calculatedPrice = inventoryItem.calculateTodayPriceForQuantity(prescriptionItem.getQuantity());
             calculatedPrice = loyaltyAccount.getDiscountedPrice(calculatedPrice);
-            price += calculatedPrice;
             medicineSales.add(new MedicineSale(LocalDateTime.now(), calculatedPrice, pharmacy, medicine));
         }
         ePrescription.setPrescriptionStatus(PrescriptionStatus.COMPLETED);

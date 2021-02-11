@@ -1,12 +1,12 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
 import com.hesoyam.pharmacy.appointment.dto.AppointmentBookingDTO;
-import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
-import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
-import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.dto.CancelledAppointmentDTO;
 import com.hesoyam.pharmacy.appointment.dto.CheckUpDTO;
 import com.hesoyam.pharmacy.appointment.dto.CounselingDTO;
+import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
@@ -21,7 +21,6 @@ import com.hesoyam.pharmacy.user.service.IDermatologistService;
 import com.hesoyam.pharmacy.user.service.IEmployeeService;
 import com.hesoyam.pharmacy.user.service.IPatientService;
 import com.hesoyam.pharmacy.user.service.IPharmacistService;
-import com.hesoyam.pharmacy.user.service.impl.PharmacistService;
 import com.hesoyam.pharmacy.user.service.impl.UserService;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.util.search.UserSearchResult;
@@ -178,7 +177,7 @@ public class AppointmentController {
         LocalDateTime to = LocalDateTime.parse(parts[2]);
         if(isRangeValid(from, to)) {
             Patient patient = patientService.getByEmail(parts[0]);
-            boolean isFree = appointmentService.checkNewAppointment(user, patient, from);
+            boolean isFree = appointmentService.checkNewAppointment(user, patient, new DateTimeRange(from, to));
             return new ResponseEntity<>(isFree, HttpStatus.OK);
         }
         return new ResponseEntity<>(false, HttpStatus.OK);
@@ -190,35 +189,35 @@ public class AppointmentController {
                                                      @AuthenticationPrincipal User user){
         if(isRangeValid(appointmentBookingDTO.getFrom(), appointmentBookingDTO.getTo())) {
 
-            Appointment appointment = null;
-            Patient patient = patientService.getByEmail(appointmentBookingDTO.getPatientEmail());
+                Appointment appointment = null;
+                Patient patient = patientService.getByEmail(appointmentBookingDTO.getPatientEmail());
 
-            if(user.getRoleEnum().equals(RoleEnum.PHARMACIST)){
-                Pharmacist pharmacist = null;
-                try {
-                    pharmacist = pharmacistService.getById(user.getId());
-                    if(pharmacist != null) {
-                        appointment = appointmentService.createNewAppointment(patient, pharmacist,
-                                appointmentBookingDTO.getPharmacyId(), new DateTimeRange(appointmentBookingDTO.getFrom(),
-                                        appointmentBookingDTO.getTo()), appointmentBookingDTO.getPrice());
+                if(user.getRoleEnum().equals(RoleEnum.PHARMACIST)){
+                    Pharmacist pharmacist = null;
+                    try {
+                        pharmacist = pharmacistService.getById(user.getId());
+                        if(pharmacist != null) {
+                            appointment = appointmentService.createNewAppointment(patient, pharmacist,
+                                    appointmentBookingDTO.getPharmacyId(), new DateTimeRange(appointmentBookingDTO.getFrom(),
+                                            appointmentBookingDTO.getTo()), appointmentBookingDTO.getPrice());
+                        }
+                    } catch (PharmacistNotFoundException e) {
+                        e.printStackTrace();
                     }
-                } catch (PharmacistNotFoundException e) {
-                    e.printStackTrace();
                 }
-            }
-            else {
-                Dermatologist dermatologist = null;
-                try {
-                    dermatologist = dermatologistService.getById(user.getId());
-                    if(dermatologist != null){
-                        appointment = appointmentService.createNewAppointment(patient, dermatologist,
-                                appointmentBookingDTO.getPharmacyId(), new DateTimeRange(appointmentBookingDTO.getFrom(),
-                                        appointmentBookingDTO.getTo()), appointmentBookingDTO.getPrice());
+                else {
+                    Dermatologist dermatologist = null;
+                    try {
+                        dermatologist = dermatologistService.getById(user.getId());
+                        if(dermatologist != null){
+                            appointment = appointmentService.createNewAppointment(patient, dermatologist,
+                                    appointmentBookingDTO.getPharmacyId(), new DateTimeRange(appointmentBookingDTO.getFrom(),
+                                            appointmentBookingDTO.getTo()), appointmentBookingDTO.getPrice());
+                        }
+                    } catch (DermatologistNotFoundException e) {
+                        e.printStackTrace();
                     }
-                } catch (DermatologistNotFoundException e) {
-                    e.printStackTrace();
                 }
-            }
 
             if (appointment != null) {
                 sendConfirmationEmail(user, patient);

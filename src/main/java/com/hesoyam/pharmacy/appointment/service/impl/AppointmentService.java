@@ -13,7 +13,6 @@ import com.hesoyam.pharmacy.employee_management.model.Shift;
 import com.hesoyam.pharmacy.employee_management.model.ShiftType;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.repository.PharmacyRepository;
-
 import com.hesoyam.pharmacy.user.dto.PatientDTO;
 import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.util.DateTimeRange;
@@ -21,6 +20,8 @@ import com.hesoyam.pharmacy.util.search.QueryMatchResult;
 import com.hesoyam.pharmacy.util.search.UserSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.Normalizer;
 import java.time.LocalDateTime;
@@ -73,24 +74,39 @@ public class AppointmentService implements IAppointmentService {
     }
 
     @Override
-    public boolean checkNewAppointment(User user, Patient patient, LocalDateTime range){
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean checkNewAppointment(User user, Patient patient, DateTimeRange range){
         int count = 0;
 
         if(user.getRoleEnum().equals(RoleEnum.PHARMACIST)) {
             count = counselingRepository.countCounselingsByPharmacistAndDateTimeRange_From((Pharmacist) user,
-                    range);
+                    range.getFrom());
+            count += countOverlappingAppointments(counselingRepository.getAllByPharmacist((Pharmacist) user), range);
         }
-        else
+        else {
             count = checkUpRepository.countCheckUpsByDermatologistAndDateTimeRange_From((Dermatologist) user,
-                    range);
+                    range.getFrom());
+            count += countOverlappingAppointments(checkUpRepository.getAllByDermatologist((Dermatologist) user), range);
+        }
+        count += appointmentRepository.countAppointmentsByPatientAndDateTimeRange_From(patient, range.getFrom());
+        count += countOverlappingAppointments(appointmentRepository.getAllByPatient(patient), range);
 
-        count += appointmentRepository.countAppointmentsByPatientAndDateTimeRange_From(patient, range);
 
-        if(count > 0 && isInShift((Employee) user, range)){
+        if(count > 0){
             return false;
         }
 
         return true;
+    }
+
+    private int countOverlappingAppointments(List<Appointment> allAppointments, DateTimeRange range) {
+        int count = 0;
+        for(Appointment appointment : allAppointments) {
+            if (appointment.getDateTimeRange().overlaps(range)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     private boolean isInShift(Employee user, LocalDateTime range) {
@@ -107,9 +123,10 @@ public class AppointmentService implements IAppointmentService {
         return true;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public Appointment createNewAppointment(Patient patient, Employee employee, long pharmacyId, DateTimeRange range, double price){
-        if(checkNewAppointment(employee, patient, range.getFrom())){
+        if(checkNewAppointment(employee, patient, range)){
             return createAppointmentBasedOnEmployeeType(patient, employee, pharmacyId, range, price);
         }
 
