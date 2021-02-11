@@ -114,7 +114,7 @@ public class CounselingController {
     }
 
 
-
+    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping(value = "/free-pharmacies/patient")
     public ResponseEntity<List<PharmacySearchDTO>> getAllPharmaciesWithFreeCounseling(@RequestBody CounselingDateAndTimeDTO counselingDateAndTimeDTO){
         List<Counseling> counselings = counselingService.getAllFreeCounselings();
@@ -139,6 +139,7 @@ public class CounselingController {
         return ResponseEntity.ok().body(new ArrayList<>());
     }
 
+
     @PostMapping(value = "/free-pharmacists/patient")
     public ResponseEntity<List<CounselingInfoDTO>> getAvailablePharmacistsByTimeAndPharmacy(@RequestBody CounselingDateAndPharmacyDTO counselingDateAndPharmacyDTO){
         List<Counseling> counselings = counselingService.getFreeCounselingsByPharmacyId(counselingDateAndPharmacyDTO.getId());
@@ -157,6 +158,7 @@ public class CounselingController {
         return ResponseEntity.ok().body(counselingInfoDTOList);
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping(value = "/reserve")
     public ResponseEntity<CounselingIDDTO> reserveCounseling(@AuthenticationPrincipal User user, @RequestBody CounselingIDDTO counselingIDDTO){
 
