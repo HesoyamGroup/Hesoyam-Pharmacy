@@ -1,7 +1,5 @@
 package com.hesoyam.pharmacy.feedback.dto;
 
-import com.hesoyam.pharmacy.feedback.model.MedicineFeedback;
-import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 
 public class MedicineFeedbackDTO {

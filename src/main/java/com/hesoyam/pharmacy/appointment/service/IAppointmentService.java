@@ -9,7 +9,6 @@ import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.util.search.UserSearchResult;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IAppointmentService {

@@ -2,7 +2,6 @@ package com.hesoyam.pharmacy.unit.pharmacy;
 
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
-import com.hesoyam.pharmacy.pharmacy.model.Inventory;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;

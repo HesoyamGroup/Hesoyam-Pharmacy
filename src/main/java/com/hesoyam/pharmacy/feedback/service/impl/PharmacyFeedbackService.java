@@ -3,7 +3,6 @@ package com.hesoyam.pharmacy.feedback.service.impl;
 import com.hesoyam.pharmacy.feedback.model.PharmacyFeedback;
 import com.hesoyam.pharmacy.feedback.repository.PharmacyFeedbackRepository;
 import com.hesoyam.pharmacy.feedback.service.IPharmacyFeedbackService;
-import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

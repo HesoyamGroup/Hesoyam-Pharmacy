@@ -10,7 +10,6 @@ import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineType;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
 import com.hesoyam.pharmacy.user.model.Patient;
-import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IAdministratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;

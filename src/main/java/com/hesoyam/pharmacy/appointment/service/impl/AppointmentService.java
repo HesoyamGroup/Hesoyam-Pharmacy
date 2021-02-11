@@ -13,7 +13,6 @@ import com.hesoyam.pharmacy.employee_management.model.Shift;
 import com.hesoyam.pharmacy.employee_management.model.ShiftType;
 import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.repository.PharmacyRepository;
-
 import com.hesoyam.pharmacy.user.dto.PatientDTO;
 import com.hesoyam.pharmacy.user.model.*;
 import com.hesoyam.pharmacy.util.DateTimeRange;
@@ -21,7 +20,6 @@ import com.hesoyam.pharmacy.util.search.QueryMatchResult;
 import com.hesoyam.pharmacy.util.search.UserSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

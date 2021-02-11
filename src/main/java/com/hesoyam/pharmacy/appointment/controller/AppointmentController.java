@@ -1,12 +1,12 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
 import com.hesoyam.pharmacy.appointment.dto.AppointmentBookingDTO;
-import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
-import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
-import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.dto.CancelledAppointmentDTO;
 import com.hesoyam.pharmacy.appointment.dto.CheckUpDTO;
 import com.hesoyam.pharmacy.appointment.dto.CounselingDTO;
+import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.model.Appointment;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
 import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
@@ -21,7 +21,6 @@ import com.hesoyam.pharmacy.user.service.IDermatologistService;
 import com.hesoyam.pharmacy.user.service.IEmployeeService;
 import com.hesoyam.pharmacy.user.service.IPatientService;
 import com.hesoyam.pharmacy.user.service.IPharmacistService;
-import com.hesoyam.pharmacy.user.service.impl.PharmacistService;
 import com.hesoyam.pharmacy.user.service.impl.UserService;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 import com.hesoyam.pharmacy.util.search.UserSearchResult;

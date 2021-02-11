@@ -1,6 +1,5 @@
 package com.hesoyam.pharmacy.unit.appointment;
 
-import com.hesoyam.pharmacy.appointment.model.Therapy;
 import com.hesoyam.pharmacy.appointment.model.TherapyItem;
 import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;

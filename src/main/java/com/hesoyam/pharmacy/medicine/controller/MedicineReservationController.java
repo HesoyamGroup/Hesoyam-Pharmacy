@@ -3,30 +3,20 @@ package com.hesoyam.pharmacy.medicine.controller;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationCancellationDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationPickupDTO;
-import com.hesoyam.pharmacy.medicine.events.OnMedicineReservationCompletedEvent;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationExpiredCancellationException;
-import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotCreatedException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotFoundException;
-import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
-import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
-import com.hesoyam.pharmacy.medicine.service.IMedicineReservationItemService;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
-import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
-import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
-import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
-import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPatientService;
-import com.hesoyam.pharmacy.user.service.IUserService;
 import com.hesoyam.pharmacy.util.notifications.EmailClient;
 import com.hesoyam.pharmacy.util.notifications.EmailObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +29,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.OptimisticLockException;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(value="/medicine-reservation", produces = MediaType.APPLICATION_JSON_VALUE)

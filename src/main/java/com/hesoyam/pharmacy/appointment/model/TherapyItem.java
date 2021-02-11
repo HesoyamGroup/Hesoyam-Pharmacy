@@ -6,7 +6,6 @@
 package com.hesoyam.pharmacy.appointment.model;
 
 import com.hesoyam.pharmacy.medicine.model.Medicine;
-import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 
 import javax.persistence.*;

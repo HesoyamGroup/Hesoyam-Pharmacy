@@ -6,7 +6,6 @@ import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemPriceDTO;
 import com.hesoyam.pharmacy.pharmacy.model.Inventory;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
-import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.repository.InventoryItemPriceRepository;
 import com.hesoyam.pharmacy.pharmacy.repository.InventoryItemRepository;
 import com.hesoyam.pharmacy.pharmacy.repository.InventoryRepository;
@@ -17,7 +16,6 @@ import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

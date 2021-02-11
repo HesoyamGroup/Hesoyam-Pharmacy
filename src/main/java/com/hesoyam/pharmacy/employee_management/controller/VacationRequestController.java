@@ -4,7 +4,6 @@ import com.hesoyam.pharmacy.employee_management.dto.VacationRequestDTO;
 import com.hesoyam.pharmacy.employee_management.model.VacationRequest;
 import com.hesoyam.pharmacy.employee_management.model.VacationRequestStatus;
 import com.hesoyam.pharmacy.employee_management.service.IVacationRequestService;
-import com.hesoyam.pharmacy.user.model.Employee;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IEmployeeService;
 import com.hesoyam.pharmacy.util.DateTimeRange;

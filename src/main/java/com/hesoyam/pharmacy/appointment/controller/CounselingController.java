@@ -1,7 +1,8 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
-import com.hesoyam.pharmacy.appointment.dto.*;
-import com.hesoyam.pharmacy.appointment.events.OnCounselingReservationCompletedEvent;
+import com.hesoyam.pharmacy.appointment.dto.CounselingDTO;
+import com.hesoyam.pharmacy.appointment.dto.CounselingIDDTO;
+import com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingCancellationPeriodExpiredException;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
