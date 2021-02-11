@@ -62,4 +62,9 @@ public class MedicineReservationService implements IMedicineReservationService {
         return medicineReservationRepository.findByCodeAndPharmacy_Id(code, id);
     }
 
+    @Override
+    public List<MedicineReservation> getByCreatedStatus() {
+        return medicineReservationRepository.findByMedicineReservationStatus(MedicineReservationStatus.CREATED);
+    }
+
 }

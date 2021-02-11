@@ -14,5 +14,6 @@ public interface IPatientService {
     Patient update(Patient patient) throws PatientNotFoundException;
     Patient getByEmail(String email);
     Patient penalizeForMissingAppointment(Patient patient);
+    List<Patient> getAllWithMoreThanZeroPenaltyPoints();
 
 }

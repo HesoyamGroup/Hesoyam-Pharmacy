@@ -72,4 +72,9 @@ public class PatientService implements IPatientService {
         return patientRepository.save(patient);
     }
 
+    @Override
+    public List<Patient> getAllWithMoreThanZeroPenaltyPoints() {
+        return patientRepository.findAllByPenaltyPointsGreaterThanZero();
+    }
+
 }

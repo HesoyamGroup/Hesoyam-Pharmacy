@@ -453,9 +453,9 @@ INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (6,0, 2
 -- Medicine Reservation
 -----------------------
 INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES ('sdadasdadadasasdasasdda', 'COMPLETED', '2021-02-01 23:59:59', 14, 1);
+VALUES ('sdadasdadadasasdasasdda', 'CREATED', '2021-02-01 23:59:59', 14, 1);
 INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES ('wqksdhajdhaushydhwqkjmsdkami', 'COMPLETED', '2021-02-19 23:59:59', 14, 1);
+VALUES ('wqksdhajdhaushydhwqkjmsdkami', 'CREATED', '2021-02-08 23:59:59', 14, 1);
 INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
 VALUES ('bcvobocjiwque878dusijksdfj', 'CREATED', '2021-03-01 23:59:59', 14, 1);
 INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
