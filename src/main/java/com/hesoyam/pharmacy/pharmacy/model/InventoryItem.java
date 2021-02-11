@@ -33,7 +33,7 @@ public class InventoryItem {
    @JoinColumn(name="medicine_id")
    private Medicine medicine;
 
-   @OneToMany(cascade = CascadeType.ALL)
+   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
    @JoinColumn(name = "inventory_item_id", referencedColumnName = "id", nullable = false)
    private List<InventoryItemPrice> prices;
 
@@ -191,5 +191,9 @@ public class InventoryItem {
 
     public void updateBalance(OrderItem item) {
       this.available += item.getQuantity();
+   }
+
+   public boolean canBeRemoved() {
+      return this.reserved == 0;
    }
 }

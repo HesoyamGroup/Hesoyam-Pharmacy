@@ -19,7 +19,7 @@ public class Inventory {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
    @JoinColumn(name = "inventory_id", referencedColumnName = "id", nullable = false)
    private List<InventoryItem> inventoryItems;
 
@@ -70,11 +70,13 @@ public class Inventory {
       this.inventoryItems.add(newInventoryItem);
    }
 
-   public void removeInventoryItem(InventoryItem oldInventoryItem) {
+   public boolean removeInventoryItem(InventoryItem oldInventoryItem) {
       if (oldInventoryItem == null)
-         return;
-      if (this.inventoryItems != null && this.inventoryItems.contains(oldInventoryItem))
-         this.inventoryItems.remove(oldInventoryItem);
+         return false;
+      if(oldInventoryItem.canBeRemoved())
+         return getInventoryItems().remove(oldInventoryItem);
+      else
+         return false;
    }
 
    public void removeAllInventoryItem() {
@@ -105,4 +107,8 @@ public class Inventory {
          getInventoryItems().stream().filter(i -> i.containsMedicine(item.getMedicine())).findFirst().ifPresent(inventoryItem -> inventoryItem.updateBalance(item));
       }
    }
+
+    public boolean contains(InventoryItem inventoryItem) {
+      return getInventoryItems().contains(inventoryItem);
+    }
 }

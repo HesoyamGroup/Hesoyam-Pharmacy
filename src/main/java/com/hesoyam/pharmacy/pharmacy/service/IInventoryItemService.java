@@ -26,4 +26,5 @@ public interface IInventoryItemService {
     void cancelReservation(MedicineReservation medicineReservation);
 
     InventoryItem findByMedicineIdAndInventoryId(Long medicineId, Long pharmacyId);
+    void delete(User user, Long id) throws IllegalAccessException;
 }
