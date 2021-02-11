@@ -82,4 +82,10 @@ public class MedicineReservationService implements IMedicineReservationService {
         }
         return false;
     }
+
+    public List<MedicineReservation> getByCreatedStatus() {
+        return medicineReservationRepository.findByMedicineReservationStatus(MedicineReservationStatus.CREATED);
+    }
+
+
 }

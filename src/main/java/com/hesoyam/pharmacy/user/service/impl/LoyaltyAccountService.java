@@ -82,6 +82,7 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
         }
     }
 
+
     @Override
     public double calculateDiscountedPrice(Patient patient, double currentPrice) {
         LoyaltyAccount loyaltyAccount = loyaltyAccountRepository.getByPatientId(patient.getId());
@@ -123,6 +124,11 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
     @Override
     public void refreshLoyaltyAccounts() {
         loyaltyAccountRepository.refreshLoyaltyAccounts();
+    }
+
+    @Override
+    public LoyaltyAccount getPatientLoyaltyAccountByPatientId(Long id) {
+        return loyaltyAccountRepository.getByPatientId(id);
     }
 
 

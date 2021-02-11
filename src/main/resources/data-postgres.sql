@@ -171,7 +171,7 @@ INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
 VALUES (666, '2021-02-26', '2021-03-10', 2);
 -- Diclofenac Duo
 INSERT INTO inventory_item(available, reserved, medicine_id, inventory_id)
-VALUES (7, 0, 3, 1);
+VALUES (7, 1, 3, 1);
 INSERT INTO inventory_item_price(price, from_date, to_date, inventory_item_id)
 VALUES (999, '2021-01-29', '2021-03-28', 3);
 -- Panklav
@@ -452,34 +452,34 @@ INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (6,0, 2
 -----------------------
 -- Medicine Reservation
 -----------------------
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (1, 'sdadasdadadasasdasasdda', 'COMPLETED', '2021-02-01 23:59:59', 14, 1);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (2, 'wqksdhajdhaushydhwqkjmsdkami', 'COMPLETED', '2021-02-19 23:59:59', 14, 1);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (3, 'bcvobocjiwque878dusijksdfj', 'CREATED', '2021-03-01 23:59:59', 14, 1);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (4, 'dfjiwdjas8idlak0ti9kdsmklc', 'COMPLETED', '2021-02-16 23:59:59', 15, 2);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (5, 'sdfjiosdofsdipkdogjuhuas', 'COMPLETED', '2021-01-31 23:59:59', 14, 2);
-INSERT INTO medicine_reservation(id, code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES (6, 'jcjsiajdojiosd0weoklssmad', 'COMPLETED', '2021-05-12 23:59:59', 15, 2);
+INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
+VALUES ('sdadasdadadasasdasasdda', 'CREATED', '2021-02-01 23:59:59', 14, 1);
+INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
+VALUES ('wqksdhajdhaushydhwqkjmsdkami', 'CREATED', '2021-02-08 23:59:59', 14, 1);
+INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
+VALUES ('bcvobocjiwque878dusijksdfj', 'CREATED', '2021-03-01 23:59:59', 14, 1);
+INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
+VALUES ('dfjiwdjas8idlak0ti9kdsmklc', 'COMPLETED', '2021-02-16 23:59:59', 15, 2);
+INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
+VALUES ('sdfjiosdofsdipkdogjuhuas', 'COMPLETED', '2021-01-31 23:59:59', 14, 2);
+INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
+VALUES ('jcjsiajdojiosd0weoklssmad', 'COMPLETED', '2021-05-12 23:59:59', 15, 2);
 
 ---------------------------
 --Medicine Reservation Item
 ---------------------------
-INSERT INTO medicine_reservation_item(id, quantity, medicine_id, medicine_reservation_id)
-VALUES (1, 1, 2, 1);
-INSERT INTO medicine_reservation_item(id, quantity, medicine_id, medicine_reservation_id)
-VALUES (2, 1, 1, 2);
-INSERT INTO medicine_reservation_item(id, quantity, medicine_id, medicine_reservation_id)
-VALUES (3, 1, 3, 3);
-INSERT INTO medicine_reservation_item(id, quantity, medicine_id, medicine_reservation_id)
-VALUES (4, 1, 1, 4);
-INSERT INTO medicine_reservation_item(id, quantity, medicine_id, medicine_reservation_id)
-VALUES (5, 1, 2, 5);
-INSERT INTO medicine_reservation_item(id, quantity, medicine_id, medicine_reservation_id)
-VALUES (6, 1, 4, 6);
+INSERT INTO medicine_reservation_item(quantity, medicine_id, medicine_reservation_id)
+VALUES (1, 2, 1);
+INSERT INTO medicine_reservation_item(quantity, medicine_id, medicine_reservation_id)
+VALUES (1, 1, 2);
+INSERT INTO medicine_reservation_item(quantity, medicine_id, medicine_reservation_id)
+VALUES (1, 3, 3);
+INSERT INTO medicine_reservation_item(quantity, medicine_id, medicine_reservation_id)
+VALUES (1, 1, 4);
+INSERT INTO medicine_reservation_item(quantity, medicine_id, medicine_reservation_id)
+VALUES (1, 2, 5);
+INSERT INTO medicine_reservation_item(quantity, medicine_id, medicine_reservation_id)
+VALUES (1, 4, 6);
 
 -------------------
 -- APPOINTMENTS (needs to be redone with better data)

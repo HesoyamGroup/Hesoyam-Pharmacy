@@ -31,4 +31,9 @@ public class MedicineReservationItemService implements IMedicineReservationItemS
     public List<MedicineReservationItem> getAllByPatientId(Long id) {
         return medicineReservationItemRepository.getMedicineReservationItemsByPatientIdAndReservationStatus(id, MedicineReservationStatus.COMPLETED);
     }
+
+    @Override
+    public MedicineReservationItem getById(Long id) {
+        return medicineReservationItemRepository.getOne(id);
+    }
 }

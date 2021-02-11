@@ -12,20 +12,44 @@
 | Student 3 | Luka Kričković | RA-16-2017 |
 | Student 4 | Nikola Dragić | RA-4-2017 |
 
-## Environment variables
+## How to run
 
-`PORT` - Server port (eg. `55555`)  
-`POSTGRES_HOST` - In Local Development `localhost`  
-`POSTGRES_PORT` - Port Number (default is `5432`)  
-`POSTGRES_DB` - Name of the Database Schema  
-`POSTGRES_USERNAME` - Name of the Database User  
-`POSTGRES_PASSWORD` - Password of the Database User  
-`EMAIL_HOST` - Email SMTP server  
-`EMAIL_PORT` - Email SMTP server port  
-`EMAIL_USERNAME` - Email username (most often full email address)  
-`EMAIL_PASSWORD` - Email password  
-`FRONTEND_HOST` - Frontend host (dev: `http://localhost`)  
-`FRONTEND_PORT` - Frontend port (dev: `8080`/`8081`/`8082`)
+### Prerequisites
+
+It is necessary that you have the following software installed:
+- [Apache Maven](https://maven.apache.org/download.cgi)
+  - [How to install Maven on Windows/Linux/Mac](https://www.baeldung.com/install-maven-on-windows-linux-mac)
+- [Oracle JDK 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+  - [How to set JDK version on Windows/Linux/Mac](https://www.baeldung.com/java-home-on-windows-7-8-10-mac-os-x-linux)
+
+> This method is tested with Maven 3.6.3 and JDK 11. 
+
+#### **Important notes**
+
+- Check out the [.env](.env) file and set your environment variables. List of environment variables:
+
+    - `PORT` - Server port (eg. `55555`)  
+    - `POSTGRES_HOST` - In Local Development `localhost`  
+    - `POSTGRES_PORT` - Port Number (default is `5432`)  
+    - `POSTGRES_DB` - Name of the Database Schema  
+    - `POSTGRES_USERNAME` - Name of the Database User  
+    - `POSTGRES_PASSWORD` - Password of the Database User  
+    - `EMAIL_HOST` - Email SMTP server  
+    - `EMAIL_PORT` - Email SMTP server port  
+    - `EMAIL_USERNAME` - Email username (most often full email address)  
+    - `EMAIL_PASSWORD` - Email password  
+    - `FRONTEND_URL` - Frontend url (eg: `http://localhost:8080`)  
+- Make sure you have a running instance of Postgres database
+
+### [run.sh](run.sh) script
+
+Run the shell script in terminal:
+
+```
+sh ./run.sh
+```
+
+**Note**: Windows users can run the script with [GitBash](https://gitforwindows.org/).
 
 ## Frontend project
 

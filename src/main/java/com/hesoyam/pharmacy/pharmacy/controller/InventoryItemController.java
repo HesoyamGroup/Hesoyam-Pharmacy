@@ -85,6 +85,18 @@ public class InventoryItemController {
         return ResponseEntity.status(HttpStatus.OK).body(inventoryItemsDTO);
     }
 
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal User user, @PathVariable Long id){
+        try{
+            inventoryItemService.delete(user, id);
+            return ResponseEntity.ok().build();
+        } catch (IllegalAccessException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
 
     @PostMapping("/reserve-inventory-item")

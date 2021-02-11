@@ -218,6 +218,16 @@ public class CounselingController {
         return ResponseEntity.status(HttpStatus.OK).body(futureCounselingDTO);
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
+    @GetMapping(value = "/past/patient")
+    public ResponseEntity<List<FutureCounselingDTO>> getPastCounselingsByPatient(@AuthenticationPrincipal User user){
+
+        List<Counseling> counselings = counselingService.getAllCompletedCounselingsByPatient(user.getId());
+        List<FutureCounselingDTO> pastCounselingDTO = new ArrayList<>();
+        counselings.forEach(counseling -> pastCounselingDTO.add(new FutureCounselingDTO(counseling)));
+
+        return ResponseEntity.status(HttpStatus.OK).body(pastCounselingDTO);
+    }
 
     private boolean checkIfInList(Long id, List<PharmacySearchDTO> list){
         for(PharmacySearchDTO c: list){

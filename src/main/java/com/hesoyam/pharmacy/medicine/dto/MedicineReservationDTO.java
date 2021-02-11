@@ -17,8 +17,12 @@ public class MedicineReservationDTO {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     LocalDateTime pickUpDate;
+    MedicineReservationItem medicineReservationItemId;
     List<MedicineReservationItem> medicineReservationItemList;
     MedicineReservationStatus medicineReservationStatus;
+    Long medicineId;
+    Long pharmacyId;
+    String reservationCode;
 
     public MedicineReservationDTO(){
         //Empty ctor for JSON serializer
@@ -28,7 +32,10 @@ public class MedicineReservationDTO {
         this.pickUpDate = medicineReservation.getPickUpDate();
         this.medicineReservationItemList = medicineReservation.getMedicineReservationItems();
         this.medicineReservationStatus = medicineReservation.getMedicineReservationStatus();
+        this.pharmacyId = medicineReservation.getPharmacy().getId();
+        this.reservationCode = medicineReservation.getCode();
     }
+
 
     public MedicineReservationStatus getMedicineReservationStatus() {
         return medicineReservationStatus;
@@ -52,5 +59,37 @@ public class MedicineReservationDTO {
 
     public void setMedicineReservationItemList(List<MedicineReservationItem> medicineReservationItemList) {
         this.medicineReservationItemList = medicineReservationItemList;
+    }
+
+    public MedicineReservationItem getMedicineReservationItemId() {
+        return medicineReservationItemId;
+    }
+
+    public void setMedicineReservationItemId(MedicineReservationItem medicineReservationItemId) {
+        this.medicineReservationItemId = medicineReservationItemId;
+    }
+
+    public Long getMedicineId() {
+        return medicineId;
+    }
+
+    public void setMedicineId(Long medicineId) {
+        this.medicineId = medicineId;
+    }
+
+    public Long getPharmacyId() {
+        return pharmacyId;
+    }
+
+    public void setPharmacyId(Long pharmacyId) {
+        this.pharmacyId = pharmacyId;
+    }
+
+    public String getReservationCode() {
+        return reservationCode;
+    }
+
+    public void setReservationCode(String reservationCode) {
+        this.reservationCode = reservationCode;
     }
 }

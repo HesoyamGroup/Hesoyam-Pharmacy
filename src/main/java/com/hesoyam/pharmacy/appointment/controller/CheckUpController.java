@@ -1,14 +1,12 @@
 package com.hesoyam.pharmacy.appointment.controller;
 
-import com.hesoyam.pharmacy.appointment.dto.CheckUpDTO;
-import com.hesoyam.pharmacy.appointment.dto.CheckupReportDTO;
-import com.hesoyam.pharmacy.appointment.dto.FreeCheckupDTO;
-import com.hesoyam.pharmacy.appointment.dto.FutureCheckupDTO;
+import com.hesoyam.pharmacy.appointment.dto.*;
 import com.hesoyam.pharmacy.appointment.events.OnCheckupReservationCompletedEvent;
 import com.hesoyam.pharmacy.appointment.exceptions.CheckupCancellationPeriodExpiredException;
 import com.hesoyam.pharmacy.appointment.exceptions.CheckupNotFoundException;
 import com.hesoyam.pharmacy.appointment.model.AppointmentStatus;
 import com.hesoyam.pharmacy.appointment.model.CheckUp;
+import com.hesoyam.pharmacy.appointment.model.Counseling;
 import com.hesoyam.pharmacy.appointment.model.TherapyItem;
 import com.hesoyam.pharmacy.appointment.service.ICheckUpService;
 import com.hesoyam.pharmacy.appointment.service.ITherapyItemService;
@@ -206,6 +204,17 @@ public class CheckUpController {
             return new ResponseEntity<>("Failed to finish checkup!", HttpStatus.NO_CONTENT);
         }
 
+    }
+
+    @PreAuthorize("hasRole('PATIENT')")
+    @GetMapping(value = "/past/patient")
+    public ResponseEntity<List<FutureCheckupDTO>> getPastCounselingsByPatient(@AuthenticationPrincipal User user){
+
+        List<CheckUp> checkUps = checkUpService.getAllCompletedCheckupsByPatient(user.getId());
+        List<FutureCheckupDTO> pastCheckupDTO = new ArrayList<>();
+        checkUps.forEach(checkup -> pastCheckupDTO.add(new FutureCheckupDTO(checkup)));
+
+        return ResponseEntity.status(HttpStatus.OK).body(pastCheckupDTO);
     }
 
     private List<PrescriptionItem> convertPrescriptionItems(List<PrescriptionItemDTO> prescriptionItems) {

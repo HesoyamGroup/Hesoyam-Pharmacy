@@ -3,10 +3,13 @@ package com.hesoyam.pharmacy.pharmacy.service.impl;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemPriceDTO;
+import com.hesoyam.pharmacy.pharmacy.model.Inventory;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
+import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.pharmacy.repository.InventoryItemPriceRepository;
 import com.hesoyam.pharmacy.pharmacy.repository.InventoryItemRepository;
+import com.hesoyam.pharmacy.pharmacy.repository.InventoryRepository;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
 import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 import com.hesoyam.pharmacy.user.model.Administrator;
@@ -25,6 +28,9 @@ import java.util.List;
 public class InventoryItemService implements IInventoryItemService {
     @Autowired
     private InventoryItemRepository inventoryItemRepository;
+
+    @Autowired
+    private InventoryRepository inventoryRepository;
 
     @Autowired
     private AdministratorRepository administratorRepository;
@@ -119,4 +125,35 @@ public class InventoryItemService implements IInventoryItemService {
             update(inventoryItem);
         }
     }
+
+    public void cancelReservation(MedicineReservation medicineReservation) {
+        for(MedicineReservationItem m: medicineReservation.getMedicineReservationItems()){
+            InventoryItem inventoryItem = findByMedicineIdAndInventoryId(m.getMedicine().getId(), medicineReservation.getPharmacy().getInventory().getId());
+            inventoryItem.setAvailable(inventoryItem.getAvailable()+m.getQuantity());
+            inventoryItem.setReserved(inventoryItem.getReserved()-m.getQuantity());
+
+            inventoryItemRepository.save(inventoryItem);
+        }
+    }
+
+    @Override
+    public InventoryItem findByMedicineIdAndInventoryId(Long medicineId, Long inventoryId) {
+        return inventoryItemRepository.getByMedicineIdAndInventoryId(medicineId, inventoryId);
+    }
+    public void delete(User user, Long id) throws IllegalAccessException {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+        InventoryItem inventoryItemToDelete = inventoryItemRepository.getOne(id);
+        Inventory adminsInventory = administrator.getPharmacy().getInventory();
+
+        if(!adminsInventory.contains(inventoryItemToDelete))
+            throw new IllegalAccessException();
+
+        boolean success = adminsInventory.removeInventoryItem(inventoryItemToDelete);
+
+        if(success)
+            inventoryRepository.save(adminsInventory);
+        else
+            throw new IllegalArgumentException();
+    }
+
 }
