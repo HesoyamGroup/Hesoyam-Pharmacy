@@ -75,6 +75,7 @@ public class MedicineReservationController {
         return ResponseEntity.ok(medicineReservationService.getAll());
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
     @GetMapping("/get-reservations")
     public ResponseEntity<List<MedicineReservationDTO>> getAllMedicineReservationsByPatient(@AuthenticationPrincipal User user){
 
@@ -121,6 +122,7 @@ public class MedicineReservationController {
 
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping("/cancel-reservation")
     public ResponseEntity cancelMedicineReservation(@RequestBody MedicineReservationCancellationDTO medicineReservationCancellationDTO, @AuthenticationPrincipal User user){
 
