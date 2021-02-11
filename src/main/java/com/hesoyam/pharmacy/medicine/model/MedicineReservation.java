@@ -44,7 +44,7 @@ public class MedicineReservation {
    @JoinColumn(name = "medicine_reservation_id", referencedColumnName = "id")
    private List<MedicineReservationItem> medicineReservationItems;
 
-   @ManyToOne(fetch = FetchType.EAGER, optional = false)
+   @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
    @JoinColumn(name = "patient_id", nullable = false)
    private Patient patient;
 
