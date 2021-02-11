@@ -1,5 +1,7 @@
 package com.hesoyam.pharmacy.pharmacy.service.impl;
 
+import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemPriceDTO;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
@@ -94,5 +96,21 @@ public class InventoryItemService implements IInventoryItemService {
             fromInventory.setAvailable(fromInventory.getAvailable() - item.getQuantity());
             inventoryItemRepository.save(fromInventory);
         }
+    }
+
+    @Override
+    public void cancelReservation(MedicineReservation medicineReservation) {
+        for(MedicineReservationItem m: medicineReservation.getMedicineReservationItems()){
+            InventoryItem inventoryItem = findByMedicineIdAndInventoryId(m.getMedicine().getId(), medicineReservation.getPharmacy().getInventory().getId());
+            inventoryItem.setAvailable(inventoryItem.getAvailable()+m.getQuantity());
+            inventoryItem.setReserved(inventoryItem.getReserved()-m.getQuantity());
+
+            inventoryItemRepository.save(inventoryItem);
+        }
+    }
+
+    @Override
+    public InventoryItem findByMedicineIdAndInventoryId(Long medicineId, Long inventoryId) {
+        return inventoryItemRepository.getByMedicineIdAndInventoryId(medicineId, inventoryId);
     }
 }

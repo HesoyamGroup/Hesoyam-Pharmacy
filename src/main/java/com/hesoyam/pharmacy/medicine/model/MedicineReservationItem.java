@@ -29,6 +29,11 @@ public class MedicineReservationItem {
       this.medicine = medicine;
    }
 
+   public MedicineReservationItem(@Min(0) int quantity, Medicine medicine) {
+      this.quantity = quantity;
+      this.medicine = medicine;
+   }
+
    public MedicineReservationItem() {
    }
 

@@ -4,13 +4,20 @@ import com.hesoyam.pharmacy.medicine.dto.MedicineReservationCancellationDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationPickupDTO;
 import com.hesoyam.pharmacy.medicine.events.OnMedicineReservationCompletedEvent;
+import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationExpiredCancellationException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotCreatedException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotFoundException;
+import com.hesoyam.pharmacy.medicine.model.Medicine;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationItemService;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
+import com.hesoyam.pharmacy.medicine.service.IMedicineService;
+import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
+import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
+import com.hesoyam.pharmacy.pharmacy.service.IPharmacyService;
 import com.hesoyam.pharmacy.security.TokenUtils;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
 import com.hesoyam.pharmacy.user.exceptions.UserNotFoundException;
@@ -46,19 +53,19 @@ public class MedicineReservationController {
     private IMedicineReservationService medicineReservationService;
 
     @Autowired
-    private IMedicineReservationItemService medicineReservationItemService;
-
-    @Autowired
-    private TokenUtils tokenUtils;
-
-    @Autowired
-    private IUserService userService;
+    private IInventoryItemService inventoryItemService;
 
     @Autowired
     private IPatientService patientService;
 
     @Autowired
+    private IPharmacyService pharmacyService;
+
+    @Autowired
     ApplicationEventPublisher applicationEventPublisher;
+
+    @Autowired
+    private IMedicineService medicineService;
 
     @Autowired
     EmailClient client;
@@ -78,47 +85,42 @@ public class MedicineReservationController {
             return ResponseEntity.ok().body(medicineReservationDTOList);
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping("/create")
-    public ResponseEntity<MedicineReservation> create(@RequestBody MedicineReservationDTO medicineReservationDTO, HttpServletRequest request){
-        MedicineReservation medicineReservation = new MedicineReservation();
-        String token = tokenUtils.getToken(request);
-        String email = tokenUtils.getUsernameFromToken(token);
-        Patient patient = new Patient();
-        try{
-             User user = userService.findByEmail(email);
-             patient = patientService.getById(user.getId());
-        } catch (PatientNotFoundException | UserNotFoundException e) {
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED);
-        }
-        medicineReservation.setPatient(patient);
-        medicineReservation.setMedicineReservationItems(medicineReservationDTO.getMedicineReservationItemList());
-        medicineReservation.setPickUpDate(medicineReservationDTO.getPickUpDate());
-        medicineReservation.setCode(generateString());
-        medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CREATED);
+    public ResponseEntity create(@RequestBody MedicineReservationDTO medicineReservationDTO, @AuthenticationPrincipal User user){
 
-        try{
-            User user = userService.findByEmail(email);
-            applicationEventPublisher.publishEvent(new OnMedicineReservationCompletedEvent(user, medicineReservation));
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
+        try {
+            MedicineReservation medicineReservation = new MedicineReservation();
+
+            medicineReservation.setPharmacy(pharmacyService.findOne(medicineReservationDTO.getPharmacyId()));
+            medicineReservation.setMedicineReservationStatus(MedicineReservationStatus.CREATED);
+            medicineReservation.setCode(generateString());
+            medicineReservation.setPickUpDate(medicineReservationDTO.getPickUpDate());
+            medicineReservation.setPatient(patientService.getById(user.getId()));
+            List<MedicineReservationItem> medicineReservationItemList = new ArrayList<>();
+            medicineReservationItemList.add(new MedicineReservationItem(1, medicineService.findById(medicineReservationDTO.getMedicineId())));
+            medicineReservation.setMedicineReservationItems(medicineReservationItemList);
+
+            medicineReservation = medicineReservationService.create(medicineReservation);
+
+            InventoryItem inventoryItem = inventoryItemService.getInventoryItemByPharmacyIdAndMedicineId(medicineReservationDTO.getPharmacyId(), medicineReservationDTO.getMedicineId());
+
+            inventoryItem.setAvailable(inventoryItem.getAvailable()-1);
+            inventoryItem.setReserved(inventoryItem.getReserved()+1);
+
+            inventoryItemService.update(inventoryItem);
+
+
+            return ResponseEntity.ok().body(null);
+        } catch (PatientNotFoundException | MedicineNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(medicineReservationService.create(medicineReservation));
+
     }
 
     @PostMapping("/cancel-reservation")
-    public ResponseEntity<Long> cancelMedicineReservation(@RequestBody MedicineReservationCancellationDTO medicineReservationCancellationDTO, HttpServletRequest request){
-
-        /*String token = tokenUtils.getToken(request);
-        String email = tokenUtils.getUsernameFromToken(token);
-
-        try{
-            User user = userService.findByEmail(email);
-        } catch (UserNotFoundException e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Long.parseLong("-1"));
-        }*/
+    public ResponseEntity<Long> cancelMedicineReservation(@RequestBody MedicineReservationCancellationDTO medicineReservationCancellationDTO){
 
         try{
             MedicineReservation medicineReservation = medicineReservationService.getById(medicineReservationCancellationDTO.getId());
