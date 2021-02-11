@@ -17,6 +17,7 @@ import com.hesoyam.pharmacy.prescription.exceptions.PatientIsAllergicException;
 import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 import com.hesoyam.pharmacy.prescription.service.IPrescriptionService;
 import com.hesoyam.pharmacy.user.exceptions.PatientNotFoundException;
+import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
@@ -166,6 +167,10 @@ public class CounselingController {
             Counseling counseling = counselingService.findById(counselingIDDTO.getId());
             Patient patient = patientService.getById(user.getId());
 
+            if(patient.getPenaltyPoints() >= 3){
+                throw new UserPenalizedException(patient.getId());
+            }
+
             counseling.setAppointmentStatus(AppointmentStatus.TAKEN);
             counseling.setPatient(patient);
 
@@ -179,6 +184,9 @@ public class CounselingController {
         } catch (CounselingNotFoundException | PatientNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CounselingIDDTO());
+        } catch (UserPenalizedException e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CounselingIDDTO());
         }
 
     }
