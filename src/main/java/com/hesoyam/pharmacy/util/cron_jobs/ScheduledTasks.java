@@ -35,7 +35,7 @@ public class ScheduledTasks {
     @Transactional
     @Scheduled(cron = "0 0 0 1/1 * ? ")
     public void penalizeNotPickedUpMedicineReservation() throws MedicineReservationNotFoundException {
-        log.info("Starting penalty");
+        log.info("Starting penalizing");
         List<MedicineReservation> medicineReservationList = medicineReservationService.getByCreatedStatus();
 
         for(MedicineReservation m: medicineReservationList){
@@ -50,6 +50,19 @@ public class ScheduledTasks {
                 } catch (MedicineReservationNotFoundException e) {
                     throw new MedicineReservationNotFoundException(m.getId());}
             }
+        }
+        log.info("Finished penalizing");
+    }
+
+    @Transactional
+    @Scheduled(cron = "0 0 0 1 1/1 ?")
+    public void resetPenaltyPoints() throws PatientNotFoundException {
+        log.info("Starting penalty points reset");
+        List<Patient> patients = patientService.getAllWithMoreThanZeroPenaltyPoints();
+
+        for(Patient p: patients){
+            p.setPenaltyPoints(0);
+            patientService.update(p);
         }
     }
 }
