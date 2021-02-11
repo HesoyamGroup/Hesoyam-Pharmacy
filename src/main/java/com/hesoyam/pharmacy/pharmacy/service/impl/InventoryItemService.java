@@ -1,5 +1,7 @@
 package com.hesoyam.pharmacy.pharmacy.service.impl;
 
+import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
+import com.hesoyam.pharmacy.medicine.model.MedicineReservationItem;
 import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemPriceDTO;
 import com.hesoyam.pharmacy.pharmacy.model.Inventory;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
@@ -103,6 +105,20 @@ public class InventoryItemService implements IInventoryItemService {
     }
 
     @Override
+    public void cancelReservation(MedicineReservation medicineReservation) {
+        for(MedicineReservationItem m: medicineReservation.getMedicineReservationItems()){
+            InventoryItem inventoryItem = findByMedicineIdAndInventoryId(m.getMedicine().getId(), medicineReservation.getPharmacy().getInventory().getId());
+            inventoryItem.setAvailable(inventoryItem.getAvailable()+m.getQuantity());
+            inventoryItem.setReserved(inventoryItem.getReserved()-m.getQuantity());
+
+            inventoryItemRepository.save(inventoryItem);
+        }
+    }
+
+    @Override
+    public InventoryItem findByMedicineIdAndInventoryId(Long medicineId, Long inventoryId) {
+        return inventoryItemRepository.getByMedicineIdAndInventoryId(medicineId, inventoryId);
+    }
     public void delete(User user, Long id) throws IllegalAccessException {
         Administrator administrator = administratorRepository.getOne(user.getId());
         InventoryItem inventoryItemToDelete = inventoryItemRepository.getOne(id);

@@ -1,5 +1,6 @@
 package com.hesoyam.pharmacy.pharmacy.service;
 
+import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
 import com.hesoyam.pharmacy.pharmacy.dto.InventoryItemPriceDTO;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItem;
 import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
@@ -22,5 +23,8 @@ public interface IInventoryItemService {
 
     void removeItems(List<PrescriptionItem> prescriptionItems, long pharmacyId);
 
+    void cancelReservation(MedicineReservation medicineReservation);
+
+    InventoryItem findByMedicineIdAndInventoryId(Long medicineId, Long pharmacyId);
     void delete(User user, Long id) throws IllegalAccessException;
 }
