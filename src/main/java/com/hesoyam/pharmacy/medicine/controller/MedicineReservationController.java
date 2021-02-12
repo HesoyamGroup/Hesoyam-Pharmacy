@@ -7,7 +7,6 @@ import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationExpiredCancellationException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotFoundException;
 import com.hesoyam.pharmacy.medicine.model.MedicineReservation;
-import com.hesoyam.pharmacy.medicine.model.MedicineReservationStatus;
 import com.hesoyam.pharmacy.medicine.service.IMedicineReservationService;
 import com.hesoyam.pharmacy.medicine.service.IMedicineService;
 import com.hesoyam.pharmacy.pharmacy.service.IInventoryItemService;
@@ -17,8 +16,6 @@ import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
 import com.hesoyam.pharmacy.user.model.Pharmacist;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPatientService;
-import com.hesoyam.pharmacy.util.notifications.EmailClient;
-import com.hesoyam.pharmacy.util.notifications.EmailObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -28,10 +25,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,8 +51,7 @@ public class MedicineReservationController {
     @Autowired
     private IMedicineService medicineService;
 
-    @Autowired
-    EmailClient client;
+
 
     @GetMapping("/all")
     public ResponseEntity<List<MedicineReservation>> getAllMedicineReservations(){
@@ -132,31 +125,17 @@ public class MedicineReservationController {
     @PreAuthorize("hasRole('PHARMACIST')")
     public boolean confirmPickup(@RequestBody @Valid String reservationCode, @AuthenticationPrincipal User user){
         String extractCode = reservationCode.split(":")[1].substring(1, reservationCode.split(":")[1].length() -2);
-        String emailBody = "This email is confirmation that you have successfully picked up order #";
         try {
-            MedicineReservation toUpdate =  medicineReservationService.getByMedicineReservationCode(extractCode);
-            if(!toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED) &&
-                    !(toUpdate.getPickUpDate().isBefore(LocalDateTime.now()) && toUpdate.getPickUpDate().isAfter(
-                            LocalDateTime.now().minus(24, ChronoUnit.HOURS)))) {
-
-                toUpdate.setMedicineReservationStatus(MedicineReservationStatus.COMPLETED);
-                medicineReservationService.update(toUpdate);
-
-                // TODO: Izmeniti email da bude klijentski
-                EmailObject email = new EmailObject("Medicine pickup confirmation!",
-//                        toUpdate.getPatient().getEmail(), emailBody + toUpdate.getCode() + "!");
-                        "krickovicluka@gmail.com", emailBody + toUpdate.getCode() + "!");
-                client.sendEmail(email);
-                return true;
-
-            }
-            return false;
+            return medicineReservationService.confirmPickup(extractCode);
         } catch (MedicineReservationNotFoundException e) {
-            e.printStackTrace();
+            return false;
+        } catch (ObjectOptimisticLockingFailureException e){
             return false;
         }
 
     }
+
+
 
     @PostMapping(value = "/cancel-pickup")
     @PreAuthorize("hasRole('PHARMACIST')")

@@ -24,4 +24,5 @@ public interface IMedicineReservationService {
     List<MedicineReservation> getByCreatedStatus();
     void createMedicineReservation(MedicineReservationDTO medicineReservationDTO, User user) throws PatientNotFoundException, MedicineNotFoundException;
     MedicineReservation cancelMedicineReservation(MedicineReservationCancellationDTO medicineReservationCancellationDTO, User user) throws MedicineReservationExpiredCancellationException, MedicineReservationNotFoundException;
+    boolean confirmPickup(String extractCode) throws MedicineReservationNotFoundException;
 }

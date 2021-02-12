@@ -19,15 +19,19 @@ import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPatientService;
+import com.hesoyam.pharmacy.util.notifications.EmailClient;
+import com.hesoyam.pharmacy.util.notifications.EmailObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class MedicineReservationService implements IMedicineReservationService {
@@ -46,6 +50,12 @@ public class MedicineReservationService implements IMedicineReservationService {
 
     @Autowired
     IMedicineService medicineService;
+
+    @Autowired
+    IMedicineReservationService medicineReservationService;
+
+    @Autowired
+    EmailClient client;
 
     @Override
     public MedicineReservation getById(Long id) throws MedicineReservationNotFoundException {
@@ -174,6 +184,34 @@ public class MedicineReservationService implements IMedicineReservationService {
             text[i] = SOURCES.charAt(random.nextInt(SOURCES.length()));
         }
         return new String(text);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean confirmPickup(String extractCode) throws MedicineReservationNotFoundException {
+        String emailBody = "This email is confirmation that you have successfully picked up order #";
+        MedicineReservation toUpdate =  getByMedicineReservationCode(extractCode);
+        if(!toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED) &&
+                !(toUpdate.getPickUpDate().isBefore(LocalDateTime.now()) && toUpdate.getPickUpDate().isAfter(
+                        LocalDateTime.now().minus(24, ChronoUnit.HOURS)))) {
+
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+            }
+
+            toUpdate.setMedicineReservationStatus(MedicineReservationStatus.COMPLETED);
+            update(toUpdate);
+
+            EmailObject email = new EmailObject("Medicine pickup confirmation!",
+                    toUpdate.getPatient().getEmail(), emailBody + toUpdate.getCode() + "!");
+//                        "krickovicluka@gmail.com", emailBody + toUpdate.getCode() + "!");
+            client.sendEmail(email);
+            return true;
+
+        }
+        return false;
     }
 
 
