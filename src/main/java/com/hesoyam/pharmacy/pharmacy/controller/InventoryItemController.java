@@ -122,7 +122,6 @@ public class InventoryItemController {
             return ResponseEntity.ok().body(inventoryItem);
         } catch (EntityNotFoundException e)
         {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }

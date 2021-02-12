@@ -79,7 +79,6 @@ public class PharmacyController {
 
             return  new ResponseEntity<>(retVal, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

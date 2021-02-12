@@ -66,7 +66,6 @@ public class PatientController {
             return ResponseEntity.ok().body(allergiesDTOList);
 
         } catch (UserNotFoundException | PatientNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ArrayList<>());
         }
     }
@@ -99,10 +98,8 @@ public class PatientController {
             return ResponseEntity.ok().body(allergiesDTOList);
 
         } catch (UserNotFoundException | PatientNotFoundException | MedicineNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ArrayList<>());
         } catch (PatientAlreadyAllergicException e){
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
     }
@@ -135,10 +132,8 @@ public class PatientController {
             return ResponseEntity.ok().body(allergiesDTOList);
 
         } catch (UserNotFoundException | PatientNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ArrayList<>());
         } catch (MedicineNotFoundException | PatientAllergyNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
 
@@ -165,7 +160,6 @@ public class PatientController {
             return ResponseEntity.ok().body(notAllergicToAllergiesDTOList);
 
         } catch (UserNotFoundException | PatientNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ArrayList<>());
         }
     }

@@ -80,7 +80,6 @@ public class PharmacistController {
             return ResponseEntity.ok().body(pharmacistDTO);
         }
         catch (UserNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

@@ -148,7 +148,6 @@ public class MedicineReservationController {
             }
             return false;
         } catch (MedicineReservationNotFoundException e) {
-            e.printStackTrace();
             return false;
         }
 
