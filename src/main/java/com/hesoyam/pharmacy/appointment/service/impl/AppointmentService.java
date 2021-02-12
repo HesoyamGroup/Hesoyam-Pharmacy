@@ -27,6 +27,7 @@ import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -88,6 +89,13 @@ public class AppointmentService implements IAppointmentService {
                     range.getFrom());
             count += countOverlappingAppointments(checkUpRepository.getAllByDermatologist((Dermatologist) user), range);
         }
+
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
+
         count += appointmentRepository.countAppointmentsByPatientAndDateTimeRange_From(patient, range.getFrom());
         count += countOverlappingAppointments(appointmentRepository.getAllByPatient(patient), range);
 
@@ -159,9 +167,10 @@ public class AppointmentService implements IAppointmentService {
         appointment.setAppointmentStatus(AppointmentStatus.TAKEN);
         appointment.setDateTimeRange(range);
         appointment.setReport("");
+        appointment.setPharmacy(pharmacyRepository.findById(pharmacyId));
+
         appointment.setPharmacist(employee);
         appointment.setPatient(patient);
-        appointment.setPharmacy(pharmacyRepository.findById(pharmacyId));
         appointment.setPrice(price);
         return counselingRepository.save(appointment);
     }

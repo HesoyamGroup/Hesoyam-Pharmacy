@@ -32,9 +32,9 @@ public interface CheckUpRepository extends JpaRepository<CheckUp, Long> {
 
     List<CheckUp> findAllByPatientAndDermatologist(Patient patient, Dermatologist user);
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+
     int countCheckUpsByDermatologistAndDateTimeRange_From(Dermatologist user, LocalDateTime range);
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<Appointment> getAllByDermatologist(Dermatologist user);
 }
