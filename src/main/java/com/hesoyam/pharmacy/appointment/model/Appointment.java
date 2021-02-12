@@ -137,4 +137,8 @@ public abstract class Appointment {
    public boolean isTakeable(){
       return appointmentStatus == AppointmentStatus.FREE;
    }
+
+    public boolean isTaken() {
+      return appointmentStatus == AppointmentStatus.TAKEN;
+    }
 }
