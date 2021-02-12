@@ -195,12 +195,6 @@ public class MedicineReservationService implements IMedicineReservationService {
                 !(toUpdate.getPickUpDate().isBefore(LocalDateTime.now()) && toUpdate.getPickUpDate().isAfter(
                         LocalDateTime.now().minus(24, ChronoUnit.HOURS)))) {
 
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException ie) {
-                Thread.currentThread().interrupt();
-            }
-
             toUpdate.setMedicineReservationStatus(MedicineReservationStatus.COMPLETED);
             update(toUpdate);
 
