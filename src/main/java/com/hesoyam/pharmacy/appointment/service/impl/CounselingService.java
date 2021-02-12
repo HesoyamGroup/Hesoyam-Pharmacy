@@ -97,9 +97,7 @@ public class CounselingService implements ICounselingService {
 
     @Override
     public List<Counseling> getAllCompletedCounselingsByPatient(Long id) {
-        List<Counseling> counselings = counselingRepository.getAllByPatient_IdAndAppointmentStatus(id, AppointmentStatus.COMPLETED);
-
-        return counselings;
+        return counselingRepository.getAllByPatient_IdAndAppointmentStatus(id, AppointmentStatus.COMPLETED);
     }
 
     @Override
@@ -111,9 +109,7 @@ public class CounselingService implements ICounselingService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public Counseling update(Counseling counselingData) throws CounselingNotFoundException {
-        Counseling counseling = counselingRepository.getOne(counselingData.getId());
-        if(counseling == null) throw new CounselingNotFoundException(counselingData.getId());
-
+        Counseling counseling = counselingRepository.findById(counselingData.getId()).orElseThrow(() -> new CounselingNotFoundException(counselingData.getId()));
         counseling.update(counselingData);
         counseling = counselingRepository.save(counseling);
 

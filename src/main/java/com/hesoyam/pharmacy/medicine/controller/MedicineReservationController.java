@@ -65,9 +65,9 @@ public class MedicineReservationController {
 
             List<MedicineReservation> medicineReservationList = medicineReservationService.getByPatientId(user.getId());
             List<MedicineReservationDTO> medicineReservationDTOList = new ArrayList<>();
-            medicineReservationList.forEach(medicineReservation -> {
-                medicineReservationDTOList.add(new MedicineReservationDTO(medicineReservation));
-            });
+            medicineReservationList.forEach(medicineReservation ->
+                medicineReservationDTOList.add(new MedicineReservationDTO(medicineReservation))
+            );
 
             return ResponseEntity.ok().body(medicineReservationDTOList);
     }
@@ -97,9 +97,7 @@ public class MedicineReservationController {
                 return ResponseEntity.ok().build();
             } catch (MedicineReservationNotFoundException e) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            } catch (MedicineReservationExpiredCancellationException e){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }catch (ObjectOptimisticLockingFailureException e){
+            } catch (MedicineReservationExpiredCancellationException | ObjectOptimisticLockingFailureException e){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
 
@@ -117,7 +115,7 @@ public class MedicineReservationController {
             if(reservation != null)
                 return new ResponseEntity<>(new MedicineReservationPickupDTO(reservation), HttpStatus.OK);
             else
-                return new ResponseEntity<>(null, HttpStatus.OK);
+                return ResponseEntity.ok().build();
 
 
     }
@@ -137,7 +135,6 @@ public class MedicineReservationController {
         } catch (ObjectOptimisticLockingFailureException e){
             return ResponseEntity.badRequest().build();
         }
-
     }
 
 
@@ -152,12 +149,9 @@ public class MedicineReservationController {
             toUpdate = medicineReservationService.getByMedicineReservationCode(extractCode);
             if (medicineReservationService.cancelPickup(toUpdate)) return new ResponseEntity<>(true, HttpStatus.OK);
             return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
-        } catch (MedicineReservationNotFoundException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (ObjectOptimisticLockingFailureException e){
+        } catch (MedicineReservationNotFoundException | ObjectOptimisticLockingFailureException e) {
             return ResponseEntity.badRequest().build();
         }
-
     }
 
 

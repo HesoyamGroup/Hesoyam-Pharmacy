@@ -99,16 +99,10 @@ public class CheckUpController {
             freeCheckupDTO = checkUpService.reserve(freeCheckupDTO, user);
             return ResponseEntity.ok().body(freeCheckupDTO);
         } catch (CheckupNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new FreeCheckupDTO());
-        } catch (PatientNotFoundException e){
-            e.printStackTrace();
+        } catch (PatientNotFoundException | UserPenalizedException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new FreeCheckupDTO());
-        } catch (UserPenalizedException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new FreeCheckupDTO());
-        }catch (IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }catch (ObjectOptimisticLockingFailureException e){
+        }catch (IllegalArgumentException | ObjectOptimisticLockingFailureException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
@@ -153,10 +147,8 @@ public class CheckUpController {
             return ResponseEntity.status(HttpStatus.OK).body(new FutureCheckupDTO(checkUp));
 
         } catch (CheckupNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new FutureCheckupDTO());
         } catch (CheckupCancellationPeriodExpiredException e){
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FutureCheckupDTO());
         }
 
@@ -174,7 +166,7 @@ public class CheckUpController {
             allCheckUps.forEach(checkUp -> dtos.add(new CheckUpDTO(checkUp)));
             return new ResponseEntity<>(dtos, HttpStatus.OK);
         }
-        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PostMapping(value = "/finish-checkup")
@@ -193,12 +185,10 @@ public class CheckUpController {
                 therapyService.createFromItems(therapyItems);
                 therapyItemService.createFromList(therapyItems);
             } catch (PatientIsAllergicException e1) {
-                e1.printStackTrace();
                 return new ResponseEntity<>("Patient is allergic to medicine!", HttpStatus.OK);
             }
             return new ResponseEntity<>("Successfully finished checkup!", HttpStatus.OK);
         } catch (CheckupNotFoundException e) {
-            e.printStackTrace();
             return new ResponseEntity<>("Failed to finish checkup!", HttpStatus.NO_CONTENT);
         }
 

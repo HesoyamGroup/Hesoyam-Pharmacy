@@ -106,7 +106,7 @@ public class InventoryItemController {
         String email = tokenUtils.getUsernameFromToken(token);
 
         try{
-            User user = userService.findByEmail(email);
+            userService.findByEmail(email);
         } catch (UserNotFoundException e) {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED);
         }
@@ -122,7 +122,6 @@ public class InventoryItemController {
             return ResponseEntity.ok().body(inventoryItem);
         } catch (EntityNotFoundException e)
         {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }

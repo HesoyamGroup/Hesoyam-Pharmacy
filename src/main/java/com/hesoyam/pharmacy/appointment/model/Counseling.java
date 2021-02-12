@@ -25,7 +25,7 @@ public class Counseling extends Appointment {
    }
 
    public void setPharmacist(Pharmacist pharmacist) {
-      if(pharmacist.getPharmacy().getId() == pharmacy.getId())
+      if(pharmacist.getPharmacy().getId().equals(pharmacy.getId()))
          this.pharmacist = pharmacist;
    }
 

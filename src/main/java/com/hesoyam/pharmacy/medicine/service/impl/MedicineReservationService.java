@@ -31,7 +31,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class MedicineReservationService implements IMedicineReservationService {
@@ -51,11 +50,13 @@ public class MedicineReservationService implements IMedicineReservationService {
     @Autowired
     IMedicineService medicineService;
 
-    @Autowired
-    IMedicineReservationService medicineReservationService;
 
     @Autowired
     EmailClient client;
+
+    private Random random = new Random();
+    private static final String SOURCES ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+
 
     @Override
     public MedicineReservation getById(Long id) throws MedicineReservationNotFoundException {
@@ -64,8 +65,7 @@ public class MedicineReservationService implements IMedicineReservationService {
 
     @Override
     public MedicineReservation update(MedicineReservation medicineReservation) throws MedicineReservationNotFoundException {
-        MedicineReservation updatedMedicineReservation = medicineReservationRepository.getOne(medicineReservation.getId());
-        if(updatedMedicineReservation == null) throw new MedicineReservationNotFoundException(medicineReservation.getId());
+        MedicineReservation updatedMedicineReservation = medicineReservationRepository.findById(medicineReservation.getId()).orElseThrow( () -> new MedicineReservationNotFoundException(medicineReservation.getId()));
         updatedMedicineReservation.update(medicineReservation);
         updatedMedicineReservation = medicineReservationRepository.save(updatedMedicineReservation);
 
@@ -107,17 +107,15 @@ public class MedicineReservationService implements IMedicineReservationService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public boolean cancelPickup(MedicineReservation toUpdate) throws MedicineReservationNotFoundException {
-        if(toUpdate != null) {
-            if (!toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED) &&
-                    !toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.CANCELLED)) {
-                toUpdate.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
-                update(toUpdate);
-                try {
-                    inventoryItemService.medicineReservationCancelled(toUpdate);
-                    return true;
-                }catch (IllegalArgumentException e){
-                    return false;
-                }
+        if(toUpdate != null && (!toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED) &&
+                !toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.CANCELLED))) {
+            toUpdate.setMedicineReservationStatus(MedicineReservationStatus.CANCELLED);
+            update(toUpdate);
+            try {
+                inventoryItemService.medicineReservationCancelled(toUpdate);
+                return true;
+            }catch (IllegalArgumentException e){
+                return false;
             }
         }
         return false;
@@ -176,8 +174,6 @@ public class MedicineReservationService implements IMedicineReservationService {
     }
 
     private String generateString() {
-        String SOURCES ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-        Random random = new Random();
         int length = 50;
         char[] text = new char[length];
         for (int i = 0; i < length; i++) {
@@ -200,7 +196,6 @@ public class MedicineReservationService implements IMedicineReservationService {
 
             EmailObject email = new EmailObject("Medicine pickup confirmation!",
                     toUpdate.getPatient().getEmail(), emailBody + toUpdate.getCode() + "!");
-//                        "krickovicluka@gmail.com", emailBody + toUpdate.getCode() + "!");
             client.sendEmail(email);
             return true;
 

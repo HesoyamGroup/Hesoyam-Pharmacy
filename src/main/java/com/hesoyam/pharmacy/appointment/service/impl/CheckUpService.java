@@ -95,9 +95,7 @@ public class CheckUpService implements ICheckUpService {
 
     @Override
     public List<CheckUp> getAllCompletedCheckupsByPatient(Long id) {
-        List<CheckUp> checkUps = checkUpRepository.getAllByPatient_IdAndAppointmentStatus(id, AppointmentStatus.COMPLETED);
-
-        return checkUps;
+        return checkUpRepository.getAllByPatient_IdAndAppointmentStatus(id, AppointmentStatus.COMPLETED);
     }
 
     @Override
@@ -109,8 +107,7 @@ public class CheckUpService implements ICheckUpService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public CheckUp update(CheckUp checkupData) throws CheckupNotFoundException {
-        CheckUp checkUp = checkUpRepository.getOne(checkupData.getId());
-        if(checkUp == null) throw new CheckupNotFoundException(checkupData.getId());
+        CheckUp checkUp = checkUpRepository.findById(checkupData.getId()).orElseThrow(() -> new CheckupNotFoundException(checkupData.getId()));
 
         checkUp.update(checkupData);
         checkUp = checkUpRepository.save(checkUp);
@@ -133,9 +130,6 @@ public class CheckUpService implements ICheckUpService {
     @Override
     public CheckUp updateCheckupAfterAppointment(Patient patient, LocalDateTime from, String report, Dermatologist dermatologist)
             throws CheckupNotFoundException{
-//        CheckUp checkup = checkUpRepository
-//                .findCheckUpByPatient_IdAndDermatologist_IdAndDateTimeRange_From(patientId, dermatologist.getId(), from);
-
 
         CheckUp checkup = checkUpRepository.findCheckUpByPatientAndDermatologist_EmailAndDateTimeRange_From(patient,
                 dermatologist.getEmail(), from);

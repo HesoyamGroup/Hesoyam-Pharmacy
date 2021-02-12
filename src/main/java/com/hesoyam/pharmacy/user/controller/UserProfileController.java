@@ -38,6 +38,8 @@ public class UserProfileController {
     @Autowired
     private ICountryService countryService;
 
+    private static final String INTERNAL_SERVER_ERROR = "internal server error";
+
 
     @GetMapping("/user-information")
     public ResponseEntity<UserProfileDTO> getProfileInformation(@AuthenticationPrincipal User user){
@@ -47,7 +49,6 @@ public class UserProfileController {
 
             return ResponseEntity.ok().body(userProfileDTO);
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new UserProfileDTO());
         }
     }
@@ -65,7 +66,6 @@ public class UserProfileController {
 
             return ResponseEntity.ok().body(userInformation.getAddress());
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
@@ -84,7 +84,6 @@ public class UserProfileController {
             return ResponseEntity.ok().body("ok");
         }
         catch (UserNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.badRequest().body("bad");
         }
     }
@@ -107,7 +106,6 @@ public class UserProfileController {
             userService.update(user);
             return ResponseEntity.ok().body("ok");
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.badRequest().body("bad");
         }
     }
@@ -134,7 +132,6 @@ public class UserProfileController {
 
             return ResponseEntity.ok().body("ok");
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.badRequest().body("bad");
         }
     }
@@ -159,7 +156,6 @@ public class UserProfileController {
             return ResponseEntity.ok().body("No match");
         }
         catch (UserNotFoundException e){
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("no match");
         }
     }
@@ -189,8 +185,7 @@ public class UserProfileController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("wrong old password");
         }
         catch (UserNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -215,8 +210,7 @@ public class UserProfileController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("wrong old password");
         }
         catch (UserNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -235,8 +229,7 @@ public class UserProfileController {
             return ResponseEntity.ok().body("changed email");
         }
         catch (UserNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -250,8 +243,7 @@ public class UserProfileController {
             return ResponseEntity.ok().body(user.getRoleEnum().toString());
         }
         catch (UserNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(INTERNAL_SERVER_ERROR);
         }
     }
 }
