@@ -36,7 +36,6 @@ public class EPrescriptionController {
             multipartFile.transferTo(file);
             return ResponseEntity.ok(prescriptionService.get(file, patient));
         } catch (IOException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }catch (EntityNotFoundException e){
             return ResponseEntity.notFound().build();

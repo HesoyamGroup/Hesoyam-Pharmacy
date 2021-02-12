@@ -92,6 +92,8 @@ public class CounselingController {
                 return new ResponseEntity<>("Failed to finish counseling!", HttpStatus.NOT_FOUND);
             }
         }
+        return new ResponseEntity<>("Failed to finish counseling!", HttpStatus.NOT_FOUND);
+
     }
 
     private List<PrescriptionItem> convertPrescriptionItems(List<PrescriptionItemDTO> prescriptionItems) {

@@ -79,10 +79,8 @@ public class EPrescriptionService implements IEPrescriptionService {
 
             return getPharmaciesWhoCanFulfillPrescription(ePrescription);
         }catch (IOException e){
-            e.printStackTrace();
             throw new InvalidEPrescriptionFormat("EPrescription could not be read from provided QR code.");
         }catch (NotFoundException e){
-            e.printStackTrace();
             throw new InvalidEPrescriptionFormat("QR could not be found on your image.");
         }
     }
