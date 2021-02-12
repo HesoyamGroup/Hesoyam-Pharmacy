@@ -1,7 +1,53 @@
-# Hesoyam Pharmacy
+[![Travis Build Status][travis-badge]][travis-url]
+[![Quality Gate Status][quality-gate-badge]][sonar-url]
+[![Heroku backend][backend-badge]][backend-url]
+[![Heroku frontend][frontend-badge]][frontend-url]
 
-[![Build Status](https://travis-ci.com/HesoyamGroup/Hesoyam-Pharmacy.svg?token=Aj8KAzqp4JDUk3DxK4c1&branch=develop)](https://travis-ci.com/HesoyamGroup/Hesoyam-Pharmacy)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=22434905a961c51b1d244289381f364488e90bcf&metric=alert_status)](https://sonarcloud.io/dashboard?id=22434905a961c51b1d244289381f364488e90bcf)
+
+<br />
+<p align="center">
+  <a href="https://github.com/HesoyamGroup/Hesoyam-Pharmacy">
+    <img src="assets/pictures/hesoyam-logo.png" style="max-height:200px;height:auto;width:auto;" alt="Logo">
+  </a>
+
+  <h1 align="center">Hesoyam Pharmacy</h1>
+
+  <p align="center">
+    Hesoyam Pharmacy is a pharmaceutical information system that creates a complex network between multiple pharmacies. We strive to introduce the future to the most essential sector of economy - healthcare. This software is a powerful productivity tool to help pharmacies better manage their time and resources!
+    <br />
+    <br />
+
+  </p>
+</p>
+
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#students">Students</a>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#run">Run</a></li>
+      </ul>
+    </li>
+    <li><a href="#frontend-project">Frontend project</a></li>
+    <li>
+      <a href="#files">Files</a>
+      <ul>
+      <li><a href="#concurrent-database-access">Concurrent database access</a></li>
+      </ul>
+    </li>
+    <li><a href="#technologies">Technologies</a></li>
+    <li><a href="#devops-micro-flow">DevOps micro-flow</a></li>
+    <li><a href="#commit-conventions">Commit conventions</a></li>
+    <li><a href="#task-distribution">Task distribution</a></li>
+    <li><a href="#grading-criteria">Grading criteria</a></li>
+  </ol>
+</details>
 
 ## Students
 
@@ -12,7 +58,7 @@
 | Student 3 | Luka Kričković | RA-16-2017 |
 | Student 4 | Nikola Dragić | RA-4-2017 |
 
-## How to run
+## Getting started
 
 ### Prerequisites
 
@@ -41,7 +87,7 @@ It is necessary that you have the following software installed:
     - `FRONTEND_URL` - Frontend url (eg: `http://localhost:8080`)  
 - Make sure you have a running instance of Postgres database
 
-### [run.sh](run.sh) script
+### Run
 
 Run the shell script in terminal:
 
@@ -58,6 +104,10 @@ Frontend project can be found at [https://github.com/HesoyamGroup/hesoyam-pharma
 ## Files
 
 Object-Oriented Model Made With PowerDesigner - [PDF](assets/model.pdf)
+
+### Concurrent database access
+
+Documents regarding concurrent database access are in the [assets/transaction_docs](assets/transaction_docs) folder.
 
 ## Technologies
 
@@ -163,3 +213,12 @@ Other following information could be put in Commit Description
 | Scalability |
 
 *the lowest passing grade is 6 and the highest is 10
+
+[travis-badge]: https://travis-ci.com/HesoyamGroup/Hesoyam-Pharmacy.svg?token=Aj8KAzqp4JDUk3DxK4c1&branch=develop
+[travis-url]: https://travis-ci.com/HesoyamGroup/Hesoyam-Pharmacy
+[quality-gate-badge]: https://sonarcloud.io/api/project_badges/measure?project=22434905a961c51b1d244289381f364488e90bcf&metric=alert_status
+[sonar-url]: https://sonarcloud.io/dashboard?id=22434905a961c51b1d244289381f364488e90bcf
+[backend-badge]: https://img.shields.io/badge/Heroku-backend-purple?logo=heroku
+[backend-url]: https://hesoyam-pharmacy.herokuapp.com/
+[frontend-badge]: https://img.shields.io/badge/Heroku-frontend-purple?logo=heroku
+[frontend-url]: https://hesoyam-pharmacy-front.herokuapp.com/
