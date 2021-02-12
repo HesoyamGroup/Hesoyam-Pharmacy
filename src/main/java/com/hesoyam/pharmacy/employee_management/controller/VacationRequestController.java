@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -41,11 +42,11 @@ public class VacationRequestController {
 
     @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'SYS_ADMIN')")
     @PutMapping(value = "/reject", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VacationRequestDTO> reject(@AuthenticationPrincipal User user, @RequestBody VacationRequestDTO vacationRequest){
+    public ResponseEntity<VacationRequestDTO> reject(@RequestBody VacationRequestDTO vacationRequest, @AuthenticationPrincipal User user){
         try{
             VacationRequest rejectedVacationRequest = vacationRequestService.reject(user, vacationRequest);
             return ResponseEntity.status(HttpStatus.OK).body(new VacationRequestDTO(rejectedVacationRequest));
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException | ObjectOptimisticLockingFailureException e){
             //conflict (vacation request is already rejected or accepted)
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (EntityNotFoundException e){
@@ -57,11 +58,11 @@ public class VacationRequestController {
 
     @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'SYS_ADMIN')")
     @PutMapping(value = "/accept/{id}")
-    public ResponseEntity<VacationRequestDTO> accept(@AuthenticationPrincipal User user, @PathVariable Long id){
+    public ResponseEntity<VacationRequestDTO> accept(@PathVariable Long id, @AuthenticationPrincipal User user){
         try{
             VacationRequest acceptedVacationRequest = vacationRequestService.accept(user, id);
             return ResponseEntity.status(HttpStatus.OK).body(new VacationRequestDTO(acceptedVacationRequest));
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException | ObjectOptimisticLockingFailureException e){
             //conflict (vacation request is already rejected or accepted)
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (EntityNotFoundException e){
