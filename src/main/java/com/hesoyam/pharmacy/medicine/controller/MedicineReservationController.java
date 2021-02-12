@@ -3,6 +3,7 @@ package com.hesoyam.pharmacy.medicine.controller;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationCancellationDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationDTO;
 import com.hesoyam.pharmacy.medicine.dto.MedicineReservationPickupDTO;
+import com.hesoyam.pharmacy.medicine.dto.ReservationCodeDTO;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineNotFoundException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationExpiredCancellationException;
 import com.hesoyam.pharmacy.medicine.exceptions.MedicineReservationNotFoundException;
@@ -123,10 +124,10 @@ public class MedicineReservationController {
 
     @PostMapping(value = "/confirm-pickup")
     @PreAuthorize("hasRole('PHARMACIST')")
-    public boolean confirmPickup(@RequestBody @Valid String reservationCode, @AuthenticationPrincipal User user){
-        String extractCode = reservationCode.split(":")[1].substring(1, reservationCode.split(":")[1].length() -2);
+    public boolean confirmPickup(@RequestBody @Valid ReservationCodeDTO codeDTO, @AuthenticationPrincipal User user){
+        String reservationCode = codeDTO.getReservationCode();
         try {
-            return medicineReservationService.confirmPickup(extractCode);
+            return medicineReservationService.confirmPickup(reservationCode);
         } catch (MedicineReservationNotFoundException e) {
             return false;
         } catch (ObjectOptimisticLockingFailureException e){
@@ -139,9 +140,9 @@ public class MedicineReservationController {
 
     @PostMapping(value = "/cancel-pickup")
     @PreAuthorize("hasRole('PHARMACIST')")
-    public boolean cancelPickup(@RequestBody @Valid String reservationCode){
+    public boolean cancelPickup(@RequestBody @Valid ReservationCodeDTO codeDTO){
         MedicineReservation toUpdate = null;
-        String extractCode = reservationCode.split(":")[1].substring(1, reservationCode.split(":")[1].length() -2);
+        String extractCode = codeDTO.getReservationCode();
         try {
 
             toUpdate = medicineReservationService.getByMedicineReservationCode(extractCode);
