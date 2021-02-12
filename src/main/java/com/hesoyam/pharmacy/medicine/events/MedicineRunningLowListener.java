@@ -22,35 +22,20 @@ public class MedicineRunningLowListener implements ApplicationListener<MedicineR
         List<Administrator> administrators = event.getAdministrators();
         String medicineName = event.getMedicineName();
 
-//        for(Administrator administrator : administrators){
-//            String recipientEmail = administrator.getEmail();
-//            String subject = "Running low on medicine!";
-//            StringBuilder sb = new StringBuilder();
-//            sb.append("You are currently running low on\n\n");
-//            sb.append(medicineName);
-//            sb.append(" . \n\nKing regards,\n Hesoyam Pharmacy");
-//            String message = sb.toString();
-//
-//            SimpleMailMessage email = new SimpleMailMessage();
-//            email.setTo(recipientEmail);
-//            email.setSubject(subject);
-//            email.setText(message);
-//            mailSender.send(email);
-//        }
+        for(Administrator administrator : administrators){
+            String recipientEmail = administrator.getEmail();
+            String subject = "Running low on medicine!";
+            StringBuilder sb = new StringBuilder();
+            sb.append("You are currently running low on\n\n");
+            sb.append(medicineName);
+            sb.append(" . \n\nKing regards,\n Hesoyam Pharmacy");
+            String message = sb.toString();
 
-        String recipientEmail = "krickovicluka@gmail.com";
-        String subject = "Running low on medicine!";
-        StringBuilder sb = new StringBuilder();
-        sb.append("You are currently running low on\n\n");
-        sb.append(medicineName);
-        sb.append(" . \n\nKing regards,\n Hesoyam Pharmacy");
-        String message = sb.toString();
-
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(recipientEmail);
-        email.setSubject(subject);
-        email.setText(message);
-        mailSender.send(email);
-
+            SimpleMailMessage email = new SimpleMailMessage();
+            email.setTo(recipientEmail);
+            email.setSubject(subject);
+            email.setText(message);
+            mailSender.send(email);
+        }
     }
 }
