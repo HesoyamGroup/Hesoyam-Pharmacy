@@ -9,6 +9,7 @@ import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
 import com.hesoyam.pharmacy.util.DateTimeRange;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -26,6 +27,14 @@ public class Shift {
     @ManyToOne(optional=false)
     @JoinColumn(name="pharmacy_id", nullable = false)
     private Pharmacy pharmacy;
+
+    public Shift(){}
+
+    public Shift(DateTimeRange dateTimeRange, ShiftType type, Pharmacy pharmacy){
+        this.dateTimeRange = dateTimeRange;
+        this.type = type;
+        this.pharmacy = pharmacy;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -75,6 +84,13 @@ public class Shift {
     public boolean isAvailableFor(DateTimeRange dateTimeRange, Pharmacy pharmacy) {
         if(this.type == ShiftType.WORK){
             return this.dateTimeRange.includes(dateTimeRange) && getPharmacy().equals(pharmacy);
+        }
+        return false;
+    }
+
+    public boolean isAvailableFor(DateTimeRange dateTimeRange){
+        if(this.type == ShiftType.WORK){
+            return this.dateTimeRange.includes(dateTimeRange);
         }
         return false;
     }

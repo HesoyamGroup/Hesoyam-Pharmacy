@@ -4,9 +4,12 @@ import com.hesoyam.pharmacy.storage.model.Storage;
 import com.hesoyam.pharmacy.storage.service.IStorageService;
 import com.hesoyam.pharmacy.user.dto.AdministratorRegistrationDTO;
 import com.hesoyam.pharmacy.user.dto.ChangePasswordDTO;
+import com.hesoyam.pharmacy.user.dto.PharmacistRegistrationDTO;
 import com.hesoyam.pharmacy.user.dto.RegistrationDTO;
 import com.hesoyam.pharmacy.user.exceptions.*;
 import com.hesoyam.pharmacy.user.model.*;
+import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
+import com.hesoyam.pharmacy.user.repository.PharmacistRepository;
 import com.hesoyam.pharmacy.user.repository.UserRepository;
 import com.hesoyam.pharmacy.user.repository.VerificationTokensRepository;
 import com.hesoyam.pharmacy.user.service.ILoyaltyAccountService;
@@ -38,6 +41,9 @@ public class UserService implements UserDetailsService, IUserService {
     private UserRepository userRepository;
 
     @Autowired
+    private PharmacistRepository pharmacistRepository;
+
+    @Autowired
     private RoleService roleService;
 
     @Autowired
@@ -55,6 +61,9 @@ public class UserService implements UserDetailsService, IUserService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private AdministratorRepository administratorRepository;
 
     @Override
     public User findById(Long id) throws UserNotFoundException {
@@ -132,6 +141,23 @@ public class UserService implements UserDetailsService, IUserService {
         }catch (DataIntegrityViolationException ex){
             throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
         }
+    }
+
+    @Override
+    public Pharmacist registerPharmacist(PharmacistRegistrationDTO registrationDTO, User user) throws InvalidRegisterEmployeeRequestException, UserNotUniqueException {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+        Pharmacist pharmacist = (Pharmacist) getEmployeeProfile(registrationDTO);
+        pharmacist.setPharmacy(administrator.getPharmacy());
+        boolean canGenerateShifts = pharmacist.generateShifts(registrationDTO.getShiftRange(), registrationDTO.getShiftFrom(), registrationDTO.getShiftTo(), administrator.getPharmacy());
+
+        if(canGenerateShifts){
+            try{
+                return pharmacistRepository.save(pharmacist);
+            }catch (DataIntegrityViolationException ex){
+                throw new UserNotUniqueException(EMAIL_ALREADY_TAKEN_ERROR);
+            }
+        } else
+            throw new IllegalArgumentException();
     }
 
     private Employee getEmployeeProfile(RegistrationDTO registrationDTO) throws InvalidRegisterEmployeeRequestException {
