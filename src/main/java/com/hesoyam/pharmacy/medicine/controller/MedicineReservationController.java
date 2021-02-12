@@ -151,7 +151,7 @@ public class MedicineReservationController {
 
             toUpdate = medicineReservationService.getByMedicineReservationCode(extractCode);
             if (medicineReservationService.cancelPickup(toUpdate)) return new ResponseEntity<>(true, HttpStatus.OK);
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
         } catch (MedicineReservationNotFoundException e) {
             return ResponseEntity.badRequest().build();
         } catch (ObjectOptimisticLockingFailureException e){

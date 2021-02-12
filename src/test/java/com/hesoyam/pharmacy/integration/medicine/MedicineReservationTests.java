@@ -63,7 +63,7 @@ public class MedicineReservationTests {
     @WithUserDetails(value = "hesoyampharmacy+mila@gmail.com")
     void cancelInvalidReservationCode() throws Exception {
         mvc.perform(post("/medicine-reservation/cancel-pickup").contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(getInvalidCodeJSON()).with(user(getUserDetails()))).andExpect(status().is(400));
+                .content(getInvalidCodeJSON()).with(user(getUserDetails()))).andExpect(status().is(404));
     }
 
     @Test

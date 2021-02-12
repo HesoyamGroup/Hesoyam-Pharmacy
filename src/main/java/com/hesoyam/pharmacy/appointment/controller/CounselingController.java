@@ -68,25 +68,34 @@ public class CounselingController {
     public ResponseEntity<String> finishCounseling(@RequestBody @Valid com.hesoyam.pharmacy.appointment.dto.CounselingReportDTO counselingReportDTO,
                                                    @AuthenticationPrincipal Pharmacist user){
         Patient patient = patientService.getByEmail(counselingReportDTO.getPatientEmail());
-        try {
-            Counseling counseling = counselingService.updateCounselingAfterAppointment(patient.getId(), counselingReportDTO.getFrom(),
-                    counselingReportDTO.getReport(), user);
-            List<PrescriptionItem> converted = convertPrescriptionItems(counselingReportDTO.getPrescriptionItems());
+        if(patient != null) {
             try {
-                prescriptionService.createPrescription(converted, patient, counseling.getPharmacy().getId());
-                List<TherapyItem> therapyItems = therapyItemService.createFromPrescriptionItems(
-                        counselingReportDTO.getPrescriptionItems());
-                therapyService.createFromItems(therapyItems);
-                therapyItemService.createFromList(therapyItems);
-            } catch (PatientIsAllergicException e1) {
-                e1.printStackTrace();
-                return new ResponseEntity<>("Patient is allergic to medicine!", HttpStatus.OK);
+                Counseling counseling = counselingService.updateCounselingAfterAppointment(patient.getId(), counselingReportDTO.getFrom(),
+                        counselingReportDTO.getReport(), user);
+                List<PrescriptionItem> converted = new ArrayList<>();
+                if (counselingReportDTO.getPrescriptionItems() != null) {
+                    converted = convertPrescriptionItems(counselingReportDTO.getPrescriptionItems());
+                }
+                try {
+                    prescriptionService.createPrescription(converted, patient, counseling.getPharmacy().getId());
+                    List<TherapyItem> therapyItems = therapyItemService.createFromPrescriptionItems(
+                            counselingReportDTO.getPrescriptionItems());
+                    therapyService.createFromItems(therapyItems);
+                    therapyItemService.createFromList(therapyItems);
+                } catch (PatientIsAllergicException e1) {
+                    return new ResponseEntity<>("Patient is allergic to medicine!", HttpStatus.OK);
+                }
+                return new ResponseEntity<>("Successfully finished counseling!", HttpStatus.OK);
+
+            } catch (CounselingNotFoundException e) {
+                return new ResponseEntity<>("Failed to finish counseling!", HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>("Successfully finished counseling!", HttpStatus.OK);
-        } catch (CounselingNotFoundException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Failed to finish counseling!", HttpStatus.NO_CONTENT);
         }
+        else{
+            return new ResponseEntity<>("Failed to finish counseling!", HttpStatus.NOT_FOUND);
+
+        }
+
 
     }
 

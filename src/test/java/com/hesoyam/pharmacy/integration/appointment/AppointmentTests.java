@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.hesoyam.pharmacy.appointment.dto.CounselingReportDTO;
 import com.hesoyam.pharmacy.feedback.dto.EmployeeComplaintCreateDTO;
 import com.hesoyam.pharmacy.feedback.dto.PharmacyComplaintCreateDTO;
 import com.hesoyam.pharmacy.user.model.User;
@@ -73,9 +74,25 @@ public class AppointmentTests {
     @Test
     @WithUserDetails(value = "hesoyampharmacy+mila@gmail.com")
     void searchForAppointmentsInvalidDate() throws Exception{
-        mvc.perform(get("//appointments-for-pharmacist/2021-02-18T17:23:29.176!2021-02-17T17:23:29.176")
+        mvc.perform(get("/appointment/appointments-for-pharmacist/2021-02-18T17:23:29.176!2021-02-17T17:23:29.176")
                 .with(user(getUserDetails()))).andExpect(status().is(404));
     }
+
+    @Test
+    @WithUserDetails(value = "hesoyampharmacy+mila@gmail.com")
+    void finishInexistingAppointment() throws Exception{
+        mvc.perform(post("/counseling/finish-counseling").contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(getInvalidCounselingDTORequestJSON()).with(user(getUserDetails()))).andExpect(status().is(400));
+    }
+
+    private String getInvalidCounselingDTORequestJSON() throws JsonProcessingException {
+        com.hesoyam.pharmacy.appointment.dto.CounselingReportDTO counselingReportDTO = new CounselingReportDTO();
+        counselingReportDTO.setReport("");
+        counselingReportDTO.setFrom(LocalDateTime.now());
+        counselingReportDTO.setPatientEmail("hesoyampharmacy+blabla@gmail.com");
+        return objectWriter.writeValueAsString(counselingReportDTO);
+    }
+
 
 
     private String getInvalidBookingRequestJSON() throws JsonProcessingException {
