@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,6 +43,7 @@ public class VacationRequestService implements IVacationRequestService {
     }
 
     @Override
+    @Transactional
     public VacationRequest reject(User user, VacationRequestDTO vacationRequest) throws IllegalAccessException {
         VacationRequest rejectingVacationRequest = vacationRequestRepository.getOne(vacationRequest.getId());
 
@@ -58,13 +60,13 @@ public class VacationRequestService implements IVacationRequestService {
             else
                 throw new IllegalAccessException(String.format("System administrator doesn't have a permission to reject pharmacist vacation request [id: '%s']", rejectingVacationRequest.getId()));
         }
-
         VacationRequest rejectedVacationRequest = vacationRequestRepository.save(rejectingVacationRequest);
         applicationEventPublisher.publishEvent(new OnVacationRequestRejectionEvent(rejectedVacationRequest));
         return rejectedVacationRequest;
     }
 
     @Override
+    @Transactional
     public VacationRequest accept(User user, Long id) throws IllegalAccessException {
         VacationRequest acceptingVacationRequest = vacationRequestRepository.getOne(id);
 

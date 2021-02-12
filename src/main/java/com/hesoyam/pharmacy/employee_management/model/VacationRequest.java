@@ -21,6 +21,10 @@ public class VacationRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Version
+    @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+    private Long version = 0l;
+
     @Enumerated(EnumType.STRING)
     private VacationRequestStatus status;
 
@@ -41,6 +45,14 @@ public class VacationRequest {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public VacationRequestStatus getStatus() {
