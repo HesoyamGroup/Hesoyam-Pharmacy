@@ -66,6 +66,13 @@ public class MedicineReservationTests {
                 .content(getInvalidCodeJSON()).with(user(getUserDetails()))).andExpect(status().is(400));
     }
 
+    @Test
+    @WithUserDetails(value = "hesoyampharmacy+mila@gmail.com")
+    void confirmInvalidReservationCode() throws Exception {
+        mvc.perform(post("/medicine-reservation/confirm-pickup").contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(getInvalidCodeJSON()).with(user(getUserDetails()))).andExpect(status().is(404));
+    }
+
     private User getUserDetails(){
         UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext (). getAuthentication ();
         return (User) authentication.getPrincipal ();

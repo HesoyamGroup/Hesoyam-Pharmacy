@@ -191,7 +191,7 @@ public class MedicineReservationService implements IMedicineReservationService {
     public boolean confirmPickup(String extractCode) throws MedicineReservationNotFoundException {
         String emailBody = "This email is confirmation that you have successfully picked up order #";
         MedicineReservation toUpdate =  getByMedicineReservationCode(extractCode);
-        if(!toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED) &&
+        if(toUpdate != null && !toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED) &&
                 !(toUpdate.getPickUpDate().isBefore(LocalDateTime.now()) && toUpdate.getPickUpDate().isAfter(
                         LocalDateTime.now().minus(24, ChronoUnit.HOURS)))) {
 
