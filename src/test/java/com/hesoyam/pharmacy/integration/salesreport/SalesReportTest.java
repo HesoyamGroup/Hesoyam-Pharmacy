@@ -82,18 +82,6 @@ class SalesReportTest {
                 .andExpect(jsonPath("$..labels[1]").value("2021"));
     }
 
-    @Test
-    @WithUserDetails(value = "hesoyampharmacy+dragic@gmail.com")
-    void testRevenueReport() throws Exception {
-        mvc.perform(post("/sales/revenue")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{\"from\":\"2020-12-01\",\"to\":\"2020-12-31\"}")
-                .with(user(getUserDetails())))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.labels", hasSize(11)));
-    }
-
     private User getUserDetails(){
         UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
