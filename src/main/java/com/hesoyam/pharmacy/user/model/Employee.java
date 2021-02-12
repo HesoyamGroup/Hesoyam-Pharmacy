@@ -13,6 +13,8 @@ import com.hesoyam.pharmacy.util.DateTimeRange;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -66,6 +68,18 @@ public abstract class Employee extends User {
    public void removeAllShift() {
       if (shifts != null)
          shifts.clear();
+   }
+
+   public boolean generateShifts(DateTimeRange dayRange, LocalTime shiftFrom, LocalTime shiftTo, Pharmacy pharmacy){
+      for (LocalDate day: dayRange.getDays()) {
+         DateTimeRange dateTimeRange = new DateTimeRange(day.atTime(shiftFrom), day.atTime(shiftTo));
+         if(getShifts().stream().noneMatch(shift -> shift.getDateTimeRange().overlaps(dateTimeRange))){
+            Shift shift = new Shift(dateTimeRange, ShiftType.WORK, pharmacy);
+            addShift(shift);
+         } else
+            return false;
+      }
+      return true;
    }
 
    @Override

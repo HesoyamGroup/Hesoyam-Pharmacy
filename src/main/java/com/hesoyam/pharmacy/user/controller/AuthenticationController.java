@@ -12,11 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -166,7 +168,19 @@ public class AuthenticationController {
         } catch (UserNotUniqueException exc) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+    }
 
+    @PostMapping("/register-pharmacist")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<PharmacistDetailsDTO> createPharmacist(@RequestBody @Valid PharmacistRegistrationDTO registrationDTO, @AuthenticationPrincipal User user){
+        try{
+            Pharmacist pharmacist = userService.registerPharmacist(registrationDTO, user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new PharmacistDetailsDTO(pharmacist));
+        } catch(InvalidRegisterEmployeeRequestException | IllegalArgumentException ex){
+            return ResponseEntity.badRequest().build();
+        } catch(UserNotUniqueException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 
     @PostMapping("/register-supplier-account")
