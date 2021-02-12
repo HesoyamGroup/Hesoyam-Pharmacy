@@ -81,7 +81,7 @@ public class CheckUpController {
         }
     }
 
-    @PreAuthorize("hasRole('PATIENT')")
+    @PreAuthorize("hasAnyRole('PATIENT', 'ADMINISTRATOR')")
     @GetMapping(value = "/free/dermatologist/{dermatologistId}")
     public ResponseEntity<List<FreeCheckupDTO>> getUpcomingFreeCheckupsByEmployee(@PathVariable Long dermatologistId, @RequestParam String pharmacy) {
 
