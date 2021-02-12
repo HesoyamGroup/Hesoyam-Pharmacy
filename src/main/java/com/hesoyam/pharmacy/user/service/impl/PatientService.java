@@ -54,8 +54,7 @@ public class PatientService implements IPatientService {
 
     @Override
     public Patient update(Patient patientData) throws PatientNotFoundException {
-        Patient patient = patientRepository.getOne(patientData.getId());
-        if(patient == null) throw new PatientNotFoundException(patientData.getId());
+        Patient patient = patientRepository.findById(patientData.getId()).orElseThrow(() -> new PatientNotFoundException(patientData.getId()));
         patient = patientRepository.save(patientData);
 
         return patient;

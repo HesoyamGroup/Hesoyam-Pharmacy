@@ -58,8 +58,10 @@ public class EPrescriptionController {
     }
 
     private String randomizeFileName(MultipartFile multipartFile){
-        String name = multipartFile.getOriginalFilename().split("\\.")[0];
-        String extension = multipartFile.getOriginalFilename().split("\\.")[1];
+        String originalFileName = multipartFile.getOriginalFilename();
+        if(originalFileName == null) return "";
+        String name = originalFileName.split("\\.")[0];
+        String extension = originalFileName.split("\\.")[1];
         name += UUID.randomUUID().toString();
         return name + "." + extension;
     }

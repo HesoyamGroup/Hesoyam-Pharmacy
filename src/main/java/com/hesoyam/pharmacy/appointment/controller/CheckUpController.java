@@ -106,9 +106,7 @@ public class CheckUpController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new FreeCheckupDTO());
         } catch (UserPenalizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new FreeCheckupDTO());
-        }catch (IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }catch (ObjectOptimisticLockingFailureException e){
+        }catch (IllegalArgumentException | ObjectOptimisticLockingFailureException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
@@ -174,7 +172,7 @@ public class CheckUpController {
             allCheckUps.forEach(checkUp -> dtos.add(new CheckUpDTO(checkUp)));
             return new ResponseEntity<>(dtos, HttpStatus.OK);
         }
-        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PostMapping(value = "/finish-checkup")

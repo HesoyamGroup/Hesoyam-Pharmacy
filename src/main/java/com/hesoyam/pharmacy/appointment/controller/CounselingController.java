@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.appointment.controller;
 
 import com.hesoyam.pharmacy.appointment.dto.CounselingDTO;
 import com.hesoyam.pharmacy.appointment.dto.CounselingIDDTO;
+import com.hesoyam.pharmacy.appointment.dto.CounselingReportDTO;
 import com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingCancellationPeriodExpiredException;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
@@ -65,7 +66,7 @@ public class CounselingController {
 
     @PostMapping(value = "/finish-counseling")
     @PreAuthorize("hasRole('PHARMACIST')")
-    public ResponseEntity<String> finishCounseling(@RequestBody @Valid com.hesoyam.pharmacy.appointment.dto.CounselingReportDTO counselingReportDTO,
+    public ResponseEntity<String> finishCounseling(@RequestBody @Valid CounselingReportDTO counselingReportDTO,
                                                    @AuthenticationPrincipal Pharmacist user){
         Patient patient = patientService.getByEmail(counselingReportDTO.getPatientEmail());
         try {
