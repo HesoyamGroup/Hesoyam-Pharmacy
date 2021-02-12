@@ -73,7 +73,7 @@ public class CheckUpService implements ICheckUpService {
         List<CheckUp> checkUps;
 
         if(pharmacyId == null || pharmacyId.isEmpty())
-            checkUps = checkUpRepository.getAllByDermatologist_Id(dermatologistId);
+            checkUps = checkUpRepository.getAllByDermatologist_IdAndAppointmentStatus(dermatologistId, AppointmentStatus.FREE);
         else
             checkUps = checkUpRepository.getAllByDermatologist_IdAndPharmacy_IdAndAppointmentStatus(dermatologistId, Long.parseLong(pharmacyId), AppointmentStatus.FREE);
         return getUpcomingCheckUps(checkUps);
