@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,8 @@ public class LoyaltyController {
             return ResponseEntity.ok(loyaltyAccountService.updateLoyaltyProgramConfig(loyaltyProgramConfigUpdateDTO));
         }catch (EntityNotFoundException entityNotFoundException){
             return ResponseEntity.notFound().build();
+        }catch (ObjectOptimisticLockingFailureException e){
+            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();
         }
     }
 
@@ -62,6 +65,8 @@ public class LoyaltyController {
             return ResponseEntity.badRequest().build();
         } catch (EntityNotFoundException e){
             return ResponseEntity.notFound().build();
+        }catch (ObjectOptimisticLockingFailureException e){
+            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();
         }
     }
 

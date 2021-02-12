@@ -1,10 +1,8 @@
 package com.hesoyam.pharmacy.user.controller;
 
 import com.hesoyam.pharmacy.appointment.service.IAppointmentService;
-import com.hesoyam.pharmacy.user.dto.DermatologistBasicInformationDTO;
-import com.hesoyam.pharmacy.user.dto.DermatologistDetailsDTO;
-import com.hesoyam.pharmacy.user.dto.EmployeeBasicDTO;
-import com.hesoyam.pharmacy.user.dto.PatientDTO;
+import com.hesoyam.pharmacy.user.dto.*;
+import com.hesoyam.pharmacy.user.mapper.DermatologistMapper;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.Employee;
 import com.hesoyam.pharmacy.user.model.User;
@@ -17,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +37,13 @@ public class DermatologistController {
         dermatologists.forEach(dermatologist -> dermatologistsDTO.add(new DermatologistDetailsDTO(dermatologist)));
 
         return new ResponseEntity<>(dermatologistsDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/unsorted")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<List<EmployeeBasicDTO>> getUnsortedDermatologistsByAdministrator(@AuthenticationPrincipal User user){
+        List<Dermatologist> dermatologists = dermatologistService.getUnsortedDermatologistsByAdministrator(user);
+        return ResponseEntity.ok().body(DermatologistMapper.getBasicInfoList(dermatologists));
     }
 
     @GetMapping(value = "/patients-for-dermatologist")
@@ -73,6 +80,36 @@ public class DermatologistController {
     public ResponseEntity<DermatologistBasicInformationDTO> getDermatologistEditableInformation(@AuthenticationPrincipal User
                                                                                                        user){
         return new ResponseEntity<>(new DermatologistBasicInformationDTO((Dermatologist) user), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/add-to-my-pharmacy", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<EmployeeBasicDTO> addDermatologistToAdministratorPharmacy(@AuthenticationPrincipal User user, @RequestBody @Valid DermatologistAddPharmacyDTO dermatologist){
+        try{
+            Dermatologist addedDermatologist = dermatologistService.addDermatologistToAdministratorPharmacy(user, dermatologist);
+            return ResponseEntity.ok().body(new EmployeeBasicDTO(addedDermatologist));
+        } catch(EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        } catch(IllegalAccessException e){
+            return ResponseEntity.badRequest().build();
+        } catch(IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<Void> removeFromPharmacy(@PathVariable Long id, @AuthenticationPrincipal User user){
+        try{
+            dermatologistService.removeFromPharmacy(id, user);
+            return ResponseEntity.ok().build();
+        } catch(EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        } catch(IllegalAccessException e){
+            return ResponseEntity.badRequest().build();
+        } catch(IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 
 

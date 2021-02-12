@@ -394,7 +394,7 @@ INSERT INTO users
 (first_name, last_name, gender, address_line, city_id, latitude, longitude, telephone, email, password, last_password_reset_date, enabled, role_enum, password_reset)
 VALUES
 ('Veselin', 'Tomić', 'MALE', 'Rumenačka 147', 1, 45.265666787857164, 19.81474531978888, '4444444444', 'hesoyampharmacy+veselin@gmail.com', '$2a$10$Cz0brjWGJa525Fd/ub3nW.U1aLsYRYp7mslmoh2B7Gcm/VQb4CTOS', to_timestamp('04-01-2021', 'DD-MM-YYYY'), true, 'PATIENT', false);
-INSERT INTO patient (id, penalty_points) VALUES (14, 3);
+INSERT INTO patient (id, penalty_points) VALUES (14, 2);
 INSERT INTO user_roles (user_id, role_id) VALUES (14, 2);
 
 -- 15
@@ -453,9 +453,9 @@ INSERT INTO storage_item(stock,reserved, medicine_id, storage_id) VALUES (6,0, 2
 -- Medicine Reservation
 -----------------------
 INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES ('sdadasdadadasasdasasdda', 'CREATED', '2021-02-01 23:59:59', 14, 1);
+VALUES ('sdadasdadadasasdasasdda', 'ABSENT', '2021-02-01 23:59:59', 14, 1);
 INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
-VALUES ('wqksdhajdhaushydhwqkjmsdkami', 'CREATED', '2021-02-08 23:59:59', 14, 1);
+VALUES ('wqksdhajdhaushydhwqkjmsdkami', 'ABSENT', '2021-02-08 23:59:59', 14, 1);
 INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)
 VALUES ('bcvobocjiwque878dusijksdfj', 'CREATED', '2021-03-01 23:59:59', 14, 1);
 INSERT INTO medicine_reservation(code, medicine_reservation_status, pick_up_date, patient_id, pharmacy_id)

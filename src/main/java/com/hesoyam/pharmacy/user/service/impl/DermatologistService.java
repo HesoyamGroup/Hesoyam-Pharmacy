@@ -1,8 +1,12 @@
 package com.hesoyam.pharmacy.user.service.impl;
 
+import com.hesoyam.pharmacy.pharmacy.model.Pharmacy;
+import com.hesoyam.pharmacy.user.dto.DermatologistAddPharmacyDTO;
 import com.hesoyam.pharmacy.user.exceptions.DermatologistNotFoundException;
+import com.hesoyam.pharmacy.user.model.Administrator;
 import com.hesoyam.pharmacy.user.model.Dermatologist;
 import com.hesoyam.pharmacy.user.model.User;
+import com.hesoyam.pharmacy.user.repository.AdministratorRepository;
 import com.hesoyam.pharmacy.user.repository.DermatologistRepository;
 import com.hesoyam.pharmacy.user.service.IDermatologistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,9 @@ public class DermatologistService implements IDermatologistService {
     
     @Autowired
     private DermatologistRepository dermatologistRepository;
+
+    @Autowired
+    private AdministratorRepository administratorRepository;
 
     @Override
     public Dermatologist getById(Long id) throws DermatologistNotFoundException {
@@ -51,5 +58,46 @@ public class DermatologistService implements IDermatologistService {
             default:
                 return new ArrayList<>();
         }
+    }
+
+    @Override
+    public List<Dermatologist> getUnsortedDermatologistsByAdministrator(User user) {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+        Pharmacy searchPharmacy = administrator.getPharmacy();
+        List<Dermatologist> dermatologists = dermatologistRepository.findAll();
+        return dermatologists.stream().filter(dermatologist -> !dermatologist.isWorkingAt(searchPharmacy)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Dermatologist addDermatologistToAdministratorPharmacy(User user, DermatologistAddPharmacyDTO dermatologist) throws IllegalAccessException {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+        Pharmacy pharmacy = administrator.getPharmacy();
+        Dermatologist dermatologistToAdd = dermatologistRepository.getOne(dermatologist.getId());
+
+        if(!dermatologistToAdd.addPharmacy(pharmacy))
+            throw new IllegalAccessException("Pharmacy is already added to dermatologist");
+
+        if(!dermatologistToAdd.generateShifts(dermatologist.getShiftRange(), dermatologist.getShiftFrom(), dermatologist.getShiftTo(), pharmacy))
+            throw new IllegalArgumentException("Dermatologist has already defined shifts for this period");
+
+        return dermatologistRepository.save(dermatologistToAdd);
+    }
+
+    @Override
+    public void removeFromPharmacy(Long id, User user) throws IllegalAccessException {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+        Dermatologist dermatologist = dermatologistRepository.getOne(id);
+        Pharmacy pharmacy = administrator.getPharmacy();
+
+        if(!dermatologist.canRemovePharmacy(pharmacy))
+            throw new IllegalArgumentException("Dermatologist has scheduled appointments");
+
+        if(!dermatologist.removePharmacy(pharmacy))
+            throw new IllegalAccessException("Pharmacy is already removed from dermatologist");
+
+        dermatologist.clearAppointmentsForPharmacy(pharmacy);
+        dermatologist.clearShiftsFor(pharmacy);
+
+        dermatologistRepository.save(dermatologist);
     }
 }

@@ -16,6 +16,10 @@ public class LoyaltyProgramConfig {
     @UpdateTimestamp
     private Timestamp lastUpdated;
 
+    @Version
+    @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+    private Integer version;
+
     @Column
     @Min(0)
     private int checkUpPoints;
@@ -54,5 +58,12 @@ public class LoyaltyProgramConfig {
 
     public void setCounselingPoints(int counselingPrice) {
         this.counselingPoints = counselingPrice;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

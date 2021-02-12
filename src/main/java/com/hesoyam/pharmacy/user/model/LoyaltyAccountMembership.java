@@ -21,6 +21,10 @@ public class LoyaltyAccountMembership {
    @Length(min=2, max=75, message = "Loyalty account membership name must have at least 2 characters.(75max)")
    private String name;
 
+   @Version
+   @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
+   private Integer version;
+
    @Column
    @Min(0)
    @Max(100)
@@ -73,5 +77,13 @@ public class LoyaltyAccountMembership {
 
    public void setLoyaltyProgramConfig(LoyaltyProgramConfig loyaltyProgramConfig) {
       this.loyaltyProgramConfig = loyaltyProgramConfig;
+   }
+
+   public Integer getVersion() {
+      return version;
+   }
+
+   public void setVersion(Integer version) {
+      this.version = version;
    }
 }

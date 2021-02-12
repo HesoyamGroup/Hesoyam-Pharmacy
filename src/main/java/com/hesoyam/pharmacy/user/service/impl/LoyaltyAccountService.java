@@ -12,13 +12,21 @@ import com.hesoyam.pharmacy.user.repository.LoyaltyAccountMembershipRepository;
 import com.hesoyam.pharmacy.user.repository.LoyaltyAccountRepository;
 import com.hesoyam.pharmacy.user.repository.LoyaltyProgramConfigRepository;
 import com.hesoyam.pharmacy.user.service.ILoyaltyAccountService;
+import org.hibernate.exception.LockAcquisitionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.CannotAcquireLockException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class LoyaltyAccountService implements ILoyaltyAccountService {
@@ -44,15 +52,17 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public LoyaltyProgramConfig updateLoyaltyProgramConfig(LoyaltyProgramConfigUpdateDTO loyaltyProgramConfigUpdateDTO) {
         LoyaltyProgramConfig dbConfig = loyaltyProgramConfigRepository.getOne(loyaltyProgramConfigUpdateDTO.getId());
         dbConfig.setCounselingPoints(loyaltyProgramConfigUpdateDTO.getCounselingPoints());
         dbConfig.setCheckUpPoints(loyaltyProgramConfigUpdateDTO.getCheckUpPoints());
-
         return loyaltyProgramConfigRepository.save(dbConfig);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    @Retryable(value = {CannotAcquireLockException.class},maxAttempts = 3, backoff = @Backoff(750))
     public LoyaltyAccountMembership updateLoyaltyAccountMembership(LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO) throws LoyaltyAccountMembershipInvalidUpdateException {
         validateLoyaltyAccountMembership(loyaltyAccountMembershipDTO);
         LoyaltyAccountMembership loyaltyAccountMembership = loyaltyAccountMembershipRepository.getOne(loyaltyAccountMembershipDTO.getId());
@@ -68,6 +78,7 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public LoyaltyAccountMembership createLoyaltyAccountMembership(LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO) throws LoyaltyAccountMembershipInvalidUpdateException {
         loyaltyAccountMembershipDTO.setId(-1l);
         validateLoyaltyAccountMembership(loyaltyAccountMembershipDTO);
@@ -142,7 +153,8 @@ public class LoyaltyAccountService implements ILoyaltyAccountService {
 
 
 
-    private void validateLoyaltyAccountMembership(LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO) throws LoyaltyAccountMembershipInvalidUpdateException {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void validateLoyaltyAccountMembership(LoyaltyAccountMembershipDTO loyaltyAccountMembershipDTO) throws LoyaltyAccountMembershipInvalidUpdateException {
         int membershipsWithSameMinPointsCount = loyaltyAccountMembershipRepository.countAllByMinPointsAndIdIsNot(loyaltyAccountMembershipDTO.getMinPoints(), loyaltyAccountMembershipDTO.getId());
         if(membershipsWithSameMinPointsCount != 0) throw new LoyaltyAccountMembershipInvalidUpdateException("Memberships with same min points value are not allowed.");
     }
