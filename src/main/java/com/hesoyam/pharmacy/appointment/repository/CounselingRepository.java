@@ -24,10 +24,10 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long> {
     List<Counseling> getAllByPatient_Id(Long id);
     List<Counseling> getAllByPatient_IdAndAppointmentStatus(Long id, AppointmentStatus appointmentStatus);
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+
     int countCounselingsByPharmacistAndDateTimeRange_From(Pharmacist user, LocalDateTime range);
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<Appointment> getAllByPharmacist(Pharmacist user);
 
     @Override

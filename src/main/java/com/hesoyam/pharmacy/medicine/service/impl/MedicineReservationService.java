@@ -19,12 +19,15 @@ import com.hesoyam.pharmacy.user.exceptions.UserPenalizedException;
 import com.hesoyam.pharmacy.user.model.Patient;
 import com.hesoyam.pharmacy.user.model.User;
 import com.hesoyam.pharmacy.user.service.IPatientService;
+import com.hesoyam.pharmacy.util.notifications.EmailClient;
+import com.hesoyam.pharmacy.util.notifications.EmailObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -48,8 +51,12 @@ public class MedicineReservationService implements IMedicineReservationService {
     IMedicineService medicineService;
 
 
+    @Autowired
+    EmailClient client;
+
     private Random random = new Random();
     private static final String SOURCES ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+
 
     @Override
     public MedicineReservation getById(Long id) throws MedicineReservationNotFoundException {
@@ -173,6 +180,27 @@ public class MedicineReservationService implements IMedicineReservationService {
             text[i] = SOURCES.charAt(random.nextInt(SOURCES.length()));
         }
         return new String(text);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean confirmPickup(String extractCode) throws MedicineReservationNotFoundException {
+        String emailBody = "This email is confirmation that you have successfully picked up order #";
+        MedicineReservation toUpdate =  getByMedicineReservationCode(extractCode);
+        if(toUpdate != null && !toUpdate.getMedicineReservationStatus().equals(MedicineReservationStatus.COMPLETED) &&
+                !(toUpdate.getPickUpDate().isBefore(LocalDateTime.now()) && toUpdate.getPickUpDate().isAfter(
+                        LocalDateTime.now().minus(24, ChronoUnit.HOURS)))) {
+
+            toUpdate.setMedicineReservationStatus(MedicineReservationStatus.COMPLETED);
+            update(toUpdate);
+
+            EmailObject email = new EmailObject("Medicine pickup confirmation!",
+                    toUpdate.getPatient().getEmail(), emailBody + toUpdate.getCode() + "!");
+            client.sendEmail(email);
+            return true;
+
+        }
+        return false;
     }
 
 

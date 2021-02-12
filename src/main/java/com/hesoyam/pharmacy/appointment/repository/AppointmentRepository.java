@@ -14,10 +14,10 @@ import java.util.List;
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     int countAppointmentsByPatientAndAppointmentStatusAndPharmacy(Patient patient, AppointmentStatus appointmentStatus, Pharmacy pharmacy);
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+
     int countAppointmentsByPatientAndDateTimeRange_From(Patient patient, LocalDateTime range);
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<Appointment> getAllByPatient(Patient patient);
 
 

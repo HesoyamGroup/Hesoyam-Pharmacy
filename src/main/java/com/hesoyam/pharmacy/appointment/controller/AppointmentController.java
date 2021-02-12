@@ -82,17 +82,21 @@ public class AppointmentController {
         String[] parts = dateTimeRange.split("!");
         LocalDateTime fromDate = LocalDateTime.parse(parts[0].trim().substring(0, parts[0].trim().length() - 1));
         LocalDateTime toDate = LocalDateTime.parse(parts[1].trim().substring(0, parts[0].trim().length() - 1));
+        if(fromDate.isBefore(toDate)) {
 
-        try{
-            User user = userService.findByEmail(username);
-            List<CounselingDTO> counselings = convertToCounselingDTO(appointmentService.getCounselingsForPharmacist(
-                    new DateTimeRange(fromDate, toDate), (Pharmacist) user));
+            try {
+                User user = userService.findByEmail(username);
+                List<CounselingDTO> counselings = convertToCounselingDTO(appointmentService.getCounselingsForPharmacist(
+                        new DateTimeRange(fromDate, toDate), (Pharmacist) user));
 
-            return ResponseEntity.ok().body(counselings);
+                return ResponseEntity.ok().body(counselings);
+            } catch (UserNotFoundException e) {
+                return ResponseEntity.notFound().build();
+            }
         }
-        catch (UserNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        else {
+            return ResponseEntity.notFound().build();
+
         }
     }
 
@@ -124,8 +128,8 @@ public class AppointmentController {
             return ResponseEntity.ok().body(checkUps);
         }
         catch (UserNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -202,7 +206,7 @@ public class AppointmentController {
                                             appointmentBookingDTO.getTo()), appointmentBookingDTO.getPrice());
                         }
                     } catch (PharmacistNotFoundException e) {
-                        e.printStackTrace();
+                        return ResponseEntity.badRequest().build();
                     }
                 }
                 else {
@@ -215,7 +219,7 @@ public class AppointmentController {
                                             appointmentBookingDTO.getTo()), appointmentBookingDTO.getPrice());
                         }
                     } catch (DermatologistNotFoundException e) {
-                        e.printStackTrace();
+                        return ResponseEntity.badRequest().build();
                     }
                 }
 
