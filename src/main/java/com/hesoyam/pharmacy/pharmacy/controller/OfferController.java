@@ -73,9 +73,7 @@ public class OfferController {
             return ResponseEntity.ok().body(offersDTO);
         } catch (IllegalAccessException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        } catch (IllegalArgumentException e){
-            return ResponseEntity.badRequest().build();
-        } catch (ObjectOptimisticLockingFailureException e){
+        } catch (IllegalArgumentException | ObjectOptimisticLockingFailureException e){
             return ResponseEntity.badRequest().build();
         }
     }

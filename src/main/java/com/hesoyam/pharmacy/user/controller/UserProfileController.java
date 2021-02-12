@@ -38,6 +38,8 @@ public class UserProfileController {
     @Autowired
     private ICountryService countryService;
 
+    private static final String INTERNAL_SERVER_ERROR = "internal server error";
+
 
     @GetMapping("/user-information")
     public ResponseEntity<UserProfileDTO> getProfileInformation(@AuthenticationPrincipal User user){
@@ -190,7 +192,7 @@ public class UserProfileController {
         }
         catch (UserNotFoundException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -216,7 +218,7 @@ public class UserProfileController {
         }
         catch (UserNotFoundException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -236,7 +238,7 @@ public class UserProfileController {
         }
         catch (UserNotFoundException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -251,7 +253,7 @@ public class UserProfileController {
         }
         catch (UserNotFoundException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal server error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -46,9 +46,7 @@ public class ComplaintController {
         replyDTO.setSysAdmin(sysAdmin);
         try {
             return ResponseEntity.ok(replyService.reply(replyDTO));
-        } catch (InvalidReplyRequest invalidReplyRequest) {
-            return ResponseEntity.badRequest().build();
-        }catch (ObjectOptimisticLockingFailureException e){
+        } catch (InvalidReplyRequest | ObjectOptimisticLockingFailureException invalidReplyRequest) {
             return ResponseEntity.badRequest().build();
         }
     }
