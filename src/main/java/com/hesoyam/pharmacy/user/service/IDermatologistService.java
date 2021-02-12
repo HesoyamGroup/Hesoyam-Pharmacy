@@ -16,4 +16,6 @@ public interface IDermatologistService {
     List<Dermatologist> getUnsortedDermatologistsByAdministrator(User user);
 
     Dermatologist addDermatologistToAdministratorPharmacy(User user, DermatologistAddPharmacyDTO dermatologist) throws IllegalAccessException;
+
+    void removeFromPharmacy(Long id, User user) throws IllegalAccessException;
 }

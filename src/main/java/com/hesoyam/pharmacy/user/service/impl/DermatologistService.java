@@ -82,4 +82,22 @@ public class DermatologistService implements IDermatologistService {
 
         return dermatologistRepository.save(dermatologistToAdd);
     }
+
+    @Override
+    public void removeFromPharmacy(Long id, User user) throws IllegalAccessException {
+        Administrator administrator = administratorRepository.getOne(user.getId());
+        Dermatologist dermatologist = dermatologistRepository.getOne(id);
+        Pharmacy pharmacy = administrator.getPharmacy();
+
+        if(!dermatologist.canRemovePharmacy(pharmacy))
+            throw new IllegalArgumentException("Dermatologist has scheduled appointments");
+
+        if(!dermatologist.removePharmacy(pharmacy))
+            throw new IllegalAccessException("Pharmacy is already removed from dermatologist");
+
+        dermatologist.clearAppointmentsForPharmacy(pharmacy);
+        dermatologist.clearShiftsFor(pharmacy);
+
+        dermatologistRepository.save(dermatologist);
+    }
 }

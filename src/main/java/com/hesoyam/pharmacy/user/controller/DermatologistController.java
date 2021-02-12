@@ -97,5 +97,20 @@ public class DermatologistController {
         }
     }
 
+    @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<Void> removeFromPharmacy(@PathVariable Long id, @AuthenticationPrincipal User user){
+        try{
+            dermatologistService.removeFromPharmacy(id, user);
+            return ResponseEntity.ok().build();
+        } catch(EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        } catch(IllegalAccessException e){
+            return ResponseEntity.badRequest().build();
+        } catch(IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
 
 }
