@@ -76,8 +76,7 @@ public class UserService implements UserDetailsService, IUserService {
 
     @Override
     public User update(User userData) throws UserNotFoundException {
-        User user = userRepository.getOne(userData.getId());
-        if(user == null) throw new UserNotFoundException(userData.getId());
+        User user = userRepository.findById(userData.getId()).orElseThrow(() -> new UserNotFoundException(userData.getId()));
         user.update(userData);
         user = userRepository.save(user);
 
@@ -188,7 +187,6 @@ public class UserService implements UserDetailsService, IUserService {
         loadUserAccountWithRegistrationData(sysAdmin, registrationDTO, true, true);
         sysAdmin.setRoleEnum(RoleEnum.SYS_ADMIN);
 
-        //TODO: Find by name parameter should be saved somewhere globally.
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_SYS_ADMIN");
         sysAdmin.setAuthorities(roles);
 
@@ -231,7 +229,6 @@ public class UserService implements UserDetailsService, IUserService {
         administrator.setRoleEnum(RoleEnum.ADMINISTRATOR);
         administrator.setPharmacy(administratorRegistrationDTO.getPharmacy());
 
-        //TODO: Find by name parameter should be saved somewhere globally.
         List<Role> roles = (List<Role>) roleService.findByName("ROLE_ADMINISTRATOR");
         administrator.setAuthorities(roles);
 

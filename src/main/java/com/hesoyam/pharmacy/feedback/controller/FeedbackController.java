@@ -179,9 +179,8 @@ public class FeedbackController {
                 employeeFeedback.setEmployee(employeeService.getOne(employeeFeedbackDTO.getEmployeeId()));
                 employeeFeedback.setPatient(patientService.getById(user.getId()));
 
-                employeeFeedback = employeeFeedbackService.create(employeeFeedback);
+                employeeFeedbackService.create(employeeFeedback);
             }catch (PatientNotFoundException e){
-                e.printStackTrace();
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-2.0);
             }
         }
@@ -189,7 +188,6 @@ public class FeedbackController {
         try{
             employeeService.updateRating(employeeFeedbackDTO.getEmployeeId(), newRating);
         }catch (EmployeeNotFoundException e){
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-1.0);
         }
 
@@ -209,10 +207,9 @@ public class FeedbackController {
                 medicineFeedback.setPatient(patientService.getById(user.getId()));
                 medicineFeedback.setMedicine(medicineService.findById(medicineFeedbackDTO.getId()));
 
-                medicineFeedback = medicineFeedbackService.create(medicineFeedback);
+                medicineFeedbackService.create(medicineFeedback);
 
             } catch (PatientNotFoundException | MedicineNotFoundException e) {
-                e.printStackTrace();
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-2.0);
             }
         }
@@ -227,7 +224,6 @@ public class FeedbackController {
         try{
             medicineService.updateRating(medicineFeedbackDTO.getId(), newRating);
         }catch (MedicineNotFoundException e){
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-1.0);
         }
 
@@ -247,9 +243,8 @@ public class FeedbackController {
                 pharmacyFeedback.setComment(pharmacyFeedbackDTO.getComment());
                 pharmacyFeedback.setRating(pharmacyFeedbackDTO.getYourRating());
 
-                pharmacyFeedback = pharmacyFeedbackService.create(pharmacyFeedback);
+                pharmacyFeedbackService.create(pharmacyFeedback);
             } catch (PatientNotFoundException e) {
-                e.printStackTrace();
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-2.0);
             }
         }
@@ -264,7 +259,6 @@ public class FeedbackController {
         try{
             pharmacyService.updateRating(pharmacyFeedbackDTO.getPharmacyId(), newRating);
         } catch (PharmacyNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-1.0);
         }
 
@@ -274,7 +268,7 @@ public class FeedbackController {
 
     private boolean isMedicineInList(Long id, List<MedicineFeedbackDTO> medicineFeedbackDTOList){
         for(MedicineFeedbackDTO m: medicineFeedbackDTOList) {
-            if (m.getId() == id)
+            if (m.getId().equals(id))
                 return true;
         }
         return false;
@@ -282,7 +276,7 @@ public class FeedbackController {
 
     private boolean isEmployeeInList(Long id, List<EmployeeFeedbackDTO> employeeFeedbackDTOList){
         for(EmployeeFeedbackDTO d: employeeFeedbackDTOList){
-            if(d.getEmployeeId() == id)
+            if(d.getEmployeeId().equals(id))
                 return true;
         }
         return false;
@@ -290,7 +284,7 @@ public class FeedbackController {
 
     private boolean isInPharmacyList(Long id, List<PharmacyFeedbackDTO> pharmacyFeedbackDTOList){
         for(PharmacyFeedbackDTO p: pharmacyFeedbackDTOList){
-            if(p.getPharmacyId() == id)
+            if(p.getPharmacyId().equals(id))
                 return true;
         }
         return false;

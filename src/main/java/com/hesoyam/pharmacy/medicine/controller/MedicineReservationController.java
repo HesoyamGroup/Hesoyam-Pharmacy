@@ -71,9 +71,9 @@ public class MedicineReservationController {
 
             List<MedicineReservation> medicineReservationList = medicineReservationService.getByPatientId(user.getId());
             List<MedicineReservationDTO> medicineReservationDTOList = new ArrayList<>();
-            medicineReservationList.forEach(medicineReservation -> {
-                medicineReservationDTOList.add(new MedicineReservationDTO(medicineReservation));
-            });
+            medicineReservationList.forEach(medicineReservation ->
+                medicineReservationDTOList.add(new MedicineReservationDTO(medicineReservation))
+            );
 
             return ResponseEntity.ok().body(medicineReservationDTOList);
     }
@@ -103,9 +103,7 @@ public class MedicineReservationController {
                 return ResponseEntity.ok().build();
             } catch (MedicineReservationNotFoundException e) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            } catch (MedicineReservationExpiredCancellationException e){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }catch (ObjectOptimisticLockingFailureException e){
+            } catch (MedicineReservationExpiredCancellationException | ObjectOptimisticLockingFailureException e){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
 
@@ -123,7 +121,7 @@ public class MedicineReservationController {
             if(reservation != null)
                 return new ResponseEntity<>(new MedicineReservationPickupDTO(reservation), HttpStatus.OK);
             else
-                return new ResponseEntity<>(null, HttpStatus.OK);
+                return ResponseEntity.ok().build();
 
 
     }
@@ -142,17 +140,14 @@ public class MedicineReservationController {
                 toUpdate.setMedicineReservationStatus(MedicineReservationStatus.COMPLETED);
                 medicineReservationService.update(toUpdate);
 
-                // TODO: Izmeniti email da bude klijentski
                 EmailObject email = new EmailObject("Medicine pickup confirmation!",
-//                        toUpdate.getPatient().getEmail(), emailBody + toUpdate.getCode() + "!");
-                        "krickovicluka@gmail.com", emailBody + toUpdate.getCode() + "!");
+                        toUpdate.getPatient().getEmail(), emailBody + toUpdate.getCode() + "!");
                 client.sendEmail(email);
                 return true;
 
             }
             return false;
         } catch (MedicineReservationNotFoundException e) {
-            e.printStackTrace();
             return false;
         }
 
@@ -166,11 +161,8 @@ public class MedicineReservationController {
         try {
 
             toUpdate = medicineReservationService.getByMedicineReservationCode(extractCode);
-            if (medicineReservationService.cancelPickup(toUpdate)) return true;
-            return false;
-        } catch (MedicineReservationNotFoundException e) {
-            return false;
-        } catch (ObjectOptimisticLockingFailureException e){
+            return medicineReservationService.cancelPickup(toUpdate);
+        } catch (MedicineReservationNotFoundException | ObjectOptimisticLockingFailureException e) {
             return false;
         }
 

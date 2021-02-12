@@ -2,6 +2,7 @@ package com.hesoyam.pharmacy.appointment.controller;
 
 import com.hesoyam.pharmacy.appointment.dto.CounselingDTO;
 import com.hesoyam.pharmacy.appointment.dto.CounselingIDDTO;
+import com.hesoyam.pharmacy.appointment.dto.CounselingReportDTO;
 import com.hesoyam.pharmacy.appointment.dto.FutureCounselingDTO;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingCancellationPeriodExpiredException;
 import com.hesoyam.pharmacy.appointment.exceptions.CounselingNotFoundException;
@@ -65,7 +66,7 @@ public class CounselingController {
 
     @PostMapping(value = "/finish-counseling")
     @PreAuthorize("hasRole('PHARMACIST')")
-    public ResponseEntity<String> finishCounseling(@RequestBody @Valid com.hesoyam.pharmacy.appointment.dto.CounselingReportDTO counselingReportDTO,
+    public ResponseEntity<String> finishCounseling(@RequestBody @Valid CounselingReportDTO counselingReportDTO,
                                                    @AuthenticationPrincipal Pharmacist user){
         Patient patient = patientService.getByEmail(counselingReportDTO.getPatientEmail());
         try {
@@ -79,12 +80,10 @@ public class CounselingController {
                 therapyService.createFromItems(therapyItems);
                 therapyItemService.createFromList(therapyItems);
             } catch (PatientIsAllergicException e1) {
-                e1.printStackTrace();
                 return new ResponseEntity<>("Patient is allergic to medicine!", HttpStatus.OK);
             }
             return new ResponseEntity<>("Successfully finished counseling!", HttpStatus.OK);
         } catch (CounselingNotFoundException e) {
-            e.printStackTrace();
             return new ResponseEntity<>("Failed to finish counseling!", HttpStatus.NO_CONTENT);
         }
 
@@ -113,7 +112,7 @@ public class CounselingController {
             allCounselings.forEach(counseling -> dtos.add(new CounselingDTO(counseling)));
             return new ResponseEntity<>(dtos, HttpStatus.OK);
         }
-        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
@@ -172,9 +171,7 @@ public class CounselingController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (UserPenalizedException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }catch (IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }catch (ObjectOptimisticLockingFailureException e){
+        }catch (IllegalArgumentException | ObjectOptimisticLockingFailureException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
@@ -196,11 +193,7 @@ public class CounselingController {
             counseling = counselingService.update(counseling);
 
             return ResponseEntity.ok().body(new FutureCounselingDTO(counseling));
-        } catch (CounselingNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(new FutureCounselingDTO());
-        } catch (CounselingCancellationPeriodExpiredException e){
-            e.printStackTrace();
+        } catch (CounselingNotFoundException | CounselingCancellationPeriodExpiredException e) {
             return ResponseEntity.badRequest().body(new FutureCounselingDTO());
         }
     }
@@ -230,7 +223,7 @@ public class CounselingController {
 
     private boolean checkIfInList(Long id, List<PharmacySearchDTO> list){
         for(PharmacySearchDTO c: list){
-            if(c.getId() == id)
+            if(c.getId().equals(id))
                 return true;
         }
         return false;

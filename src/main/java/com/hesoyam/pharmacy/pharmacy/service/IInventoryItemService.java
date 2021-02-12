@@ -7,7 +7,6 @@ import com.hesoyam.pharmacy.pharmacy.model.InventoryItemPrice;
 import com.hesoyam.pharmacy.prescription.model.PrescriptionItem;
 import com.hesoyam.pharmacy.user.model.User;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 
@@ -18,8 +17,8 @@ public interface IInventoryItemService {
 
     List<InventoryItem> getAllByPharmacy(Long pharmacyId);
 
-    public InventoryItem update(InventoryItem inventoryItem) throws EntityNotFoundException;
-    InventoryItem getInventoryItemByPharmacyIdAndMedicineId(Long pharmacyId, Long medicineId) throws EntityNotFoundException;
+    public InventoryItem update(InventoryItem inventoryItem);
+    InventoryItem getInventoryItemByPharmacyIdAndMedicineId(Long pharmacyId, Long medicineId);
 
     void removeItems(List<PrescriptionItem> prescriptionItems, long pharmacyId);
 

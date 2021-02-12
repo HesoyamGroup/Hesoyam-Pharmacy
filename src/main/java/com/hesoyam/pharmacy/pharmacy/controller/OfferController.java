@@ -37,10 +37,8 @@ public class OfferController {
         try {
             return ResponseEntity.ok(offerService.create(createOfferDTO, user));
         }catch (EntityNotFoundException e){
-            e.printStackTrace();
             return ResponseEntity.notFound().build();
         }catch (InvalidCreateOfferException e){
-            e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
     }
@@ -73,9 +71,7 @@ public class OfferController {
             return ResponseEntity.ok().body(offersDTO);
         } catch (IllegalAccessException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        } catch (IllegalArgumentException e){
-            return ResponseEntity.badRequest().build();
-        } catch (ObjectOptimisticLockingFailureException e){
+        } catch (IllegalArgumentException | ObjectOptimisticLockingFailureException e){
             return ResponseEntity.badRequest().build();
         }
     }

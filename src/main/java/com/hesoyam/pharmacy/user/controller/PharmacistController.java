@@ -80,7 +80,6 @@ public class PharmacistController {
             return ResponseEntity.ok().body(pharmacistDTO);
         }
         catch (UserNotFoundException e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -89,9 +88,9 @@ public class PharmacistController {
     @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<List<UserSearchResult>> getPatientsForPharmacist(@AuthenticationPrincipal User user){
         List<UserSearchResult> converted = new ArrayList<>();
-        appointmentService.extractPatientsFromCounselings((Pharmacist) user).forEach(patient->{
-            converted.add(new UserSearchResult(patient, 0));
-        });
+        appointmentService.extractPatientsFromCounselings((Pharmacist) user).forEach(patient->
+            converted.add(new UserSearchResult(patient, 0))
+        );
         return new ResponseEntity<>(converted, HttpStatus.OK);
     }
 

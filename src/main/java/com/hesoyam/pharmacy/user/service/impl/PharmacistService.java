@@ -33,7 +33,6 @@ public class PharmacistService implements IPharmacistService {
         try {
             return getById(id).getPharmacy();
         } catch (PharmacistNotFoundException e) {
-            e.printStackTrace();
             return null;
 		}
 	}
