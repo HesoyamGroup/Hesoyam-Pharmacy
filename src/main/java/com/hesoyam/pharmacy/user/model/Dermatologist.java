@@ -49,15 +49,17 @@ public class Dermatologist extends Employee {
          addPharmacy(iter.next());
    }
 
-   public void addPharmacy(Pharmacy newPharmacy) {
+   public boolean addPharmacy(Pharmacy newPharmacy) {
       if (newPharmacy == null)
-         return;
+         return false;
       if (this.pharmacies == null)
          this.pharmacies = new ArrayList<>();
-      if (!this.pharmacies.contains(newPharmacy))
-      {
+      if (this.pharmacies.contains(newPharmacy)) {
+         return false;
+      } else{
          this.pharmacies.add(newPharmacy);
-         newPharmacy.addDermatologist(this);      
+         newPharmacy.addDermatologist(this);
+         return true;
       }
    }
 
