@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Dermatologist extends Employee {
@@ -63,13 +64,15 @@ public class Dermatologist extends Employee {
       }
    }
 
-   public void removePharmacy(Pharmacy oldPharmacy) {
+   public boolean removePharmacy(Pharmacy oldPharmacy) {
       if (oldPharmacy == null)
-         return;
+         return false;
       if (this.pharmacies != null && this.pharmacies.contains(oldPharmacy)) {
          this.pharmacies.remove(oldPharmacy);
          oldPharmacy.removeDermatologist(this);
-      }
+         return true;
+      } else
+         return false;
    }
 
    public void removeAllPharmacy() {
@@ -161,5 +164,16 @@ public class Dermatologist extends Employee {
          vacation.setPharmacy(pharmacy);
          addShift(vacation);
       }
+   }
+
+   @Override
+   public boolean canRemovePharmacy(Pharmacy pharmacy) {
+      return checkUps.stream().noneMatch(checkUp -> checkUp.isUpcoming() && checkUp.isTaken());
+   }
+
+   @Override
+   public void clearAppointmentsForPharmacy(Pharmacy pharmacy) {
+      List<CheckUp> checkUpsToRemove = getCheckUps().stream().filter(checkUp -> checkUp.getPharmacy().equals(pharmacy)).collect(Collectors.toList());
+      getCheckUps().removeAll(checkUpsToRemove);
    }
 }

@@ -17,6 +17,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Pharmacist extends Employee {
@@ -124,5 +125,16 @@ public class Pharmacist extends Employee {
       vacation.setDateTimeRange(vacationRequest.getDateTimeRange());
       vacation.setPharmacy(pharmacy);
       addShift(vacation);
+   }
+
+   @Override
+   public boolean canRemovePharmacy(Pharmacy pharmacy) {
+      return counselings.stream().noneMatch(counseling -> counseling.isUpcoming() && counseling.isTaken());
+   }
+
+   @Override
+   public void clearAppointmentsForPharmacy(Pharmacy pharmacy) {
+      List<Counseling> counselingsToRemove = getCounselings().stream().filter(counseling -> counseling.getPharmacy().equals(pharmacy)).collect(Collectors.toList());
+      getCounselings().removeAll(counselingsToRemove);
    }
 }

@@ -110,9 +110,19 @@ public abstract class Employee extends User {
    }
 
    public void clearShiftsFor(DateTimeRange dateTimeRange){
-      List<Shift> shiftsToRemove = shifts.stream().filter(shift -> shift.getType() == ShiftType.WORK && shift.getDateTimeRange().overlaps(dateTimeRange)).collect(Collectors.toList());
+      List<Shift> shiftsToRemove = getShifts().stream().filter(shift -> shift.getType() == ShiftType.WORK && shift.getDateTimeRange().overlaps(dateTimeRange)).collect(Collectors.toList());
       this.shifts.removeAll(shiftsToRemove);
    }
 
+   public void clearShiftsFor(Pharmacy pharmacy) {
+      List<Shift> shiftsToRemove = getShifts().stream().filter(shift -> shift.getPharmacy().equals(pharmacy)).collect(Collectors.toList());
+      getShifts().removeAll(shiftsToRemove);
+   }
+
    public abstract void addVacation(VacationRequest vacationRequest);
+
+    public abstract boolean canRemovePharmacy(Pharmacy pharmacy);
+
+   public abstract void clearAppointmentsForPharmacy(Pharmacy pharmacy);
+
 }
