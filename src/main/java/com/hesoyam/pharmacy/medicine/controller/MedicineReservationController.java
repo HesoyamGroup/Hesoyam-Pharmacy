@@ -124,14 +124,18 @@ public class MedicineReservationController {
 
     @PostMapping(value = "/confirm-pickup")
     @PreAuthorize("hasRole('PHARMACIST')")
-    public boolean confirmPickup(@RequestBody @Valid ReservationCodeDTO codeDTO, @AuthenticationPrincipal User user){
+    public ResponseEntity<Boolean> confirmPickup(@RequestBody @Valid ReservationCodeDTO codeDTO, @AuthenticationPrincipal User user){
         String reservationCode = codeDTO.getReservationCode();
         try {
-            return medicineReservationService.confirmPickup(reservationCode);
+            boolean success = medicineReservationService.confirmPickup(reservationCode);
+            if(success)
+                return new ResponseEntity<>(success, HttpStatus.OK);
+            else
+                return ResponseEntity.notFound().build();
         } catch (MedicineReservationNotFoundException e) {
-            return false;
+            return ResponseEntity.notFound().build();
         } catch (ObjectOptimisticLockingFailureException e){
-            return false;
+            return ResponseEntity.badRequest().build();
         }
 
     }
@@ -140,18 +144,18 @@ public class MedicineReservationController {
 
     @PostMapping(value = "/cancel-pickup")
     @PreAuthorize("hasRole('PHARMACIST')")
-    public boolean cancelPickup(@RequestBody @Valid ReservationCodeDTO codeDTO){
+    public ResponseEntity<Boolean> cancelPickup(@RequestBody @Valid ReservationCodeDTO codeDTO){
         MedicineReservation toUpdate = null;
         String extractCode = codeDTO.getReservationCode();
         try {
 
             toUpdate = medicineReservationService.getByMedicineReservationCode(extractCode);
-            if (medicineReservationService.cancelPickup(toUpdate)) return true;
-            return false;
+            if (medicineReservationService.cancelPickup(toUpdate)) return new ResponseEntity<>(true, HttpStatus.OK);
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         } catch (MedicineReservationNotFoundException e) {
-            return false;
+            return ResponseEntity.badRequest().build();
         } catch (ObjectOptimisticLockingFailureException e){
-            return false;
+            return ResponseEntity.badRequest().build();
         }
 
     }
