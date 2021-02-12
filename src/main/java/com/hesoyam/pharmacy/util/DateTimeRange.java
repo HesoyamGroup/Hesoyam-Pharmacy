@@ -11,6 +11,8 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Embeddable
 public class DateTimeRange {
@@ -79,6 +81,17 @@ public class DateTimeRange {
             this.to = to;
         }
         return this;
+    }
+
+    public List<LocalDate> getDays(){
+        LocalDate day = from.toLocalDate();
+        List<LocalDate> days = new ArrayList<>();
+        while(!day.isAfter(to.toLocalDate())){
+            days.add(day);
+            day = day.plusDays(1);
+        }
+
+        return days;
     }
 
     public boolean overlaps(DateTimeRange other) {
