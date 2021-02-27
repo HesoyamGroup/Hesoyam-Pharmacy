@@ -103,7 +103,7 @@ Frontend project can be found at [https://github.com/HesoyamGroup/hesoyam-pharma
 
 ## Files
 
-Object-Oriented Model Made With PowerDesigner - [PDF](assets/model.pdf)
+Object-Oriented Model Made With PowerDesigner - [ObjectOrientedModel](assets/model/ObjectOrientedModel_1.oom) (PDF version - [PDF](assets/model/model.pdf))
 
 ### Concurrent database access
 
